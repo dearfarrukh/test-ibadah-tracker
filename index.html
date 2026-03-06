@@ -466,17 +466,23 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 
  function manageTasks(){
 
-let action = prompt(
-"Task Manager\n\n1 - Add Task\n2 - Remove Task\n3 - Rename Task"
+let action = confirm(
+"Add Task?\n\nPress OK = Add Task\nPress Cancel = More Options"
 );
 
-if(action === "1"){
+if(action){
 addTaskFlow();
+return;
 }
-else if(action === "2"){
+
+let more = prompt(
+"Choose option:\n\n1 - Remove Task\n2 - Rename Task"
+);
+
+if(more === "1"){
 removeTaskFlow();
 }
-else if(action === "3"){
+else if(more === "2"){
 renameTaskFlow();
 }
 
