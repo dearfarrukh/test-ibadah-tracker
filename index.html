@@ -453,10 +453,32 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 
 
 function manageTasks(){
+
+let area = document.getElementById("taskMenuContent");
+
+area.innerHTML = `
+
+<button onclick="showAddTask()" style="width:100%;padding:12px;margin-bottom:10px;">
+Add Task
+</button>
+
+<button onclick="showRenameTask()" style="width:100%;padding:12px;margin-bottom:10px;">
+Rename Task
+</button>
+
+<button onclick="showRemoveTask()" style="width:100%;padding:12px;margin-bottom:10px;">
+Remove Task
+</button>
+
+<button onclick="closeTaskMenu()" style="width:100%;padding:12px;background:#eee;">
+Cancel
+</button>
+
+`;
+
 document.getElementById("taskMenu").style.display = "block";
+
 }
-
-
 
   function closeTaskMenu(){
 document.getElementById("taskMenu").style.display = "none";
@@ -1026,7 +1048,7 @@ setDate(islamicToday());
 
 function showRemoveTask(){
 
-closeTaskMenu();
+
 
 let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
 
@@ -1147,7 +1169,7 @@ taskList.push(task);
 
 localStorage.setItem("taskList",JSON.stringify(taskList));
 
-closeTaskMenu();
+manageTasks();
 loadTasks();
 
 }
