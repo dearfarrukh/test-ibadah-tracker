@@ -714,8 +714,19 @@ let key = new Date(currentDate).setHours(0,0,0,0);
 
 taskList.forEach(task=>{
 
+// start / end range check
 if(key < task.start) return;
 if(task.end && key > task.end) return;
+
+// specific day check
+if(task.days){
+
+let dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let todayName = dayNames[new Date(currentDate).getDay()];
+
+if(!task.days.includes(todayName)) return;
+
+}
 
 let div = document.createElement("div");
 div.className = "task";
