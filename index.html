@@ -468,27 +468,7 @@ function manageTasks(){
 document.getElementById("taskMenu").style.display = "block";
 }
 
-let add = confirm("Add Task?\n\nPress OK = Add Task\nPress Cancel = More Options");
 
-if(add){
-addTaskFlow();
-return;
-}
-
-let rename = confirm("Rename Task?\n\nPress OK = Rename Task\nPress Cancel = Remove Task");
-
-if(rename){
-renameTaskFlow();
-return;
-}
-
-let remove = confirm("Remove Task?");
-
-if(remove){
-removeTaskFlow();
-}
-
-}
 
   function closeTaskMenu(){
 document.getElementById("taskMenu").style.display = "none";
