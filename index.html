@@ -465,6 +465,8 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 
 
 function manageTasks(){
+document.getElementById("taskMenu").style.display = "block";
+}
 
 let add = confirm("Add Task?\n\nPress OK = Add Task\nPress Cancel = More Options");
 
@@ -488,7 +490,14 @@ removeTaskFlow();
 
 }
 
+  function closeTaskMenu(){
+document.getElementById("taskMenu").style.display = "none";
+}
+
+
 function addTaskFlow(){
+
+closeTaskMenu();
 
 let name = prompt("Task Name");
 
@@ -534,7 +543,6 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 loadTasks();
 
 }
-
   
 function increaseTasbih(){
 
@@ -969,6 +977,8 @@ setDate(islamicToday());
 
 function removeTaskFlow(){
 
+closeTaskMenu();
+
 let name = prompt("Enter task name to remove");
 
 if(!name) return;
@@ -980,8 +990,9 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 loadTasks();
 
 }
-
  function renameTaskFlow(){
+
+closeTaskMenu();
 
 let oldName = prompt("Enter task name to rename");
 
@@ -1003,10 +1014,39 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 loadTasks();
 
 }
-  
 </script>
 
-  
+  <div id="taskMenu" style="
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+border-radius:20px 20px 0 0;
+padding:20px;
+box-shadow:0 -5px 20px rgba(0,0,0,0.2);
+display:none;
+z-index:1000;
+text-align:center;
+">
+
+<button onclick="addTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
+Add Task
+</button>
+
+<button onclick="renameTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
+Rename Task
+</button>
+
+<button onclick="removeTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
+Remove Task
+</button>
+
+<button onclick="closeTaskMenu()" style="width:100%;padding:12px;background:#eee;">
+Cancel
+</button>
+
+</div>
 
 
 </body>
