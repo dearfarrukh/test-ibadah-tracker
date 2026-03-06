@@ -337,12 +337,7 @@ Restore
 
 </div>
 
-  </div>
-
-<div class="card">
-<h3>Task Editor</h3>
-<div id="actionArea"></div>
-</div>
+ 
 
 
 
@@ -472,22 +467,49 @@ function addTaskFlow(){
 
 closeTaskMenu();
 
-let area = document.getElementById("actionArea");
+let name = prompt("Task Name");
+if(!name) return;
 
-area.innerHTML = `
-<input id="taskNameInput" placeholder="Task Name" style="width:100%;margin-bottom:10px;padding:8px;">
+let type = prompt(
+"Select Type:\n\n1 - Date Range\n2 - Start Today\n3 - Specific Days"
+);
 
-<select id="taskTypeSelect" style="width:100%;margin-bottom:10px;padding:8px;" onchange="showTaskOptions()">
-<option value="">Select Task Type</option>
-<option value="range">Date Range</option>
-<option value="today">Start Today</option>
-<option value="days">Specific Days</option>
-</select>
+let today = new Date(currentDate).setHours(0,0,0,0);
 
-<div id="taskExtra"></div>
+let task = {name:name};
 
-<button onclick="saveNewTask()" style="margin-top:10px;width:100%;">Save Task</button>
-`;
+if(type=="1"){
+
+let start = prompt("Start Date YYYY-MM-DD");
+let end = prompt("End Date YYYY-MM-DD");
+
+task.start = new Date(start).setHours(0,0,0,0);
+task.end = new Date(end).setHours(0,0,0,0);
+
+}
+
+else if(type=="2"){
+
+task.start = today;
+task.end = null;
+
+}
+
+else if(type=="3"){
+
+let days = prompt("Days (Mon,Tue,Wed)");
+
+task.days = days.split(",");
+task.start = today;
+task.end = null;
+
+}
+
+taskList.push(task);
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+loadTasks();
 
 }
 
@@ -1000,8 +1022,51 @@ document.addEventListener("DOMContentLoaded",()=>{
 setDate(islamicToday());
 });
 
+  function renameTaskFlow(){
+
+closeTaskMenu();
+
+let list = taskList.map((t,i)=> (i+1) + " - " + t.name).join("\n");
+
+let choice = prompt("Select task to rename:\n\n" + list);
+
+let index = parseInt(choice)-1;
+
+if(isNaN(index) || !taskList[index]) return;
+
+let newName = prompt("New Name");
+
+if(!newName) return;
+
+taskList[index].name = newName;
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+loadTasks();
+
+}
 
 function removeTaskFlow(){
+
+closeTaskMenu();
+
+let list = taskList.map((t,i)=> (i+1) + " - " + t.name).join("\n");
+
+let choice = prompt("Select task to delete:\n\n" + list);
+
+let index = parseInt(choice)-1;
+
+if(isNaN(index) || !taskList[index]) return;
+
+taskList.splice(index,1);
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+loadTasks();
+
+}
+  
+function renameTaskFlow(){
 
 closeTaskMenu();
 
@@ -1010,60 +1075,20 @@ let area = document.getElementById("actionArea");
 let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
 
 area.innerHTML = `
-<select id="deleteSelect" style="width:100%;margin-bottom:10px;">
+<select id="renameSelect" style="width:100%;margin-bottom:10px;">
 ${options}
 </select>
 
-<button onclick="confirmDeleteTask()" style="width:100%;background:#ff3b30;color:white;">
-Delete Task
+<input id="renameInput" placeholder="New Name" style="width:100%;margin-bottom:10px;">
+
+<button onclick="confirmRename()" style="width:100%;">
+Rename
 </button>
 `;
 
 }
+
   
- function saveNewTask(){
-
-let name = document.getElementById("taskNameInput").value.trim();
-let type = document.getElementById("taskTypeSelect").value;
-
-if(!name) return;
-
-let task = {name:name};
-
-if(type === "range"){
-
-task.start = new Date(document.getElementById("taskStart").value).setHours(0,0,0,0);
-task.end = new Date(document.getElementById("taskEnd").value).setHours(0,0,0,0);
-
-}
-
-else if(type === "today"){
-
-task.start = new Date(currentDate).setHours(0,0,0,0);
-task.end = null;
-
-}
-
-else if(type === "days"){
-
-let days = [...document.querySelectorAll("#taskExtra input:checked")]
-.map(d=>d.value);
-
-task.days = days;
-task.start = new Date(currentDate).setHours(0,0,0,0);
-task.end = null;
-
-}
-
-taskList.push(task);
-
-localStorage.setItem("taskList", JSON.stringify(taskList));
-
-document.getElementById("actionArea").innerHTML = "";
-
-loadTasks();
-
-}
 
   function confirmDeleteTask(){
 
@@ -1082,18 +1107,19 @@ loadTasks();
   
 </script>
 
-  <div id="taskMenu" style="
+ <div id="taskMenu" style="
 position:fixed;
-bottom:0;
-left:0;
-right:0;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 background:white;
-border-radius:20px 20px 0 0;
+border-radius:20px;
 padding:20px;
-box-shadow:0 -5px 20px rgba(0,0,0,0.2);
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
 display:none;
 z-index:1000;
 text-align:center;
+width:260px;
 ">
 
 <button onclick="addTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
@@ -1111,6 +1137,8 @@ Remove Task
 <button onclick="closeTaskMenu()" style="width:100%;padding:12px;background:#eee;">
 Cancel
 </button>
+
+</div>
 
 </div>
 
