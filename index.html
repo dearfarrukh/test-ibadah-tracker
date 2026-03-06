@@ -1022,29 +1022,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 setDate(islamicToday());
 });
 
-  function renameTaskFlow(){
-
-closeTaskMenu();
-
-let list = taskList.map((t,i)=> (i+1) + " - " + t.name).join("\n");
-
-let choice = prompt("Select task to rename:\n\n" + list);
-
-let index = parseInt(choice)-1;
-
-if(isNaN(index) || !taskList[index]) return;
-
-let newName = prompt("New Name");
-
-if(!newName) return;
-
-taskList[index].name = newName;
-
-localStorage.setItem("taskList", JSON.stringify(taskList));
-
-loadTasks();
-
-}
+ 
 
 function showRemoveTask(){
 
@@ -1070,7 +1048,7 @@ Back
   
 function renameTaskFlow(){
 
-closeTaskMenu();
+
 
 let area = document.getElementById("actionArea");
 
@@ -1100,8 +1078,8 @@ taskList = taskList.filter(t => t.name !== name);
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
-closeTaskMenu();
 loadTasks();
+manageTasks();
 
 }
   
@@ -1142,9 +1120,11 @@ let today = new Date(currentDate).setHours(0,0,0,0);
 
 if(type==="range"){
 
-task.start = new Date(document.getElementById("taskStart").value).setHours(0,0,0,0);
-task.end = new Date(document.getElementById("taskEnd").value).setHours(0,0,0,0);
+let s = document.getElementById("taskStart").value.split("-");
+let e = document.getElementById("taskEnd").value.split("-");
 
+task.start = new Date(s[0], s[1]-1, s[2]).setHours(0,0,0,0);
+task.end = new Date(e[0], e[1]-1, e[2]).setHours(0,0,0,0);
 }
 
 else if(type==="today"){
@@ -1174,7 +1154,7 @@ loadTasks();
 
 function showRenameTask(){
 
-closeTaskMenu();
+
 
 let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
 
