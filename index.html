@@ -217,7 +217,23 @@ style="display:flex;justify-content:space-between;text-align:center;">
 <!-- TASKS -->
 <div class="card">
 <h3>📝 Daily Tasks</h3>
+
 <div id="taskContainer"></div>
+
+<div style="margin-top:15px;text-align:center;">
+<button onclick="manageTasks()" style="
+padding:12px 30px;
+border-radius:16px;
+border:none;
+background:#007aff;
+color:white;
+font-weight:700;
+cursor:pointer;
+">
+Manage Tasks
+</button>
+</div>
+
 </div>
 
   
@@ -442,10 +458,6 @@ taskList = [
 {name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
 ];
 
-  <div style="margin-top:20px;text-align:center;">
-<button onclick="manageTasks()">Manage Tasks</button>
-</div>
-  
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
@@ -949,15 +961,15 @@ let name = prompt("Enter task name to remove");
 
 if(!name) return;
 
-tasks = tasks.filter(task => task.name !== name);
+taskList = taskList.filter(task => task.name !== name);
 
-saveTasks();
-renderTasks();
+localStorage.setItem("taskList", JSON.stringify(taskList));
+loadTasks();
 
 }
 
 
-  function renameTaskFlow(){
+ function renameTaskFlow(){
 
 let oldName = prompt("Enter task name to rename");
 
@@ -967,16 +979,15 @@ let newName = prompt("Enter new task name");
 
 if(!newName) return;
 
-tasks.forEach(task => {
-
+taskList = taskList.map(task=>{
 if(task.name === oldName){
-task.name = newName;
+return {...task,name:newName};
 }
-
+return task;
 });
 
-saveTasks();
-renderTasks();
+localStorage.setItem("taskList", JSON.stringify(taskList));
+loadTasks();
 
 }
   
