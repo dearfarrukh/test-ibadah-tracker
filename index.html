@@ -1046,23 +1046,25 @@ loadTasks();
 
 }
 
-function removeTaskFlow(){
+function showRemoveTask(){
 
 closeTaskMenu();
 
-let list = taskList.map((t,i)=> (i+1) + " - " + t.name).join("\n");
+let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
 
-let choice = prompt("Select task to delete:\n\n" + list);
+document.getElementById("taskMenuContent").innerHTML = `
+<select id="deleteSelect" style="width:100%;margin-bottom:10px;padding:8px;">
+${options}
+</select>
 
-let index = parseInt(choice)-1;
+<button onclick="confirmDeleteTask()" style="width:100%;padding:10px;background:#ff3b30;color:white;margin-bottom:10px;">
+Delete Task
+</button>
 
-if(isNaN(index) || !taskList[index]) return;
-
-taskList.splice(index,1);
-
-localStorage.setItem("taskList", JSON.stringify(taskList));
-
-loadTasks();
+<button onclick="manageTasks()" style="width:100%;padding:10px;">
+Back
+</button>
+`;
 
 }
   
@@ -1094,15 +1096,128 @@ Rename
 
 let name = document.getElementById("deleteSelect").value;
 
-taskList = taskList.filter(t=>t.name !== name);
+taskList = taskList.filter(t => t.name !== name);
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
-document.getElementById("actionArea").innerHTML = "";
-
+closeTaskMenu();
 loadTasks();
 
 }
+  
+  function showAddTask(){
+
+let area = document.getElementById("taskMenuContent");
+
+area.innerHTML = `
+<input id="taskNameInput" placeholder="Task Name" style="width:100%;margin-bottom:10px;padding:8px;">
+
+<select id="taskTypeSelect" style="width:100%;margin-bottom:10px;padding:8px;">
+<option value="">Select Type</option>
+<option value="range">Date Range</option>
+<option value="today">Start Today</option>
+<option value="days">Specific Days</option>
+</select>
+
+<div id="taskExtra"></div>
+
+<button onclick="createTask()" style="width:100%;margin-bottom:10px;">Save</button>
+<button onclick="manageTasks()" style="width:100%;">Back</button>
+`;
+
+document.getElementById("taskTypeSelect").onchange = showTaskOptions;
+
+}
+
+  function createTask(){
+
+let name = document.getElementById("taskNameInput").value.trim();
+let type = document.getElementById("taskTypeSelect").value;
+
+if(!name) return;
+
+let task = {name:name};
+
+let today = new Date(currentDate).setHours(0,0,0,0);
+
+if(type==="range"){
+
+task.start = new Date(document.getElementById("taskStart").value).setHours(0,0,0,0);
+task.end = new Date(document.getElementById("taskEnd").value).setHours(0,0,0,0);
+
+}
+
+else if(type==="today"){
+
+task.start = today;
+task.end = null;
+
+}
+
+else if(type==="days"){
+
+let days=[...document.querySelectorAll("#taskExtra input:checked")].map(d=>d.value);
+task.days = days;
+task.start = today;
+task.end = null;
+
+}
+
+taskList.push(task);
+
+localStorage.setItem("taskList",JSON.stringify(taskList));
+
+closeTaskMenu();
+loadTasks();
+
+}
+
+function showRenameTask(){
+
+closeTaskMenu();
+
+let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
+
+document.getElementById("taskMenuContent").innerHTML = `
+<select id="renameSelect" style="width:100%;margin-bottom:10px;padding:8px;">
+${options}
+</select>
+
+<input id="renameInput" placeholder="New Name" style="width:100%;margin-bottom:10px;padding:8px;">
+
+<button onclick="confirmRenameTask()" style="width:100%;padding:10px;margin-bottom:10px;">
+Rename
+</button>
+
+<button onclick="manageTasks()" style="width:100%;padding:10px;">
+Back
+</button>
+`;
+
+}
+
+function confirmRenameTask(){
+
+let oldName = document.getElementById("renameSelect").value;
+let newName = document.getElementById("renameInput").value.trim();
+
+if(!newName) return;
+
+taskList = taskList.map(t=>{
+if(t.name === oldName){
+return {...t, name:newName};
+}
+return t;
+});
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+closeTaskMenu();
+loadTasks();
+
+}
+
+
 
   
 </script>
@@ -1119,18 +1234,20 @@ box-shadow:0 10px 40px rgba(0,0,0,0.3);
 display:none;
 z-index:1000;
 text-align:center;
-width:260px;
+width:280px;
 ">
 
-<button onclick="addTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
+<div id="taskMenuContent">
+
+<button onclick="showAddTask()" style="width:100%;padding:12px;margin-bottom:10px;">
 Add Task
 </button>
 
-<button onclick="renameTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
+<button onclick="showRenameTask()" style="width:100%;padding:12px;margin-bottom:10px;">
 Rename Task
 </button>
 
-<button onclick="removeTaskFlow()" style="width:100%;padding:12px;margin-bottom:10px;">
+<button onclick="showRemoveTask()" style="width:100%;padding:12px;margin-bottom:10px;">
 Remove Task
 </button>
 
