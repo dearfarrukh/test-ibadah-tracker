@@ -990,30 +990,33 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 loadTasks();
 
 }
- function renameTaskFlow(){
+function renameTaskFlow(){
 
 closeTaskMenu();
 
-let oldName = prompt("Enter task name to rename");
+// show list of tasks
+let list = taskList.map((t,i)=> (i+1) + " - " + t.name).join("\n");
 
-if(!oldName) return;
+let choice = prompt("Select task to rename:\n\n" + list);
+
+let index = parseInt(choice) - 1;
+
+if(isNaN(index) || !taskList[index]) return;
 
 let newName = prompt("Enter new name");
 
 if(!newName) return;
 
-taskList = taskList.map(task => {
-if(task.name === oldName){
-return {...task, name:newName};
-}
-return task;
-});
+taskList[index].name = newName;
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
 loadTasks();
 
 }
+
+
+  
 </script>
 
   <div id="taskMenu" style="
