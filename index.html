@@ -1068,7 +1068,7 @@ document.getElementById("taskMenuContent").innerHTML = `
 ${options}
 </select>
 
-<button onclick="confirmDeleteTask()" style="width:100%;padding:10px;background:#ff3b30;color:white;margin-bottom:10px;">
+<button onclick="openDeletePopup()" style="width:100%;padding:10px;background:#ff3b30;color:white;margin-bottom:10px;">
 Delete Task
 </button>
 
@@ -1103,11 +1103,37 @@ Rename
 
   
 
-  function confirmDeleteTask(){
+ function confirmDeleteTask(){
 
 let name = document.getElementById("deleteSelect").value;
 
+let choice = prompt(
+"Delete Task:\n\n1 - Delete From Beginning\n2 - Delete From Today"
+);
+
+let today = new Date(currentDate).setHours(0,0,0,0);
+
+if(choice == "1"){
+
+// remove completely
 taskList = taskList.filter(t => t.name !== name);
+
+}
+
+else if(choice == "2"){
+
+// stop task from today forward
+let yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate()-1);
+
+taskList = taskList.map(t=>{
+if(t.name === name){
+return {...t, end:yesterday.setHours(0,0,0,0)};
+}
+return t;
+});
+
+}
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
@@ -1230,7 +1256,55 @@ loadTasks();
 
 }
 
+let deleteTargetTask = null;
 
+function openDeletePopup(){
+
+deleteTargetTask = document.getElementById("deleteSelect").value;
+
+document.getElementById("deleteChoicePopup").style.display = "block";
+
+}
+
+function closeDeletePopup(){
+
+document.getElementById("deleteChoicePopup").style.display = "none";
+
+}
+
+function deleteFromBeginning(){
+
+taskList = taskList.filter(t => t.name !== deleteTargetTask);
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+closeDeletePopup();
+loadTasks();
+manageTasks();
+
+}
+
+function deleteFromToday(){
+
+let today = new Date(currentDate).setHours(0,0,0,0);
+
+let yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate()-1);
+
+taskList = taskList.map(t=>{
+if(t.name === deleteTargetTask){
+return {...t, end:yesterday.setHours(0,0,0,0)};
+}
+return t;
+});
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+closeDeletePopup();
+loadTasks();
+manageTasks();
+
+}
 
   
 </script>
@@ -1272,6 +1346,58 @@ Cancel
 
 </div>
 
+  <div id="deleteChoicePopup" style="
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+display:none;
+z-index:2000;
+text-align:center;
+width:260px;
+">
+
+<h3 style="margin-bottom:15px;">Delete Task</h3>
+
+<button onclick="deleteFromBeginning()" style="
+width:100%;
+padding:12px;
+margin-bottom:10px;
+background:#ff3b30;
+color:white;
+border:none;
+border-radius:12px;
+">
+Delete From Beginning
+</button>
+
+<button onclick="deleteFromToday()" style="
+width:100%;
+padding:12px;
+margin-bottom:10px;
+background:#ff9500;
+color:white;
+border:none;
+border-radius:12px;
+">
+Delete From Today
+</button>
+
+<button onclick="closeDeletePopup()" style="
+width:100%;
+padding:12px;
+background:#eee;
+border:none;
+border-radius:12px;
+">
+Cancel
+</button>
+
+</div>
 
 </body>
 </html>
