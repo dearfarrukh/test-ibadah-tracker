@@ -464,21 +464,19 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
 
-  function manageTasks(){
+ function manageTasks(){
 
 let action = prompt(
 "Task Manager\n\n1 - Add Task\n2 - Remove Task\n3 - Rename Task"
 );
 
-if(action=="1"){
+if(action === "1"){
 addTaskFlow();
 }
-
-if(action=="2"){
+else if(action === "2"){
 removeTaskFlow();
 }
-
-if(action=="3"){
+else if(action === "3"){
 renameTaskFlow();
 }
 
@@ -494,32 +492,40 @@ let type = prompt(
 "Select Task Type\n\n1 - Date Range\n2 - Start Today (No End)\n3 - Specific Days"
 );
 
+let today = new Date(currentDate).setHours(0,0,0,0);
+
 let task = {name:name};
 
 if(type=="1"){
 
-task.start = prompt("Start Date YYYY-MM-DD");
-task.end = prompt("End Date YYYY-MM-DD");
+let start = prompt("Start Date YYYY-MM-DD");
+let end = prompt("End Date YYYY-MM-DD");
+
+task.start = new Date(start).setHours(0,0,0,0);
+task.end = new Date(end).setHours(0,0,0,0);
 
 }
 
-if(type=="2"){
+else if(type=="2"){
 
-task.start = new Date().toISOString().split("T")[0];
+task.start = today;
 task.end = null;
 
 }
 
-if(type=="3"){
+else if(type=="3"){
 
 task.days = prompt("Enter days (ex: Mon,Tue,Wed)");
+task.start = today;
+task.end = null;
 
 }
 
-tasks.push(task);
+taskList.push(task);
 
-saveTasks();
-renderTasks();
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+loadTasks();
 
 }
 
@@ -975,7 +981,7 @@ let oldName = prompt("Enter task name to rename");
 
 if(!oldName) return;
 
-let newName = prompt("Enter new task name");
+let newName = prompt("Enter new name");
 
 if(!newName) return;
 
