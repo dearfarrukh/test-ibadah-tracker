@@ -964,10 +964,10 @@ if(!name) return;
 taskList = taskList.filter(task => task.name !== name);
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
+
 loadTasks();
 
 }
-
 
  function renameTaskFlow(){
 
@@ -979,14 +979,15 @@ let newName = prompt("Enter new task name");
 
 if(!newName) return;
 
-taskList = taskList.map(task=>{
+taskList = taskList.map(task => {
 if(task.name === oldName){
-return {...task,name:newName};
+return {...task, name:newName};
 }
 return task;
 });
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
+
 loadTasks();
 
 }
