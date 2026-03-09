@@ -6,81 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  
+
 <style>
 
-  .bottomMenu{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:70px;
-background:#ffffff;
-display:flex;
-justify-content:space-around;
-align-items:center;
-border-top:1px solid #ddd;
-z-index:1000;
-font-size:13px;
-}
-
-.bottomMenu div{
-flex:1;
-text-align:center;
-}
-
-.bottomMenu div:active{
-transform:scale(0.9);
-}
-
-  .page{
-display:none;
-animation:fadeIn 0.25s ease;
-}
-
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateX(20px);
-}
-to{
-opacity:1;
-transform:translateX(0);
-}
-}
-  .card{
-background:white;
-padding:20px;
-margin:14px;
-border-radius:18px;
-font-size:20px;
-font-weight:600;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 6px 12px rgba(0,0,0,0.08);
-}
-
-.arrow{
-font-size:24px;
-color:#888;
-}
-
-.card:active{
-transform:scale(0.97);
-}
-  
-  body{
+body{
 font-family:-apple-system,BlinkMacSystemFont;
 margin:0;
 padding:20px;
-padding-top:env(safe-area-inset-top);
-padding-bottom:90px;
 background:none;
 }
 
-  
 #bg{
 position:fixed;
 top:0;
@@ -229,25 +164,6 @@ font-size:18px;
 font-weight:600;
 border-radius:12px;
 }
-.ripple{
-position:absolute;
-border-radius:50%;
-background:rgba(255,255,255,0.6);
-transform:scale(0);
-animation:rippleEffect 0.6s linear;
-pointer-events:none;
-}
-
-@keyframes rippleEffect{
-to{
-transform:scale(4);
-opacity:0;
-}
-}
-
-
-
-
 </style>
 </head>
 
@@ -255,7 +171,7 @@ opacity:0;
 <div id="bg"></div>
   
 <h1 style="text-align:center;">📿 Ibadah Tracker</h1>
- <div id="homePage">
+ 
 
 <!-- DATE CARD -->
 <div class="card">
@@ -304,32 +220,108 @@ style="display:flex;justify-content:space-between;text-align:center;">
 
   
 <!-- TASKS -->
-<div id="homePage">
+<div class="card">
+<h3>📝 Daily Tasks</h3>
 
-<div class="card" onclick="openPage('tasksPage')">
-📝 Daily Tasks
-<span class="arrow">›</span>
+<div id="taskContainer"></div>
+
+<div style="margin-top:15px;text-align:center;">
+<button onclick="manageTasks()" style="
+padding:12px 30px;
+border-radius:16px;
+border:none;
+background:#007aff;
+color:white;
+font-weight:700;
+cursor:pointer;
+">
+Manage Tasks
+</button>
 </div>
 
-<div class="card" onclick="openPage('tasbihPage')">
+</div>
+
+  
+<div class="card"
+onclick="increaseTasbih()"
+style="text-align:center;cursor:pointer;user-select:none;position:relative;">
+
+  
+<!-- TASBIH HEADER -->
+<div style="margin-bottom:15px;">
+
+<h2 style="margin:0;font-size:26px;font-weight:800;text-align:center;">
 📿 Tasbih
-<span class="arrow">›</span>
+</h2>
+
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-top:10px;
+">
+
+<!-- segmented control -->
+<div id="tasbihModes"
+onclick="event.stopPropagation();"
+style="
+display:flex;
+background:rgba(0,0,0,0.08);
+border-radius:14px;
+overflow:hidden;
+height:36px;
+">
+
+<button class="modeBtn" onclick="setTasbihMode(33)">33</button>
+<button class="modeBtn" onclick="setTasbihMode(100)">100</button>
+<button class="modeBtn" onclick="setTasbihMode('inf')">∞</button>
+
 </div>
 
-<div class="card" onclick="openPage('quranPage')">
-📖 Quran
-<span class="arrow">›</span>
+<!-- sound toggle -->
+<div style="display:flex;align-items:center;gap:6px;">
+
+<span>🔕</span>
+
+<label class="switch" onclick="event.stopPropagation();">
+<input type="checkbox" id="vibrationToggle" onchange="toggleVibration();">
+<span class="slider"></span>
+</label>
+
+<span>🔔</span>
+
 </div>
 
-<div class="card" onclick="openPage('duaPage')">
-🤲 Dua
-<span class="arrow">›</span>
 </div>
 
 </div>
-  
 
-  
+<!-- COUNTER -->
+<div id="tasbihCount"
+style="font-size:90px;font-weight:700;margin:25px 0;text-align:center;letter-spacing:2px;">
+0
+</div>
+
+<div style="color:gray;margin-bottom:15px;">
+Target: <span id="tasbihTargetLabel">33</span>
+</div>
+
+<!-- RESET -->
+<button onclick="resetTasbih();event.stopPropagation();"
+style="
+background:#ff3b30;
+padding:12px 30px;
+border-radius:16px;
+border:none;
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+">
+Reset
+</button>
+
+</div>
 
 <!-- ☁️ ICLOUD -->
 <div class="card">
@@ -350,7 +342,7 @@ Restore
 
 </div>
 
- </div>  <!-- closes homePage -->
+ 
 
 
 
@@ -627,21 +619,7 @@ loadTasks();
   
   
 function increaseTasbih(){
-let card = event.currentTarget;
 
-let circle = document.createElement("span");
-circle.className = "ripple";
-
-let size = Math.max(card.clientWidth, card.clientHeight);
-
-circle.style.width = size + "px";
-circle.style.height = size + "px";
-circle.style.left = event.offsetX - size/2 + "px";
-circle.style.top = event.offsetY - size/2 + "px";
-
-card.appendChild(circle);
-
-setTimeout(()=>circle.remove(),600);
 if(tasbihLock) return;
 
 let key = getTasbihKey();
@@ -1333,45 +1311,8 @@ manageTasks();
 
 }
 
-function openPage(pageId){
-
-document.getElementById("homePage").style.display="none";
-
-document.getElementById(pageId).style.display="block";
-
-}
-
-function goHome(){
-
-document.getElementById("homePage").style.display="block";
-
-document.querySelectorAll(".page").forEach(p => p.style.display="none");
-
-}
-function openHome(){
-goHome();
-}
-
-function openTasks(){
-openPage("tasksPage");
-}
-
-function openTasbih(){
-openPage("tasbihPage");
-}
-
-function openSettings(){
-alert("Settings coming soon");
-}
-
-
-
-
   
 </script>
-
-
-  
 
  <div id="taskMenu" style="
 position:fixed;
@@ -1461,187 +1402,7 @@ border-radius:12px;
 Cancel
 </button>
 
-  <!-- DAILY TASKS PAGE -->
-<div id="tasksPage" class="page" style="display:none;">
-
-<div class="card" onclick="goHome()" style="font-weight:700;">
-← Daily Tasks
 </div>
 
-<div class="card">
-<h3>📝 Daily Tasks</h3>
-
-<div id="taskContainer"></div>
-
-<div style="margin-top:15px;text-align:center;">
-<button onclick="manageTasks()" style="
-padding:12px 30px;
-border-radius:16px;
-border:none;
-background:#007aff;
-color:white;
-font-weight:700;
-cursor:pointer;
-">
-Manage Tasks
-</button>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- TASBIH PAGE -->
-<div id="tasbihPage" class="page" style="
-display:none;
-text-align:center;
-padding-top:40px;
-">
-<div class="card" onclick="goHome()" style="font-weight:700;">
-← Tasbih
-</div>
-
-<div class="card"
-onclick="increaseTasbih()"
-style="position:relative;overflow:hidden;">
-style="
-text-align:center;
-cursor:pointer;
-user-select:none;
-position:relative;
-padding:40px 20px;
-">
-style="text-align:center;cursor:pointer;user-select:none;position:relative;">
-
-  
-<!-- TASBIH HEADER -->
-<div style="margin-bottom:15px;">
-
-<h2 style="margin:0;font-size:26px;font-weight:800;text-align:center;">
-📿 Tasbih
-</h2>
-
-<div style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-top:10px;
-">
-
-<!-- segmented control -->
-<div id="tasbihModes"
-onclick="event.stopPropagation();"
-style="
-display:flex;
-background:rgba(0,0,0,0.08);
-border-radius:14px;
-overflow:hidden;
-height:36px;
-">
-
-<button class="modeBtn" onclick="setTasbihMode(33)">33</button>
-<button class="modeBtn" onclick="setTasbihMode(100)">100</button>
-<button class="modeBtn" onclick="setTasbihMode('inf')">∞</button>
-
-</div>
-
-<!-- sound toggle -->
-<div style="display:flex;align-items:center;gap:6px;">
-
-<span>🔕</span>
-
-<label class="switch" onclick="event.stopPropagation();">
-<input type="checkbox" id="vibrationToggle" onchange="toggleVibration();">
-<span class="slider"></span>
-</label>
-
-<span>🔔</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- COUNTER -->
-<div id="tasbihCount"
-style="
-font-size:110px;
-font-weight:800;
-margin:40px 0;
-text-align:center;
-letter-spacing:3px;
-">
-0
-</div>
-
-<div style="color:gray;margin-bottom:15px;">
-Target: <span id="tasbihTargetLabel">33</span>
-</div>
-
-<!-- RESET -->
-<button onclick="resetTasbih();event.stopPropagation();"
-style="
-background:#ff3b30;
-padding:12px 30px;
-border-radius:16px;
-border:none;
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-">
-Reset
-</button>
-
-</div>
-
-
-</div>
-
-
-<!-- QURAN PAGE -->
-<div id="quranPage" class="page" style="display:none;">
-
-<div class="card" onclick="goHome()" style="font-weight:700;">
-← Quran
-</div>
-
-<div class="card">
-Quran Page
-</div>
-
-</div>
-
-
-<!-- DUA PAGE -->
-<div id="duaPage" class="page" style="display:none;">
-
-<div class="card" onclick="goHome()" style="font-weight:700;">
-← Dua
-</div>
-
-<div class="card">
-Dua Page
-</div>
-
-    
-    
-</div>
-<div class="bottomMenu">
-
-<div onclick="openHome()">🏠<br>Home</div>
-
-<div onclick="openTasbih()">📿<br>Tasbih</div>
-
-<div onclick="openTasks()">✅<br>Tasks</div>
-
-<div onclick="openSettings()">⚙️<br>Settings</div>
-
-
-
-</div>
-</div>
 </body>
 </html>
