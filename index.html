@@ -229,6 +229,25 @@ font-size:18px;
 font-weight:600;
 border-radius:12px;
 }
+.ripple{
+position:absolute;
+border-radius:50%;
+background:rgba(255,255,255,0.6);
+transform:scale(0);
+animation:rippleEffect 0.6s linear;
+pointer-events:none;
+}
+
+@keyframes rippleEffect{
+to{
+transform:scale(4);
+opacity:0;
+}
+}
+
+
+
+
 </style>
 </head>
 
@@ -608,7 +627,21 @@ loadTasks();
   
   
 function increaseTasbih(){
+let card = event.currentTarget;
 
+let circle = document.createElement("span");
+circle.className = "ripple";
+
+let size = Math.max(card.clientWidth, card.clientHeight);
+
+circle.style.width = size + "px";
+circle.style.height = size + "px";
+circle.style.left = event.offsetX - size/2 + "px";
+circle.style.top = event.offsetY - size/2 + "px";
+
+card.appendChild(circle);
+
+setTimeout(()=>circle.remove(),600);
 if(tasbihLock) return;
 
 let key = getTasbihKey();
@@ -1471,6 +1504,14 @@ padding-top:40px;
 
 <div class="card"
 onclick="increaseTasbih()"
+style="position:relative;overflow:hidden;">
+style="
+text-align:center;
+cursor:pointer;
+user-select:none;
+position:relative;
+padding:40px 20px;
+">
 style="text-align:center;cursor:pointer;user-select:none;position:relative;">
 
   
