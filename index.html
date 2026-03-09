@@ -1161,11 +1161,8 @@ openPDF(file);
 
 function openPDF(file){
 
-document.querySelectorAll("body > div").forEach(el=>{
-el.style.display="none";
-});
-
 document.getElementById("pdfViewer").style.display="flex";
+document.getElementById("mainApp").style.display="none";
 
 document.getElementById("pdfFrame").src = file;
 
@@ -1175,11 +1172,10 @@ file.replace(".pdf","").replaceAll("-"," ");
 }
 
 
-  function closePDF(){
+ function closePDF(){
 
 document.getElementById("pdfViewer").style.display="none";
-
-location.reload();
+document.getElementById("mainApp").style.display="block";
 
 }
 
@@ -1545,4 +1541,9 @@ Cancel
 </div>
 
 </body>
+  <div id="mainApp">
+
+<!-- your whole tracker app here -->
+
+</div>
 </html>
