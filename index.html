@@ -431,6 +431,32 @@ Restore
 
 </div>
 
+  <div id="pdfViewer" style="display:none;height:100vh;flex-direction:column;">
+
+<div style="
+display:flex;
+align-items:center;
+padding:12px;
+background:rgba(255,255,255,0.9);
+backdrop-filter:blur(10px);
+font-weight:600;
+">
+
+<span onclick="closePDF()" style="cursor:pointer;font-size:20px;margin-right:10px;">
+⬅
+</span>
+
+<span id="pdfTitle">Surah</span>
+
+</div>
+
+<iframe id="pdfFrame"
+style="flex:1;border:none;width:100%;"></iframe>
+
+</div>
+
+
+  
 
 
 <script>
@@ -1134,22 +1160,28 @@ openPDF(file);
 }
 
 function openPDF(file){
-window.location.assign(file);
-}
 
-  function toggleVibration(){
-let enabled = document.getElementById("vibrationToggle").checked;
-localStorage.setItem("tasbih-vibration", enabled);
-}
-
-function isVibrationEnabled(){
-return localStorage.getItem("tasbih-vibration") === "true";
-}
-document.addEventListener("DOMContentLoaded",()=>{
-setDate(islamicToday());
+document.querySelectorAll("body > div").forEach(el=>{
+el.style.display="none";
 });
 
- 
+document.getElementById("pdfViewer").style.display="flex";
+
+document.getElementById("pdfFrame").src = file;
+
+document.getElementById("pdfTitle").innerText =
+file.replace(".pdf","").replaceAll("-"," ");
+
+}
+
+
+  function closePDF(){
+
+document.getElementById("pdfViewer").style.display="none";
+
+location.reload();
+
+}
 
 function showRemoveTask(){
 
