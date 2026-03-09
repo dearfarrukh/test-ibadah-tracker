@@ -493,9 +493,19 @@ setTimeout(()=>{ tasbihLock=false; },150);
   
 let clickSound = new Audio("click.mp3");
 clickSound.preload = "auto";
-  
+
 let audioCtx = null;
 
+/* ---------- TASBIH VIBRATION ---------- */
+
+function toggleVibration(){
+let v = document.getElementById("vibrationToggle").checked;
+localStorage.setItem("tasbihVibration", v ? "1" : "0");
+}
+
+function isVibrationEnabled(){
+return localStorage.getItem("tasbihVibration") === "1";
+}
 function loadSalah(){
 
 let prayers = ["Fajr","Dhuhur","Asr","Maghrib","Isha"];
@@ -1443,11 +1453,14 @@ el.style.display="none";
 
 function closeDuaPage(){
 
-location.reload();
+document.getElementById("duaPage").style.display="none";
+document.getElementById("mainApp").style.display="block";
 
 }
 
-  
+document.addEventListener("DOMContentLoaded", function(){
+setDate(islamicToday());
+});  
   
 </script>
 
