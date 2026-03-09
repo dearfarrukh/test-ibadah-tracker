@@ -544,33 +544,32 @@ let tasbihLock = false;
   
 let taskList = JSON.parse(localStorage.getItem("taskList"));
 
-  if(Array.isArray(taskList)){
+if(Array.isArray(taskList)){
 taskList = taskList.filter(t =>
 !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name)
 );
 localStorage.setItem("taskList", JSON.stringify(taskList));
 }
-  
-  console.log("INITIAL taskList:", taskList);
+
+console.log("INITIAL taskList:", taskList);
 
 if(!Array.isArray(taskList) || taskList.length === 0){
 
+let today = new Date().setHours(0,0,0,0);
+
 taskList = [
-{name:"Surah Mulk",start:0,end:null},
-{name:"Surah Sajdah",start:0,end:null},
-{name:"Surah Yaseen",start:0,end:null},
-{name:"Surah Rehman",start:0,end:null},
-{name:"Surah Taghabun",start:0,end:null},
-{name:"Surah Waqiya",start:0,end:null},
-{name:"Surah Ikhlas",start:0,end:null},
-{name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
+{name:"Surah Mulk",start:today,end:null},
+{name:"Surah Sajdah",start:today,end:null},
+{name:"Surah Yaseen",start:today,end:null},
+{name:"Surah Rehman",start:today,end:null},
+{name:"Surah Taghabun",start:today,end:null},
+{name:"Surah Waqiya",start:today,end:null},
+{name:"Surah Ikhlas",start:today,end:null},
+{name:"Surah Ad Duha to Surah Al Nas",start:today,end:null}
 ];
 
-
 localStorage.setItem("taskList", JSON.stringify(taskList));
-
 }
-
 
 function manageTasks(){
 
