@@ -12,7 +12,7 @@
 body{
 font-family:-apple-system,BlinkMacSystemFont;
 margin:0;
-padding:20px;
+padding:70px 20px 40px 20px;
 background:none;
 }
 
@@ -740,14 +740,18 @@ div.innerHTML = `
 <div onclick="handleTaskClick('${task.name}')" 
 style="flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;">
 
-<span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+<span style="
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+flex:1;
+">
 ${task.name}
 </span>
 
 ${isSurah(task.name)?
-'<span style="background:#007aff;color:white;padding:2px 6px;border-radius:6px;font-size:10px;margin-left:8px;">PDF</span>'
+'<span onclick="handleTaskClick(\''+task.name+'\')" style="background:#007aff;color:white;padding:2px 6px;border-radius:6px;font-size:10px;margin-left:8px;cursor:pointer;">PDF</span>'
 :''}
-
 </div>
 
 <input type="checkbox"
