@@ -81,16 +81,7 @@ padding:18px;
 border-radius:22px;
 margin-bottom:20px;
 }
-
-  .duaCard{
-background:white;
-padding:22px;
-border-radius:22px;
-margin-bottom:20px;
-line-height:1.7;
-}
-  
-  .task{
+.task{
 display:flex;
 align-items:center;
 justify-content:space-between;
@@ -190,20 +181,11 @@ background:rgba(255,255,255,0.15);
 backdrop-filter:blur(10px);
 box-shadow:0 6px 20px rgba(0,0,0,0.15);
 }
-  #duaPage{
-display:none;
-background:transparent;
-min-height:100vh;
-}
-
-
   
 </style>
 </head>
 
 <body>
-
-<div id="mainApp">
 
 <div id="bg"></div>
 
@@ -281,8 +263,6 @@ Manage Tasks
 </div>
 
 </div>
-
-  
 <div class="card" onclick="openDuaPage()" style="
 cursor:pointer;
 display:flex;
@@ -290,12 +270,14 @@ justify-content:space-between;
 align-items:center;
 ">
 
-<div style="display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;">
-🤲
-<span>Masnoon Duas</span>
+<div style="font-weight:600;font-size:17px;">
+🤲 Masnoon Duas
 </div>
 
-<div style="font-size:22px;color:#999;">
+<div style="
+font-size:24px;
+opacity:0.5;
+">
 ›
 </div>
 
@@ -400,20 +382,23 @@ Restore
 </button>
 
 </div>
-<div id="duaPage">
+
+ <div id="duaPage" style="display:none;">
 
 <div class="card" onclick="closeDuaPage()" style="cursor:pointer;">
-⬅ Back
+⬅️ Back
 </div>
 
 <div class="card" style="text-align:center;padding:30px;">
 
 <div style="font-size:60px;">🤲</div>
 
-<div style="font-size:32px;font-weight:700;">
+<div style="
+font-size:32px;
+font-weight:700;
+margin-top:10px;
+">
 مسنون دعائیں
-</div>
-
 </div>
 
 </div>
@@ -433,32 +418,6 @@ Restore
 
 </div>
 
-  <div id="pdfViewer" style="display:none;height:100vh;flex-direction:column;">
-
-<div style="
-display:flex;
-align-items:center;
-padding:12px;
-background:rgba(255,255,255,0.9);
-backdrop-filter:blur(10px);
-font-weight:600;
-">
-
-<span onclick="closePDF()" style="cursor:pointer;font-size:20px;margin-right:10px;">
-⬅
-</span>
-
-<span id="pdfTitle">Surah</span>
-
-</div>
-
-<iframe id="pdfFrame"
-style="flex:1;border:none;width:100%;"></iframe>
-
-</div>
-
-
-  
 
 
 <script>
@@ -493,19 +452,9 @@ setTimeout(()=>{ tasbihLock=false; },150);
   
 let clickSound = new Audio("click.mp3");
 clickSound.preload = "auto";
-
+  
 let audioCtx = null;
 
-/* ---------- TASBIH VIBRATION ---------- */
-
-function toggleVibration(){
-let v = document.getElementById("vibrationToggle").checked;
-localStorage.setItem("tasbihVibration", v ? "1" : "0");
-}
-
-function isVibrationEnabled(){
-return localStorage.getItem("tasbihVibration") === "1";
-}
 function loadSalah(){
 
 let prayers = ["Fajr","Dhuhur","Asr","Maghrib","Isha"];
@@ -554,32 +503,33 @@ let tasbihLock = false;
   
 let taskList = JSON.parse(localStorage.getItem("taskList"));
 
-if(Array.isArray(taskList)){
+  if(Array.isArray(taskList)){
 taskList = taskList.filter(t =>
 !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name)
 );
 localStorage.setItem("taskList", JSON.stringify(taskList));
 }
-
-console.log("INITIAL taskList:", taskList);
+  
+  console.log("INITIAL taskList:", taskList);
 
 if(!Array.isArray(taskList) || taskList.length === 0){
 
-let today = new Date().setHours(0,0,0,0);
-
 taskList = [
-{name:"Surah Mulk",start:today,end:null},
-{name:"Surah Sajdah",start:today,end:null},
-{name:"Surah Yaseen",start:today,end:null},
-{name:"Surah Rehman",start:today,end:null},
-{name:"Surah Taghabun",start:today,end:null},
-{name:"Surah Waqiya",start:today,end:null},
-{name:"Surah Ikhlas",start:today,end:null},
-{name:"Surah Ad Duha to Surah Al Nas",start:today,end:null}
+{name:"Surah Mulk",start:0,end:null},
+{name:"Surah Sajdah",start:0,end:null},
+{name:"Surah Yaseen",start:0,end:null},
+{name:"Surah Rehman",start:0,end:null},
+{name:"Surah Taghabun",start:0,end:null},
+{name:"Surah Waqiya",start:0,end:null},
+{name:"Surah Ikhlas",start:0,end:null},
+{name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
 ];
 
+
 localStorage.setItem("taskList", JSON.stringify(taskList));
+
 }
+
 
 function manageTasks(){
 
@@ -1171,24 +1121,22 @@ openPDF(file);
 }
 
 function openPDF(file){
-
-document.getElementById("pdfViewer").style.display="flex";
-document.getElementById("mainApp").style.display="none";
-
-document.getElementById("pdfFrame").src = file;
-
-document.getElementById("pdfTitle").innerText =
-file.replace(".pdf","").replaceAll("-"," ");
-
+window.location.assign(file);
 }
 
-
- function closePDF(){
-
-document.getElementById("pdfViewer").style.display="none";
-document.getElementById("mainApp").style.display="block";
-
+  function toggleVibration(){
+let enabled = document.getElementById("vibrationToggle").checked;
+localStorage.setItem("tasbih-vibration", enabled);
 }
+
+function isVibrationEnabled(){
+return localStorage.getItem("tasbih-vibration") === "true";
+}
+document.addEventListener("DOMContentLoaded",()=>{
+setDate(islamicToday());
+});
+
+ 
 
 function showRemoveTask(){
 
@@ -1453,14 +1401,11 @@ el.style.display="none";
 
 function closeDuaPage(){
 
-document.getElementById("duaPage").style.display="none";
-document.getElementById("mainApp").style.display="block";
+location.reload();
 
 }
 
-document.addEventListener("DOMContentLoaded", function(){
-setDate(islamicToday());
-});  
+  
   
 </script>
 
@@ -1551,10 +1496,6 @@ border-radius:12px;
 ">
 Cancel
 </button>
-
-</div>
-
-</div>
 
 </div>
 
