@@ -336,7 +336,28 @@ opacity:0.5;
 
 </div>
   
-<div class="card"
+<div class="card" onclick="openZikrPage()" style="
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<div style="font-weight:600;font-size:17px;">
+🌿 Daily Dhikr
+</div>
+
+<div style="font-size:24px;opacity:0.5;">
+›
+</div>
+
+</div>
+  
+  
+  
+  
+  
+  <div class="card"
 onclick="increaseTasbih()"
 style="text-align:center;cursor:pointer;user-select:none;position:relative;">
 
@@ -471,6 +492,169 @@ margin-top:10px;
 
 </div>
 
+<div class="card" style="
+background:white;
+border-radius:24px;
+padding:28px;
+margin-top:10px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+">
+
+<!-- Urdu Hadith -->
+
+<div style="
+font-size:18px;
+line-height:1.8;
+margin-bottom:26px;
+color:#111;
+">
+
+نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:
+"دو کلمے زبان پر ہلکے ہیں لیکن میزان میں انتہائی وزنی اور اللہ تعالیٰ کو از حد محبوب ہیں"
+
+</div>
+
+<!-- Arabic Dhikr -->
+
+<div style="
+font-size:42px;
+font-weight:700;
+color:#6fa37a;
+line-height:1.7;
+margin-bottom:26px;
+">
+
+سُبْحَانَ اللَّهِ وَبِحَمْدِهِ<br>
+سُبْحَانَ اللَّهِ الْعَظِيم
+
+</div>
+
+<!-- Urdu Translation -->
+
+<div style="
+font-size:19px;
+line-height:1.8;
+margin-bottom:18px;
+">
+
+"پاک ہے اللہ اپنی خوبیوں سمیت، پاک ہے اللہ بہت عظمت والا"
+
+</div>
+<!-- Zikr Tasbih Area -->
+<div onclick="increaseZikrTasbih()" style="
+background:rgba(255,255,255,0.78);
+backdrop-filter:blur(20px);
+border-radius:28px;
+padding:20px 18px 40px 18px;
+margin-top:18px;
+text-align:center;
+cursor:pointer;
+user-select:none;
+min-height:320px;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+">
+
+<!-- Mode Buttons -->
+<div style="
+display:flex;
+justify-content:center;
+margin-bottom:28px;
+">
+
+<div id="zikrModes" onclick="event.stopPropagation()" style="
+display:flex;
+background:rgba(0,0,0,0.08);
+border-radius:18px;
+overflow:hidden;
+height:44px;
+min-width:220px;
+">
+
+<button id="zikr33Btn" onclick="setZikrMode(33)" style="
+flex:1;
+border:none;
+background:transparent;
+font-size:20px;
+font-weight:700;
+cursor:pointer;
+">
+33
+</button>
+
+<button id="zikr100Btn" onclick="setZikrMode(100)" style="
+flex:1;
+border:none;
+background:#34c759;
+color:white;
+font-size:20px;
+font-weight:700;
+cursor:pointer;
+">
+100
+</button>
+
+<button id="zikrInfBtn" onclick="setZikrMode('inf')" style="
+flex:1;
+border:none;
+background:transparent;
+font-size:24px;
+font-weight:700;
+cursor:pointer;
+">
+∞
+</button>
+
+</div>
+
+</div>
+
+<!-- Count -->
+<div id="zikrCountText" style="
+font-size:64px;
+font-weight:700;
+color:#5f946b;
+margin-top:10px;
+margin-bottom:30px;
+letter-spacing:1px;
+">
+0 / 100
+</div>
+
+<!-- Tap Area -->
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+color:#8a8a8a;
+letter-spacing:1px;
+">
+Tap Anywhere
+</div>
+
+<!-- Reset -->
+<button onclick="resetZikrTasbih();event.stopPropagation();" style="
+background:#ff3b30;
+padding:12px 30px;
+border-radius:16px;
+border:none;
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+align-self:center;
+">
+Reset
+</button>
+
+</div>
+<hr sty
+
+  
 <div id="qiblaPage" style="
 display:none;
 position:fixed;
@@ -1231,6 +1415,80 @@ document.getElementById("tasbihCount").innerText = 0;
 }
 
 
+// ===== ZIKR TASBIH SYSTEM =====
+
+let zikrCount = 0;
+let zikrTarget = 100;
+
+function updateZikrDisplay(){
+
+let targetText = zikrTarget === "inf" ? "∞" : zikrTarget;
+document.getElementById("zikrCountText").innerText = zikrCount + " / " + targetText;
+
+document.getElementById("zikr33Btn").style.background = "transparent";
+document.getElementById("zikr33Btn").style.color = "black";
+
+document.getElementById("zikr100Btn").style.background = "transparent";
+document.getElementById("zikr100Btn").style.color = "black";
+
+document.getElementById("zikrInfBtn").style.background = "transparent";
+document.getElementById("zikrInfBtn").style.color = "black";
+
+if(zikrTarget === 33){
+document.getElementById("zikr33Btn").style.background = "#34c759";
+document.getElementById("zikr33Btn").style.color = "white";
+}
+
+if(zikrTarget === 100){
+document.getElementById("zikr100Btn").style.background = "#34c759";
+document.getElementById("zikr100Btn").style.color = "white";
+}
+
+if(zikrTarget === "inf"){
+document.getElementById("zikrInfBtn").style.background = "#34c759";
+document.getElementById("zikrInfBtn").style.color = "white";
+}
+
+}
+
+function setZikrMode(mode){
+
+zikrTarget = mode;
+zikrCount = 0;
+updateZikrDisplay();
+
+}
+
+function increaseZikrTasbih(){
+
+if(zikrTarget === "inf"){
+zikrCount++;
+}else{
+if(zikrCount < zikrTarget){
+zikrCount++;
+}
+}
+
+updateZikrDisplay();
+
+if(isVibrationEnabled()){
+clickSound.currentTime = 0;
+clickSound.play().catch(()=>{});
+}
+
+if(navigator.vibrate){
+navigator.vibrate(30);
+}
+
+}
+
+function resetZikrTasbih(){
+
+zikrCount = 0;
+updateZikrDisplay();
+
+}
+  
 
 function changeTarget(){
 
@@ -1582,7 +1840,23 @@ function openGoogleQibla(){
 window.open("https://qiblafinder.withgoogle.com/","_blank");
 }
   
+function openZikrPage(){
 
+document.getElementById("zikrPage").style.display="block";
+
+document.querySelectorAll("body > div").forEach(el=>{
+if(el.id !== "zikrPage"){
+el.style.display="none";
+}
+});
+
+}
+
+function closeZikrPage(){
+
+location.reload();
+
+}
   
   
 </script>
