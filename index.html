@@ -488,9 +488,6 @@ margin-top:10px;
 
 </div>
 
-
- <div id="qiblaPage" style="display:none;">
-
 <div style="padding:15px;">
 <button onclick="closeQiblaPage()" style="
 width:36px;
@@ -504,127 +501,50 @@ display:flex;
 align-items:center;
 justify-content:center;
 ">
-<
+←
 </button>
 </div>
 
-<div class="card" style="text-align:center;padding:30px;">
+<div class="card" style="text-align:center;padding:20px;">
 
 <div style="
 font-size:28px;
 font-weight:700;
-margin-top:10px;
+margin-bottom:15px;
 ">
 Qibla Direction
 </div>
 
-<div id="compassWrap" onclick="startCompassFromTap()" style="position:relative;margin-top:20px;">
-
-
 <div style="
-position:absolute;
-top:10px;
-left:50%;
-transform:translateX(-50%);
-font-size:18px;
-font-weight:700;
-">N</div>
-
-<div style="
-position:absolute;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-font-size:18px;
-font-weight:700;
-">S</div>
-
-<div style="
-position:absolute;
-left:10px;
-top:50%;
-transform:translateY(-50%);
-font-size:18px;
-font-weight:700;
-">W</div>
-
-<div style="
-position:absolute;
-right:10px;
-top:50%;
-transform:translateY(-50%);
-font-size:18px;
-font-weight:700;
-">E</div>
-
-<div id="kaabaMarker" style="
-position:absolute;
-left:50%;
-top:18px;
-transform:translateX(-50%);
-font-size:24px;
-">🕋</div>
-
-<div id="qiblaNeedle" style="
-position:absolute;
-left:50%;
-top:50%;
-width:6px;
-height:95px;
-background:#007aff;
-transform-origin:bottom center;
-transform:translate(-50%,-100%) rotate(0deg);
-border-radius:6px;
-box-shadow:0 0 10px rgba(0,122,255,0.35);
-"></div>
-
-<div style="
-position:absolute;
-left:50%;
-top:50%;
-width:18px;
-height:18px;
-background:#222;
-border-radius:50%;
-transform:translate(-50%,-50%);
-border:3px solid white;
-"></div>
-
-</div>
-
-</div>
-
-<div id="qiblaDirection" style="
-font-size:22px;
-margin-top:15px;
-font-weight:600;
+width:100%;
+height:75vh;
+border-radius:20px;
+overflow:hidden;
+background:white;
 ">
-Finding location...
-</div>
 
-<div id="qiblaDistance" style="
-font-size:16px;
-margin-top:10px;
-color:gray;
+<iframe
+id="qiblaFrame"
+src="https://qiblafinder.withgoogle.com/"
+style="
+width:100%;
+height:100%;
+border:none;
 ">
-</div>
-  <div id="compass">
+</iframe>
 
 </div>
 
-  <div id="compassHint" style="
+<div style="
 font-size:14px;
 margin-top:12px;
 color:#666;
-display:none;
 ">
-    <div style="text-align:center;font-size:18px;margin-top:10px;">
-W&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E
-</div>
-Tap screen to start compass
+If the page does not load, Google may be blocking iframe on your device.
 </div>
 
 </div>
+ 
 
 </div>
 
