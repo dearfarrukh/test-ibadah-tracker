@@ -228,6 +228,37 @@ z-index:900;
 }
 
 
+/* Qibla Compass */
+
+#compass{
+width:260px;
+height:260px;
+margin:25px auto;
+border-radius:50%;
+border:10px solid rgba(255,255,255,0.7);
+background:rgba(255,255,255,0.35);
+backdrop-filter:blur(10px);
+position:relative;
+box-shadow:0 10px 30px rgba(0,0,0,0.12);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+font-weight:bold;
+}
+
+#needle{
+position:absolute;
+width:4px;
+height:110px;
+background:red;
+top:30px;
+left:50%;
+transform-origin:bottom center;
+transform:translateX(-50%) rotate(0deg);
+}
+
+  
 
   
 </style>
@@ -612,6 +643,9 @@ margin-top:10px;
 color:gray;
 ">
 </div>
+  <div id="compass">
+<div id="needle"></div>
+</div>
 
   <div id="compassHint" style="
 font-size:14px;
@@ -619,6 +653,9 @@ margin-top:12px;
 color:#666;
 display:none;
 ">
+    <div style="text-align:center;font-size:18px;margin-top:10px;">
+W&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E
+</div>
 Tap screen to start compass
 </div>
 
