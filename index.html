@@ -1608,7 +1608,7 @@ location.reload();
 
 }
 
- function openQiblaPage(){
+function openQiblaPage(){
 
 document.getElementById("qiblaPage").style.display="block";
 
@@ -1628,7 +1628,10 @@ function closeQiblaPage(){
 location.reload();
 }
 
-  function getQiblaDirection(){
+let compassStarted = false;
+let qiblaBearing = 0;
+
+function getQiblaDirection(){
 
 if(!navigator.geolocation){
 document.getElementById("qiblaDirection").innerText = "Location not supported";
@@ -1648,18 +1651,20 @@ let userLon = position.coords.longitude;
 let makkahLat = 21.4225;
 let makkahLon = 39.8262;
 
-let direction = calculateQibla(userLat, userLon, makkahLat, makkahLon);
+qiblaBearing = calculateQibla(userLat, userLon, makkahLat, makkahLon);
+
 let distance = calculateDistance(userLat, userLon, makkahLat, makkahLon);
+let miles = distance * 0.621371;
 
 document.getElementById("qiblaDirection").innerText =
-"Qibla: " + direction.toFixed(1) + "°";
-
-let miles = distance * 0.621371;
+"Qibla: " + qiblaBearing.toFixed(1) + "°";
 
 document.getElementById("qiblaDistance").innerText =
 "Distance to Makkah: " +
 miles.toFixed(0) + " miles (" +
 distance.toFixed(0) + " km)";
+
+startCompass();
 
 },
 function(){
@@ -1708,7 +1713,72 @@ let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 return R * c;
 }
 
+function startCompass(){
 
+if(compassStarted) return;
+compassStarted = true;
+
+if(typeof DeviceOrientationEvent !== "undefined" &&
+typeof DeviceOrientationEvent.requestPermission === "function"){
+
+DeviceOrientationEvent.requestPermission()
+.then(permissionState=>{
+if(permissionState === "granted"){
+window.addEventListener("deviceorientation", handleCompass, true);
+}else{
+document.getElementById("qiblaDirection").innerText =
+"Compass permission denied";
+}
+})
+.catch(()=>{
+document.getElementById("qiblaDirection").innerText =
+"Compass not available";
+});
+
+}else{
+window.addEventListener("deviceorientationabsolute", handleCompass, true);
+window.addEventListener("deviceorientation", handleCompass, true);
+}
+
+}
+
+function handleCompass(event){
+
+let heading = null;
+
+if(event.webkitCompassHeading !== undefined){
+heading = event.webkitCompassHeading;
+}else if(event.alpha !== null){
+heading = 360 - event.alpha;
+}
+
+if(heading === null) return;
+
+let relative = qiblaBearing - heading;
+relative = (relative + 360) % 360;
+
+let needle = document.getElementById("qiblaNeedle");
+if(needle){
+needle.style.transform =
+"translate(-50%,-100%) rotate(" + relative + "deg)";
+}
+
+let diff = Math.abs(relative);
+if(diff > 180) diff = 360 - diff;
+
+if(diff < 10){
+document.getElementById("qiblaDirection").innerText = "Facing Qibla";
+}else if(relative < 180){
+document.getElementById("qiblaDirection").innerText =
+"Turn right " + Math.round(diff) + "°";
+}else{
+document.getElementById("qiblaDirection").innerText =
+"Turn left " + Math.round(diff) + "°";
+}
+
+}
+
+   
 
   
   
