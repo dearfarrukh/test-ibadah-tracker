@@ -491,9 +491,29 @@ font-size:22px;
 margin-top:15px;
 font-weight:600;
 ">
-Locating...
+Tap button to find Qibla
 </div>
 
+<div id="qiblaDistance" style="
+font-size:16px;
+margin-top:10px;
+color:gray;
+">
+</div>
+
+<button onclick="getQiblaDirection()" style="
+margin-top:18px;
+padding:12px 20px;
+border:none;
+border-radius:14px;
+background:#007aff;
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+">
+Find Qibla
+</button>
 </div>
 
 </div>
@@ -1508,10 +1528,92 @@ function closeQiblaPage(){
 location.reload();
 }
 
+  function getQiblaDirection(){
+
+if(!navigator.geolocation){
+document.getElementById("qiblaDirection").innerText = "Location not supported";
+return;
+}
+
+document.getElementById("qiblaDirection").innerText = "Finding location...";
+document.getElementById("qiblaDistance").innerText = "";
+
+navigator.geolocation.getCurrentPosition(
+function(position){
+
+let userLat = position.coords.latitude;
+let userLon = position.coords.longitude;
+
+// Makkah coordinates
+let makkahLat = 21.4225;
+let makkahLon = 39.8262;
+
+let direction = calculateQibla(userLat, userLon, makkahLat, makkahLon);
+let distance = calculateDistance(userLat, userLon, makkahLat, makkahLon);
+
+document.getElementById("qiblaDirection").innerText =
+"Qibla: " + direction.toFixed(1) + "°";
+
+document.getElementById("qiblaDistance").innerText =
+"Distance to Makkah: " + distance.toFixed(0) + " km";
+
+},
+function(){
+document.getElementById("qiblaDirection").innerText = "Location permission denied";
+},
+{
+enableHighAccuracy:true,
+timeout:10000
+}
+);
+
+}
+
+function calculateQibla(lat1, lon1, lat2, lon2){
+
+let toRad = deg => deg * Math.PI / 180;
+let toDeg = rad => rad * 180 / Math.PI;
+
+let phi1 = toRad(lat1);
+let phi2 = toRad(lat2);
+let deltaLon = toRad(lon2 - lon1);
+
+let y = Math.sin(deltaLon);
+let x = Math.cos(phi1) * Math.tan(phi2) - Math.sin(phi1) * Math.cos(deltaLon);
+
+let bearing = toDeg(Math.atan2(y, x));
+
+return (bearing + 360) % 360;
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2){
+
+let toRad = deg => deg * Math.PI / 180;
+let R = 6371;
+
+let dLat = toRad(lat2 - lat1);
+let dLon = toRad(lon2 - lon1);
+
+let a =
+Math.sin(dLat/2) * Math.sin(dLat/2) +
+Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+Math.sin(dLon/2) * Math.sin(dLon/2);
+
+let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+return R * c;
+}
+
+
+
   
   
 </script>
 
+
+
+
+  
   <div id="menuOverlay"></div>
 
  <div id="taskMenu" style="
