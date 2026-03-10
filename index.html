@@ -514,19 +514,7 @@ color:gray;
 ">
 </div>
 
-<button onclick="getQiblaDirection()" style="
-margin-top:18px;
-padding:12px 20px;
-border:none;
-border-radius:14px;
-background:#007aff;
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-">
-Find Qibla
-</button>
+
 </div>
 
 </div>
@@ -1523,7 +1511,7 @@ location.reload();
 
 }
 
-  function openQiblaPage(){
+ function openQiblaPage(){
 
 document.getElementById("qiblaPage").style.display="block";
 
@@ -1534,6 +1522,8 @@ el.style.display="none";
 });
 
 window.scrollTo(0,0);
+
+getQiblaDirection();
 
 }
 
@@ -1567,8 +1557,12 @@ let distance = calculateDistance(userLat, userLon, makkahLat, makkahLon);
 document.getElementById("qiblaDirection").innerText =
 "Qibla: " + direction.toFixed(1) + "°";
 
+let miles = distance * 0.621371;
+
 document.getElementById("qiblaDistance").innerText =
-"Distance to Makkah: " + distance.toFixed(0) + " km";
+"Distance to Makkah: " +
+miles.toFixed(0) + " miles (" +
+distance.toFixed(0) + " km)";
 
 },
 function(){
