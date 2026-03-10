@@ -498,6 +498,7 @@ Qibla Direction
 </div>
 
 <div id="compassWrap" onclick="startCompassFromTap()" style="
+  <div id="compassDisk">
 margin:25px auto 20px auto;
 width:260px;
 height:260px;
@@ -557,6 +558,18 @@ color:#333;
 E
 </div>
 
+<div id="kaabaMarker" style="
+position:absolute;
+left:50%;
+top:18px;
+transform:translateX(-50%);
+font-size:24px;
+">
+🕋
+</div>
+
+</div>
+
 <div id="qiblaNeedle" style="
 position:absolute;
 left:50%;
@@ -569,17 +582,6 @@ transform:translate(-50%,-100%) rotate(0deg);
 border-radius:6px;
 box-shadow:0 0 10px rgba(0,122,255,0.35);
 "></div>
-
-<div id="kaabaMarker" style="
-position:absolute;
-left:50%;
-top:18px;
-transform:translateX(-50%);
-font-size:24px;
-">
-🕋
-</div>
-
 <div style="
 position:absolute;
 left:50%;
