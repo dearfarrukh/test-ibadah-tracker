@@ -1545,17 +1545,9 @@ location.reload();
 
 function openQiblaPage(){
 
-document.getElementById("qiblaPage").style.display = "block";
-
-document.querySelectorAll("body > div").forEach(el=>{
-if(el.id !== "qiblaPage"){
-el.style.display = "none";
-}
-});
-
-document.body.style.padding = "0";
-window.scrollTo(0,0);
-
+let page = document.getElementById("qiblaPage");
+if(page){
+page.style.display = "block";
 }
 
 let frame = document.getElementById("qiblaFrame");
@@ -1563,23 +1555,20 @@ if(frame){
 frame.src = "https://qiblafinder.withgoogle.com/";
 }
 
-}
-
-function closeQiblaPage(){
-
-document.getElementById("qiblaPage").style.display = "none";
-
-document.querySelectorAll("body > div").forEach(el=>{
-if(el.id !== "qiblaPage"){
-el.style.display = "block";
-}
-});
-
-document.body.style.padding = "70px 20px 100px 20px";
 window.scrollTo(0,0);
 
 }
 
+function closeQiblaPage(){
+
+let page = document.getElementById("qiblaPage");
+if(page){
+page.style.display = "none";
+}
+
+window.scrollTo(0,0);
+
+}
 
 
   
