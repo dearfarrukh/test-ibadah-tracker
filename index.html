@@ -468,7 +468,7 @@ margin-top:10px;
 </div>
 
 
-  <div id="qiblaPage" style="display:none;">
+ <div id="qiblaPage" style="display:none;">
 
 <div style="padding:15px;">
 <button onclick="closeQiblaPage()" style="
@@ -489,8 +489,6 @@ justify-content:center;
 
 <div class="card" style="text-align:center;padding:30px;">
 
-<div style="font-size:60px;">🧭</div>
-
 <div style="
 font-size:28px;
 font-weight:700;
@@ -499,12 +497,110 @@ margin-top:10px;
 Qibla Direction
 </div>
 
+<div id="compassWrap" style="
+margin:25px auto 20px auto;
+width:260px;
+height:260px;
+border-radius:50%;
+border:10px solid rgba(255,255,255,0.7);
+background:rgba(255,255,255,0.35);
+backdrop-filter:blur(10px);
+position:relative;
+box-shadow:0 10px 30px rgba(0,0,0,0.12);
+">
+
+<div style="
+position:absolute;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+font-size:18px;
+font-weight:700;
+color:#333;
+">
+N
+</div>
+
+<div style="
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+font-size:18px;
+font-weight:700;
+color:#333;
+">
+S
+</div>
+
+<div style="
+position:absolute;
+left:10px;
+top:50%;
+transform:translateY(-50%);
+font-size:18px;
+font-weight:700;
+color:#333;
+">
+W
+</div>
+
+<div style="
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+font-size:18px;
+font-weight:700;
+color:#333;
+">
+E
+</div>
+
+<div id="qiblaNeedle" style="
+position:absolute;
+left:50%;
+top:50%;
+width:6px;
+height:95px;
+background:#007aff;
+transform-origin:bottom center;
+transform:translate(-50%,-100%) rotate(0deg);
+border-radius:6px;
+box-shadow:0 0 10px rgba(0,122,255,0.35);
+"></div>
+
+<div id="kaabaMarker" style="
+position:absolute;
+left:50%;
+top:18px;
+transform:translateX(-50%);
+font-size:24px;
+">
+🕋
+</div>
+
+<div style="
+position:absolute;
+left:50%;
+top:50%;
+width:18px;
+height:18px;
+background:#222;
+border-radius:50%;
+transform:translate(-50%,-50%);
+border:3px solid white;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+"></div>
+
+</div>
+
 <div id="qiblaDirection" style="
 font-size:22px;
 margin-top:15px;
 font-weight:600;
 ">
-Tap button to find Qibla
+Finding location...
 </div>
 
 <div id="qiblaDistance" style="
@@ -514,12 +610,13 @@ color:gray;
 ">
 </div>
 
-
 </div>
 
 </div>
+
+
+
   
-
 <script>
 
 
