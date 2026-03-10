@@ -432,7 +432,7 @@ Restore
 
 </div>
 
- <div id="duaPage" style="display:none;">
+<div id="duaPage" style="display:none;">
 
 <div class="card" onclick="closeDuaPage()" style="cursor:pointer;">
 ⬅️ Back
@@ -467,6 +467,55 @@ margin-top:10px;
 
 </div>
 
+<div id="pdfPage" style="display:none;">
+
+<div style="
+position:sticky;
+top:0;
+z-index:1200;
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(12px);
+padding:12px 14px;
+display:flex;
+align-items:center;
+gap:12px;
+box-shadow:0 4px 14px rgba(0,0,0,0.12);
+">
+
+<button onclick="closePDFPage()" style="
+border:none;
+background:#007aff;
+color:white;
+padding:10px 14px;
+border-radius:12px;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+">
+⬅️ Back
+</button>
+
+<div id="pdfTitle" style="
+font-size:17px;
+font-weight:700;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+flex:1;
+">
+PDF
+</div>
+
+</div>
+
+<iframe id="pdfFrame" style="
+width:100%;
+height:88vh;
+border:none;
+background:white;
+"></iframe>
+
+</div>
 
 <script>
 
@@ -1173,7 +1222,27 @@ openPDF(file);
 }
 
 function openPDF(file){
-window.location.assign(file);
+
+document.getElementById("pdfTitle").innerText =
+file.replace(".pdf","").replaceAll("-"," ");
+
+document.getElementById("pdfFrame").src = file;
+
+document.getElementById("pdfPage").style.display = "block";
+
+document.querySelectorAll("body > div").forEach(el=>{
+if(el.id !== "pdfPage"){
+el.style.display = "none";
+}
+});
+
+window.scrollTo(0,0);
+
+}
+
+  function closePDFPage(){
+document.getElementById("pdfFrame").src = "";
+location.reload();
 }
 
   function toggleVibration(){
