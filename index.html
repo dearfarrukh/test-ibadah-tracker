@@ -1724,8 +1724,21 @@ return R * c;
 
 function startCompass(){
 
+if(typeof DeviceOrientationEvent !== "undefined" &&
+typeof DeviceOrientationEvent.requestPermission === "function"){
+
+document.getElementById("compassHint").style.display = "block";
+return;
+
+}
+
+startCompassListeners();
+
+}
+
+  function startCompassFromTap(){
+
 if(compassStarted) return;
-compassStarted = true;
 
 if(typeof DeviceOrientationEvent !== "undefined" &&
 typeof DeviceOrientationEvent.requestPermission === "function"){
@@ -1733,21 +1746,27 @@ typeof DeviceOrientationEvent.requestPermission === "function"){
 DeviceOrientationEvent.requestPermission()
 .then(permissionState=>{
 if(permissionState === "granted"){
-window.addEventListener("deviceorientation", handleCompass, true);
+document.getElementById("compassHint").style.display = "none";
+startCompassListeners();
 }else{
-document.getElementById("qiblaDirection").innerText =
-"Compass permission denied";
+document.getElementById("qiblaDirection").innerText = "Compass permission denied";
 }
 })
 .catch(()=>{
-document.getElementById("qiblaDirection").innerText =
-"Compass not available";
+document.getElementById("qiblaDirection").innerText = "Compass not available";
 });
 
-}else{
+}
+
+}
+
+function startCompassListeners(){
+
+if(compassStarted) return;
+compassStarted = true;
+
 window.addEventListener("deviceorientationabsolute", handleCompass, true);
 window.addEventListener("deviceorientation", handleCompass, true);
-}
 
 }
 
