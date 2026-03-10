@@ -230,23 +230,6 @@ z-index:900;
 
 /* Qibla Compass */
 
-#compass{
-width:260px;
-height:260px;
-margin:25px auto;
-border-radius:50%;
-border:10px solid rgba(255,255,255,0.7);
-background:rgba(255,255,255,0.35);
-backdrop-filter:blur(10px);
-position:relative;
-box-shadow:0 10px 30px rgba(0,0,0,0.12);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:24px;
-font-weight:bold;
-}
-
 
   
 
@@ -488,7 +471,9 @@ margin-top:10px;
 
 </div>
 
-<div style="padding:15px;">
+<div id="qiblaPage" style="display:none;">
+
+  <div style="padding:15px;">
 <button onclick="closeQiblaPage()" style="
 width:36px;
 height:36px;
@@ -1575,176 +1560,9 @@ window.scrollTo(0,0);
 
 }
 
-let compassStarted = false;
-let qiblaBearing = 0;
 
-function getQiblaDirection(){
 
-if(!navigator.geolocation){
-document.getElementById("qiblaDirection").innerText = "Location not supported";
-return;
-}
-
-document.getElementById("qiblaDirection").innerText = "Finding location...";
-document.getElementById("qiblaDistance").innerText = "";
-
-navigator.geolocation.getCurrentPosition(
-function(position){
-
-let userLat = position.coords.latitude;
-let userLon = position.coords.longitude;
-
-// Makkah coordinates
-let makkahLat = 21.4225;
-let makkahLon = 39.8262;
-
-qiblaBearing = calculateQibla(userLat, userLon, makkahLat, makkahLon);
-
-let distance = calculateDistance(userLat, userLon, makkahLat, makkahLon);
-let miles = distance * 0.621371;
-
-document.getElementById("qiblaDirection").innerText =
-"Qibla: " + qiblaBearing.toFixed(1) + "°";
-
-document.getElementById("qiblaDistance").innerText =
-"Distance to Makkah: " +
-miles.toFixed(0) + " miles (" +
-distance.toFixed(0) + " km)";
-
-startCompass();
-
-},
-function(){
-document.getElementById("qiblaDirection").innerText = "Location permission denied";
-},
-{
-enableHighAccuracy:true,
-timeout:10000
-}
-);
-
-}
-
-function calculateQibla(lat1, lon1, lat2, lon2){
-
-let toRad = deg => deg * Math.PI / 180;
-let toDeg = rad => rad * 180 / Math.PI;
-
-let phi1 = toRad(lat1);
-let phi2 = toRad(lat2);
-let deltaLon = toRad(lon2 - lon1);
-
-let y = Math.sin(deltaLon);
-let x = Math.cos(phi1) * Math.tan(phi2) - Math.sin(phi1) * Math.cos(deltaLon);
-
-let bearing = toDeg(Math.atan2(y, x));
-
-return (bearing + 360) % 360;
-}
-
-function calculateDistance(lat1, lon1, lat2, lon2){
-
-let toRad = deg => deg * Math.PI / 180;
-let R = 6371;
-
-let dLat = toRad(lat2 - lat1);
-let dLon = toRad(lon2 - lon1);
-
-let a =
-Math.sin(dLat/2) * Math.sin(dLat/2) +
-Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-Math.sin(dLon/2) * Math.sin(dLon/2);
-
-let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-return R * c;
-}
-
-function startCompass(){
-
-if(typeof DeviceOrientationEvent !== "undefined" &&
-typeof DeviceOrientationEvent.requestPermission === "function"){
-
-document.getElementById("compassHint").style.display = "block";
-return;
-
-}
-
-startCompassListeners();
-
-}
-
-  function startCompassFromTap(){
-
-if(compassStarted) return;
-
-if(typeof DeviceOrientationEvent !== "undefined" &&
-typeof DeviceOrientationEvent.requestPermission === "function"){
-
-DeviceOrientationEvent.requestPermission()
-.then(permissionState=>{
-if(permissionState === "granted"){
-document.getElementById("compassHint").style.display = "none";
-startCompassListeners();
-}else{
-document.getElementById("qiblaDirection").innerText = "Compass permission denied";
-}
-})
-.catch(()=>{
-document.getElementById("qiblaDirection").innerText = "Compass not available";
-});
-
-}
-
-}
-
-function startCompassListeners(){
-
-if(compassStarted) return;
-compassStarted = true;
-
-window.addEventListener("deviceorientationabsolute", handleCompass, true);
-window.addEventListener("deviceorientation", handleCompass, true);
-
-}
-
-function handleCompass(event){
-
-let heading = null;
-
-if(event.webkitCompassHeading !== undefined){
-heading = event.webkitCompassHeading;
-}else if(event.alpha !== null){
-heading = 360 - event.alpha;
-}
-
-if(heading === null) return;
-
-let relative = qiblaBearing - heading;
-relative = (relative + 360) % 360;
-
-let needle = document.getElementById("qiblaNeedle");
-if(needle){
-needle.style.transform =
-"translate(-50%,-100%) rotate(" + relative + "deg)";
-}
-
-let diff = Math.abs(relative);
-if(diff > 180) diff = 360 - diff;
-
-if(diff < 10){
-document.getElementById("qiblaDirection").innerText = "Facing Qibla";
-}else if(relative < 180){
-document.getElementById("qiblaDirection").innerText =
-"Turn right " + Math.round(diff) + "°";
-}else{
-document.getElementById("qiblaDirection").innerText =
-"Turn left " + Math.round(diff) + "°";
-}
-
-}
-
-   
+  
 
   
   
