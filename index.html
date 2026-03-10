@@ -1544,22 +1544,35 @@ location.reload();
 
 function openQiblaPage(){
 
-document.getElementById("qiblaPage").style.display="block";
+document.getElementById("qiblaPage").style.display = "block";
 
 document.querySelectorAll("body > div").forEach(el=>{
 if(el.id !== "qiblaPage"){
-el.style.display="none";
+el.style.display = "none";
 }
 });
 
 window.scrollTo(0,0);
 
-getQiblaDirection();
+let frame = document.getElementById("qiblaFrame");
+if(frame){
+frame.src = "https://qiblafinder.withgoogle.com/";
+}
 
 }
 
 function closeQiblaPage(){
-location.reload();
+
+document.getElementById("qiblaPage").style.display = "none";
+
+document.querySelectorAll("body > div").forEach(el=>{
+if(el.id !== "qiblaPage"){
+el.style.display = "block";
+}
+});
+
+window.scrollTo(0,0);
+
 }
 
 let compassStarted = false;
