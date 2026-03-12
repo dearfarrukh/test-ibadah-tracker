@@ -1014,6 +1014,38 @@ if(mode==="inf" && modeButtons[2]) modeButtons[2].classList.add("active");
 setTimeout(()=>{ tasbihLock=false; },150);
 
 }
+
+
+function loadSalah(){
+
+let prayers = ["Fajr","Dhuhur","Asr","Maghrib","Isha"];
+
+let key = "salah-"+formatKey(currentDate);
+let saved = JSON.parse(localStorage.getItem(key)) || {};
+
+let container = document.getElementById("salahContainer");
+if(!container) return;
+
+container.innerHTML = "";
+
+prayers.forEach(p=>{
+
+let div = document.createElement("div");
+
+div.innerHTML = `
+<div style="font-size:13px;margin-bottom:4px;">${p}</div>
+<input type="checkbox"
+${saved[p] ? "checked" : ""}
+onchange="toggleSalah('${p}',this.checked)">
+`;
+
+container.appendChild(div);
+
+});
+
+}
+
+
   
   function toggleSalah(prayer,status){
 
