@@ -571,17 +571,17 @@ box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
 ">
 0
 </div>
-<div style="
-width:210px;
-height:210px;
+<div onclick="increaseTasbih()" style="
+width:190px;
+height:190px;
 margin:0 auto;
 border-radius:50%;
 background:#cfa782;
 display:flex;
 align-items:center;
 justify-content:center;
-box-shadow:inset 0 4px 10px rgba(255,255,255,0.25),
-inset 0 -6px 12px rgba(0,0,0,0.12);
+box-shadow:inset 0 4px 10px rgba(255,255,255,0.25), inset 0 -6px 12px rgba(0,0,0,0.12);
+cursor:pointer;
 ">
 
 <div style="
@@ -605,7 +605,7 @@ gap:12px;
 flex-wrap:wrap;
 ">
 
-<button style="
+<button onclick="resetTasbih()" style="
 background:#b68d68;
 color:white;
 border:none;
@@ -613,6 +613,7 @@ border-radius:16px;
 padding:12px 20px;
 font-size:16px;
 font-weight:700;
+cursor:pointer;
 ">
 Reset
 </button>
@@ -1703,8 +1704,12 @@ screen.innerText = count;
 function resetTasbih(){
 localStorage.setItem(getTasbihKey(),0);
 document.getElementById("tasbihCount").innerText = 0;
-}
 
+let screen = document.getElementById("tasbihScreen");
+if(screen){
+screen.innerText = 0;
+}
+}
 
 // ===== ZIKR TASBIH SYSTEM =====
 
