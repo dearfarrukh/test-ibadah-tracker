@@ -1033,14 +1033,13 @@ localStorage.setItem(key,JSON.stringify(saved));
 
 let tasbihLock = false;
   
-let taskList = JSON.parse(localStorage.getItem("taskList"));
+let taskList = JSON.parse(localStorage.getItem("taskList")) || [];
 
-  if(Array.isArray(taskList)){
 taskList = taskList.filter(t =>
 !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name)
 );
+
 localStorage.setItem("taskList", JSON.stringify(taskList));
-}
   
   console.log("INITIAL taskList:", taskList);
 
