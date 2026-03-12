@@ -387,32 +387,6 @@ align-items:center;
 ›
 </div>
 
-<div class="duaCard">
-
-<div class="duaMenu">⋮</div>
-
-<div class="duaHadith">
-نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:
-"کیا میں تمہیں جنت کے خزانوں میں سے ایک خزانے کے متعلق نہ بتاؤں؟"
-عبداللہ بن قیسؓ کہتے ہیں کہ رسول اللہ ﷺ نے فرمایا:
-</div>
-
-<div class="duaArabic">
-لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ
-</div>
-
-<div class="duaMeaning">
-گناہ سے بچنے کی ہمت ہے نہ نیکی کرنے کی طاقت مگر
-اللہ ہی کی توفیق سے۔
-</div>
-
-<div class="duaRef">
-صحیح البخاری، الادب المفرد، باب قول: لا حول ولا قوة إلا بالله  
-حدیث: 6409
-</div>
-
-</div>
-
 </div>
   
   
@@ -566,6 +540,263 @@ background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
 padding:15px;
 ">
+
+<div style="padding:10px;">
+<button onclick="closeZikrPage()" style="
+width:36px;
+height:36px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+←
+</button>
+</div>
+
+<div class="card" style="
+text-align:center;
+padding:28px 20px;
+margin-top:10px;
+">
+<div style="font-size:42px;margin-bottom:10px;">🌿</div>
+<div style="font-size:28px;font-weight:700;">
+Daily Dhikr
+</div>
+<div style="font-size:15px;color:#666;margin-top:8px;">
+Choose a dhikr
+</div>
+</div>
+
+<div class="card" onclick="openZikrDetail('subhanallah')" style="
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<div>
+<div style="font-size:17px;font-weight:700;margin-bottom:4px;">
+SubhanAllahi wa bihamdihi
+</div>
+<div style="font-size:14px;color:#666;">
+سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
+</div>
+</div>
+
+<div style="font-size:24px;opacity:0.5;">›</div>
+</div>
+
+<div class="card" onclick="openZikrDetail('hawqala')" style="
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<div>
+<div style="font-size:17px;font-weight:700;margin-bottom:4px;">
+La hawla wa la quwwata illa billah
+</div>
+<div style="font-size:14px;color:#666;">
+لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ
+</div>
+</div>
+
+<div style="font-size:24px;opacity:0.5;">›</div>
+</div>
+
+</div>
+
+
+<div id="zikrDetailPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:4100;
+background:url('wallpaper.jpg') center/cover no-repeat;
+overflow:auto;
+padding:15px;
+">
+
+<div style="padding:10px;">
+<button onclick="closeZikrDetail()" style="
+width:36px;
+height:36px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+←
+</button>
+</div>
+
+<div class="card" style="
+background:white;
+border-radius:24px;
+padding:28px;
+margin-top:10px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+">
+
+<div id="zikrHadithText" style="
+font-size:18px;
+line-height:1.8;
+margin-bottom:26px;
+color:#111;
+">
+</div>
+
+<div id="zikrArabicText" style="
+font-size:42px;
+font-weight:700;
+color:#6fa37a;
+line-height:1.7;
+margin-bottom:26px;
+">
+</div>
+
+<div id="zikrMeaningText" style="
+font-size:19px;
+line-height:1.8;
+margin-bottom:18px;
+">
+</div>
+
+<div id="zikrRefText" style="
+margin-top:12px;
+padding-top:12px;
+border-top:1px solid #e5e5e5;
+font-size:14px;
+color:#666;
+line-height:1.7;
+">
+</div>
+
+<!-- Zikr Tasbih Area -->
+<div onclick="increaseZikrTasbih()" style="
+background:rgba(255,255,255,0.78);
+backdrop-filter:blur(20px);
+border-radius:28px;
+padding:20px 18px 40px 18px;
+margin-top:24px;
+text-align:center;
+cursor:pointer;
+user-select:none;
+min-height:320px;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+">
+
+<div style="
+display:flex;
+justify-content:center;
+margin-bottom:28px;
+">
+
+<div id="zikrModes" onclick="event.stopPropagation()" style="
+display:flex;
+background:rgba(0,0,0,0.08);
+border-radius:18px;
+overflow:hidden;
+height:44px;
+min-width:220px;
+">
+
+<button id="zikr33Btn" onclick="setZikrMode(33)" style="
+flex:1;
+border:none;
+background:transparent;
+font-size:20px;
+font-weight:700;
+cursor:pointer;
+">
+33
+</button>
+
+<button id="zikr100Btn" onclick="setZikrMode(100)" style="
+flex:1;
+border:none;
+background:#34c759;
+color:white;
+font-size:20px;
+font-weight:700;
+cursor:pointer;
+">
+100
+</button>
+
+<button id="zikrInfBtn" onclick="setZikrMode('inf')" style="
+flex:1;
+border:none;
+background:transparent;
+font-size:24px;
+font-weight:700;
+cursor:pointer;
+">
+∞
+</button>
+
+</div>
+
+</div>
+
+<div id="zikrCountText" style="
+font-size:64px;
+font-weight:700;
+color:#5f946b;
+margin-top:10px;
+margin-bottom:30px;
+letter-spacing:1px;
+">
+0 / 100
+</div>
+
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+color:#8a8a8a;
+letter-spacing:1px;
+">
+Tap Anywhere
+</div>
+
+<button onclick="resetZikrTasbih();event.stopPropagation();" style="
+background:#ff3b30;
+padding:12px 30px;
+border-radius:16px;
+border:none;
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+align-self:center;
+">
+Reset
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 <div style="padding:10px;">
 <button onclick="closeZikrPage()" style="
@@ -1935,22 +2166,55 @@ function openGoogleQibla(){
 window.open("https://qiblafinder.withgoogle.com/","_blank");
 }
   
-function openZikrPage(){
+let currentZikr = "";
 
-document.getElementById("zikrPage").style.display="block";
-
-document.querySelectorAll("body > div").forEach(el=>{
-if(el.id !== "zikrPage"){
-el.style.display="none";
+const zikrData = {
+subhanallah: {
+hadith: `نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:
+"دو کلمے زبان پر ہلکے ہیں لیکن میزان میں انتہائی وزنی اور اللہ تعالیٰ کو از حد محبوب ہیں"`,
+arabic: `سُبْحَانَ اللَّهِ وَبِحَمْدِهِ<br>سُبْحَانَ اللَّهِ الْعَظِيم`,
+meaning: `"پاک ہے اللہ اپنی خوبیوں سمیت، پاک ہے اللہ بہت عظمت والا"`,
+ref: `صحیح البخاری، الأیمان والنذور، حدیث: 6682`
+},
+hawqala: {
+hadith: `نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:
+"کیا میں تمہیں جنت کے خزانوں میں سے ایک خزانے کے متعلق نہ بتاؤں؟"
+عبداللہ بن قیسؓ کہتے ہیں کہ رسول اللہ ﷺ نے فرمایا:`,
+arabic: `لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ`,
+meaning: `گناہ سے بچنے کی ہمت ہے نہ نیکی کرنے کی طاقت مگر
+اللہ ہی کی توفیق سے۔`,
+ref: `صحیح البخاری، الادب المفرد، باب قول: لا حول ولا قوة إلا بالله<br>حدیث: 6409`
 }
-});
+};
 
+function openZikrPage(){
+document.getElementById("zikrPage").style.display = "block";
 }
 
 function closeZikrPage(){
+document.getElementById("zikrPage").style.display = "none";
+}
 
-location.reload();
+function openZikrDetail(name){
 
+currentZikr = name;
+zikrCount = 0;
+zikrTarget = 100;
+updateZikrDisplay();
+
+let data = zikrData[name];
+if(!data) return;
+
+document.getElementById("zikrHadithText").innerHTML = data.hadith;
+document.getElementById("zikrArabicText").innerHTML = data.arabic;
+document.getElementById("zikrMeaningText").innerHTML = data.meaning;
+document.getElementById("zikrRefText").innerHTML = data.ref;
+
+document.getElementById("zikrDetailPage").style.display = "block";
+}
+
+function closeZikrDetail(){
+document.getElementById("zikrDetailPage").style.display = "none";
 }
   
   
