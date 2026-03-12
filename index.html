@@ -491,7 +491,45 @@ Restore
 
 </div>
 
-<div id="duaPage" style="display:none;">
+<div id="tasbihPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:4000;
+background:url('wallpaper.jpg') center/cover no-repeat;
+overflow:auto;
+padding:15px;
+">
+
+  <div style="padding:10px;">
+    <button onclick="closeTasbihPage()" style="
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:1px solid #ccc;
+    background:white;
+    font-size:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    ">
+      ←
+    </button>
+  </div>
+
+  <div class="card" style="text-align:center;margin-top:20px;">
+    <h2 style="margin-top:0;">📿 Tasbih</h2>
+    <p style="margin-bottom:0;">New Tasbih page is working</p>
+  </div>
+
+</div>
+  
+  
+  <div id="duaPage" style="display:none;">
 
 <div class="card" onclick="closeDuaPage()" style="cursor:pointer;">
 ⬅️ Back
@@ -2078,6 +2116,25 @@ function closeSurahPage(id){
 document.getElementById(id).style.display="none";
 }
 
+  <script>
+function openTasbihPage(){
+  let page = document.getElementById("tasbihPage");
+  if(page){
+    page.style.display = "block";
+  }
+  window.scrollTo(0,0);
+}
+
+function closeTasbihPage(){
+  let page = document.getElementById("tasbihPage");
+  if(page){
+    page.style.display = "none";
+  }
+  window.scrollTo(0,0);
+}
+</script>
+
+  
 
   
 
@@ -2185,8 +2242,7 @@ Cancel
 
 <div class="navItem">🏠<br>Home</div>
 
-<div class="navItem">📿<br>Tasbih</div>
-
+<div class="navItem" onclick="openTasbihPage()">📿<br>Tasbih</div>
 <div class="navItem">🤲<br>Dua</div>
 
 <div class="navItem" onclick="openQiblaPage()">🧭<br>Qibla</div>
