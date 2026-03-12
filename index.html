@@ -1001,6 +1001,7 @@ if(screen){
 screen.innerText = 0;
 }
 
+// highlight selected button
 let modeButtons = document.querySelectorAll(".modeBtn");
 modeButtons.forEach(b=>{
 b.classList.remove("active");
@@ -1602,13 +1603,11 @@ if(target == 33 && modeButtons[0]) modeButtons[0].classList.add("active");
 if(target == 100 && modeButtons[1]) modeButtons[1].classList.add("active");
 if(target == "inf" && modeButtons[2]) modeButtons[2].classList.add("active");
 
-// vibration toggle
 let vibrationToggle = document.getElementById("vibrationToggle");
 if(vibrationToggle){
 vibrationToggle.checked = isVibrationEnabled();
 }
 
-// load count
 let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
 
 let counter = document.getElementById("tasbihCount");
