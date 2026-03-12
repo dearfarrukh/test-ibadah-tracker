@@ -1660,15 +1660,34 @@ openWaqiyaPage();
 return;
 }
 
-// Special file
-if(name==="Surah Ad Duha to Surah Al Nas"){
-openPDF("Last 22 Surah.pdf");
+if(name === "Surah Mulk"){
+openSurahPage('mulkPage');
 return;
 }
 
-// Automatic for all other Surahs
+if(name === "Surah Rehman"){
+openSurahPage('rehmanPage');
+return;
+}
+
+if(name === "Surah Sajdah"){
+openSurahPage('sajdahPage');
+return;
+}
+
+if(name === "Surah Taghabun"){
+openSurahPage('taghabunPage');
+return;
+}
+
+if(name === "Surah Ad Duha to Surah Al Nas"){
+openSurahPage('last22Page');
+return;
+}
+
+/* keep normal PDF only for surahs you have NOT converted yet */
 if(isSurah(name)){
-let file=name.replaceAll(" ","-") + ".pdf";
+let file = name.replaceAll(" ","-") + ".pdf";
 openPDF(file);
 }
 
