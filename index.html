@@ -1655,6 +1655,12 @@ function isSurah(name){
 }
 function handleTaskClick(name){
 
+if(name === "Surah Ikhlas"){
+openSurahPage('ikhlasPage');
+return;
+}
+  
+  
 if(name === "Surah Waqiya"){
 openWaqiyaPage();
 return;
@@ -2423,7 +2429,36 @@ font-size:20px;
 
 </div>
 
+<div id="ikhlasPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:url('wallpaper.jpg') center/cover no-repeat;
+overflow:auto;
+padding:15px;
+z-index:5000;
+">
 
+<button onclick="closeSurahPage('ikhlasPage')" style="
+width:36px;
+height:36px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+">←</button>
+
+<img src="Surah Ikhlas.jpg" style="
+width:100%;
+display:block;
+margin-top:10px;
+border-radius:22px;
+">
+
+</div>
   
 
   
