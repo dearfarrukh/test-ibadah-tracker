@@ -977,19 +977,29 @@ If the page does not load, Google may be blocking iframe on your device.
 <script>
 
 
-  
 function setTasbihMode(mode){
 
 tasbihLock = true;
 
 localStorage.setItem(getTargetKey(), mode);
 
-document.getElementById("tasbihTargetLabel").innerText =
-mode === "inf" ? "∞" : mode;
+let targetLabel = document.getElementById("tasbihTargetLabel");
+if(targetLabel){
+targetLabel.innerText = mode === "inf" ? "∞" : mode;
+}
 
 // reset counter
 localStorage.setItem(getTasbihKey(),0);
-document.getElementById("tasbihCount").innerText = 0;
+
+let counter = document.getElementById("tasbihCount");
+if(counter){
+counter.innerText = 0;
+}
+
+let screen = document.getElementById("tasbihScreen");
+if(screen){
+screen.innerText = 0;
+}
 
 // highlight selected button
 document.querySelectorAll(".modeBtn").forEach(b=>{
@@ -1001,38 +1011,6 @@ if(mode===100) document.querySelectorAll(".modeBtn")[1].classList.add("active");
 if(mode==="inf") document.querySelectorAll(".modeBtn")[2].classList.add("active");
 
 setTimeout(()=>{ tasbihLock=false; },150);
-
-}
-  
-let clickSound = new Audio("click.mp3");
-clickSound.preload = "auto";
-  
-let audioCtx = null;
-
-function loadSalah(){
-
-let prayers = ["Fajr","Dhuhur","Asr","Maghrib","Isha"];
-
-let key = "salah-"+formatKey(currentDate);
-let saved = JSON.parse(localStorage.getItem(key)) || {};
-
-let container = document.getElementById("salahContainer");
-container.innerHTML = "";
-
-prayers.forEach(p=>{
-
-let div = document.createElement("div");
-
-div.innerHTML = `
-<div style="font-size:13px;margin-bottom:4px;">${p}</div>
-<input type="checkbox"
-${saved[p]?"checked":""}
-onchange="toggleSalah('${p}',this.checked)">
-`;
-
-container.appendChild(div);
-
-});
 
 }
 
@@ -1268,12 +1246,15 @@ count++;
 localStorage.setItem(key,count);
 
 let counter = document.getElementById("tasbihCount");
+if(counter){
 counter.innerText = count;
-  let screen = document.getElementById("tasbihScreen");
+}
+
+let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = count;
 }
-
+  
 counter.classList.remove("glow");
 void counter.offsetWidth;
 counter.classList.add("glow");
@@ -1608,8 +1589,10 @@ function loadTasbih(){
 
 let target = localStorage.getItem(getTargetKey()) || 33;
 
-document.getElementById("tasbihTargetLabel").innerText =
-target === "inf" ? "∞" : target;
+let targetLabel = document.getElementById("tasbihTargetLabel");
+if(targetLabel){
+targetLabel.innerText = target === "inf" ? "∞" : target;
+}
 
 // highlight selected mode
 document.querySelectorAll(".modeBtn").forEach(b=>{
@@ -1628,19 +1611,25 @@ vibrationToggle.checked = isVibrationEnabled();
 
 // load count
 let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
-document.getElementById("tasbihCount").innerText = count;
 
-// ⭐ ADD THIS PART
+let counter = document.getElementById("tasbihCount");
+if(counter){
+counter.innerText = count;
+}
+
 let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = count;
 }
 
 }
-  
 function resetTasbih(){
 localStorage.setItem(getTasbihKey(),0);
-document.getElementById("tasbihCount").innerText = 0;
+
+let counter = document.getElementById("tasbihCount");
+if(counter){
+counter.innerText = 0;
+}
 
 let screen = document.getElementById("tasbihScreen");
 if(screen){
