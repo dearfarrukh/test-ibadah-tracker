@@ -1001,19 +1001,18 @@ if(screen){
 screen.innerText = 0;
 }
 
-// highlight selected button
-document.querySelectorAll(".modeBtn").forEach(b=>{
+let modeButtons = document.querySelectorAll(".modeBtn");
+modeButtons.forEach(b=>{
 b.classList.remove("active");
 });
 
-if(mode===33) document.querySelectorAll(".modeBtn")[0].classList.add("active");
-if(mode===100) document.querySelectorAll(".modeBtn")[1].classList.add("active");
-if(mode==="inf") document.querySelectorAll(".modeBtn")[2].classList.add("active");
+if(mode===33 && modeButtons[0]) modeButtons[0].classList.add("active");
+if(mode===100 && modeButtons[1]) modeButtons[1].classList.add("active");
+if(mode==="inf" && modeButtons[2]) modeButtons[2].classList.add("active");
 
 setTimeout(()=>{ tasbihLock=false; },150);
 
 }
-
   
   function toggleSalah(prayer,status){
 
@@ -1594,14 +1593,14 @@ if(targetLabel){
 targetLabel.innerText = target === "inf" ? "∞" : target;
 }
 
-// highlight selected mode
-document.querySelectorAll(".modeBtn").forEach(b=>{
+let modeButtons = document.querySelectorAll(".modeBtn");
+modeButtons.forEach(b=>{
 b.classList.remove("active");
 });
 
-if(target == 33) document.querySelectorAll(".modeBtn")[0].classList.add("active");
-if(target == 100) document.querySelectorAll(".modeBtn")[1].classList.add("active");
-if(target == "inf") document.querySelectorAll(".modeBtn")[2].classList.add("active");
+if(target == 33 && modeButtons[0]) modeButtons[0].classList.add("active");
+if(target == 100 && modeButtons[1]) modeButtons[1].classList.add("active");
+if(target == "inf" && modeButtons[2]) modeButtons[2].classList.add("active");
 
 // vibration toggle
 let vibrationToggle = document.getElementById("vibrationToggle");
