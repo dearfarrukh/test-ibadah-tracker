@@ -999,10 +999,17 @@ if(!container) return;
 container.innerHTML = "";
 
 let totalBars = 70;
-   let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
+  let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
 let target = localStorage.getItem(getTargetKey()) || 33;
 
-let filledBars = Math.round((count / target) * totalBars);
+let filledBars = 0;
+
+if(target !== "inf" && Number(target) > 0){
+filledBars = Math.round((count / Number(target)) * totalBars);
+}
+
+if(filledBars < 0) filledBars = 0;
+if(filledBars > totalBars) filledBars = totalBars;
 let ringSize = 210;
 let center = ringSize / 2;
 let radius = 95;
@@ -1054,7 +1061,13 @@ let counter = document.getElementById("tasbihCount");
 if(counter){
 counter.innerText = 0;
 }
+let center = document.getElementById("tasbihCenterText");
+if(center){
+center.innerText = "0 / " + (mode === "inf" ? "∞" : mode);
+}
 
+buildTasbihBars();
+  
 let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = 0;
@@ -1344,6 +1357,12 @@ let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = count;
 }
+let center = document.getElementById("tasbihCenterText");
+if(center){
+center.innerText = count + " / " + target;
+}
+
+buildTasbihBars();
   
 if(counter){
 counter.classList.remove("glow");
@@ -1726,6 +1745,15 @@ let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = 0;
 }
+
+let target = localStorage.getItem(getTargetKey()) || 33;
+
+let center = document.getElementById("tasbihCenterText");
+if(center){
+center.innerText = "0 / " + target;
+}
+
+buildTasbihBars();
 }
 
 // ===== ZIKR TASBIH SYSTEM =====
