@@ -991,7 +991,7 @@ If the page does not load, Google may be blocking iframe on your device.
 
 
 
-  function buildTasbihBars(){
+ function buildTasbihBars(){
 
 let container = document.getElementById("tasbihProgress");
 if(!container) return;
@@ -999,23 +999,27 @@ if(!container) return;
 container.innerHTML = "";
 
 let totalBars = 50;
-let radius = 92;
+let ringSize = 210;
+let center = ringSize / 2;
+let radius = 95;
 let barWidth = 2;
 let barHeight = 12;
 
 for(let i = 0; i < totalBars; i++){
 
-let bar = document.createElement("div");
+let angle = (i / totalBars) * (Math.PI * 2);
 
+let x = center + Math.cos(angle) * radius;
+let y = center + Math.sin(angle) * radius;
+
+let bar = document.createElement("div");
 bar.style.position = "absolute";
 bar.style.width = barWidth + "px";
 bar.style.height = barHeight + "px";
 bar.style.background = "#e6d8c8";
-bar.style.left = "50%";
-bar.style.top = "50%";
-bar.style.transformOrigin = "50% " + radius + "px";
-bar.style.transform =
-"translate(-50%,-50%) rotate(" + (i * 360 / totalBars) + "deg) translateY(-" + radius + "px)";
+bar.style.left = x + "px";
+bar.style.top = y + "px";
+bar.style.transform = "translate(-50%,-50%) rotate(" + (i * 360 / totalBars + 90) + "deg)";
 
 container.appendChild(bar);
 
