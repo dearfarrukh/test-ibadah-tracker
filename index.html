@@ -998,7 +998,11 @@ if(!container) return;
 
 container.innerHTML = "";
 
-let totalBars = 50;
+let totalBars = 70;
+   let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
+let target = localStorage.getItem(getTargetKey()) || 33;
+
+let filledBars = Math.round((count / target) * totalBars);
 let ringSize = 210;
 let center = ringSize / 2;
 let radius = 95;
