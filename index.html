@@ -1020,7 +1020,11 @@ let bar = document.createElement("div");
 bar.style.position = "absolute";
 bar.style.width = barWidth + "px";
 bar.style.height = barHeight + "px";
+if(i < filledBars){
+bar.style.background = "#34c759";
+}else{
 bar.style.background = "#e6d8c8";
+}
 bar.style.left = x + "px";
 bar.style.top = y + "px";
 bar.style.transform = "translate(-50%,-50%) rotate(" + (i * 360 / totalBars + 90) + "deg)";
