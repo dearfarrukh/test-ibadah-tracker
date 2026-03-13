@@ -990,6 +990,40 @@ If the page does not load, Google may be blocking iframe on your device.
 <script>
 
 
+
+  function buildTasbihBars(){
+
+let container = document.getElementById("tasbihProgress");
+if(!container) return;
+
+container.innerHTML = "";
+
+let totalBars = 50;
+let radius = 97;
+let barWidth = 2;
+let barHeight = 12;
+
+for(let i = 0; i < totalBars; i++){
+
+let bar = document.createElement("div");
+
+bar.style.position = "absolute";
+bar.style.width = barWidth + "px";
+bar.style.height = barHeight + "px";
+bar.style.background = "#e6d8c8";
+bar.style.left = "50%";
+bar.style.top = "50%";
+bar.style.transformOrigin = "50% " + radius + "px";
+bar.style.transform =
+"translate(-50%,-50%) rotate(" + (i * 360 / totalBars) + "deg) translateY(-" + radius + "px)";
+
+container.appendChild(bar);
+
+}
+
+}
+
+  
 function setTasbihMode(mode){
 
 tasbihLock = true;
@@ -1664,6 +1698,7 @@ counter.innerText = count;
 let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = count;
+  buildTasbihBars();
 }
 
 }
