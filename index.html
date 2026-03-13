@@ -995,7 +995,7 @@ If the page does not load, Google may be blocking iframe on your device.
 
 
 
- function buildTasbihBars(){
+function buildTasbihBars(){
 
 let container = document.getElementById("tasbihProgress");
 if(!container) return;
@@ -1003,7 +1003,13 @@ if(!container) return;
 container.innerHTML = "";
 
 let totalBars = 70;
-  let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
+let ringSize = 210;
+let center = ringSize / 2;
+let radius = 95;
+let barWidth = 2;
+let barHeight = 12;
+
+let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
 let target = localStorage.getItem(getTargetKey()) || 33;
 
 let filledBars = 0;
@@ -1014,11 +1020,6 @@ filledBars = Math.round((count / Number(target)) * totalBars);
 
 if(filledBars < 0) filledBars = 0;
 if(filledBars > totalBars) filledBars = totalBars;
-let ringSize = 210;
-let center = ringSize / 2;
-let radius = 95;
-let barWidth = 2;
-let barHeight = 12;
 
 for(let i = 0; i < totalBars; i++){
 
@@ -1031,14 +1032,16 @@ let bar = document.createElement("div");
 bar.style.position = "absolute";
 bar.style.width = barWidth + "px";
 bar.style.height = barHeight + "px";
+
 if(i < filledBars){
 bar.style.background = "#34c759";
 }else{
-bar.style.background = "#e6d8c8";
+bar.style.background = "#d9d9d9";
 }
+
 bar.style.left = x + "px";
 bar.style.top = y + "px";
-bar.style.transform = "translate(-50%,-50%) rotate(" + (i * 360 / totalBars - 90) + "deg)";
+bar.style.transform = "translate(-50%,-50%) rotate(" + (angle * 180 / Math.PI + 90) + "deg)";
 
 container.appendChild(bar);
 
