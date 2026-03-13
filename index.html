@@ -1022,7 +1022,7 @@ let barHeight = 12;
 
 for(let i = 0; i < totalBars; i++){
 
-let angle = (i / totalBars) * (Math.PI * 2);
+let angle = (i / totalBars) * (Math.PI * 2) - (Math.PI / 2);
 
 let x = center + Math.cos(angle) * radius;
 let y = center + Math.sin(angle) * radius;
