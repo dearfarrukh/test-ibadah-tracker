@@ -2281,23 +2281,18 @@ document.getElementById("zikrDetailPage").style.display = "block";
 function closeZikrDetail(){
 document.getElementById("zikrDetailPage").style.display = "none";
 }
-  function openWaqiyaPage(){
-
-document.getElementById("waqiyaPage").style.display = "block";
-
-}
+ function openWaqiyaPage(){
 
 function closeWaqiyaPage(){
 
 document.getElementById("waqiyaPage").style.display = "none";
+document.getElementById("bottomNav").style.display = "flex";
+window.scrollTo(0,0);
 
 }
 
 
-  function openSurahPage(id){
-document.getElementById(id).style.display="block";
-}
-
+function openSurahPa
 function closeSurahPage(pageId){
 
 document.getElementById(pageId).style.display="none";
@@ -2468,6 +2463,9 @@ Cancel
 
 </div>
 <!-- Bottom Navigation -->
+
+<!-- Bottom Navigation -->
+<div id="bottomNav">
 
 <div class="navItem">🏠<br>Home</div>
 
@@ -2879,12 +2877,7 @@ padding:0 15px 24px 15px;
   📍 <span id="salahCityName">Mineola, NY</span>
   </div>
 
- <div style="
-background:rgba(232,234,245,0.96);
-border-radius:34px;
-padding:18px 20px;
-...
-">
+background:rgba(232,234,245,0.96)
 
     <div style="
     font-size:20px;
@@ -2997,13 +2990,13 @@ padding:18px 20px;
         </div>
       </div>
 
-      <div style="
-      flex:1;
-      background:rgba(255,255,255,0.45);
-      border-radius:24px;
-      padding:18px 12px;
-      text-align:center;
-      ">
+    <div style="
+flex:1;
+background:rgba(255,255,255,0.45);
+border-radius:28px;
+padding:18px 12px;
+text-align:center;
+">
         <div style="font-size:28px;">🌅</div>
         <div style="
         font-size:16px;
