@@ -2577,14 +2577,60 @@ locationBtn.style.color = "#111";
 renderSalahPage();
 }
 
+let salahSliding = false;
+
 function changeSalahDay(step){
+if(salahSliding) return;
+
 let nextOffset = salahDayOffset + step;
 
 if(nextOffset < -3) return;
 if(nextOffset > 7) return;
 
+let card = document.getElementById("salahDateCard");
+
+if(!card){
 salahDayOffset = nextOffset;
 renderSalahPage();
+return;
+}
+
+salahSliding = true;
+
+if(step > 0){
+card.style.transform = "translateX(-60px)";
+card.style.opacity = "0";
+}else{
+card.style.transform = "translateX(60px)";
+card.style.opacity = "0";
+}
+
+setTimeout(function(){
+
+salahDayOffset = nextOffset;
+renderSalahPage();
+
+if(step > 0){
+card.style.transition = "none";
+card.style.transform = "translateX(60px)";
+card.style.opacity = "0";
+}else{
+card.style.transition = "none";
+card.style.transform = "translateX(-60px)";
+card.style.opacity = "0";
+}
+
+void card.offsetWidth;
+
+card.style.transition = "transform 0.28s ease, opacity 0.28s ease";
+card.style.transform = "translateX(0)";
+card.style.opacity = "1";
+
+setTimeout(function(){
+salahSliding = false;
+}, 280);
+
+}, 280);
 }
 
 function renderSalahPage(){
@@ -3205,13 +3251,14 @@ box-sizing:border-box;
 
   </div>
 
-  <div style="
-  background:rgba(232,234,245,0.96);
-  border-radius:34px;
-  padding:18px 16px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.10);
-  margin-bottom:18px;
-  ">
+ <div id="salahDateCard" style="
+background:rgba(232,234,245,0.96);
+border-radius:34px;
+padding:18px 16px;
+box-shadow:0 8px 20px rgba(0,0,0,0.10);
+margin-bottom:18px;
+transition:transform 0.28s ease, opacity 0.28s ease;
+">
 
     <div style="
     display:flex;
