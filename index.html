@@ -2298,8 +2298,14 @@ document.getElementById("waqiyaPage").style.display = "none";
 document.getElementById(id).style.display="block";
 }
 
-function closeSurahPage(id){
-document.getElementById(id).style.display="none";
+function closeSurahPage(pageId){
+
+document.getElementById(pageId).style.display="none";
+
+document.getElementById("bottomNav").style.display="flex";
+
+window.scrollTo(0,0);
+
 }
 
  
@@ -2463,7 +2469,18 @@ Cancel
 </div>
 <!-- Bottom Navigation -->
 <div id="bottomNav">
-
+#bottomNav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:70px;
+background:white;
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:3000;
+}
 <div class="navItem">🏠<br>Home</div>
 
 <div class="navItem" onclick="openSalahPage()">🕒<br>Salah</div>
