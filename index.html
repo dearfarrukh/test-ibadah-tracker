@@ -2628,6 +2628,31 @@ document.getElementById("sunsetTime").innerText = data.maghrib;
 document.getElementById("ishaTime").innerText = data.isha;
 }
 
+let salahTouchStartX = 0;
+let salahTouchEndX = 0;
+
+function handleSalahSwipeStart(e){
+if(!e.touches || !e.touches.length) return;
+salahTouchStartX = e.touches[0].clientX;
+}
+
+function handleSalahSwipeEnd(e){
+if(!e.changedTouches || !e.changedTouches.length) return;
+salahTouchEndX = e.changedTouches[0].clientX;
+
+let diff = salahTouchEndX - salahTouchStartX;
+
+if(Math.abs(diff) < 50) return;
+
+if(diff < 0){
+changeSalahDay(1);   // swipe left = next day
+}else{
+changeSalahDay(-1);  // swipe right = previous day
+}
+}
+
+
+  
 function openSalahPage(){
 document.getElementById("salahPage").style.display = "block";
 renderSalahPage();
@@ -3062,7 +3087,10 @@ z-index:5000;
   <img loading="lazy" src="yaseen-6.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 
 </div>
-<div id="salahPage" style="
+<div id="salahPage"
+ontouchstart="handleSalahSwipeStart(event)"
+ontouchend="handleSalahSwipeEnd(event)"
+style="
 display:none;
 position:fixed;
 top:0;
