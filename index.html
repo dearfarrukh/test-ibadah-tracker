@@ -265,7 +265,10 @@ font-size:14px;
 text-align:right;
 color:#555;
 }
-
+img{
+max-width:100%;
+height:auto;
+}
 
   
 
@@ -2740,7 +2743,7 @@ border-radius:22px;
 
 </div>
 
-  <div id="yaseenPage" style="
+ <div id="yaseenPage" style="
 display:none;
 position:fixed;
 top:0;
@@ -2749,23 +2752,28 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
+-webkit-overflow-scrolling:touch;
 padding:15px;
 z-index:5000;
 ">
 
-<button onclick="closeSurahPage('yaseenPage')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+  <button onclick="closeSurahPage('yaseenPage')" style="
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:1px solid #ccc;
+  background:white;
+  font-size:20px;
+  ">
+    ←
+  </button>
 
-<img src="yaseen-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="yaseen-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="yaseen-3.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="yaseen-4.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+  <img loading="lazy" src="yaseen-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+  <img loading="lazy" src="yaseen-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+  <img loading="lazy" src="yaseen-3.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+  <img loading="lazy" src="yaseen-4.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+  <img loading="lazy" src="yaseen-5.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+  <img loading="lazy" src="yaseen-6.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 
 </div>
 <div id="salahPage" style="
