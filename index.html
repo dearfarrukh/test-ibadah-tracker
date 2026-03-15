@@ -1343,11 +1343,25 @@ taskList = [
 {name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
 ];
 
-
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
 }
 
+function restoreDefaultTasks(){
+taskList = [
+{name:"Surah Mulk",start:0,end:null},
+{name:"Surah Sajdah",start:0,end:null},
+{name:"Surah Yaseen",start:0,end:null},
+{name:"Surah Rehman",start:0,end:null},
+{name:"Surah Taghabun",start:0,end:null},
+{name:"Surah Waqiya",start:0,end:null},
+{name:"Surah Ikhlas",start:0,end:null},
+{name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
+];
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+loadTasks();
+}
 
 function manageTasks(){
 
