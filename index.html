@@ -3141,7 +3141,15 @@ let key = localStorage.key(i);
 allData[key] = localStorage.getItem(key);
 }
 
-let blob = new Blob([JSON.stringify(allData, null, 2)], {type:"application/json"});
+if(!allData.taskList){
+allData.taskList = JSON.stringify(taskList || []);
+}
+
+let blob = new Blob(
+[JSON.stringify(allData, null, 2)],
+{type:"application/json"}
+);
+
 let a = document.createElement("a");
 a.href = URL.createObjectURL(blob);
 a.download = "ibadah-backup.json";
@@ -3152,6 +3160,7 @@ closeBackupPopup();
 }, 300);
 }
 
+  
 function importData(){
 document.getElementById("backupFileInput").click();
 }
@@ -3166,8 +3175,18 @@ reader.onload = function(e){
 try{
 let data = JSON.parse(e.target.result);
 
+if(!confirm("Import backup? This will replace current app data.")){
+return;
+}
+
+if(data.taskList){
+localStorage.setItem("taskList", data.taskList);
+}
+
 for(let key in data){
+if(key !== "taskList"){
 localStorage.setItem(key, data[key]);
+}
 }
 
 closeBackupPopup();
