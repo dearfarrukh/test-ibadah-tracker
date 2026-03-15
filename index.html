@@ -3190,17 +3190,29 @@ try{
 let data = JSON.parse(e.target.result);
 
 if(!confirm("Import backup? This will replace current app data.")){
+event.target.value = "";
 return;
 }
 
-if(data.taskList){
-localStorage.setItem("taskList", data.taskList);
-}
+let backupTaskList = data.taskList;
 
 for(let key in data){
-if(key !== "taskList"){
 localStorage.setItem(key, data[key]);
 }
+
+if(!backupTaskList){
+let currentDefaults = [
+{name:"Surah Mulk",start:0,end:null},
+{name:"Surah Sajdah",start:0,end:null},
+{name:"Surah Yaseen",start:0,end:null},
+{name:"Surah Rehman",start:0,end:null},
+{name:"Surah Taghabun",start:0,end:null},
+{name:"Surah Waqiya",start:0,end:null},
+{name:"Surah Ikhlas",start:0,end:null},
+{name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
+];
+
+localStorage.setItem("taskList", JSON.stringify(currentDefaults));
 }
 
 closeBackupPopup();
@@ -3212,11 +3224,12 @@ location.reload();
 }catch(err){
 alert("Invalid backup file");
 }
+
+event.target.value = "";
 };
 
 reader.readAsText(file);
 }
-
 
 
 
