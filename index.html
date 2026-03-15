@@ -1072,7 +1072,7 @@ cursor:pointer;
 </div>
 
 <!-- BACKUP POPUP OVERLAY -->
-<div id="backupPopupOverlay" style="
+<div id="backupPopupOverlay" onclick="closeBackupPopup()" style="
 display:none;
 position:fixed;
 top:0;
@@ -3101,7 +3101,6 @@ document.getElementById("salahPage").style.display = "none";
 }
 
 
-<script>
 function toggleSideMenu(){
 let menu = document.getElementById("sideMenu");
 let overlay = document.getElementById("sideMenuOverlay");
@@ -3184,17 +3183,17 @@ alert("Invalid backup file");
 
 reader.readAsText(file);
 }
+
+
+
+
+
+
+
+
+
 </script>
 
-
-
-  
-
-  
-
-  
-  
-</script>
 
 
 
