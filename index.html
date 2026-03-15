@@ -3197,7 +3197,14 @@ return;
 let backupTaskList = data.taskList;
 
 for(let key in data){
+
+if(key === "taskList" && typeof data[key] === "string"){
 localStorage.setItem(key, data[key]);
+taskList = JSON.parse(data[key]);
+}else{
+localStorage.setItem(key, data[key]);
+}
+
 }
 
 if(!backupTaskList){
