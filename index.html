@@ -2373,23 +2373,14 @@ loadTasks();
 manageTasks();
 
 }
-
-  function openDuaPage(){
-
-document.getElementById("duaPage").style.display="block";
-
-document.querySelectorAll("body > div").forEach(el=>{
-if(el.id !== "duaPage"){
-el.style.display="none";
-}
-});
-
+function openDuaPage(){
+document.getElementById("duaPage").style.display = "block";
+window.scrollTo(0,0);
 }
 
 function closeDuaPage(){
-
-location.reload();
-
+document.getElementById("duaPage").style.display = "none";
+window.scrollTo(0,0);
 }
 
 function openQiblaPage(){
