@@ -3148,19 +3148,33 @@ document.getElementById("backupPopupOverlay").style.display = "none";
 }
 
 function backupData(){
-let allData = {};
 
-for(let i=0; i<localStorage.length; i++){
-let key = localStorage.key(i);
-allData[key] = localStorage.getItem(key);
+let backup = {
+version: 2,
+taskList: [],
+storage: {}
+};
+
+let savedTaskList = localStorage.getItem("taskList");
+
+if(savedTaskList){
+try{
+backup.taskList = JSON.parse(savedTaskList);
+}catch(err){
+backup.taskList = [];
+}
 }
 
-if(!allData.taskList){
-allData.taskList = JSON.stringify(taskList || []);
+for(let i = 0; i < localStorage.length; i++){
+let key = localStorage.key(i);
+
+if(key !== "taskList"){
+backup.storage[key] = localStorage.getItem(key);
+}
 }
 
 let blob = new Blob(
-[JSON.stringify(allData, null, 2)],
+[JSON.stringify(backup, null, 2)],
 {type:"application/json"}
 );
 
@@ -3194,32 +3208,41 @@ event.target.value = "";
 return;
 }
 
-let backupTaskList = data.taskList;
+let finalTaskList = [];
+let finalStorage = {};
 
+if(Array.isArray(data.taskList) && data.storage){
+finalTaskList = data.taskList;
+finalStorage = data.storage;
+}
+else{
 for(let key in data){
 
-if(key === "taskList" && typeof data[key] === "string"){
-localStorage.setItem(key, data[key]);
-taskList = JSON.parse(data[key]);
-}else{
-localStorage.setItem(key, data[key]);
+if(key === "taskList"){
+if(typeof data[key] === "string"){
+try{
+finalTaskList = JSON.parse(data[key]);
+}catch(err){
+finalTaskList = [];
+}
+}
+else if(Array.isArray(data[key])){
+finalTaskList = data[key];
+}
+}
+else{
+finalStorage[key] = data[key];
 }
 
 }
+}
 
-if(!backupTaskList){
-let currentDefaults = [
-{name:"Surah Mulk",start:0,end:null},
-{name:"Surah Sajdah",start:0,end:null},
-{name:"Surah Yaseen",start:0,end:null},
-{name:"Surah Rehman",start:0,end:null},
-{name:"Surah Taghabun",start:0,end:null},
-{name:"Surah Waqiya",start:0,end:null},
-{name:"Surah Ikhlas",start:0,end:null},
-{name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
-];
+localStorage.clear();
 
-localStorage.setItem("taskList", JSON.stringify(currentDefaults));
+localStorage.setItem("taskList", JSON.stringify(finalTaskList));
+
+for(let key in finalStorage){
+localStorage.setItem(key, finalStorage[key]);
 }
 
 closeBackupPopup();
