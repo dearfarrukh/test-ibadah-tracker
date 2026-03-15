@@ -2324,11 +2324,13 @@ manageTasks();
 }
 function openDuaPage(){
 document.getElementById("duaPage").style.display = "block";
+document.getElementById("floatingMenuBtn").style.display = "none";
 window.scrollTo(0,0);
 }
 
 function closeDuaPage(){
 document.getElementById("duaPage").style.display = "none";
+document.getElementById("floatingMenuBtn").style.display = "flex";
 window.scrollTo(0,0);
 }
 
