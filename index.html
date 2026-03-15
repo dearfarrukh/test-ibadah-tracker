@@ -2436,12 +2436,14 @@ ref: `صحیح البخاری، الادب المفرد، باب قول: لا ح
 
 function openZikrPage(){
 document.getElementById("zikrPage").style.display = "block";
+document.getElementById("floatingMenuBtn").style.display = "none";
+window.scrollTo(0,0);
 }
 
 function closeZikrPage(){
 document.getElementById("zikrPage").style.display = "none";
+document.getElementById("floatingMenuBtn").style.display = "flex";
 }
-
 function openZikrDetail(name){
 
 currentZikr = name;
@@ -2476,29 +2478,29 @@ document.getElementById("waqiyaPage").style.display = "none";
 }
 
 
-  function openSurahPage(id){
-document.getElementById(id).style.display="block";
+ function openSurahPage(id){
+document.getElementById(id).style.display = "block";
+document.getElementById("floatingMenuBtn").style.display = "none";
+window.scrollTo(0,0);
 }
 
 function closeSurahPage(id){
-document.getElementById(id).style.display="none";
+document.getElementById(id).style.display = "none";
+document.getElementById("floatingMenuBtn").style.display = "flex";
+window.scrollTo(0,0);
 }
 
  
 function openTasbihPage(){
-  let page = document.getElementById("tasbihPage");
-  if(page){
-    page.style.display = "block";
-  }
-  window.scrollTo(0,0);
+document.getElementById("tasbihPage").style.display = "block";
+document.getElementById("floatingMenuBtn").style.display = "none";
+window.scrollTo(0,0);
 }
 
 function closeTasbihPage(){
-  let page = document.getElementById("tasbihPage");
-  if(page){
-    page.style.display = "none";
-  }
-  window.scrollTo(0,0);
+document.getElementById("tasbihPage").style.display = "none";
+document.getElementById("floatingMenuBtn").style.display = "flex";
+window.scrollTo(0,0);
 }
 let salahSource = "location";
 let salahDayOffset = 0;
@@ -3105,13 +3107,12 @@ changeSalahDay(-1);  // swipe right = previous day
   
 function openSalahPage(){
 document.getElementById("salahPage").style.display = "block";
-setSalahSource(salahSource);
-renderSalahPage();
-window.scrollTo(0,0);
+document.getElementById("floatingMenuBtn").style.display = "none";
 }
 
 function closeSalahPage(){
 document.getElementById("salahPage").style.display = "none";
+document.getElementById("floatingMenuBtn").style.display = "flex";
 }
 
 
