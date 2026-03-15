@@ -3205,6 +3205,10 @@ reader.readAsText(file);
 }
 
 
+  function openIstikharaPage(){
+document.getElementById("istikharaPage").style.display = "block";
+window.scrollTo(0,0);
+}
 
 
 
@@ -3342,6 +3346,22 @@ overflow:auto;
 padding:15px;
 ">
 
+
+  <div class="card" onclick="openIstikharaPage()" style="cursor:pointer;">
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+
+<div style="font-weight:600;font-size:17px;">
+ Istikhara Dua
+</div>
+
+<div style="font-size:24px;opacity:0.5;">
+›
+</div>
+
+</div>
+
+</div>
 <div style="padding:10px;">
 <button onclick="closeDuaPage()" style="
 width:36px;
@@ -3637,6 +3657,34 @@ border-radius:22px;
 
 </div>
 
+
+  <div id="istikharaPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:url('wallpaper.jpg') center/cover no-repeat;
+overflow:auto;
+padding:15px;
+z-index:5000;
+">
+
+<button onclick="closeSurahPage('istikharaPage')" style="
+width:36px;
+height:36px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+">←</button>
+
+<img src="duas/istikhara-1.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+<img src="duas/istikhara-2.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+<img src="duas/istikhara-3.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+
+</div>
  <div id="yaseenPage" style="
 display:none;
 position:fixed;
