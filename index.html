@@ -990,7 +990,21 @@ letter-spacing:0.3px;
 Menu
 </div>
 
-<div onclick="refreshApp()" style="
+  <div onclick="goToMainPage()" style="
+background:rgba(255,255,255,0.75);
+padding:16px 18px;
+border-radius:18px;
+font-size:18px;
+font-weight:700;
+color:#5c4632;
+margin-bottom:14px;
+box-shadow:0 6px 14px rgba(0,0,0,0.08);
+cursor:pointer;
+">
+🏠 Main Page
+</div>
+
+  <div onclick="refreshApp()" style="
 background:rgba(255,255,255,0.75);
 padding:16px 18px;
 border-radius:18px;
@@ -3210,7 +3224,13 @@ document.getElementById("istikharaPage").style.display = "block";
 window.scrollTo(0,0);
 }
 
+function goToMainPage(){
+closeMenu();
+location.reload();
+}
 
+
+  
 
   
 
