@@ -526,7 +526,7 @@ z-index:5;
 ">
 
 <!-- BACK BUTTON -->
-<button onclick="hideDarkNightTasbih()" style="
+<button onclick="closeTasbihPage()" style="
 width:42px;
 height:42px;
 border-radius:50%;
@@ -2826,8 +2826,33 @@ window.scrollTo(0,0);
 }
 
 function closeTasbihPage(){
-document.getElementById("tasbihPage").style.display = "none";
-document.getElementById("floatingMenuBtn").style.display = "flex";
+
+let tasbihPage = document.getElementById("tasbihPage");
+let darkNightTasbih = document.getElementById("darkNightTasbih");
+let overlay = document.getElementById("tasbihSettingsOverlay");
+let drawer = document.getElementById("tasbihSettingsDrawer");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(tasbihPage){
+tasbihPage.style.display = "none";
+}
+
+if(darkNightTasbih){
+darkNightTasbih.style.display = "none";
+}
+
+if(overlay){
+overlay.style.display = "none";
+}
+
+if(drawer){
+drawer.style.right = "-70%";
+}
+
+if(floatingMenuBtn){
+floatingMenuBtn.style.display = "flex";
+}
+
 window.scrollTo(0,0);
 }
 let salahSource = "location";
