@@ -527,6 +527,110 @@ color:#111;
 </div>
 
 
+  <!-- DARK NIGHT TASBIH -->
+<div id="darkNightTasbih" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:4500;
+background:url('Images/dark-tasbih-bg.jpg') center/cover no-repeat;
+overflow:hidden;
+">
+
+<!-- SETTINGS BUTTON -->
+<button onclick="openTasbihSettings()" style="
+position:absolute;
+top:25px;
+right:20px;
+width:44px;
+height:44px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,0.15);
+color:white;
+font-size:22px;
+backdrop-filter:blur(10px);
+cursor:pointer;
+">
+⚙️
+</button>
+
+<!-- TARGET + RESET -->
+<div style="
+position:absolute;
+top:38%;
+left:20px;
+right:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<div style="
+width:70px;
+height:70px;
+border-radius:50%;
+background:rgba(255,255,255,0.2);
+border:2px solid rgba(255,255,255,0.8);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:22px;
+font-weight:700;
+">
+100
+</div>
+
+<div onclick="resetTasbih()" style="
+width:70px;
+height:70px;
+border-radius:50%;
+background:rgba(255,255,255,0.2);
+border:2px solid rgba(255,255,255,0.8);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+">
+Reset
+</div>
+
+</div>
+
+<!-- BIG RING -->
+<div onclick="animateDarkNightRing()" style="
+position:absolute;
+left:50%;
+bottom:110px;
+transform:translateX(-50%);
+width:320px;
+height:320px;
+border-radius:50%;
+border:4px solid white;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:80px;
+font-weight:800;
+cursor:pointer;
+transition:transform .15s;
+">
+
+<span id="darkTasbihNumber">0</span>
+
+</div>
+
+</div>
+
+
 <!-- TASBIH SETTINGS DRAWER -->
 <div id="tasbihSettingsDrawer" style="
 position:fixed;
@@ -3514,10 +3618,26 @@ drawer.style.right = "-70%";
 
 }
   
+function animateDarkNightRing(){
 
+let ring = document.querySelector("#darkNightTasbih div[onclick='animateDarkNightRing()']");
+
+if(!ring) return;
+
+ring.style.transform = "translateX(-50%) scale(1.1)";
+
+setTimeout(function(){
+ring.style.transform = "translateX(-50%) scale(1)";
+},150);
+
+}
   
 
 
+
+
+
+  
 
 
 
