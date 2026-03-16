@@ -3219,18 +3219,27 @@ reader.readAsText(file);
 }
 
 
-  function openIstikharaPage(){
-document.getElementById("istikharaPage").style.display = "block";
+function openDuaViewer(duaName){
+
+let imageBox = document.getElementById("duaViewerImages");
+
+if(duaName === "istikhara"){
+imageBox.innerHTML = `
+<img src="duas/istikhara-1.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+<img src="duas/istikhara-2.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+<img src="duas/istikhara-3.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+`;
+}
+
+document.getElementById("duaViewerPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
 window.scrollTo(0,0);
 }
 
-function closeIstikharaPage(){
-document.getElementById("istikharaPage").style.display = "none";
-document.getElementById("floatingMenuBtn").style.display = "none";
+function closeDuaViewer(){
+document.getElementById("duaViewerPage").style.display = "none";
 window.scrollTo(0,0);
 }
-  
   
   function goToMainPage(){
 closeMenu();
@@ -3399,7 +3408,7 @@ justify-content:center;
 
 </div>
 
-<div class="card" onclick="openIstikharaPage()" style="cursor:pointer;margin-top:15px;">
+<div class="card" onclick="openDuaViewer('istikhara')" style="cursor:pointer;margin-top:15px;">
 
 <div style="display:flex;justify-content:space-between;align-items:center;">
 
@@ -3686,7 +3695,7 @@ border-radius:22px;
 </div>
 
 
-  <div id="istikharaPage" style="
+ <div id="duaViewerPage" style="
 display:none;
 position:fixed;
 top:0;
@@ -3699,20 +3708,23 @@ padding:15px;
 z-index:10002;
 ">
 
-<button onclick="closeIstikharaPage()" style="
+<button onclick="closeDuaViewer()" style="
 width:36px;
 height:36px;
 border-radius:50%;
 border:1px solid #ccc;
 background:white;
 font-size:20px;
-">←</button>
+">
+←
+</button>
 
-<img src="duas/istikhara-1.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="duas/istikhara-2.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="duas/istikhara-3.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+<div id="duaViewerImages"></div>
 
 </div>
+
+
+  
  <div id="yaseenPage" style="
 display:none;
 position:fixed;
