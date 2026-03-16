@@ -283,6 +283,267 @@ max-width:100%;
 height:auto;
 }
 
+
+
+
+/* =========================
+   TASBIH STYLE SWITCHER
+========================= */
+
+.stylePickerWrap{
+margin-top:14px;
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding-bottom:4px;
+}
+
+.stylePickerWrap::-webkit-scrollbar{
+display:none;
+}
+
+.styleChip{
+border:none;
+background:rgba(255,255,255,0.82);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+padding:10px 14px;
+border-radius:16px;
+font-size:14px;
+font-weight:600;
+color:#111;
+cursor:pointer;
+white-space:nowrap;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.styleChip.active{
+background:#111;
+color:#fff;
+}
+
+.tasbihStyleArea{
+margin-top:14px;
+}
+
+.tasbihStyleView{
+display:none;
+}
+
+.tasbihStyleView.active{
+display:block;
+}
+
+.tasbihIOSCard{
+background:rgba(255,255,255,0.78);
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+border-radius:28px;
+padding:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.10);
+border:1px solid rgba(255,255,255,0.7);
+}
+
+.tasbihTapHint{
+text-align:center;
+font-size:13px;
+opacity:0.55;
+margin-top:10px;
+}
+
+.tasbihCenterText{
+text-align:center;
+}
+
+.tasbihSmallLabel{
+font-size:13px;
+opacity:0.55;
+margin-bottom:6px;
+}
+
+.tasbihBigNumber{
+font-size:46px;
+font-weight:800;
+line-height:1;
+}
+
+.tasbihTargetText{
+font-size:15px;
+opacity:0.7;
+margin-top:6px;
+}
+
+.ringWrap{
+position:relative;
+width:240px;
+height:240px;
+margin:0 auto;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.ringSvg{
+position:absolute;
+top:0;
+left:0;
+width:240px;
+height:240px;
+transform:rotate(-90deg);
+}
+
+.ringCenter{
+position:absolute;
+width:160px;
+height:160px;
+border-radius:50%;
+background:#f8f8fb;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+box-shadow:inset 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.beadsWrap{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+justify-content:center;
+margin-top:10px;
+min-height:116px;
+}
+
+.bead{
+width:18px;
+height:18px;
+border-radius:50%;
+background:rgba(0,0,0,0.12);
+box-shadow:inset 0 1px 3px rgba(255,255,255,0.45);
+}
+
+.bead.active{
+background:#111;
+}
+
+.minimalCard{
+text-align:center;
+padding:34px 16px;
+}
+
+.minimalCard .tasbihBigNumber{
+font-size:64px;
+}
+
+.compassCard{
+text-align:center;
+}
+
+.compassCircle{
+position:relative;
+width:250px;
+height:250px;
+margin:0 auto;
+border-radius:50%;
+background:radial-gradient(circle at center, #ffffff 0%, #f3f3f7 65%, #e9e9ee 100%);
+box-shadow:
+inset 0 2px 10px rgba(255,255,255,0.9),
+0 12px 30px rgba(0,0,0,0.10);
+border:1px solid rgba(255,255,255,0.85);
+}
+
+.compassNeedle{
+position:absolute;
+left:50%;
+top:50%;
+width:8px;
+height:95px;
+background:#111;
+border-radius:8px;
+transform-origin:bottom center;
+transform:translate(-50%,-100%) rotate(0deg);
+box-shadow:0 0 10px rgba(0,0,0,0.12);
+}
+
+.compassNeedle::after{
+content:"";
+position:absolute;
+left:50%;
+bottom:-10px;
+transform:translateX(-50%);
+width:18px;
+height:18px;
+border-radius:50%;
+background:white;
+box-shadow:0 2px 8px rgba(0,0,0,0.12);
+}
+
+.compassTopMark{
+position:absolute;
+top:18px;
+left:50%;
+transform:translateX(-50%);
+font-size:20px;
+font-weight:800;
+opacity:0.75;
+}
+
+.compassCenterCount{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+
+.compassCenterCount .count{
+font-size:42px;
+font-weight:800;
+line-height:1;
+}
+
+.compassCenterCount .label{
+font-size:14px;
+opacity:0.6;
+margin-top:6px;
+}
+
+.sharedTasbihMeta{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:16px;
+font-size:14px;
+opacity:0.72;
+gap:10px;
+}
+
+.sharedTasbihMeta div{
+background:rgba(255,255,255,0.58);
+padding:8px 12px;
+border-radius:14px;
+flex:1;
+text-align:center;
+}
+
+@media (max-width:480px){
+.ringWrap,
+.ringSvg{
+width:220px;
+height:220px;
+}
+.ringCenter{
+width:148px;
+height:148px;
+}
+.compassCircle{
+width:220px;
+height:220px;
+}
+}
+
+
+
   
 
   
@@ -567,7 +828,115 @@ box-shadow:0 4px 10px rgba(0,0,0,0.15);
 ">
 Reset
 </button>
+<!-- NEW TASBIH STYLE SWITCHER -->
+<div style="margin-top:18px;">
 
+  <div style="
+  font-size:17px;
+  font-weight:700;
+  margin-bottom:10px;
+  color:#111;
+  ">
+  Tasbih Styles
+  </div>
+
+  <div class="stylePickerWrap" id="tasbihStylePicker">
+    <button class="styleChip active" onclick="setTasbihStyle('ring')">Classic Ring</button>
+    <button class="styleChip" onclick="setTasbihStyle('beads')">Beads</button>
+    <button class="styleChip" onclick="setTasbihStyle('minimal')">Minimal</button>
+    <button class="styleChip" onclick="setTasbihStyle('compass')">Premium</button>
+  </div>
+
+  <div class="tasbihStyleArea">
+
+    <!-- CLASSIC RING -->
+    <div class="tasbihStyleView active" id="tasbihStyle-ring">
+      <div class="tasbihIOSCard" onclick="increaseTasbih()" style="cursor:pointer;user-select:none;">
+        <div class="ringWrap">
+          <svg class="ringSvg" viewBox="0 0 240 240">
+            <circle cx="120" cy="120" r="98" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="16"></circle>
+            <circle id="tasbihRingProgress" cx="120" cy="120" r="98" fill="none" stroke="#111" stroke-width="16" stroke-linecap="round" stroke-dasharray="615.75" stroke-dashoffset="615.75"></circle>
+          </svg>
+
+          <div class="ringCenter">
+            <div class="tasbihCenterText">
+              <div class="tasbihSmallLabel">Current Count</div>
+              <div class="tasbihBigNumber" id="tasbihRingCount">0</div>
+              <div class="tasbihTargetText" id="tasbihRingTarget">Target 33</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sharedTasbihMeta">
+          <div id="tasbihRingProgressText">0%</div>
+          <div id="tasbihRingCycleText">Cycle 1</div>
+        </div>
+
+        <div class="tasbihTapHint">Tap anywhere on the card</div>
+      </div>
+    </div>
+
+    <!-- BEADS -->
+    <div class="tasbihStyleView" id="tasbihStyle-beads">
+      <div class="tasbihIOSCard" onclick="increaseTasbih()" style="cursor:pointer;user-select:none;">
+        <div class="tasbihCenterText">
+          <div class="tasbihSmallLabel">Bead Tasbih</div>
+          <div class="tasbihBigNumber" id="tasbihBeadsCount">0</div>
+          <div class="tasbihTargetText" id="tasbihBeadsTarget">Target 33</div>
+        </div>
+
+        <div class="beadsWrap" id="tasbihBeadsWrap"></div>
+
+        <div class="sharedTasbihMeta">
+          <div id="tasbihBeadsProgressText">0 / 33</div>
+          <div id="tasbihBeadsCycleText">Cycle 1</div>
+        </div>
+
+        <div class="tasbihTapHint">Tap anywhere on the card</div>
+      </div>
+    </div>
+
+    <!-- MINIMAL -->
+    <div class="tasbihStyleView" id="tasbihStyle-minimal">
+      <div class="tasbihIOSCard minimalCard" onclick="increaseTasbih()" style="cursor:pointer;user-select:none;">
+        <div class="tasbihSmallLabel">Minimal Focus</div>
+        <div class="tasbihBigNumber" id="tasbihMinimalCount">0</div>
+        <div class="tasbihTargetText" id="tasbihMinimalTarget">Target 33</div>
+
+        <div class="sharedTasbihMeta">
+          <div id="tasbihMinimalProgressText">0%</div>
+          <div id="tasbihMinimalCycleText">Cycle 1</div>
+        </div>
+
+        <div class="tasbihTapHint">Tap anywhere on the card</div>
+      </div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="tasbihStyleView" id="tasbihStyle-compass">
+      <div class="tasbihIOSCard compassCard" onclick="increaseTasbih()" style="cursor:pointer;user-select:none;">
+        <div class="compassCircle">
+          <div class="compassTopMark">99</div>
+          <div class="compassNeedle" id="tasbihCompassNeedle"></div>
+
+          <div class="compassCenterCount">
+            <div class="count" id="tasbihCompassCount">0</div>
+            <div class="label" id="tasbihCompassTarget">Target 33</div>
+          </div>
+        </div>
+
+        <div class="sharedTasbihMeta">
+          <div id="tasbihCompassProgressText">0%</div>
+          <div id="tasbihCompassCycleText">Cycle 1</div>
+        </div>
+
+        <div class="tasbihTapHint">Tap anywhere on the card</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
 
 
 </div>
@@ -1245,6 +1614,7 @@ if(mode==="inf" && modeButtons[2]) modeButtons[2].classList.add("active");
 
 setTimeout(()=>{ tasbihLock=false; },150);
 
+  renderTasbihStyles();
 }
 
 
@@ -1517,6 +1887,7 @@ if(count >= target){
 count = 0;
 }else{
 count++;
+
 }
 }
 
@@ -1560,6 +1931,8 @@ counter.classList.remove("completeFlash");
 void counter.offsetWidth;
 counter.classList.add("completeFlash");
 }
+
+renderTasbihStyles();
 }
   
 function islamicToday(){
@@ -1598,6 +1971,7 @@ document.getElementById("datePicker").value=formatKey(currentDate);
 loadSalah();
 loadTasks();
 loadTasbih();
+initTasbihStyleSwitcher();
 }
 
 function manualPick(value){
@@ -1905,7 +2279,7 @@ if(screen){
 screen.innerText = count;
   buildTasbihBars();
 }
-
+renderTasbihStyles();
 }
 function resetTasbih(){
 localStorage.setItem(getTasbihKey(),0);
@@ -1928,6 +2302,7 @@ center.innerText = "0 / " + target;
 }
 
 buildTasbihBars();
+  renderTasbihStyles();
 }
 
 // ===== ZIKR TASBIH SYSTEM =====
@@ -3259,6 +3634,196 @@ window.scrollTo(0,0);
 closeMenu();
 location.reload();
 }
+
+
+
+
+/* =========================
+   TASBIH STYLE SWITCHER JS
+========================= */
+
+function getTasbihStyleKey(){
+  return "tasbih-style-selected";
+}
+
+function getTasbihStyle(){
+  return localStorage.getItem(getTasbihStyleKey()) || "ring";
+}
+
+function setTasbihStyle(style){
+  localStorage.setItem(getTasbihStyleKey(), style);
+
+  document.querySelectorAll("#tasbihStylePicker .styleChip").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+
+  let buttons = document.querySelectorAll("#tasbihStylePicker .styleChip");
+
+  if(style === "ring" && buttons[0]) buttons[0].classList.add("active");
+  if(style === "beads" && buttons[1]) buttons[1].classList.add("active");
+  if(style === "minimal" && buttons[2]) buttons[2].classList.add("active");
+  if(style === "compass" && buttons[3]) buttons[3].classList.add("active");
+
+  document.querySelectorAll(".tasbihStyleView").forEach(view=>{
+    view.classList.remove("active");
+  });
+
+  let activeView = document.getElementById("tasbihStyle-" + style);
+  if(activeView){
+    activeView.classList.add("active");
+  }
+
+  renderTasbihStyles();
+}
+
+function getMainTasbihCount(){
+  let countEl =
+    document.getElementById("tasbihCount") ||
+    document.getElementById("count") ||
+    document.querySelector("[id*='tasbihCount']");
+
+  if(countEl){
+    let n = parseInt(countEl.innerText || "0");
+    return isNaN(n) ? 0 : n;
+  }
+
+  return 0;
+}
+
+function getMainTasbihTarget(){
+  let label =
+    document.getElementById("tasbihProgress") ||
+    document.getElementById("tasbihTargetLabel") ||
+    document.querySelector("[id*='tasbihProgress']");
+
+  if(label){
+    let txt = (label.innerText || "").trim();
+
+    if(txt.includes("∞")) return "inf";
+
+    let m = txt.match(/\/\s*(\d+)/);
+    if(m) return m[1];
+
+    if(txt === "33" || txt === "100") return txt;
+  }
+
+  let activeBtn = document.querySelector(".modeBtn.active");
+  if(activeBtn){
+    let txt = activeBtn.innerText.trim();
+
+    if(txt === "∞") return "inf";
+    if(txt === "33" || txt === "100") return txt;
+  }
+
+  return "33";
+}
+
+function renderTasbihBeads(activeCount){
+  let wrap = document.getElementById("tasbihBeadsWrap");
+  if(!wrap) return;
+
+  wrap.innerHTML = "";
+
+  let totalBeads = 33;
+  let showActive = activeCount % totalBeads;
+
+  if(activeCount > 0 && showActive === 0){
+    showActive = totalBeads;
+  }
+
+  for(let i=0;i<totalBeads;i++){
+    let bead = document.createElement("div");
+    bead.className = "bead";
+
+    if(i < showActive){
+      bead.classList.add("active");
+    }
+
+    wrap.appendChild(bead);
+  }
+}
+
+function renderTasbihStyles(){
+  let count = getMainTasbihCount();
+  let target = getMainTasbihTarget();
+  let displayTarget = target === "inf" ? "∞" : target;
+
+  let numericTarget = target === "inf" ? 33 : parseInt(target || "33");
+  if(!numericTarget || numericTarget < 1) numericTarget = 33;
+
+  let progressPercent;
+
+  if(target === "inf"){
+    let loopCount = count % numericTarget;
+    progressPercent = (loopCount / numericTarget) * 100;
+  }else{
+    progressPercent = Math.min((count / numericTarget) * 100, 100);
+  }
+
+  let cycle = Math.floor(count / numericTarget) + 1;
+  if(count === 0) cycle = 1;
+
+  let ringCount = document.getElementById("tasbihRingCount");
+  let ringTarget = document.getElementById("tasbihRingTarget");
+  let ringProgressText = document.getElementById("tasbihRingProgressText");
+  let ringCycleText = document.getElementById("tasbihRingCycleText");
+  let ringProgress = document.getElementById("tasbihRingProgress");
+
+  if(ringCount) ringCount.innerText = count;
+  if(ringTarget) ringTarget.innerText = "Target " + displayTarget;
+  if(ringProgressText) ringProgressText.innerText = Math.round(progressPercent) + "%";
+  if(ringCycleText) ringCycleText.innerText = "Cycle " + cycle;
+
+  if(ringProgress){
+    let circumference = 615.75;
+    let offset = circumference - (progressPercent / 100) * circumference;
+    ringProgress.style.strokeDashoffset = offset;
+  }
+
+  let beadsCount = document.getElementById("tasbihBeadsCount");
+  let beadsTarget = document.getElementById("tasbihBeadsTarget");
+  let beadsProgressText = document.getElementById("tasbihBeadsProgressText");
+  let beadsCycleText = document.getElementById("tasbihBeadsCycleText");
+
+  if(beadsCount) beadsCount.innerText = count;
+  if(beadsTarget) beadsTarget.innerText = "Target " + displayTarget;
+  if(beadsProgressText) beadsProgressText.innerText = count + " / " + displayTarget;
+  if(beadsCycleText) beadsCycleText.innerText = "Cycle " + cycle;
+
+  renderTasbihBeads(count);
+
+  let minimalCount = document.getElementById("tasbihMinimalCount");
+  let minimalTarget = document.getElementById("tasbihMinimalTarget");
+  let minimalProgressText = document.getElementById("tasbihMinimalProgressText");
+  let minimalCycleText = document.getElementById("tasbihMinimalCycleText");
+
+  if(minimalCount) minimalCount.innerText = count;
+  if(minimalTarget) minimalTarget.innerText = "Target " + displayTarget;
+  if(minimalProgressText) minimalProgressText.innerText = Math.round(progressPercent) + "%";
+  if(minimalCycleText) minimalCycleText.innerText = "Cycle " + cycle;
+
+  let compassCount = document.getElementById("tasbihCompassCount");
+  let compassTarget = document.getElementById("tasbihCompassTarget");
+  let compassProgressText = document.getElementById("tasbihCompassProgressText");
+  let compassCycleText = document.getElementById("tasbihCompassCycleText");
+  let compassNeedle = document.getElementById("tasbihCompassNeedle");
+
+  if(compassCount) compassCount.innerText = count;
+  if(compassTarget) compassTarget.innerText = "Target " + displayTarget;
+  if(compassProgressText) compassProgressText.innerText = Math.round(progressPercent) + "%";
+  if(compassCycleText) compassCycleText.innerText = "Cycle " + cycle;
+
+  if(compassNeedle){
+    let rotation = (progressPercent / 100) * 360;
+    compassNeedle.style.transform = "translate(-50%,-100%) rotate(" + rotation + "deg)";
+  }
+}
+
+function initTasbihStyleSwitcher(){
+  setTasbihStyle(getTasbihStyle());
+  renderTasbihStyles();
+}
+
 
 
   
