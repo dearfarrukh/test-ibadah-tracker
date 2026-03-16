@@ -727,21 +727,52 @@ outline:none;
 
 </div>
   <div style="padding:10px;">
-    <button onclick="closeTasbihPage()" style="
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    border:1px solid #ccc;
-    background:white;
-    font-size:20px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    ">
-      ←
-    </button>
-  </div>
+
+    <!-- TASBIH HEADER -->
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 4px 20px 4px;
+">
+
+<!-- BACK BUTTON -->
+<button onclick="closeTasbihPage()" style="
+width:40px;
+height:40px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+←
+</button>
+
+<!-- SETTINGS BUTTON -->
+<button onclick="openTasbihSettings()" style="
+width:44px;
+height:44px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,0.75);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+box-shadow:0 6px 18px rgba(0,0,0,0.10);
+font-size:22px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#111;
+">
+⚙️
+</button>
+
+</div>
 
  <div class="card" style="
 text-align:center;
