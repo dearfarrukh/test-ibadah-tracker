@@ -470,7 +470,7 @@ margin-bottom:10px;
 Style
 </div>
 
-<button style="
+<button onclick="showClassicMode()" style="
 width:100%;
 padding:14px;
 border-radius:14px;
@@ -483,7 +483,7 @@ font-weight:700;
 Classic
 </button>
 
-<button style="
+<button onclick="showDarkNightMode()" style="
 width:100%;
 padding:14px;
 border-radius:14px;
@@ -3631,7 +3631,47 @@ ring.style.transform = "translateX(-50%) scale(1)";
 },150);
 
 }
-  
+
+
+  function showDarkNightMode(){
+
+let dark = document.getElementById("darkNightTasbih");
+let drawer = document.getElementById("tasbihSettingsDrawer");
+let overlay = document.getElementById("tasbihSettingsOverlay");
+
+if(dark){
+dark.style.display = "block";
+}
+
+if(drawer){
+drawer.style.right = "-70%";
+}
+
+if(overlay){
+overlay.style.display = "none";
+}
+
+}
+
+function showClassicMode(){
+
+let dark = document.getElementById("darkNightTasbih");
+let drawer = document.getElementById("tasbihSettingsDrawer");
+let overlay = document.getElementById("tasbihSettingsOverlay");
+
+if(dark){
+dark.style.display = "none";
+}
+
+if(drawer){
+drawer.style.right = "-70%";
+}
+
+if(overlay){
+overlay.style.display = "none";
+}
+
+}
 
 
 
