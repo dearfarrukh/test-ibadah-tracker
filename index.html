@@ -513,11 +513,38 @@ background:url('Images/dark-tasbih-bg.jpg') center/cover no-repeat;
 overflow:hidden;
 ">
 
+<!-- DARK NIGHT HEADER -->
+<div style="
+position:absolute;
+top:20px;
+left:20px;
+right:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:5;
+">
+
+<!-- BACK BUTTON -->
+<button onclick="hideDarkNightTasbih()" style="
+width:42px;
+height:42px;
+border-radius:50%;
+border:none;
+background:rgba(255,255,255,0.15);
+color:white;
+font-size:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+backdrop-filter:blur(10px);
+cursor:pointer;
+">
+←
+</button>
+
 <!-- SETTINGS BUTTON -->
 <button onclick="openTasbihSettings()" style="
-position:absolute;
-top:25px;
-right:20px;
 width:44px;
 height:44px;
 border:none;
@@ -527,9 +554,14 @@ color:white;
 font-size:22px;
 backdrop-filter:blur(10px);
 cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
 ">
 ⚙️
 </button>
+
+</div>
 
 <!-- TARGET + RESET -->
 <div style="
@@ -3677,7 +3709,11 @@ overlay.style.display = "none";
 
 }
 
+function hideDarkNightTasbih(){
+document.getElementById("darkNightTasbih").style.display="none";
+}
 
+  
 
 
 
