@@ -2286,8 +2286,8 @@ center.innerText = "0 / " + target;
 }
 
 buildTasbihBars();
+updateDarkNightNumber();
 }
-
 // ===== ZIKR TASBIH SYSTEM =====
 
 let zikrCount = 0;
@@ -3694,7 +3694,7 @@ ring.style.transform = "translateX(-50%) scale(1)";
 }
 
 
-  function showDarkNightMode(){
+function showDarkNightMode(){
 
 let dark = document.getElementById("darkNightTasbih");
 let drawer = document.getElementById("tasbihSettingsDrawer");
@@ -3712,8 +3712,9 @@ if(overlay){
 overlay.style.display = "none";
 }
 
-}
+updateDarkNightNumber();
 
+}
 function showClassicMode(){
 
 let dark = document.getElementById("darkNightTasbih");
@@ -3736,6 +3737,27 @@ overlay.style.display = "none";
 
 function hideDarkNightTasbih(){
 document.getElementById("darkNightTasbih").style.display="none";
+}
+
+  function updateDarkNightNumber(){
+
+let main = document.getElementById("tasbihCount");
+let dark = document.getElementById("darkTasbihNumber");
+
+if(main && dark){
+dark.innerText = main.innerText;
+}
+
+}
+function updateDarkNightNumber(){
+
+let main = document.getElementById("tasbihCount");
+let dark = document.getElementById("darkTasbihNumber");
+
+if(main && dark){
+dark.innerText = main.innerText;
+}
+
 }
 
   
