@@ -3225,7 +3225,14 @@ document.getElementById("floatingMenuBtn").style.display = "none";
 window.scrollTo(0,0);
 }
 
-function goToMainPage(){
+function closeIstikharaPage(){
+document.getElementById("istikharaPage").style.display = "none";
+document.getElementById("floatingMenuBtn").style.display = "none";
+window.scrollTo(0,0);
+}
+  
+  
+  function goToMainPage(){
 closeMenu();
 location.reload();
 }
@@ -3692,7 +3699,7 @@ padding:15px;
 z-index:5000;
 ">
 
-<button onclick="closeSurahPage('istikharaPage')" style="
+<button onclick="closeIstikharaPage()" style="
 width:36px;
 height:36px;
 border-radius:50%;
