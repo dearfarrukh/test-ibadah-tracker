@@ -610,7 +610,7 @@ Reset
 </div>
 
 <!-- BIG RING -->
-<div onclick="animateDarkNightRing()" style="
+<div id="darkNightRing" onclick="tapDarkNightRing()" style="
 position:absolute;
 left:50%;
 bottom:110px;
@@ -627,6 +627,9 @@ font-size:80px;
 font-weight:800;
 cursor:pointer;
 transition:transform .15s;
+user-select:none;
+-webkit-user-select:none;
+touch-action:manipulation;
 ">
 
 <span id="darkTasbihNumber">0</span>
@@ -3681,7 +3684,7 @@ drawer.style.right = "-70%";
   
 function animateDarkNightRing(){
 
-let ring = document.querySelector("#darkNightTasbih div[onclick='animateDarkNightRing()']");
+let ring = document.getElementById("darkNightRing");
 
 if(!ring) return;
 
@@ -3690,6 +3693,14 @@ ring.style.transform = "translateX(-50%) scale(1.1)";
 setTimeout(function(){
 ring.style.transform = "translateX(-50%) scale(1)";
 },150);
+
+}
+
+function tapDarkNightRing(){
+
+increaseTasbih();
+animateDarkNightRing();
+updateDarkNightNumber();
 
 }
 
