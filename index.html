@@ -4026,6 +4026,211 @@ dark.innerText = main.innerText;
 }
 
   
+(function(){
+
+function ibadahSetText(id, value){
+  let el = document.getElementById(id);
+  if(el) el.innerText = value;
+}
+
+function ibadahFormatDate(dateObj){
+  return dateObj.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric"
+  });
+}
+
+function ibadahApiDate(dateObj){
+  let d = String(dateObj.getDate()).padStart(2, "0");
+  let m = String(dateObj.getMonth() + 1).padStart(2, "0");
+  let y = dateObj.getFullYear();
+  return d + "-" + m + "-" + y;
+}
+
+function ibadahCleanTime(value){
+  if(!value) return "--:--";
+  return value.split(" ")[0];
+}
+
+function ibadahCurrentSalahDate(){
+  let offset = 0;
+
+  if(typeof salahDayOffset !== "undefined"){
+    offset = salahDayOffset;
+  }
+
+  let d = new Date();
+  d.setHours(12,0,0,0);
+  d.setDate(d.getDate() + offset);
+  return d;
+}
+
+function ibadahShowLoading(){
+  let d = ibadahCurrentSalahDate();
+
+  ibadahSetText("salahCityName", "Loading location...");
+  ibadahSetText("salahSourceLabel", "Loading times...");
+  ibadahSetText("salahSelectedDate", ibadahFormatDate(d));
+  ibadahSetText("salahSelectedHijri", "Loading Hijri date...");
+
+  ibadahSetText("fajrTime", "--:--");
+  ibadahSetText("sunriseTime", "--:--");
+  ibadahSetText("dhuhrTime", "--:--");
+  ibadahSetText("asrTime", "--:--");
+  ibadahSetText("maghribTime", "--:--");
+  ibadahSetText("ishaTime", "--:--");
+  ibadahSetText("sunriseCardTime", "--:--");
+  ibadahSetText("sunsetTime", "--:--");
+}
+
+function ibadahApplyTimes(city, hijriText, timings){
+  let d = ibadahCurrentSalahDate();
+
+  ibadahSetText("salahCityName", city || "My Location");
+  ibadahSetText("salahSourceLabel", "Live Salah Times");
+  ibadahSetText("salahSelectedDate", ibadahFormatDate(d));
+  ibadahSetText("salahSelectedHijri", hijriText || "Hijri date");
+
+  ibadahSetText("fajrTime", ibadahCleanTime(timings.Fajr));
+  ibadahSetText("sunriseTime", ibadahCleanTime(timings.Sunrise));
+  ibadahSetText("dhuhrTime", ibadahCleanTime(timings.Dhuhr));
+  ibadahSetText("asrTime", ibadahCleanTime(timings.Asr));
+  ibadahSetText("maghribTime", ibadahCleanTime(timings.Maghrib));
+  ibadahSetText("ishaTime", ibadahCleanTime(timings.Isha));
+  ibadahSetText("sunriseCardTime", ibadahCleanTime(timings.Sunrise));
+  ibadahSetText("sunsetTime", ibadahCleanTime(timings.Sunset || timings.Maghrib));
+}
+
+function ibadahLoadLiveSalah(){
+  if(typeof salahSource !== "undefined" && salahSource === "masjid"){
+    return;
+  }
+
+  ibadahShowLoading();
+
+  if(!navigator.geolocation){
+    ibadahSetText("salahCityName", "Not supported");
+    ibadahSetText("salahSourceLabel", "Location not supported");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position){
+      let lat = position.coords.latitude;
+      let lon = position.coords.longitude;
+      let d = ibadahCurrentSalahDate();
+
+      fetch(
+        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
+        encodeURIComponent(lat) +
+        "&lon=" +
+        encodeURIComponent(lon)
+      )
+      .then(function(r){ return r.json(); })
+      .then(function(place){
+        let city = "My Location";
+
+        if(place && place.address){
+          city =
+            place.address.city ||
+            place.address.town ||
+            place.address.village ||
+            place.address.hamlet ||
+            place.address.county ||
+            "My Location";
+        }
+
+        return fetch(
+          "https://api.aladhan.com/v1/timings/" +
+          ibadahApiDate(d) +
+          "?latitude=" + encodeURIComponent(lat) +
+          "&longitude=" + encodeURIComponent(lon) +
+          "&method=2"
+        )
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if(!data || !data.data || !data.data.timings || !data.data.date || !data.data.date.hijri){
+            throw new Error("Bad Salah API response");
+          }
+
+          let hijri = data.data.date.hijri;
+          let hijriText = hijri.day + " " + hijri.month.en + ", " + hijri.year + " AH";
+
+          ibadahApplyTimes(city, hijriText, data.data.timings);
+        });
+      })
+      .catch(function(){
+        ibadahSetText("salahCityName", "My Location");
+        ibadahSetText("salahSourceLabel", "Could not load live times");
+      });
+    },
+    function(){
+      ibadahSetText("salahCityName", "Location blocked");
+      ibadahSetText("salahSourceLabel", "Please allow location");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 12000,
+      maximumAge: 300000
+    }
+  );
+}
+
+function ibadahPatchSalahFunctions(){
+  if(window.__ibadahSalahPatched) return;
+  window.__ibadahSalahPatched = true;
+
+  let oldOpenSalahPage = typeof window.openSalahPage === "function" ? window.openSalahPage : null;
+  let oldChangeSalahDay = typeof window.changeSalahDay === "function" ? window.changeSalahDay : null;
+  let oldSetSalahSource = typeof window.setSalahSource === "function" ? window.setSalahSource : null;
+
+  window.openSalahPage = function(){
+    if(oldOpenSalahPage) oldOpenSalahPage();
+    setTimeout(function(){
+      ibadahLoadLiveSalah();
+    }, 80);
+  };
+
+  if(oldChangeSalahDay){
+    window.changeSalahDay = function(amount){
+      oldChangeSalahDay(amount);
+      setTimeout(function(){
+        ibadahLoadLiveSalah();
+      }, 80);
+    };
+  }
+
+  if(oldSetSalahSource){
+    window.setSalahSource = function(source){
+      oldSetSalahSource(source);
+      setTimeout(function(){
+        if(source !== "masjid"){
+          ibadahLoadLiveSalah();
+        }
+      }, 80);
+    };
+  }
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", ibadahPatchSalahFunctions);
+}else{
+  ibadahPatchSalahFunctions();
+}
+
+})();
+
+
+
+
+
+
+
+
+  
+</script>
+  
 
 
 
@@ -4034,7 +4239,7 @@ dark.innerText = main.innerText;
 
 
 
-</script>
+
 
 
 
