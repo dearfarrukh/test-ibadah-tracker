@@ -613,7 +613,8 @@ Reset
 </div>
 
 <!-- BIG RING -->
-<div onclick="animateDarkNightRing()" style="
+<!-- BIG RING -->
+<div id="darkNightRing" onclick="darkNightTap(event)" style="
 position:absolute;
 left:50%;
 bottom:110px;
@@ -630,13 +631,16 @@ font-size:80px;
 font-weight:800;
 cursor:pointer;
 transition:transform .15s;
+user-select:none;
+-webkit-user-select:none;
+touch-action:manipulation;
 ">
 
 <span id="darkTasbihNumber">0</span>
 
 </div>
 
-</div>
+
 
   
 <!-- DARK TARGET POPUP -->
@@ -3956,6 +3960,7 @@ function darkNightTap(event){
 
   increaseTasbih();
   animateDarkNightRing();
+  updateDarkNightNumber();
   syncDarkNightTasbih();
   vibrateTasbihLight();
 }
