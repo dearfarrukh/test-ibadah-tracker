@@ -574,7 +574,7 @@ justify-content:space-between;
 align-items:center;
 ">
 
-<div style="
+<div id="darkTargetCircle" onclick="openDarkTargetPopup(event)" style="
 width:70px;
 height:70px;
 border-radius:50%;
@@ -586,8 +586,11 @@ justify-content:center;
 color:white;
 font-size:22px;
 font-weight:700;
+cursor:pointer;
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
 ">
-100
+<span id="darkTargetText">100</span>
 </div>
 
 <div onclick="resetTasbih()" style="
@@ -610,7 +613,7 @@ Reset
 </div>
 
 <!-- BIG RING -->
-<div onclick="animateDarkNightRing()" style="
+<div id="darkNightRing" onclick="darkNightTap(event)" style="
 position:absolute;
 left:50%;
 bottom:110px;
@@ -627,6 +630,9 @@ font-size:80px;
 font-weight:800;
 cursor:pointer;
 transition:transform .15s;
+user-select:none;
+-webkit-user-select:none;
+touch-action:manipulation;
 ">
 
 <span id="darkTasbihNumber">0</span>
@@ -634,7 +640,90 @@ transition:transform .15s;
 </div>
 
 </div>
+<!-- DARK TARGET POPUP -->
+<div id="darkTargetPopup" onclick="closeDarkTargetPopup()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+z-index:8700;
+">
 
+  <div onclick="event.stopPropagation()" style="
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:260px;
+  max-width:88%;
+  background:rgba(20,20,20,0.92);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:28px;
+  padding:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  ">
+
+    <div style="
+    color:white;
+    font-size:20px;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:14px;
+    ">
+    Select Target
+    </div>
+
+    <button onclick="setDarkTarget(33)" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:rgba(255,255,255,0.10);
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    ">
+    33
+    </button>
+
+    <button onclick="setDarkTarget(100)" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:rgba(255,255,255,0.10);
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    ">
+    100
+    </button>
+
+    <button onclick="setDarkTarget('inf')" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    background:rgba(255,255,255,0.10);
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    ">
+    ∞
+    </button>
+
+  </div>
+</div>
 
 <!-- TASBIH SETTINGS DRAWER -->
 <div id="tasbihSettingsDrawer" style="
@@ -2287,6 +2376,7 @@ center.innerText = "0 / " + target;
 
 buildTasbihBars();
 updateDarkNightNumber();
+  syncDarkNightTasbih();
 }
 // ===== ZIKR TASBIH SYSTEM =====
 
@@ -2823,7 +2913,15 @@ function openTasbihPage(){
 document.getElementById("tasbihPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
 window.scrollTo(0,0);
+  applySavedTasbihStyle();
+
+if(currentTasbihStyle === "dark"){
+  showDarkNightMode();
+}else{
+  showClassicMode();
 }
+}
+  
 
 function closeTasbihPage(){
 
@@ -3759,6 +3857,247 @@ dark.innerText = main.innerText;
 }
 
 }
+
+
+  <script>
+let currentTasbihStyle = localStorage.getItem("tasbihStyle") || "classic";
+
+function getTasbihKey(){
+  let today = new Date();
+  let y = today.getFullYear();
+  let m = String(today.getMonth() + 1).padStart(2, "0");
+  let d = String(today.getDate()).padStart(2, "0");
+  return "tasbih-count-" + y + "-" + m + "-" + d;
+}
+
+function getTargetKey(){
+  let today = new Date();
+  let y = today.getFullYear();
+  let m = String(today.getMonth() + 1).padStart(2, "0");
+  let d = String(today.getDate()).padStart(2, "0");
+  return "tasbih-target-" + y + "-" + m + "-" + d;
+}
+
+function getSavedTasbihCount(){
+  let saved = localStorage.getItem(getTasbihKey());
+  return saved ? parseInt(saved, 10) : 0;
+}
+
+function getSavedTasbihTarget(){
+  let saved = localStorage.getItem(getTargetKey());
+  if(!saved) return 100;
+  return saved === "inf" ? "inf" : parseInt(saved, 10);
+}
+
+function syncDarkNightTasbih(){
+  let count = getSavedTasbihCount();
+  let target = getSavedTasbihTarget();
+
+  let darkNumber = document.getElementById("darkTasbihNumber");
+  if(darkNumber){
+    darkNumber.innerText = count;
+  }
+
+  let targetText = document.getElementById("darkTargetText");
+  if(targetText){
+    targetText.innerText = target === "inf" ? "∞" : target;
+  }
+}
+
+function openDarkTargetPopup(event){
+  if(event) event.stopPropagation();
+
+  let popup = document.getElementById("darkTargetPopup");
+  if(popup){
+    popup.style.display = "block";
+  }
+}
+
+function closeDarkTargetPopup(){
+  let popup = document.getElementById("darkTargetPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+}
+
+function setDarkTarget(value){
+  localStorage.setItem(getTargetKey(), value);
+
+  let targetLabel = document.getElementById("tasbihTargetLabel");
+  if(targetLabel){
+    targetLabel.innerText = value === "inf" ? "∞" : value;
+  }
+
+  document.querySelectorAll(".modeBtn").forEach(function(btn){
+    btn.classList.remove("active");
+  });
+
+  if(value == 33 && document.querySelectorAll(".modeBtn")[0]){
+    document.querySelectorAll(".modeBtn")[0].classList.add("active");
+  }
+
+  if(value == 100 && document.querySelectorAll(".modeBtn")[1]){
+    document.querySelectorAll(".modeBtn")[1].classList.add("active");
+  }
+
+  if(value === "inf" && document.querySelectorAll(".modeBtn")[2]){
+    document.querySelectorAll(".modeBtn")[2].classList.add("active");
+  }
+
+  syncDarkNightTasbih();
+  closeDarkTargetPopup();
+}
+
+function animateDarkNightRing(){
+  let ring = document.getElementById("darkNightRing");
+  if(!ring) return;
+
+  ring.style.transform = "translateX(-50%) scale(0.96)";
+
+  setTimeout(function(){
+    ring.style.transform = "translateX(-50%) scale(1)";
+  }, 140);
+}
+
+function darkNightTap(event){
+  if(event) event.stopPropagation();
+
+  increaseTasbih();
+  animateDarkNightRing();
+  syncDarkNightTasbih();
+  vibrateTasbihLight();
+}
+
+function setTasbihStyle(style){
+  currentTasbihStyle = style;
+  localStorage.setItem("tasbihStyle", style);
+
+  let classicBtn = document.getElementById("styleBtnClassic");
+  let darkBtn = document.getElementById("styleBtnDarkNight");
+
+  if(classicBtn){
+    classicBtn.style.outline = style === "classic" ? "3px solid #111" : "none";
+  }
+
+  if(darkBtn){
+    darkBtn.style.outline = style === "dark" ? "3px solid #111" : "none";
+  }
+
+  if(style === "dark"){
+    showDarkNightMode();
+  }else{
+    showClassicMode();
+  }
+}
+
+function showDarkNightMode(){
+  let darkPage = document.getElementById("darkNightTasbih");
+  let normalPage = document.getElementById("tasbihPage");
+
+  if(normalPage){
+    normalPage.style.display = "none";
+  }
+
+  if(darkPage){
+    darkPage.style.display = "block";
+  }
+
+  syncDarkNightTasbih();
+  closeTasbihSettings();
+}
+
+function showClassicMode(){
+  let darkPage = document.getElementById("darkNightTasbih");
+  let normalPage = document.getElementById("tasbihPage");
+
+  if(darkPage){
+    darkPage.style.display = "none";
+  }
+
+  if(normalPage){
+    normalPage.style.display = "block";
+  }
+
+  closeTasbihSettings();
+}
+
+function applySavedTasbihStyle(){
+  let savedStyle = localStorage.getItem("tasbihStyle") || "classic";
+  currentTasbihStyle = savedStyle;
+
+  let classicBtn = document.getElementById("styleBtnClassic");
+  let darkBtn = document.getElementById("styleBtnDarkNight");
+
+  if(classicBtn){
+    classicBtn.style.outline = savedStyle === "classic" ? "3px solid #111" : "none";
+  }
+
+  if(darkBtn){
+    darkBtn.style.outline = savedStyle === "dark" ? "3px solid #111" : "none";
+  }
+}
+
+function vibrateTasbihLight(){
+  let enabled = localStorage.getItem("tasbihVibration");
+  if(enabled !== "1") return;
+
+  if(navigator.vibrate){
+    navigator.vibrate(12);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  applySavedTasbihStyle();
+  syncDarkNightTasbih();
+});
+
+document.addEventListener("click", function(e){
+  let darkPage = document.getElementById("darkNightTasbih");
+  if(!darkPage || darkPage.style.display !== "block") return;
+
+  let popup = document.getElementById("darkTargetPopup");
+  if(popup && popup.style.display === "block") return;
+
+  let drawer = document.getElementById("tasbihSettingsDrawer");
+  if(drawer && drawer.contains(e.target)) return;
+
+  let targetCircle = document.getElementById("darkTargetCircle");
+  if(targetCircle && targetCircle.contains(e.target)) return;
+
+  let resetText = e.target && e.target.innerText ? e.target.innerText.trim() : "";
+  if(resetText === "Reset") return;
+
+  let isButton = e.target.closest("button");
+  if(isButton) return;
+
+  let ring = document.getElementById("darkNightRing");
+  if(ring && ring.contains(e.target)) return;
+});
+
+document.addEventListener("touchstart", function(e){
+  let darkPage = document.getElementById("darkNightTasbih");
+  if(!darkPage || darkPage.style.display !== "block") return;
+
+  let popup = document.getElementById("darkTargetPopup");
+  if(popup && popup.style.display === "block") return;
+
+  let drawer = document.getElementById("tasbihSettingsDrawer");
+  if(drawer && drawer.contains(e.target)) return;
+
+  let targetCircle = document.getElementById("darkTargetCircle");
+  if(targetCircle && targetCircle.contains(e.target)) return;
+
+  let ring = document.getElementById("darkNightRing");
+  if(ring && ring.contains(e.target)) return;
+
+  let text = e.target && e.target.innerText ? e.target.innerText.trim() : "";
+  if(text === "Reset") return;
+
+  let isButton = e.target.closest("button");
+  if(isButton) return;
+
+  darkNightTap();
+}, {passive:true});
 
   
 
