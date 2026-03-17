@@ -4310,7 +4310,7 @@ function setAsrToggleUI(){
   }
 }
 
-function toggleAsrMethod(){
+async function toggleAsrMethod(){
   let current = getAsrMethod();
   let next = current === "hanafi" ? "shafi" : "hanafi";
 
@@ -4321,6 +4321,9 @@ function toggleAsrMethod(){
   salahLiveCache = {};
 
   if(salahSource === "location"){
+    setSalahLoadingState();
+    await refreshLocationSalahData();
+  }else{
     renderSalahPage();
   }
 }
@@ -4339,7 +4342,7 @@ function toggleAsrMethod(){
   }
 }
 
-function selectAsrMethod(method){
+async function selectAsrMethod(method){
   localStorage.setItem("asrMethod", method);
 
   setAsrToggleUI();
@@ -4348,6 +4351,9 @@ function selectAsrMethod(method){
   salahLiveCache = {};
 
   if(salahSource === "location"){
+    setSalahLoadingState();
+    await refreshLocationSalahData();
+  }else{
     renderSalahPage();
   }
 }
