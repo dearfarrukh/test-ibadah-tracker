@@ -565,37 +565,49 @@ justify-content:center;
 
 <!-- TARGET + RESET -->
 <div style="
-width:70px;
-height:70px;
-border-radius:50%;
-background:rgba(255,255,255,0.2);
-border:2px solid rgba(255,255,255,0.8);
+position:absolute;
+top:38%;
+left:20px;
+right:20px;
 display:flex;
+justify-content:space-between;
 align-items:center;
-justify-content:center;
-color:white;
-font-size:22px;
-font-weight:700;
 ">
-100
-</div>
 
-<div onclick="resetTasbih()" style="
-width:70px;
-height:70px;
-border-radius:50%;
-background:rgba(255,255,255,0.2);
-border:2px solid rgba(255,255,255,0.8);
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-">
-Reset
-</div>
+  <!-- LEFT TARGET CIRCLE -->
+  <div style="
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  border:2px solid rgba(255,255,255,0.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:22px;
+  font-weight:700;
+  ">
+  100
+  </div>
+
+  <!-- RIGHT RESET CIRCLE -->
+  <div style="
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  border:2px solid rgba(255,255,255,0.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  " onclick="resetTasbih()">
+  Reset
+  </div>
 
 </div>
 
