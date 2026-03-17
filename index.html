@@ -4146,7 +4146,7 @@ function ibadahLoadLiveSalah(){
           ibadahApiDate(d) +
           "?latitude=" + encodeURIComponent(lat) +
           "&longitude=" + encodeURIComponent(lon) +
-          "&method=2"
+          "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0")
         )
         .then(function(r){ return r.json(); })
         .then(function(data){
@@ -4241,15 +4241,49 @@ if(document.readyState === "loading"){
   document.addEventListener("DOMContentLoaded", function(){
     ibadahPatchSalahFunctions();
     ibadahScheduleMidnightRefresh();
+    setAsrToggleUI();
   });
 }else{
   ibadahPatchSalahFunctions();
   ibadahScheduleMidnightRefresh();
+  setAsrToggleUI();
 }
 
 })();
 
+function getAsrMethod(){
+  return localStorage.getItem("asrMethod") || "hanafi";
+}
 
+function setAsrToggleUI(){
+  let label = document.getElementById("asrMethodLabel");
+  let knob = document.getElementById("asrMethodKnob");
+  let track = document.getElementById("asrMethodToggle");
+
+  if(label){
+    label.innerText = getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi";
+  }
+
+  if(track){
+    track.style.background = getAsrMethod() === "hanafi" ? "#111" : "#d1d1d6";
+  }
+
+  if(knob){
+    knob.style.left = getAsrMethod() === "hanafi" ? "22px" : "2px";
+  }
+}
+
+function toggleAsrMethod(){
+  let current = getAsrMethod();
+  let next = current === "hanafi" ? "shafi" : "hanafi";
+
+  localStorage.setItem("asrMethod", next);
+  setAsrToggleUI();
+
+  if(typeof ibadahLoadLiveSalah === "function"){
+    ibadahLoadLiveSalah();
+  }
+}
 
 
 
@@ -4819,18 +4853,48 @@ padding:10px 0 4px 0;
   </button>
 
   <!-- Asr Toggle -->
-  <button onclick="toggleAsrMethod()" style="
-  background:white;
-  border:none;
-  padding:8px 14px;
-  border-radius:20px;
+<div style="
+display:flex;
+align-items:center;
+gap:8px;
+background:white;
+padding:6px 10px;
+border-radius:22px;
+box-shadow:0 3px 10px rgba(0,0,0,0.12);
+">
+
+  <div style="
   font-size:13px;
   font-weight:700;
-  box-shadow:0 3px 10px rgba(0,0,0,0.12);
+  color:#111;
+  white-space:nowrap;
   ">
   Asr: <span id="asrMethodLabel">Hanafi</span>
-  </button>
+  </div>
 
+  <div id="asrMethodToggle" onclick="toggleAsrMethod()" style="
+  position:relative;
+  width:42px;
+  height:22px;
+  background:#111;
+  border-radius:999px;
+  cursor:pointer;
+  transition:0.25s;
+  ">
+    <div id="asrMethodKnob" style="
+    position:absolute;
+    top:2px;
+    left:22px;
+    width:18px;
+    height:18px;
+    background:white;
+    border-radius:50%;
+    transition:0.25s;
+    box-shadow:0 1px 4px rgba(0,0,0,0.2);
+    "></div>
+  </div>
+
+</div>
 </div>
 
 </div>
