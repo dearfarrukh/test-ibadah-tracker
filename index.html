@@ -3394,9 +3394,11 @@ return salahLocationData;
 async function loadRealLocationSalahTimes(dateObj){
 
 let dateKey = formatKey(dateObj);
+let methodKey = getAsrMethod();
+let cacheKey = dateKey + "-" + methodKey;
 
-if(salahLiveCache[dateKey]){
-return salahLiveCache[dateKey];
+if(salahLiveCache[cacheKey]){
+return salahLiveCache[cacheKey];
 }
 
 let loc = await loadUserLocationData();
@@ -3429,7 +3431,7 @@ maghrib: to12Hour(t.Maghrib),
 isha: to12Hour(t.Isha)
 };
 
-salahLiveCache[dateKey] = liveData;
+salahLiveCache[cacheKey] = liveData;
 return liveData;
 }
 
@@ -4322,7 +4324,15 @@ async function toggleAsrMethod(){
 
   if(salahSource === "location"){
     setSalahLoadingState();
-    await refreshLocationSalahData();
+
+    try{
+      let selectedDate = getSelectedSalahDate();
+      let liveData = await loadRealLocationSalahTimes(selectedDate);
+      applySalahDataToScreen(liveData);
+    }catch(err){
+      document.getElementById("salahCityName").innerText = "Location unavailable";
+      document.getElementById("salahSourceLabel").innerText = "Allow location + internet";
+    }
   }else{
     renderSalahPage();
   }
@@ -4352,7 +4362,15 @@ async function selectAsrMethod(method){
 
   if(salahSource === "location"){
     setSalahLoadingState();
-    await refreshLocationSalahData();
+
+    try{
+      let selectedDate = getSelectedSalahDate();
+      let liveData = await loadRealLocationSalahTimes(selectedDate);
+      applySalahDataToScreen(liveData);
+    }catch(err){
+      document.getElementById("salahCityName").innerText = "Location unavailable";
+      document.getElementById("salahSourceLabel").innerText = "Allow location + internet";
+    }
   }else{
     renderSalahPage();
   }
