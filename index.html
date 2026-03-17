@@ -4068,7 +4068,19 @@ function ibadahApiDate(dateObj){
 
 function ibadahCleanTime(value){
   if(!value) return "--:--";
-  return value.split(" ")[0];
+
+  let time = value.split(" ")[0];
+  let parts = time.split(":");
+
+  let hour = parseInt(parts[0],10);
+  let minute = parts[1];
+
+  let ampm = hour >= 12 ? "PM" : "AM";
+
+  hour = hour % 12;
+  if(hour === 0) hour = 12;
+
+  return hour + ":" + minute + " " + ampm;
 }
 
 function ibadahCurrentSalahDate(){
@@ -4270,7 +4282,14 @@ if(document.readyState === "loading"){
 })();
 
 function getAsrMethod(){
-  return localStorage.getItem("asrMethod") || "hanafi";
+  let m = localStorage.getItem("asrMethod");
+
+  if(!m){
+    localStorage.setItem("asrMethod", "hanafi");
+    return "hanafi";
+  }
+
+  return m;
 }
 
 function setAsrToggleUI(){
