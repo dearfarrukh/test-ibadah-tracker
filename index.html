@@ -728,289 +728,206 @@ z-index:8700;
   </div>
 </div>
 
-<!-- TASBIH SETTINGS DRAWER -->
 <div id="tasbihMainContent" style="
 padding:22px 18px 30px 18px;
 box-sizing:border-box;
 ">
-
-  <div style="
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:22px;
-  ">
-    <div style="
-    font-size:22px;
-    font-weight:800;
-    color:#111;
-    ">
-      Settings
-    </div>
-
-    <button onclick="closeTasbihSettings()" style="
-    width:38px;
-    height:38px;
-    border:none;
-    border-radius:12px;
-    background:#e9e9ee;
-    font-size:20px;
-    cursor:pointer;
-    color:#111;
-    ">
-      ✕
-    </button>
-  </div>
-
-  <div style="
-  font-size:15px;
-  font-weight:700;
-  color:#666;
-  margin-bottom:10px;
-  letter-spacing:0.2px;
-  ">
-    Style
-  </div>
-
-  <div style="
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  ">
-
-    <button id="styleBtnClassic" onclick="setTasbihStyle('classic')" style="
-width:100%;
-border:none;
-border-radius:20px;
-background:white;
-padding:16px 16px;
-text-align:left;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-cursor:pointer;
-outline:3px solid #111;
-">
-  <div style="font-size:17px;font-weight:800;color:#111;">Classic</div>
-  <div style="font-size:13px;color:#666;margin-top:4px;">Your current Tasbih style</div>
-</button>
-
-   <button id="styleBtnDarkNight" onclick="setTasbihStyle('dark')" style="
-width:100%;
-border:none;
-border-radius:20px;
-background:white;
-padding:16px 16px;
-text-align:left;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-cursor:pointer;
-outline:none;
-">
-  <div style="font-size:17px;font-weight:800;color:#111;">Dark Night</div>
-  <div style="font-size:13px;color:#666;margin-top:4px;">New dark sky ring Tasbih style</div>
-</button>
-  </div>
-
-</div>
   <div style="padding:10px;">
 
     <!-- TASBIH HEADER -->
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 4px 20px 4px;
-">
+    <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 4px 20px 4px;
+    ">
 
-<!-- BACK BUTTON -->
-<button onclick="closeTasbihPage()" style="
-width:40px;
-height:40px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-">
-←
-</button>
+      <!-- BACK BUTTON -->
+      <button onclick="closeTasbihPage()" style="
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      border:1px solid #ccc;
+      background:white;
+      font-size:20px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      ">
+      ←
+      </button>
 
-<!-- SETTINGS BUTTON -->
-<button onclick="openTasbihSettings()" style="
-width:44px;
-height:44px;
-border:none;
-border-radius:14px;
-background:rgba(255,255,255,0.75);
-backdrop-filter:blur(12px);
--webkit-backdrop-filter:blur(12px);
-box-shadow:0 6px 18px rgba(0,0,0,0.10);
-font-size:22px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-color:#111;
-">
-⚙️
-</button>
+      <!-- SETTINGS BUTTON -->
+      <button onclick="openTasbihSettings()" style="
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:rgba(255,255,255,0.75);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      box-shadow:0 6px 18px rgba(0,0,0,0.10);
+      font-size:22px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#111;
+      ">
+      ⚙️
+      </button>
 
-</div>
+    </div>
 
- <div class="card" style="
-text-align:center;
-max-width:360px;
-margin:10px auto 16px auto;
-padding:20px;
-background:#cfcfd6;
-border-radius:24px;
-box-shadow:0 6px 18px rgba(0,0,0,0.12);
-">
+    <div class="card" style="
+    text-align:center;
+    max-width:360px;
+    margin:10px auto 16px auto;
+    padding:20px;
+    background:#cfcfd6;
+    border-radius:24px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.12);
+    ">
+      <div style="
+      font-size:28px;
+      font-weight:800;
+      color:#5c4632;
+      letter-spacing:1px;
+      ">
+      📿 Tasbih Counter
+      </div>
+    </div>
 
-<div style="
-font-size:28px;
-font-weight:800;
-color:#5c4632;
-letter-spacing:1px;
-">
-📿 Tasbih Counter
-</div>
+    <div class="card" style="
+    width:92%;
+    max-width:360px;
+    margin:10px auto 16px auto;
+    padding:12px;
+    text-align:center;
+    background:#dcdce1;
+    border-radius:28px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.15);
+    ">
 
-</div>
+      <div id="tasbihModes"
+      onclick="event.stopPropagation();"
+      style="
+      display:flex;
+      background:#e9e9ee;
+      border-radius:18px;
+      overflow:hidden;
+      height:52px;
+      outline:none;
+      -webkit-tap-highlight-color:transparent;
+      ">
 
-<div class="card" style="
-width:92%;
-max-width:360px;
-margin:10px auto 16px auto;
-padding:12px;
-text-align:center;
-background:#dcdce1;
-border-radius:28px;
-box-shadow:0 6px 18px rgba(0,0,0,0.15);
-">
+        <button class="modeBtn" onclick="setTasbihMode(33)" style="font-size:20px;color:#5c4632;">33</button>
+        <button class="modeBtn" onclick="setTasbihMode(100)" style="font-size:20px;color:#5c4632;">100</button>
+        <button class="modeBtn" onclick="setTasbihMode('inf')" style="font-size:24px;color:#5c4632;">∞</button>
 
-<div id="tasbihModes"
-onclick="event.stopPropagation();"
-style="
-display:flex;
-background:#e9e9ee;
-border-radius:18px;
-overflow:hidden;
-height:52px;
-outline:none;
--webkit-tap-highlight-color:transparent;
-">
+      </div>
 
-  <button class="modeBtn" onclick="setTasbihMode(33)" style="font-size:20px;color:#5c4632;">33</button>
-<button class="modeBtn" onclick="setTasbihMode(100)" style="font-size:20px;color:#5c4632;">100</button>
-<button class="modeBtn" onclick="setTasbihMode('inf')" style="font-size:24px;color:#5c4632;">∞</button>
+    </div>
+
+    <div style="
+    width:92%;
+    max-width:360px;
+    margin:0 auto;
+    background:#cfcfd6;
+    border-radius:40px;
+    padding:26px 20px 34px 20px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.18);
+    position:relative;
+    ">
+
+      <div id="tasbihScreen" style="
+      width:150px;
+      height:60px;
+      margin:0 auto 24px auto;
+      background:#e9e9ee;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:38px;
+      font-weight:700;
+      color:black;
+      letter-spacing:2px;
+      box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
+      ">
+      0
+      </div>
+
+      <div onclick="increaseTasbih()" style="
+      width:210px;
+      height:210px;
+      margin:0 auto;
+      border-radius:50%;
+      background:#e9e9ee;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:inset 0 4px 10px rgba(255,255,255,0.25), inset 0 -6px 12px rgba(0,0,0,0.12);
+      cursor:pointer;
+      position:relative;
+      ">
+        <div style="
+        width:180px;
+        height:180px;
+        border-radius:50%;
+        background:#e9e9ee;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:36px;
+        font-weight:800;
+        letter-spacing:1px;
+        color:#5c4632;
+        ">
+          <div id="tasbihCenterText">0 / 33</div>
+        </div>
+
+        <!-- PROGRESS RING -->
+        <div id="tasbihProgress" style="
+        position:absolute;
+        width:210px;
+        height:210px;
+        border-radius:50%;
+        pointer-events:none;
+        "></div>
+
+      </div>
+
+    </div>
+
+    <div style="
+    margin-top:24px;
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    ">
+
+      <button onclick="resetTasbih()" style="
+      background:#e9e9ee;
+      color:#5c4632;
+      border:none;
+      border-radius:18px;
+      padding:16px 34px;
+      font-size:18px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+      ">
+      Reset
+      </button>
+
+    </div>
 
   </div>
-
-</div>
-  
-
-
-<div style="
-width:92%;
-max-width:360px;
-margin:0 auto;
-background:#cfcfd6;
-border-radius:40px;
-padding:26px 20px 34px 20px;
-box-shadow:0 10px 24px rgba(0,0,0,0.18);
-position:relative;
-">
-  
-<div id="tasbihScreen" style="
-width:150px;
-height:60px;
-margin:0 auto 24px auto;
-background:#e9e9ee;
-border-radius:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:38px;
-font-weight:700;
-color:black;
-letter-spacing:2px;
-box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
-">
-0
-</div>
-<div onclick="increaseTasbih()" style="
-width:210px;
-height:210px;
-margin:0 auto;
-border-radius:50%;
-background:#e9e9ee;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:inset 0 4px 10px rgba(255,255,255,0.25), inset 0 -6px 12px rgba(0,0,0,0.12);
-cursor:pointer;
-position:relative;
-">
-<div style="
-width:180px;
-height:180px;
-border-radius:50%;
-background:#e9e9ee;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:36px;
-font-weight:800;
-letter-spacing:1px;
-color:#5c4632;
-">
-<div id="tasbihCenterText">0 / 33</div>
-</div>
-  
-<!-- PROGRESS RING -->
-<div id="tasbihProgress" style="
-position:absolute;
-width:210px;
-height:210px;
-border-radius:50%;
-pointer-events:none;
-"></div>
-
-
-</div>
-
-</div>
-
-<div style="
-margin-top:24px;
-display:flex;
-justify-content:center;
-gap:12px;
-flex-wrap:wrap;
-">
-
-<button onclick="resetTasbih()" style="
-background:#e9e9ee;
-color:#5c4632;
-border:none;
-border-radius:18px;
-padding:16px 34px;
-font-size:18px;
-font-weight:800;
-cursor:pointer;
-box-shadow:0 4px 10px rgba(0,0,0,0.15);
-">
-Reset
-</button>
-
 </div>
 </div>
-</div>
-</div>
-
-  
 
 <div id="zikrPage" style="
 display:none;
