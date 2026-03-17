@@ -4213,10 +4213,38 @@ function ibadahPatchSalahFunctions(){
   }
 }
 
+function ibadahScheduleMidnightRefresh(){
+  let now = new Date();
+  let nextMidnight = new Date();
+  nextMidnight.setHours(24, 0, 5, 0);
+
+  let waitMs = nextMidnight.getTime() - now.getTime();
+
+  setTimeout(function(){
+    if(typeof salahDayOffset !== "undefined"){
+      salahDayOffset = 0;
+    }
+
+    if(typeof salahSource !== "undefined" && salahSource === "masjid"){
+      if(typeof loadMasjidSalah === "function"){
+        loadMasjidSalah();
+      }
+    }else{
+      ibadahLoadLiveSalah();
+    }
+
+    ibadahScheduleMidnightRefresh();
+  }, waitMs);
+}
+
 if(document.readyState === "loading"){
-  document.addEventListener("DOMContentLoaded", ibadahPatchSalahFunctions);
+  document.addEventListener("DOMContentLoaded", function(){
+    ibadahPatchSalahFunctions();
+    ibadahScheduleMidnightRefresh();
+  });
 }else{
   ibadahPatchSalahFunctions();
+  ibadahScheduleMidnightRefresh();
 }
 
 })();
