@@ -3794,9 +3794,10 @@ updateDarkNightNumber();
 
 }
 
-function openDarkTargetPopup(eve
-
-  
+function openDarkTargetPopup(event){
+if(event) event.stopPropagation();
+alert("Target popup next step");
+}
 
 function showDarkNightMode(){
 
@@ -3817,7 +3818,8 @@ overlay.style.display = "none";
 }
 
 updateDarkNightNumber();
-  let savedTarget = localStorage.getItem(getTargetKey()) || 33;
+
+let savedTarget = localStorage.getItem(getTargetKey()) || 33;
 let darkTargetText = document.getElementById("darkTargetText");
 if(darkTargetText){
 darkTargetText.innerText = savedTarget === "inf" ? "∞" : savedTarget;
