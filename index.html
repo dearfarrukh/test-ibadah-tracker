@@ -3058,98 +3058,98 @@ let salahLiveCache = {};
   
 const salahDummyData = {
 "-3": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:18 AM",
-sunrise: "6:52 AM",
+sunrise: "7:01 AM",
 dhuhr: "1:13 PM",
 asr: "4:57 PM",
 maghrib: "6:59 PM",
 isha: "8:28 PM"
 },
 "-2": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:17 AM",
-sunrise: "6:51 AM",
+sunrise: "7:00 AM",
 dhuhr: "1:14 PM",
 asr: "4:58 PM",
 maghrib: "7:00 PM",
 isha: "8:29 PM"
 },
 "-1": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:16 AM",
-sunrise: "6:50 AM",
+sunrise: "6:59 AM",
 dhuhr: "1:14 PM",
 asr: "4:59 PM",
 maghrib: "7:01 PM",
 isha: "8:29 PM"
 },
 "0": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:15 AM",
-sunrise: "6:49 AM",
+sunrise: "6:58 AM",
 dhuhr: "1:15 PM",
 asr: "5:00 PM",
 maghrib: "7:02 PM",
 isha: "8:30 PM"
 },
 "1": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:14 AM",
-sunrise: "6:48 AM",
+sunrise: "6:56 AM",
 dhuhr: "1:15 PM",
 asr: "5:01 PM",
 maghrib: "7:03 PM",
 isha: "8:31 PM"
 },
 "2": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:12 AM",
-sunrise: "6:47 AM",
+sunrise: "6:55 AM",
 dhuhr: "1:15 PM",
 asr: "5:02 PM",
 maghrib: "7:04 PM",
 isha: "8:32 PM"
 },
 "3": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:11 AM",
-sunrise: "6:46 AM",
+sunrise: "6:54 AM",
 dhuhr: "1:16 PM",
 asr: "5:03 PM",
 maghrib: "7:05 PM",
 isha: "8:33 PM"
 },
 "4": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:10 AM",
-sunrise: "6:45 AM",
+sunrise: "6:52 AM",
 dhuhr: "1:16 PM",
 asr: "5:04 PM",
 maghrib: "7:06 PM",
 isha: "8:34 PM"
 },
 "5": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:08 AM",
-sunrise: "6:44 AM",
+sunrise: "6:51 AM",
 dhuhr: "1:16 PM",
 asr: "5:05 PM",
 maghrib: "7:07 PM",
 isha: "8:35 PM"
 },
 "6": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:07 AM",
 sunrise: "6:49 AM",
 dhuhr: "1:17 PM",
@@ -3158,10 +3158,10 @@ maghrib: "7:08 PM",
 isha: "8:36 PM"
 },
 "7": {
-locationName: "Loading location...",
-sourceLabel: "Loading times...",
+locationName: "West Hempstead",
+sourceLabel: "North America Timings",
 fajr: "5:05 AM",
-sunrise: "6:43 AM",
+sunrise: "6:48 AM",
 dhuhr: "1:17 PM",
 asr: "5:07 PM",
 maghrib: "7:09 PM",
@@ -3402,7 +3402,7 @@ let t = json.data.timings;
 
 let liveData = {
 locationName: loc.city || "My Location",
-<span id="salahSourceLabel">Loading times...</span>
+sourceLabel: "North America Timings",
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -4025,187 +4025,7 @@ dark.innerText = main.innerText;
 
 }
 
-  <script>
-let salahLocationData = {
-  lat: null,
-  lon: null,
-  city: "Loading location...",
-  country: ""
-};
-
-let salahDayOffset = 0;
-
-function formatSalahDate(dateObj){
-  return dateObj.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric"
-  });
-}
-
-function formatApiDate(dateObj){
-  let y = dateObj.getFullYear();
-  let m = String(dateObj.getMonth() + 1).padStart(2, "0");
-  let d = String(dateObj.getDate()).padStart(2, "0");
-  return d + "-" + m + "-" + y;
-}
-
-function updateSalahDateTexts(gregorianText, hijriText){
-  let dateEl = document.getElementById("salahDateText");
-  let hijriEl = document.getElementById("salahHijriText");
-
-  if(dateEl) dateEl.innerText = gregorianText;
-  if(hijriEl) hijriEl.innerText = hijriText;
-}
-
-function updateSalahLocationText(name, source){
-  let locationEl = document.getElementById("salahLocationName");
-  let sourceEl = document.getElementById("salahSourceLabel");
-
-  if(locationEl) locationEl.innerText = name;
-  if(sourceEl) sourceEl.innerText = source;
-}
-
-function updateSalahTimes(timings){
-  if(document.getElementById("fajrTime")) document.getElementById("fajrTime").innerText = timings.Fajr || "--:--";
-  if(document.getElementById("sunriseTime")) document.getElementById("sunriseTime").innerText = timings.Sunrise || "--:--";
-  if(document.getElementById("dhuhrTime")) document.getElementById("dhuhrTime").innerText = timings.Dhuhr || "--:--";
-  if(document.getElementById("asrTime")) document.getElementById("asrTime").innerText = timings.Asr || "--:--";
-  if(document.getElementById("maghribTime")) document.getElementById("maghribTime").innerText = timings.Maghrib || "--:--";
-  if(document.getElementById("ishaTime")) document.getElementById("ishaTime").innerText = timings.Isha || "--:--";
-  if(document.getElementById("sunriseBottomTime")) document.getElementById("sunriseBottomTime").innerText = timings.Sunrise || "--:--";
-  if(document.getElementById("sunsetTime")) document.getElementById("sunsetTime").innerText = timings.Sunset || "--:--";
-}
-
-function getSalahTargetDate(){
-  let d = new Date();
-  d.setDate(d.getDate() + salahDayOffset);
-  return d;
-}
-
-function loadSalahForCoordinates(lat, lon){
-  let targetDate = getSalahTargetDate();
-  let dateText = formatSalahDate(targetDate);
-  updateSalahDateTexts(dateText, "Loading Hijri date...");
-
-  fetch(
-    "https://api.aladhan.com/v1/timings/" +
-    formatApiDate(targetDate) +
-    "?latitude=" + lat +
-    "&longitude=" + lon +
-    "&method=2"
-  )
-  .then(response => response.json())
-  .then(data => {
-    if(!data || !data.data) return;
-
-    let timings = data.data.timings;
-    let hijri = data.data.date.hijri;
-
-    updateSalahTimes({
-      Fajr: timings.Fajr,
-      Sunrise: timings.Sunrise,
-      Dhuhr: timings.Dhuhr,
-      Asr: timings.Asr,
-      Maghrib: timings.Maghrib,
-      Isha: timings.Isha,
-      Sunset: timings.Sunset
-    });
-
-    let hijriText = hijri.day + " " + hijri.month.en + ", " + hijri.year + " AH";
-    updateSalahDateTexts(dateText, hijriText);
-
-    localStorage.setItem("salah-lat", lat);
-    localStorage.setItem("salah-lon", lon);
-  })
-  .catch(error => {
-    console.log("Salah API error:", error);
-    updateSalahLocationText("Location error", "Could not load live times");
-  });
-}
-
-function reverseGeocodeLocation(lat, lon){
-  fetch(
-    "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
-    lat +
-    "&lon=" +
-    lon
-  )
-  .then(response => response.json())
-  .then(place => {
-    let city =
-      (place.address && (
-        place.address.city ||
-        place.address.town ||
-        place.address.village ||
-        place.address.hamlet ||
-        place.address.county
-      )) || "My Location";
-
-    let country = (place.address && place.address.country) || "";
-
-    salahLocationData.city = city;
-    salahLocationData.country = country;
-
-    updateSalahLocationText(city, "My Location");
-  })
-  .catch(error => {
-    console.log("Location name error:", error);
-    updateSalahLocationText("My Location", "Live Salah Times");
-  });
-}
-
-function loadLiveSalahTimes(){
-  let targetDate = getSalahTargetDate();
-  updateSalahDateTexts(formatSalahDate(targetDate), "Loading Hijri date...");
-  updateSalahLocationText("Loading location...", "Getting live times...");
-
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(
-      function(position){
-        let lat = position.coords.latitude;
-        let lon = position.coords.longitude;
-
-        salahLocationData.lat = lat;
-        salahLocationData.lon = lon;
-
-        reverseGeocodeLocation(lat, lon);
-        loadSalahForCoordinates(lat, lon);
-      },
-      function(){
-        let savedLat = localStorage.getItem("salah-lat");
-        let savedLon = localStorage.getItem("salah-lon");
-
-        if(savedLat && savedLon){
-          let lat = parseFloat(savedLat);
-          let lon = parseFloat(savedLon);
-
-          reverseGeocodeLocation(lat, lon);
-          loadSalahForCoordinates(lat, lon);
-        }else{
-          updateSalahLocationText("Location blocked", "Please allow location");
-        }
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 12000,
-        maximumAge: 0
-      }
-    );
-  }else{
-    updateSalahLocationText("Not supported", "Geolocation not supported");
-  }
-}
-
-function refreshSalahToday(){
-  salahDayOffset = 0;
-  loadLiveSalahTimes();
-}
-
-document.addEventListener("DOMContentLoaded", function(){
-  refreshSalahToday();
-});
-</script>
+  
 
 
 
@@ -4775,13 +4595,13 @@ box-sizing:border-box;
   margin-bottom:14px;
   text-shadow:0 1px 3px rgba(0,0,0,0.35);
   ">
-  <div style="
+    <div id="salahCityName" style="
     font-size:22px;
     font-weight:800;
     color:white;
     ">
-    <span id="salahLocationName">Loading location...</span>
-</div>
+    West Hempstead
+    </div>
 
     <div id="salahSourceLabel" style="
     font-size:14px;
@@ -4790,7 +4610,7 @@ box-sizing:border-box;
     margin-top:4px;
     opacity:0.95;
     ">
-   Loading times...
+    North America Timings
     </div>
   </div>
 
@@ -4869,7 +4689,7 @@ margin-bottom:18px;
         font-weight:800;
         color:#000;
         ">
-        <span id="salahDateText">Loading date...</span>
+        Saturday, Mar 14
         </div>
 
         <div id="salahSelectedHijri" style="
@@ -4878,7 +4698,7 @@ margin-bottom:18px;
         margin-top:4px;
         font-weight:600;
         ">
-        <span id="salahHijriText">Loading Hijri date...</span>
+        Ramadan 24, 1447 AH
         </div>
       </div>
 
@@ -4937,7 +4757,7 @@ transition:transform 0.28s ease, opacity 0.28s ease;
     font-size:18px;
     ">
       <div>🌅 Fajr</div>
-      <span id="fajrTime">--:--</span>
+      <div id="fajrTime" style="font-weight:700;">5:15 AM</div>
     </div>
 
     <div style="
@@ -4949,7 +4769,7 @@ transition:transform 0.28s ease, opacity 0.28s ease;
     font-size:18px;
     ">
       <div>🌄 Sunrise</div>
-      <span id="sunriseTime">--:--</span>
+      <div id="sunriseTime" style="font-weight:700;">6:58 AM</div>
     </div>
 
     <div style="
@@ -4961,7 +4781,7 @@ transition:transform 0.28s ease, opacity 0.28s ease;
     font-size:18px;
     ">
       <div>☀️ Dhuhr</div>
-    <span id="dhuhrTime">--:--</span>
+      <div id="dhuhrTime" style="font-weight:700;">1:15 PM</div>
     </div>
 
     <div style="
@@ -4973,7 +4793,7 @@ transition:transform 0.28s ease, opacity 0.28s ease;
     font-size:18px;
     ">
       <div>⛅ Asr</div>
-    <span id="asrTime">--:--</span>
+      <div id="asrTime" style="font-weight:700;">5:00 PM</div>
     </div>
 
     <div style="
@@ -4985,7 +4805,7 @@ transition:transform 0.28s ease, opacity 0.28s ease;
     font-size:18px;
     ">
       <div>🌇 Maghrib</div>
-      <span id="maghribTime">--:--</span>
+      <div id="maghribTime" style="font-weight:700;">7:10 PM</div>
     </div>
 
     <div style="
@@ -4996,7 +4816,7 @@ transition:transform 0.28s ease, opacity 0.28s ease;
     font-size:18px;
     ">
       <div>☁️🌙 Isha</div>
-     <span id="ishaTime">--:--</span>
+      <div id="ishaTime" style="font-weight:700;">8:30 PM</div>
     </div>
 
   </div>
