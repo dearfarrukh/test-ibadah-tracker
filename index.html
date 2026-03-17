@@ -3793,23 +3793,18 @@ ring.style.transform = "translateX(-50%) scale(1)";
 
 function showDarkNightMode(){
 
-let dark = document.getElementById("darkNightTasbih");
-let drawer = document.getElementById("tasbihSettingsDrawer");
-let overlay = document.getElementById("tasbihSettingsOverlay");
+  let darkPage = document.getElementById("darkNightTasbih");
+  let normalPage = document.getElementById("tasbihPage");
 
-if(dark){
-dark.style.display = "block";
-}
+  // ✅ DO NOT HIDE tasbihPage
+  // we only show dark layer on top
 
-if(drawer){
-drawer.style.right = "-70%";
-}
+  if(darkPage){
+    darkPage.style.display = "block";
+  }
 
-if(overlay){
-overlay.style.display = "none";
-}
-
-updateDarkNightNumber();
+  syncDarkNightTasbih();
+  closeTasbihSettings();
 
 }
 function showClassicMode(){
@@ -3987,21 +3982,6 @@ function setTasbihStyle(style){
   }
 }
 
-function showDarkNightMode(){
-  let darkPage = document.getElementById("darkNightTasbih");
-  let normalPage = document.getElementById("tasbihPage");
-
-  if(normalPage){
-    normalPage.style.display = "none";
-  }
-
-  if(darkPage){
-    darkPage.style.display = "block";
-  }
-
-  syncDarkNightTasbih();
-  closeTasbihSettings();
-}
 
 function showClassicMode(){
   let darkPage = document.getElementById("darkNightTasbih");
