@@ -2995,6 +2995,8 @@ function openTasbihPage(){
 document.getElementById("tasbihPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
 window.scrollTo(0,0);
+
+applySavedTasbihStyle();
 }
 
 function closeTasbihPage(){
@@ -3885,6 +3887,25 @@ if(circle.contains(e.target)) return;
 menu.style.display = "none";
 
 });
+
+function saveTasbihStyle(style){
+localStorage.setItem("tasbihStyle", style);
+}
+
+function applySavedTasbihStyle(){
+
+let savedStyle = localStorage.getItem("tasbihStyle") || "classic";
+
+if(savedStyle === "dark"){
+showDarkNightMode();
+}else{
+showClassicMode();
+}
+
+}
+
+
+  
 function toggleDarkTargetMenu(event){
 if(event) event.stopPropagation();
 
@@ -3927,7 +3948,9 @@ let dark = document.getElementById("darkNightTasbih");
 let drawer = document.getElementById("tasbihSettingsDrawer");
 let overlay = document.getElementById("tasbihSettingsOverlay");
 
-if(dark){
+  saveTasbihStyle("dark");
+
+  if(dark){
 dark.style.display = "block";
 }
 
@@ -3955,6 +3978,8 @@ let dark = document.getElementById("darkNightTasbih");
 let drawer = document.getElementById("tasbihSettingsDrawer");
 let overlay = document.getElementById("tasbihSettingsOverlay");
 
+saveTasbihStyle("classic");
+
 if(dark){
 dark.style.display = "none";
 }
@@ -3966,6 +3991,8 @@ drawer.style.right = "-70%";
 if(overlay){
 overlay.style.display = "none";
 }
+
+closeDarkTargetMenu();
 
 }
 
