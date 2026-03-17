@@ -575,21 +575,24 @@ align-items:center;
 ">
 
   <!-- LEFT TARGET CIRCLE -->
-  <div style="
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.2);
-  border:2px solid rgba(255,255,255,0.8);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:22px;
-  font-weight:700;
-  ">
-  100
-  </div>
+  <div id="darkTargetCircle" onclick="openDarkTargetPopup(event)" style="
+width:70px;
+height:70px;
+border-radius:50%;
+background:rgba(255,255,255,0.2);
+border:2px solid rgba(255,255,255,0.8);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:22px;
+font-weight:700;
+cursor:pointer;
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+">
+<span id="darkTargetText">100</span>
+</div>
 
   <!-- RIGHT RESET CIRCLE -->
   <div style="
@@ -3706,6 +3709,12 @@ updateDarkNightNumber();
 
 }
 
+  function openDarkTargetPopup(event){
+if(event) event.stopPropagation();
+alert("Target popup next step");
+}
+
+  
 
 function showDarkNightMode(){
 
