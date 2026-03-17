@@ -3735,8 +3735,8 @@ document.getElementById("duaViewerPage").style.display = "none";
 window.scrollTo(0,0);
 }
   
-  function goToMainPage(){
-closeMenu();
+function goToMainPage(){
+closeSideMenu();
 location.reload();
 }
 
@@ -3857,8 +3857,6 @@ dark.innerText = main.innerText;
 
 }
 
-
-  <script>
 let currentTasbihStyle = localStorage.getItem("tasbihStyle") || "classic";
 
 function getTasbihKey(){
