@@ -2433,10 +2433,17 @@ counter.innerText = count;
 let screen = document.getElementById("tasbihScreen");
 if(screen){
 screen.innerText = count;
-  buildTasbihBars();
 }
 
+let center = document.getElementById("tasbihCenterText");
+if(center){
+center.innerText = count + " / " + (target === "inf" ? "∞" : target);
 }
+
+buildTasbihBars();
+}
+
+  
 function resetTasbih(){
 localStorage.setItem(getTasbihKey(),0);
 
