@@ -1939,26 +1939,78 @@ loadTasks();
 
 function manageTasks(){
 
-let area = document.getElementById("taskMenuContent");
+document.getElementById("taskMenuContent").innerHTML = `
+<div style="
+font-size:30px;
+font-weight:900;
+color:#111;
+margin-bottom:20px;
+letter-spacing:-0.4px;
+">
+Manage Tasks
+</div>
 
-area.innerHTML = `
-
-<button onclick="showAddTask()" style="width:100%;padding:12px;margin-bottom:10px;">
+<button onclick="showAddTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#111;
+color:white;
+box-shadow:0 10px 24px rgba(0,0,0,0.14);
+cursor:pointer;
+">
 Add Task
 </button>
 
-<button onclick="showRenameTask()" style="width:100%;padding:12px;margin-bottom:10px;">
+<button onclick="showRenameTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#e9e9ee;
+color:#111;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+">
 Rename Task
 </button>
 
-<button onclick="showRemoveTask()" style="width:100%;padding:12px;margin-bottom:10px;">
+<button onclick="showRemoveTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#e9e9ee;
+color:#111;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+">
 Remove Task
 </button>
 
-<button onclick="closeTaskMenu()" style="width:100%;padding:12px;background:#eee;">
-Cancel
+<button onclick="closeTaskMenu()" style="
+width:100%;
+padding:18px;
+background:#f5f5f7;
+font-size:22px;
+font-weight:700;
+border:none;
+border-radius:22px;
+color:#666;
+cursor:pointer;
+">
+Close
 </button>
-
 `;
 
 document.getElementById("taskMenu").style.display = "block";
