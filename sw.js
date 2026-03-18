@@ -1,4 +1,4 @@
-const CACHE_VERSION = "ibadah-cache-v2";
+const CACHE_VERSION = "ibadah-cache-v3";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -22,7 +22,7 @@ const APP_FILES = [
 
   "./rehman-1.png",
   "./rehman-2.png",
-  "./rehman-3.png",
+ "./rehman-3.png"
 
   "./ikhlas.jpg"
 ];
