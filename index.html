@@ -3277,16 +3277,36 @@ document.getElementById("zikrDetailPage").style.display = "block";
 function closeZikrDetail(){
 document.getElementById("zikrDetailPage").style.display = "none";
 }
-  function openWaqiyaPage(){
+ function openWaqiyaPage(){
 
-document.getElementById("waqiyaPage").style.display = "block";
-
+let page = document.getElementById("waqiyaPage");
+if(page){
+page.style.display = "block";
 }
 
-function closeWaqiyaPage(){
+/* HIDE ALL MENU BUTTONS */
+let menus = document.querySelectorAll("[id='menuBtn']");
+menus.forEach(function(btn){
+btn.style.display = "none";
+});
 
-document.getElementById("waqiyaPage").style.display = "none";
+window.scrollTo(0,0);
+}
 
+function openWaqiyaPage(){
+
+let page = document.getElementById("waqiyaPage");
+if(page){
+page.style.display = "block";
+}
+
+/* HIDE ALL MENU BUTTONS */
+let menus = document.querySelectorAll("[id='menuBtn']");
+menus.forEach(function(btn){
+btn.style.display = "none";
+});
+
+window.scrollTo(0,0);
 }
 
 
