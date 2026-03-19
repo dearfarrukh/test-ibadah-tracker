@@ -3830,7 +3830,6 @@ let query = input.value.trim();
 if(!query){
 document.getElementById("salahCityName").innerText = "Enter a location";
 document.getElementById("salahSourceLabel").innerText = "Try: London, UK or Karachi, Pakistan";
-setSalahLoadingState();
 return;
 }
 
@@ -3854,7 +3853,6 @@ let geoData = await geoRes.json();
 if(!geoData || !geoData.length){
 document.getElementById("salahCityName").innerText = "Location not found";
 document.getElementById("salahSourceLabel").innerText = "Try: London, UK • Karachi, Pakistan • Makkah, Saudi Arabia";
-setSalahLoadingState();
 return;
 }
 
