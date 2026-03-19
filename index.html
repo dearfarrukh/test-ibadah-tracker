@@ -5040,6 +5040,7 @@ function clearCurrentSalahHighlight(){
     if(row){
       row.style.background = "transparent";
       row.style.boxShadow = "none";
+      row.style.border = "none";
     }
   });
 }
@@ -5049,13 +5050,15 @@ function setCurrentSalahHighlight(rowId){
 
   let row = document.getElementById(rowId);
   if(row){
-    row.style.background = "#e9e9ee";
-    row.style.boxShadow = "0 2px 8px rgba(0,0,0,0.05)";
+    row.style.background = "rgba(233,233,238,0.95)";
+    row.style.boxShadow = "0 4px 12px rgba(0,0,0,0.10)";
+    row.style.border = "1px solid rgba(0,0,0,0.06)";
   }
 }
 
 function updateCurrentSalahHighlight(){
   let fajr = salahTextToMinutes(document.getElementById("fajrTime")?.innerText);
+  let sunrise = salahTextToMinutes(document.getElementById("sunriseTime")?.innerText);
   let dhuhr = salahTextToMinutes(document.getElementById("dhuhrTime")?.innerText);
   let asr = salahTextToMinutes(document.getElementById("asrTime")?.innerText);
   let maghrib = salahTextToMinutes(document.getElementById("maghribTime")?.innerText);
@@ -5063,6 +5066,7 @@ function updateCurrentSalahHighlight(){
 
   if(
     fajr === null ||
+    sunrise === null ||
     dhuhr === null ||
     asr === null ||
     maghrib === null ||
@@ -5075,9 +5079,11 @@ function updateCurrentSalahHighlight(){
   let now = new Date();
   let nowMinutes = (now.getHours() * 60) + now.getMinutes();
 
+  clearCurrentSalahHighlight();
+
   if(nowMinutes >= isha || nowMinutes < fajr){
     setCurrentSalahHighlight("ishaRow");
-  }else if(nowMinutes >= fajr && nowMinutes < dhuhr){
+  }else if(nowMinutes >= fajr && nowMinutes < sunrise){
     setCurrentSalahHighlight("fajrRow");
   }else if(nowMinutes >= dhuhr && nowMinutes < asr){
     setCurrentSalahHighlight("dhuhrRow");
@@ -5089,7 +5095,6 @@ function updateCurrentSalahHighlight(){
     clearCurrentSalahHighlight();
   }
 }
-
 setInterval(updateCurrentSalahHighlight, 30000);
 
 document.addEventListener("DOMContentLoaded", function(){
