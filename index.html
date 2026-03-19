@@ -2069,7 +2069,7 @@ taskList.push(task);
 
 localStorage.setItem("taskList",JSON.stringify(taskList));
 
-
+manageTasks();
 loadTasks();
 
 
@@ -3044,7 +3044,8 @@ document.getElementById("taskTypeSelect").onchange = showTaskOptions;
 
 
 function getTodayTaskTime(){
-return new Date(currentDate).setHours(0,0,0,0);
+let now = new Date();
+return new Date(now.getFullYear(), now.getMonth(), now.getDate()).setHours(0,0,0,0);
 }
 
 function isHistoricalTask(task){
