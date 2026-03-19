@@ -3056,8 +3056,29 @@ if(task.end === null || task.end === undefined) return false;
 return Number(task.end) < today;
 }
 
+function getSelectedTaskTime(){
+return new Date(currentDate).setHours(0,0,0,0);
+}
+
+function isTaskActiveOnSelectedDate(task){
+
+let selectedTime = getSelectedTaskTime();
+
+if(task.start !== undefined && selectedTime < Number(task.start)) return false;
+
+if(task.end !== null && task.end !== undefined && selectedTime > Number(task.end)) return false;
+
+if(task.days){
+let dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let selectedDayName = dayNames[new Date(currentDate).getDay()];
+if(!task.days.includes(selectedDayName)) return false;
+}
+
+return true;
+}
+
 function getManageableTasks(){
-return taskList.filter(task => !isHistoricalTask(task));
+return taskList.filter(task => isTaskActiveOnSelectedDate(task));
 }
 
   
