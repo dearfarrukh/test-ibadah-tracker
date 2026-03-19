@@ -4956,12 +4956,24 @@ texts.forEach(function(el){
 }
 
 function updateCurrentSalahHighlight(){
-  let fajr = salahTextToMinutes(document.getElementById("fajrTime")?.innerText);
-  let sunrise = salahTextToMinutes(document.getElementById("sunriseTime")?.innerText);
-  let dhuhr = salahTextToMinutes(document.getElementById("dhuhrTime")?.innerText);
-  let asr = salahTextToMinutes(document.getElementById("asrTime")?.innerText);
-  let maghrib = salahTextToMinutes(document.getElementById("maghribTime")?.innerText);
-  let isha = salahTextToMinutes(document.getElementById("ishaTime")?.innerText);
+  let fajrEl = document.getElementById("fajrTime");
+  let sunriseEl = document.getElementById("sunriseTime");
+  let dhuhrEl = document.getElementById("dhuhrTime");
+  let asrEl = document.getElementById("asrTime");
+  let maghribEl = document.getElementById("maghribTime");
+  let ishaEl = document.getElementById("ishaTime");
+
+  if(!fajrEl || !sunriseEl || !dhuhrEl || !asrEl || !maghribEl || !ishaEl){
+    clearCurrentSalahHighlight();
+    return;
+  }
+
+  let fajr = salahTextToMinutes(fajrEl.innerText);
+  let sunrise = salahTextToMinutes(sunriseEl.innerText);
+  let dhuhr = salahTextToMinutes(dhuhrEl.innerText);
+  let asr = salahTextToMinutes(asrEl.innerText);
+  let maghrib = salahTextToMinutes(maghribEl.innerText);
+  let isha = salahTextToMinutes(ishaEl.innerText);
 
   if(
     fajr === null ||
@@ -4976,7 +4988,9 @@ function updateCurrentSalahHighlight(){
   }
 
   let now = new Date();
-  let nowMinutes = now.getHours() * 60 + now.getMinutes();
+  let nowMinutes = (now.getHours() * 60) + now.getMinutes();
+
+  clearCurrentSalahHighlight();
 
   if(nowMinutes >= isha || nowMinutes < fajr){
     setCurrentSalahHighlight("ishaRow");
@@ -4985,6 +4999,10 @@ function updateCurrentSalahHighlight(){
 
   if(nowMinutes >= fajr && nowMinutes < sunrise){
     setCurrentSalahHighlight("fajrRow");
+    return;
+  }
+
+  if(nowMinutes >= sunrise && nowMinutes < dhuhr){
     return;
   }
 
@@ -5002,8 +5020,6 @@ function updateCurrentSalahHighlight(){
     setCurrentSalahHighlight("maghribRow");
     return;
   }
-
-  clearCurrentSalahHighlight();
 }
   
   function getAsrMethod(){
