@@ -3744,6 +3744,7 @@ document.getElementById("asrTime").innerText = "--:--";
 document.getElementById("maghribTime").innerText = "--:--";
 document.getElementById("sunsetTime").innerText = "--:--";
 document.getElementById("ishaTime").innerText = "--:--";
+updateCurrentSalahHighlight();
 }
 
 function applySalahDataToScreen(data){
@@ -3763,6 +3764,7 @@ document.getElementById("asrTime").innerText = data.asr;
 document.getElementById("maghribTime").innerText = data.maghrib;
 document.getElementById("sunsetTime").innerText = data.maghrib;
 document.getElementById("ishaTime").innerText = data.isha;
+updateCurrentSalahHighlight();
 }
 
 async function refreshLocationSalahData(){
@@ -5004,9 +5006,101 @@ function openSalahSettingsFromMenu(){
 }
 
   
+function salahTextToMinutes(text){
+  if(!text) return null;
+
+  text = text.trim();
+  if(text === "--:--") return null;
+
+  let parts = text.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if(!parts) return null;
+
+  let hour = parseInt(parts[1], 10);
+  let minute = parseInt(parts[2], 10);
+  let ampm = parts[3].toUpperCase();
+
+  if(ampm === "PM" && hour !== 12) hour += 12;
+  if(ampm === "AM" && hour === 12) hour = 0;
+
+  return (hour * 60) + minute;
+}
+
+function clearCurrentSalahHighlight(){
+  let rowIds = [
+    "fajrRow",
+    "sunriseRow",
+    "dhuhrRow",
+    "asrRow",
+    "maghribRow",
+    "ishaRow"
+  ];
+
+  rowIds.forEach(function(id){
+    let row = document.getElementById(id);
+    if(row){
+      row.style.background = "transparent";
+      row.style.boxShadow = "none";
+    }
+  });
+}
+
+function setCurrentSalahHighlight(rowId){
+  clearCurrentSalahHighlight();
+
+  let row = document.getElementById(rowId);
+  if(row){
+    row.style.background = "#e9e9ee";
+    row.style.boxShadow = "0 2px 8px rgba(0,0,0,0.05)";
+  }
+}
+
+function updateCurrentSalahHighlight(){
+  let fajr = salahTextToMinutes(document.getElementById("fajrTime")?.innerText);
+  let dhuhr = salahTextToMinutes(document.getElementById("dhuhrTime")?.innerText);
+  let asr = salahTextToMinutes(document.getElementById("asrTime")?.innerText);
+  let maghrib = salahTextToMinutes(document.getElementById("maghribTime")?.innerText);
+  let isha = salahTextToMinutes(document.getElementById("ishaTime")?.innerText);
+
+  if(
+    fajr === null ||
+    dhuhr === null ||
+    asr === null ||
+    maghrib === null ||
+    isha === null
+  ){
+    clearCurrentSalahHighlight();
+    return;
+  }
+
+  let now = new Date();
+  let nowMinutes = (now.getHours() * 60) + now.getMinutes();
+
+  if(nowMinutes >= isha || nowMinutes < fajr){
+    setCurrentSalahHighlight("ishaRow");
+  }else if(nowMinutes >= fajr && nowMinutes < dhuhr){
+    setCurrentSalahHighlight("fajrRow");
+  }else if(nowMinutes >= dhuhr && nowMinutes < asr){
+    setCurrentSalahHighlight("dhuhrRow");
+  }else if(nowMinutes >= asr && nowMinutes < maghrib){
+    setCurrentSalahHighlight("asrRow");
+  }else if(nowMinutes >= maghrib && nowMinutes < isha){
+    setCurrentSalahHighlight("maghribRow");
+  }else{
+    clearCurrentSalahHighlight();
+  }
+}
+
+setInterval(updateCurrentSalahHighlight, 30000);
+
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(updateCurrentSalahHighlight, 800);
+});
 
 
 
+
+
+  
 
 
 
@@ -5928,7 +6022,7 @@ width:100%;
 box-sizing:border-box;
 ">
 
-  <div style="
+ <div style="
 font-size:19px;
 font-weight:800;
 color:#000;
@@ -5939,12 +6033,14 @@ Salah Times
 </div>
 
 <!-- FAJR -->
-<div style="
+<div id="fajrRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
 border-bottom:1px solid rgba(0,0,0,0.06);
+border-radius:16px;
+transition:background 0.25s ease, box-shadow 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
@@ -5965,12 +6061,14 @@ border-bottom:1px solid rgba(0,0,0,0.06);
 </div>
 
 <!-- SUNRISE -->
-<div style="
+<div id="sunriseRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
 border-bottom:1px solid rgba(0,0,0,0.06);
+border-radius:16px;
+transition:background 0.25s ease, box-shadow 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
@@ -5991,12 +6089,14 @@ border-bottom:1px solid rgba(0,0,0,0.06);
 </div>
 
 <!-- DHUHR -->
-<div style="
+<div id="dhuhrRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
 border-bottom:1px solid rgba(0,0,0,0.06);
+border-radius:16px;
+transition:background 0.25s ease, box-shadow 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
@@ -6017,12 +6117,14 @@ border-bottom:1px solid rgba(0,0,0,0.06);
 </div>
 
 <!-- ASR -->
-<div style="
+<div id="asrRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
 border-bottom:1px solid rgba(0,0,0,0.06);
+border-radius:16px;
+transition:background 0.25s ease, box-shadow 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
@@ -6043,12 +6145,14 @@ border-bottom:1px solid rgba(0,0,0,0.06);
 </div>
 
 <!-- MAGHRIB -->
-<div style="
+<div id="maghribRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
 border-bottom:1px solid rgba(0,0,0,0.06);
+border-radius:16px;
+transition:background 0.25s ease, box-shadow 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
@@ -6069,11 +6173,13 @@ border-bottom:1px solid rgba(0,0,0,0.06);
 </div>
 
 <!-- ISHA -->
-<div style="
+<div id="ishaRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
+border-radius:16px;
+transition:background 0.25s ease, box-shadow 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
