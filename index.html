@@ -3349,12 +3349,19 @@ window.scrollTo(0,0);
 let salahSource = "location";
 let salahDayOffset = 0;
 
-  let salahLocationData = {
+let salahLocationData = {
 lat: null,
 lon: null,
 city: "Loading location...",
 state: "",
 country: ""
+};
+
+let salahEnteredLocation = {
+query: "",
+locationName: "Enter a location",
+lat: null,
+lon: null
 };
 
 let salahLiveCache = {};
@@ -3474,7 +3481,7 @@ isha: "8:37 PM"
 
 const salahMasjidDummyData = {
 "-3": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:10 AM",
 sunrise: "7:01 AM",
@@ -3484,7 +3491,7 @@ maghrib: "6:59 PM",
 isha: "8:20 PM"
 },
 "-2": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:09 AM",
 sunrise: "7:00 AM",
@@ -3494,7 +3501,7 @@ maghrib: "7:00 PM",
 isha: "8:21 PM"
 },
 "-1": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:08 AM",
 sunrise: "6:59 AM",
@@ -3504,7 +3511,7 @@ maghrib: "7:01 PM",
 isha: "8:22 PM"
 },
 "0": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:07 AM",
 sunrise: "6:58 AM",
@@ -3514,7 +3521,7 @@ maghrib: "7:02 PM",
 isha: "8:23 PM"
 },
 "1": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:06 AM",
 sunrise: "6:56 AM",
@@ -3524,7 +3531,7 @@ maghrib: "7:03 PM",
 isha: "8:24 PM"
 },
 "2": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:05 AM",
 sunrise: "6:55 AM",
@@ -3534,7 +3541,7 @@ maghrib: "7:04 PM",
 isha: "8:25 PM"
 },
 "3": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:04 AM",
 sunrise: "6:54 AM",
@@ -3544,7 +3551,7 @@ maghrib: "7:05 PM",
 isha: "8:26 PM"
 },
 "4": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:03 AM",
 sunrise: "6:52 AM",
@@ -3554,7 +3561,7 @@ maghrib: "7:06 PM",
 isha: "8:27 PM"
 },
 "5": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:02 AM",
 sunrise: "6:51 AM",
@@ -3564,7 +3571,7 @@ maghrib: "7:07 PM",
 isha: "8:28 PM"
 },
 "6": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:01 AM",
 sunrise: "6:49 AM",
@@ -3574,7 +3581,7 @@ maghrib: "7:08 PM",
 isha: "8:29 PM"
 },
 "7": {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: "5:00 AM",
 sunrise: "6:48 AM",
@@ -3792,7 +3799,7 @@ let maghrib = pickTime("Magrib|Maghrib");
 let isha = pickTime("Isha");
 
 return {
-locationName: "Muhammadi Masjid",
+locationName: "My Masjid",
 sourceLabel: "Masjid Timings",
 fajr: fajr,
 sunrise: sunrise,
@@ -3810,8 +3817,117 @@ if(salahSource === "masjid"){
 applySalahDataToScreen(data);
 }
 }catch(err){
-document.getElementById("salahCityName").innerText = "Muhammadi Masjid";
+document.getElementById("salahCityName").innerText = "My Masjid";
 document.getElementById("salahSourceLabel").innerText = "Masjid site unavailable";
+}
+}
+
+async function searchEnteredLocationAndLoad(){
+let input = document.getElementById("salahLocationInput");
+if(!input) return;
+
+let query = input.value.trim();
+if(!query){
+document.getElementById("salahCityName").innerText = "Enter a location";
+document.getElementById("salahSourceLabel").innerText = "Type city, state, or country";
+return;
+}
+
+try{
+document.getElementById("salahCityName").innerText = "Searching...";
+document.getElementById("salahSourceLabel").innerText = "Finding location...";
+setSalahLoadingState();
+
+let geoUrl =
+"https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=" +
+encodeURIComponent(query);
+
+let geoRes = await fetch(geoUrl, {
+headers: {
+"Accept": "application/json"
+}
+});
+
+let geoData = await geoRes.json();
+
+if(!geoData || !geoData.length){
+document.getElementById("salahCityName").innerText = "Location not found";
+document.getElementById("salahSourceLabel").innerText = "Try another city or area";
+return;
+}
+
+let found = geoData[0];
+
+salahEnteredLocation.query = query;
+salahEnteredLocation.locationName = found.display_name.split(",")[0] || query;
+salahEnteredLocation.lat = found.lat;
+salahEnteredLocation.lon = found.lon;
+
+let selectedDate = getSelectedSalahDate();
+let data = await loadEnteredLocationSalahTimes(selectedDate);
+
+if(salahSource === "entered"){
+applySalahDataToScreen(data);
+}
+}catch(err){
+document.getElementById("salahCityName").innerText = "Could not load";
+document.getElementById("salahSourceLabel").innerText = "Check internet and try again";
+}
+}
+
+async function loadEnteredLocationSalahTimes(dateObj){
+if(!salahEnteredLocation.lat || !salahEnteredLocation.lon){
+throw new Error("No entered location yet");
+}
+
+let apiDate = formatSalahApiDate(dateObj);
+
+let salahUrl =
+"https://api.aladhan.com/v1/timings/" + apiDate
++ "?latitude=" + encodeURIComponent(salahEnteredLocation.lat)
++ "&longitude=" + encodeURIComponent(salahEnteredLocation.lon)
++ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
+
+let res = await fetch(salahUrl);
+let json = await res.json();
+
+if(!json || !json.data || !json.data.timings){
+throw new Error("Could not load entered location Salah times");
+}
+
+let t = json.data.timings;
+
+return {
+locationName: salahEnteredLocation.locationName || "Entered Location",
+sourceLabel: "Entered Location Timings",
+fajr: to12Hour(t.Fajr),
+sunrise: to12Hour(t.Sunrise),
+dhuhr: to12Hour(t.Dhuhr),
+asr: to12Hour(t.Asr),
+maghrib: to12Hour(t.Maghrib),
+isha: to12Hour(t.Isha)
+};
+}
+
+async function refreshEnteredLocationSalahData(){
+try{
+if(!salahEnteredLocation.lat || !salahEnteredLocation.lon){
+document.getElementById("salahCityName").innerText = "Enter a location";
+document.getElementById("salahSourceLabel").innerText = "Search any city in the world";
+setSalahLoadingState();
+return;
+}
+
+let selectedDate = getSelectedSalahDate();
+setSalahLoadingState();
+let data = await loadEnteredLocationSalahTimes(selectedDate);
+
+if(salahSource === "entered"){
+applySalahDataToScreen(data);
+}
+}catch(err){
+document.getElementById("salahCityName").innerText = "Could not load";
+document.getElementById("salahSourceLabel").innerText = "Check internet and try again";
 }
 }
   
@@ -3827,24 +3943,30 @@ salahSource = source;
 
 let locationBtn = document.getElementById("locationTabBtn");
 let masjidBtn = document.getElementById("masjidTabBtn");
+let enteredBtn = document.getElementById("enteredTabBtn");
+let searchCard = document.getElementById("enteredLocationCard");
 
-if(locationBtn && masjidBtn){
-if(source === "location"){
-locationBtn.style.background = "#111";
-locationBtn.style.color = "white";
-masjidBtn.style.background = "transparent";
-masjidBtn.style.color = "#111";
-}else{
-masjidBtn.style.background = "#111";
-masjidBtn.style.color = "white";
-locationBtn.style.background = "transparent";
-locationBtn.style.color = "#111";
+if(locationBtn){
+locationBtn.style.background = source === "location" ? "#111" : "transparent";
+locationBtn.style.color = source === "location" ? "white" : "#111";
 }
+
+if(masjidBtn){
+masjidBtn.style.background = source === "masjid" ? "#111" : "transparent";
+masjidBtn.style.color = source === "masjid" ? "white" : "#111";
+}
+
+if(enteredBtn){
+enteredBtn.style.background = source === "entered" ? "#111" : "transparent";
+enteredBtn.style.color = source === "entered" ? "white" : "#111";
+}
+
+if(searchCard){
+searchCard.style.display = source === "entered" ? "block" : "none";
 }
 
 renderSalahPage();
 }
-
 
 let salahSliding = false;
 
@@ -5447,7 +5569,7 @@ box-sizing:border-box;
     </div>
   </div>
 
-  <div style="
+<div style="
   background:rgba(232,234,245,0.96);
   border-radius:28px;
   padding:7px;
@@ -5462,10 +5584,10 @@ box-sizing:border-box;
     flex:1;
     border:none;
     border-radius:20px;
-    padding:14px 10px;
+    padding:14px 8px;
     background:#111;
     color:white;
-    font-size:16px;
+    font-size:15px;
     font-weight:700;
     cursor:pointer;
     box-sizing:border-box;
@@ -5477,17 +5599,88 @@ box-sizing:border-box;
     flex:1;
     border:none;
     border-radius:20px;
-    padding:14px 10px;
+    padding:14px 8px;
     background:transparent;
     color:#111;
-    font-size:16px;
+    font-size:15px;
     font-weight:700;
     cursor:pointer;
     box-sizing:border-box;
     ">
     My Masjid
     </button>
+
+    <button id="enteredTabBtn" onclick="setSalahSource('entered')" style="
+    flex:1;
+    border:none;
+    border-radius:20px;
+    padding:14px 8px;
+    background:transparent;
+    color:#111;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    box-sizing:border-box;
+    ">
+    Enter Location
+    </button>
   </div>
+
+<div id="enteredLocationCard" style="
+display:none;
+background:rgba(232,234,245,0.96);
+border-radius:28px;
+padding:14px;
+box-shadow:0 8px 20px rgba(0,0,0,0.10);
+margin-bottom:18px;
+width:100%;
+box-sizing:border-box;
+">
+
+  <div style="
+  font-size:14px;
+  font-weight:700;
+  color:#111;
+  margin-bottom:10px;
+  ">
+  Search city, state, or country
+  </div>
+
+  <div style="
+  display:flex;
+  gap:10px;
+  align-items:center;
+  ">
+    <input id="salahLocationInput" type="text" placeholder="Example: Makkah, London, Karachi" style="
+    flex:1;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    padding:15px 16px;
+    font-size:15px;
+    background:white;
+    color:#111;
+    box-sizing:border-box;
+    ">
+
+    <button onclick="searchEnteredLocationAndLoad()" style="
+    border:none;
+    border-radius:18px;
+    padding:15px 16px;
+    background:#111;
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    ">
+    Search
+    </button>
+  </div>
+</div>
+
+
+  
 <div id="salahDateCard" style="
 background:rgba(232,234,245,0.96);
 border-radius:28px;
