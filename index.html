@@ -3072,6 +3072,15 @@ let task = {name:name};
 
 let today = new Date(currentDate).setHours(0,0,0,0);
 
+let sameCurrentTask = taskList.find(function(t){
+return t.name.trim().toLowerCase() === name.toLowerCase() && !isHistoricalTask(t);
+});
+
+if(sameCurrentTask){
+alert("This task already exists in your current task list.");
+return;
+}
+
 if(type==="range"){
 
 let s = document.getElementById("taskStart").value.split("-");
