@@ -3846,7 +3846,13 @@ return;
 let html = "";
 
 list.forEach(function(item, index){
-let name = item.display_name || "Unknown location";
+let full = item.display_name || "";
+let parts = full.split(",");
+
+let name = parts[0] || "";
+let region = parts[parts.length - 3] || parts[parts.length - 2] || "";
+
+let shortName = name + (region ? ", " + region.trim() : "");
 
 html += `
 <div onclick="selectSalahLocationSuggestion(${index})" style="
@@ -3858,7 +3864,7 @@ border-bottom:${index === list.length - 1 ? "none" : "1px solid rgba(0,0,0,0.06)
 background:white;
 line-height:1.4;
 ">
-${name}
+${shortName}
 </div>
 `;
 });
