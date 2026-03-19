@@ -4921,10 +4921,11 @@ function clearCurrentSalahHighlight(){
   rowIds.forEach(function(id){
     let row = document.getElementById(id);
     if(row){
-     row.style.background = "transparent";
+   row.style.background = "transparent";
 row.style.boxShadow = "none";
 row.style.border = "none";
 row.style.borderLeft = "none";
+row.style.transform = "scale(1)";
     }
   });
 }
@@ -4934,10 +4935,11 @@ function setCurrentSalahHighlight(rowId){
 
   let row = document.getElementById(rowId);
   if(row){
-  row.style.background = "#dfe1ea";
-row.style.boxShadow = "0 10px 24px rgba(0,0,0,0.18)";
-row.style.border = "1px solid rgba(0,0,0,0.12)";
-row.style.borderLeft = "5px solid #111";
+ row.style.background = "#cfd3df";
+row.style.boxShadow = "0 12px 28px rgba(0,0,0,0.22)";
+row.style.border = "1px solid rgba(0,0,0,0.16)";
+row.style.borderLeft = "8px solid #111";
+row.style.transform = "scale(1.02)";
   }
 }
 
