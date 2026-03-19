@@ -3744,7 +3744,6 @@ document.getElementById("asrTime").innerText = "--:--";
 document.getElementById("maghribTime").innerText = "--:--";
 document.getElementById("sunsetTime").innerText = "--:--";
 document.getElementById("ishaTime").innerText = "--:--";
-clearCurrentSalahHighlight();
 }
 
 function applySalahDataToScreen(data){
@@ -3764,7 +3763,6 @@ document.getElementById("asrTime").innerText = data.asr;
 document.getElementById("maghribTime").innerText = data.maghrib;
 document.getElementById("sunsetTime").innerText = data.maghrib;
 document.getElementById("ishaTime").innerText = data.isha;
-updateCurrentSalahHighlight();
 }
 
 async function refreshLocationSalahData(){
@@ -4212,7 +4210,6 @@ changeSalahDay(-1);  // swipe right = previous day
 function openSalahPage(){
 document.getElementById("salahPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
-setTimeout(updateCurrentSalahHighlight, 400);
 }
 
 function closeSalahPage(){
@@ -4895,123 +4892,7 @@ if(document.readyState === "loading"){
 
 })();
 
-function salahTextToMinutes(text){
-  if(!text) return null;
-
-  text = String(text).trim();
-
-  if(text === "--:--") return null;
-
-  let match = text.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-  if(!match) return null;
-
-  let hour = parseInt(match[1], 10);
-  let minute = parseInt(match[2], 10);
-  let ampm = match[3].toUpperCase();
-
-  if(ampm === "PM" && hour !== 12) hour += 12;
-  if(ampm === "AM" && hour === 12) hour = 0;
-
-  return hour * 60 + minute;
-}
-
-function clearCurrentSalahHighlight(){
-  let rowIds = ["fajrRow","sunriseRow","dhuhrRow","asrRow","maghribRow","ishaRow"];
-
-  rowIds.forEach(function(id){
-    let row = document.getElementById(id);
-    if(row){
-      row.style.background = "transparent";
-      row.style.boxShadow = "none";
-      row.style.border = "none";
-      row.style.borderLeft = "none";
-      row.style.transform = "scale(1)";
-
-      let texts = row.querySelectorAll("div");
-      texts.forEach(function(el){
-        el.style.fontWeight = "";
-        el.style.color = "";
-      });
-    }
-  });
-}
-
-function setCurrentSalahHighlight(rowId){
-  clearCurrentSalahHighlight();
-
-  if(rowId === "sunriseRow") return;
-
-  let row = document.getElementById(rowId);
-  if(row){
-    row.style.background = "#bfc5d6";
-    row.style.boxShadow = "0 14px 32px rgba(0,0,0,0.25)";
-    row.style.border = "1px solid rgba(0,0,0,0.20)";
-    row.style.borderLeft = "10px solid #000";
-    row.style.transform = "scale(1.03)";
-
-    let texts = row.querySelectorAll("div");
-    texts.forEach(function(el){
-      el.style.fontWeight = "800";
-      el.style.color = "#000";
-    });
-  }
-}
-function updateCurrentSalahHighlight(){
-  let fajr = salahTextToMinutes(document.getElementById("fajrTime")?.innerText);
-  let sunrise = salahTextToMinutes(document.getElementById("sunriseTime")?.innerText);
-  let dhuhr = salahTextToMinutes(document.getElementById("dhuhrTime")?.innerText);
-  let asr = salahTextToMinutes(document.getElementById("asrTime")?.innerText);
-  let maghrib = salahTextToMinutes(document.getElementById("maghribTime")?.innerText);
-  let isha = salahTextToMinutes(document.getElementById("ishaTime")?.innerText);
-
-  if(
-    fajr === null ||
-    sunrise === null ||
-    dhuhr === null ||
-    asr === null ||
-    maghrib === null ||
-    isha === null
-  ){
-    clearCurrentSalahHighlight();
-    return;
-  }
-
-  let now = new Date();
-  let nowMinutes = (now.getHours() * 60) + now.getMinutes();
-
-  clearCurrentSalahHighlight();
-
-  if(nowMinutes >= isha || nowMinutes < fajr){
-    setCurrentSalahHighlight("ishaRow");
-    return;
-  }
-
-  if(nowMinutes >= fajr && nowMinutes < sunrise){
-    setCurrentSalahHighlight("fajrRow");
-    return;
-  }
-
-  if(nowMinutes >= sunrise && nowMinutes < dhuhr){
-    return;
-  }
-
-  if(nowMinutes >= dhuhr && nowMinutes < asr){
-    setCurrentSalahHighlight("dhuhrRow");
-    return;
-  }
-
-  if(nowMinutes >= asr && nowMinutes < maghrib){
-    setCurrentSalahHighlight("asrRow");
-    return;
-  }
-
-  if(nowMinutes >= maghrib && nowMinutes < isha){
-    setCurrentSalahHighlight("maghribRow");
-    return;
-  }
-}
-  
-  function getAsrMethod(){
+function getAsrMethod(){
   let m = localStorage.getItem("asrMethod");
 
   if(!m){
@@ -5974,26 +5855,27 @@ overflow:hidden;
 ">
 
       <button onclick="changeSalahDay(-1)" style="
-width:36px;
+     width:36px;
 height:36px;
-border:none;
-border-radius:50%;
-background:white;
-font-size:18px;
-font-weight:700;
-cursor:pointer;
-box-shadow:0 2px 8px rgba(0,0,0,0.08);
-">
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      ">
       ‹
       </button>
 
-      <div style="
+   
+<div style="
 flex:1;
 text-align:center;
 min-width:0;
 overflow:hidden;
 ">
-        <div id="salahSelectedDate" style="
+    <div id="salahSelectedDate" style="
 font-size:16px;
 font-weight:700;
 color:#111;
@@ -6004,7 +5886,7 @@ text-overflow:ellipsis;
 Saturday, Mar 14
 </div>
 
-        <div id="salahSelectedHijri" style="
+<div id="salahSelectedHijri" style="
 font-size:12px;
 color:#888;
 margin-top:2px;
@@ -6013,27 +5895,27 @@ white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 ">
-Loading Hijri date...
-</div>
+        Loading Hijri date...
+        </div>
       </div>
 
       <button onclick="changeSalahDay(1)" style="
-width:36px;
+      width:36px;
 height:36px;
-border:none;
-border-radius:50%;
-background:white;
-font-size:18px;
-font-weight:700;
-cursor:pointer;
-box-shadow:0 2px 8px rgba(0,0,0,0.08);
-">
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      ">
       ›
       </button>
 
     </div>
 
-</div>
+     </div>
 
 <div id="salahTimesCard" style="
 background:rgba(232,234,245,0.96);
@@ -6057,27 +5939,20 @@ Salah Times
 </div>
 
 <!-- FAJR -->
-<div id="fajrRow" style="
+<div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 10px;
+padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
-border-radius:16px;
-transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
-width:30px;
-height:30px;
-border-radius:50%;
-background:linear-gradient(180deg,#fde7a3,#f7c873);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
-">🌅</div>
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#fde7a3,#f7c873);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌅</div>
 
     <div style="font-weight:600;font-size:17px;color:#111;">
       Fajr
@@ -6090,27 +5965,20 @@ box-shadow:0 1px 4px rgba(0,0,0,0.08);
 </div>
 
 <!-- SUNRISE -->
-<div id="sunriseRow" style="
+<div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 10px;
+padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
-border-radius:16px;
-transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
-width:30px;
-height:30px;
-border-radius:50%;
-background:linear-gradient(180deg,#ffe8b8,#ffd58a);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
-">🌄</div>
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe8b8,#ffd58a);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌄</div>
 
     <div style="font-weight:600;font-size:17px;color:#111;">
       Sunrise
@@ -6123,27 +5991,20 @@ box-shadow:0 1px 4px rgba(0,0,0,0.08);
 </div>
 
 <!-- DHUHR -->
-<div id="dhuhrRow" style="
+<div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 10px;
+padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
-border-radius:16px;
-transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
-width:30px;
-height:30px;
-border-radius:50%;
-background:linear-gradient(180deg,#ffe7a1,#f4bf57);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
-">☀️</div>
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe7a1,#f4bf57);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">☀️</div>
 
     <div style="font-weight:600;font-size:17px;color:#111;">
       Dhuhr
@@ -6156,27 +6017,20 @@ box-shadow:0 1px 4px rgba(0,0,0,0.08);
 </div>
 
 <!-- ASR -->
-<div id="asrRow" style="
+<div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 10px;
+padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
-border-radius:16px;
-transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
-width:30px;
-height:30px;
-border-radius:50%;
-background:linear-gradient(180deg,#ffe4b5,#e7b96c);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
-">🌤️</div>
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe4b5,#e7b96c);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌤️</div>
 
     <div style="font-weight:600;font-size:17px;color:#111;">
       Asr
@@ -6189,27 +6043,20 @@ box-shadow:0 1px 4px rgba(0,0,0,0.08);
 </div>
 
 <!-- MAGHRIB -->
-<div id="maghribRow" style="
+<div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 10px;
+padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
-border-radius:16px;
-transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
-width:30px;
-height:30px;
-border-radius:50%;
-background:linear-gradient(180deg,#ffd6b3,#f59f6c);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
-">🌇</div>
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffd6b3,#f59f6c);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌇</div>
 
     <div style="font-weight:600;font-size:17px;color:#111;">
       Maghrib
@@ -6222,26 +6069,19 @@ box-shadow:0 1px 4px rgba(0,0,0,0.08);
 </div>
 
 <!-- ISHA -->
-<div id="ishaRow" style="
+<div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 10px;
-border-radius:16px;
-transition:all 0.25s ease;
+padding:8px 0;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
-width:30px;
-height:30px;
-border-radius:50%;
-background:linear-gradient(180deg,#d9dcf8,#aeb6ea);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
-">🌙</div>
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#d9dcf8,#aeb6ea);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌙</div>
 
     <div style="font-weight:600;font-size:17px;color:#111;">
       Isha
