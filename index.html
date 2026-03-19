@@ -1937,7 +1937,98 @@ localStorage.setItem("taskList", JSON.stringify(taskList));
 loadTasks();
 }
 
+function getManageTaskToday(){
+let now = new Date();
+return new Date(now.getFullYear(), now.getMonth(), now.getDate()).setHours(0,0,0,0);
+}
+
+function getCurrentTasksForManage(){
+let today = getManageTaskToday();
+
+return taskList.filter(task => {
+if(task.end === null || task.end === undefined) return true;
+return Number(task.end) >= today;
+});
+}
+
+function getHistoricalTasksForManage(){
+let today = getManageTaskToday();
+
+return taskList.filter(task => {
+if(task.end === null || task.end === undefined) return false;
+return Number(task.end) < today;
+});
+}
+
+function renderManageTaskCards(taskArray, emptyText){
+if(!taskArray.length){
+return `
+<div style="
+background:white;
+border-radius:20px;
+padding:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+font-size:18px;
+font-weight:600;
+color:#666;
+line-height:1.5;
+margin-bottom:14px;
+">
+${emptyText}
+</div>
+`;
+}
+
+return taskArray.map(task => {
+let subtitle = "";
+
+if(task.days && task.days.length){
+subtitle = "Specific Days: " + task.days.join(", ");
+}else if(task.end !== null && task.end !== undefined){
+let startText = new Date(Number(task.start)).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+let endText = new Date(Number(task.end)).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+subtitle = "Date Range: " + startText + " to " + endText;
+}else{
+let startText = new Date(Number(task.start)).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+subtitle = "Starts: " + startText;
+}
+
+return `
+<div style="
+background:white;
+border-radius:22px;
+padding:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+margin-bottom:12px;
+">
+<div style="
+font-size:21px;
+font-weight:800;
+color:#111;
+margin-bottom:6px;
+line-height:1.3;
+">
+${task.name}
+</div>
+<div style="
+font-size:16px;
+font-weight:600;
+color:#666;
+line-height:1.5;
+word-break:break-word;
+">
+${subtitle}
+</div>
+</div>
+`;
+}).join("");
+}
+
+  
 function manageTasks(){
+
+let currentTasks = getCurrentTasksForManage();
+let historicalTasks = getHistoricalTasksForManage();
 
 document.getElementById("taskMenuContent").innerHTML = `
 <div style="
@@ -1985,7 +2076,7 @@ Rename Task
 <button onclick="showRemoveTask()" style="
 width:100%;
 padding:20px;
-margin-bottom:12px;
+margin-bottom:18px;
 font-size:24px;
 font-weight:800;
 border:none;
@@ -1998,9 +2089,35 @@ cursor:pointer;
 Remove Task
 </button>
 
+<div style="
+font-size:22px;
+font-weight:800;
+color:#111;
+margin-bottom:12px;
+letter-spacing:-0.3px;
+">
+Current Tasks
+</div>
+
+${renderManageTaskCards(currentTasks,"No current tasks right now.")}
+
+<div style="
+font-size:22px;
+font-weight:800;
+color:#111;
+margin-top:10px;
+margin-bottom:12px;
+letter-spacing:-0.3px;
+">
+Historical Tasks
+</div>
+
+${renderManageTaskCards(historicalTasks,"No historical tasks yet.")}
+
 <button onclick="closeTaskMenu()" style="
 width:100%;
 padding:18px;
+margin-top:8px;
 background:#f5f5f7;
 font-size:22px;
 font-weight:700;
@@ -2014,7 +2131,7 @@ Close
 `;
 
 document.getElementById("taskMenu").style.display = "block";
-  document.getElementById("menuOverlay").style.display = "block";
+document.getElementById("menuOverlay").style.display = "block";
 
 }
 
