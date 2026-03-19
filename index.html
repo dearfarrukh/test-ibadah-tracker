@@ -3064,12 +3064,20 @@ document.getElementById("taskTypeSelect").onchange = showTaskOptions;
 
 }
 
-  function createTask(){
+ function createTask(){
 
 let name = document.getElementById("taskNameInput").value.trim();
 let type = document.getElementById("taskTypeSelect").value;
 
-if(!name) return;
+if(!name){
+alert("Please enter a task name.");
+return;
+}
+
+if(!type){
+alert("Please select a task type.");
+return;
+}
 
 let task = {name:name};
 
@@ -3077,11 +3085,25 @@ let today = new Date(currentDate).setHours(0,0,0,0);
 
 if(type==="range"){
 
-let s = document.getElementById("taskStart").value.split("-");
-let e = document.getElementById("taskEnd").value.split("-");
+let startValue = document.getElementById("taskStart").value;
+let endValue = document.getElementById("taskEnd").value;
+
+if(!startValue || !endValue){
+alert("Please select both start date and end date.");
+return;
+}
+
+let s = startValue.split("-");
+let e = endValue.split("-");
 
 task.start = new Date(s[0], s[1]-1, s[2]).setHours(0,0,0,0);
 task.end = new Date(e[0], e[1]-1, e[2]).setHours(0,0,0,0);
+
+if(task.end < task.start){
+alert("End date cannot be before start date.");
+return;
+}
+
 }
 
 else if(type==="today"){
@@ -3093,7 +3115,13 @@ task.end = null;
 
 else if(type==="days"){
 
-let days=[...document.querySelectorAll("#taskExtra input:checked")].map(d=>d.value);
+let days = [...document.querySelectorAll("#taskExtra input:checked")].map(d=>d.value);
+
+if(days.length === 0){
+alert("Please select at least one day.");
+return;
+}
+
 task.days = days;
 task.start = today;
 task.end = null;
@@ -3107,6 +3135,7 @@ localStorage.setItem("taskList",JSON.stringify(taskList));
 manageTasks();
 loadTasks();
 
+}
 
 
     
