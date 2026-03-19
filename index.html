@@ -3829,7 +3829,8 @@ if(!input) return;
 let query = input.value.trim();
 if(!query){
 document.getElementById("salahCityName").innerText = "Enter a location";
-document.getElementById("salahSourceLabel").innerText = "Type city, state, or country";
+document.getElementById("salahSourceLabel").innerText = "Try: London, UK or Karachi, Pakistan";
+setSalahLoadingState();
 return;
 }
 
@@ -3852,7 +3853,8 @@ let geoData = await geoRes.json();
 
 if(!geoData || !geoData.length){
 document.getElementById("salahCityName").innerText = "Location not found";
-document.getElementById("salahSourceLabel").innerText = "Try another city or area";
+document.getElementById("salahSourceLabel").innerText = "Try: London, UK • Karachi, Pakistan • Makkah, Saudi Arabia";
+setSalahLoadingState();
 return;
 }
 
@@ -3913,7 +3915,7 @@ async function refreshEnteredLocationSalahData(){
 try{
 if(!salahEnteredLocation.lat || !salahEnteredLocation.lon){
 document.getElementById("salahCityName").innerText = "Enter a location";
-document.getElementById("salahSourceLabel").innerText = "Search any city in the world";
+document.getElementById("salahSourceLabel").innerText = "Search any city in the world. Example: London, UK";
 setSalahLoadingState();
 return;
 }
