@@ -3092,11 +3092,12 @@ task.end = new Date(e[0], e[1]-1, e[2]).setHours(0,0,0,0);
 
 else if(type==="today"){
 
+alert("This task will start from today's date.");
+
 task.start = today;
 task.end = null;
 
 }
-
 else if(type==="days"){
 
 let days=[...document.querySelectorAll("#taskExtra input:checked")].map(d=>d.value);
