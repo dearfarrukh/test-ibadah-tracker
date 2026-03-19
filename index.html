@@ -3068,6 +3068,11 @@ let type = document.getElementById("taskTypeSelect").value;
 
 if(!name) return;
 
+if(!type){
+alert("Please select a task type.");
+return;
+}
+
 let task = {name:name};
 
 let today = new Date().setHours(0,0,0,0);
