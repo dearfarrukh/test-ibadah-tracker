@@ -5831,20 +5831,27 @@ position:relative;
 <div id="salahDateCard" style="
 background:#e9e9ee;
 border-radius:22px;
-padding:14px 16px;
+padding:14px 12px;
 box-shadow:0 4px 12px rgba(0,0,0,0.08);
 margin-bottom:16px;
 width:100%;
-display:flex;
-align-items:center;
-justify-content:space-between;
-">
-    <div style="
+max-width:100%;
+box-sizing:border-box;
+overflow:hidden;
 display:flex;
 align-items:center;
 justify-content:center;
-gap:12px;
+">
+  
+   <div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
 width:100%;
+max-width:100%;
+box-sizing:border-box;
+overflow:hidden;
 ">
 
       <button onclick="changeSalahDay(-1)" style="
@@ -5861,19 +5868,25 @@ height:36px;
       ‹
       </button>
 
-     <div id="salahSelectedDate" style="
-font-size:17px;
+    <div id="salahSelectedDate" style="
+font-size:16px;
 font-weight:700;
 color:#111;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 ">
         Saturday, Mar 14
         </div>
 
-      <div id="salahSelectedHijri" style="
+     <div id="salahSelectedHijri" style="
 font-size:12px;
 color:#888;
 margin-top:2px;
 font-weight:500;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 ">
         Loading Hijri date...
         </div>
