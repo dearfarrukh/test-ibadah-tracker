@@ -4921,9 +4921,10 @@ function clearCurrentSalahHighlight(){
   rowIds.forEach(function(id){
     let row = document.getElementById(id);
     if(row){
-      row.style.background = "transparent";
-      row.style.boxShadow = "none";
-      row.style.border = "none";
+     row.style.background = "transparent";
+row.style.boxShadow = "none";
+row.style.border = "none";
+row.style.borderLeft = "none";
     }
   });
 }
@@ -4933,9 +4934,10 @@ function setCurrentSalahHighlight(rowId){
 
   let row = document.getElementById(rowId);
   if(row){
-    row.style.background = "#e9e9ee";
-row.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
-row.style.border = "1px solid rgba(0,0,0,0.10)";
+  row.style.background = "#dfe1ea";
+row.style.boxShadow = "0 10px 24px rgba(0,0,0,0.18)";
+row.style.border = "1px solid rgba(0,0,0,0.12)";
+row.style.borderLeft = "5px solid #111";
   }
 }
 
