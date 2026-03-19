@@ -4916,22 +4916,22 @@ function salahTextToMinutes(text){
 }
 
 function clearCurrentSalahHighlight(){
-  let rowIds = ["fajrRow","dhuhrRow","asrRow","maghribRow","ishaRow"];
+  let rowIds = ["fajrRow","sunriseRow","dhuhrRow","asrRow","maghribRow","ishaRow"];
 
   rowIds.forEach(function(id){
     let row = document.getElementById(id);
     if(row){
-   row.style.background = "transparent";
-row.style.boxShadow = "none";
-row.style.border = "none";
-row.style.borderLeft = "none";
-row.style.transform = "scale(1)";
+      row.style.background = "transparent";
+      row.style.boxShadow = "none";
+      row.style.border = "none";
+      row.style.borderLeft = "none";
+      row.style.transform = "scale(1)";
 
-let texts = row.querySelectorAll("div");
-texts.forEach(function(el){
-  el.style.fontWeight = "";
-  el.style.color = "";
-});
+      let texts = row.querySelectorAll("div");
+      texts.forEach(function(el){
+        el.style.fontWeight = "";
+        el.style.color = "";
+      });
     }
   });
 }
@@ -4939,41 +4939,30 @@ texts.forEach(function(el){
 function setCurrentSalahHighlight(rowId){
   clearCurrentSalahHighlight();
 
+  if(rowId === "sunriseRow") return;
+
   let row = document.getElementById(rowId);
   if(row){
-row.style.background = "#bfc5d6";
-row.style.boxShadow = "0 14px 32px rgba(0,0,0,0.25)";
-row.style.border = "1px solid rgba(0,0,0,0.20)";
-row.style.borderLeft = "10px solid #000";
-row.style.transform = "scale(1.03)";
+    row.style.background = "#bfc5d6";
+    row.style.boxShadow = "0 14px 32px rgba(0,0,0,0.25)";
+    row.style.border = "1px solid rgba(0,0,0,0.20)";
+    row.style.borderLeft = "10px solid #000";
+    row.style.transform = "scale(1.03)";
 
-let texts = row.querySelectorAll("div");
-texts.forEach(function(el){
-  el.style.fontWeight = "800";
-  el.style.color = "#000";
-});
+    let texts = row.querySelectorAll("div");
+    texts.forEach(function(el){
+      el.style.fontWeight = "800";
+      el.style.color = "#000";
+    });
   }
 }
-
 function updateCurrentSalahHighlight(){
-  let fajrEl = document.getElementById("fajrTime");
-  let sunriseEl = document.getElementById("sunriseTime");
-  let dhuhrEl = document.getElementById("dhuhrTime");
-  let asrEl = document.getElementById("asrTime");
-  let maghribEl = document.getElementById("maghribTime");
-  let ishaEl = document.getElementById("ishaTime");
-
-  if(!fajrEl || !sunriseEl || !dhuhrEl || !asrEl || !maghribEl || !ishaEl){
-    clearCurrentSalahHighlight();
-    return;
-  }
-
-  let fajr = salahTextToMinutes(fajrEl.innerText);
-  let sunrise = salahTextToMinutes(sunriseEl.innerText);
-  let dhuhr = salahTextToMinutes(dhuhrEl.innerText);
-  let asr = salahTextToMinutes(asrEl.innerText);
-  let maghrib = salahTextToMinutes(maghribEl.innerText);
-  let isha = salahTextToMinutes(ishaEl.innerText);
+  let fajr = salahTextToMinutes(document.getElementById("fajrTime")?.innerText);
+  let sunrise = salahTextToMinutes(document.getElementById("sunriseTime")?.innerText);
+  let dhuhr = salahTextToMinutes(document.getElementById("dhuhrTime")?.innerText);
+  let asr = salahTextToMinutes(document.getElementById("asrTime")?.innerText);
+  let maghrib = salahTextToMinutes(document.getElementById("maghribTime")?.innerText);
+  let isha = salahTextToMinutes(document.getElementById("ishaTime")?.innerText);
 
   if(
     fajr === null ||
@@ -6101,12 +6090,14 @@ box-shadow:0 1px 4px rgba(0,0,0,0.08);
 </div>
 
 <!-- SUNRISE -->
-<div style="
+<div id="sunriseRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:8px 0;
+padding:8px 10px;
 border-bottom:1px solid rgba(0,0,0,0.06);
+border-radius:16px;
+transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
