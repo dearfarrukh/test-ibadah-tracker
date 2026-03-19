@@ -3070,7 +3070,7 @@ if(!name) return;
 
 let task = {name:name};
 
-let today = new Date(currentDate).setHours(0,0,0,0);
+let today = new Date().setHours(0,0,0,0);
 
 let sameCurrentTask = taskList.find(function(t){
 return t.name.trim().toLowerCase() === name.toLowerCase() && !isHistoricalTask(t);
