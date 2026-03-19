@@ -2793,7 +2793,55 @@ function showRemoveTask(){
 
 
 
-let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
+let visibleTasks = getManageTaskList();
+let options = visibleTasks.map(t=>`<option>${t.name}</option>`).join("");
+
+if(!options){
+document.getElementById("taskMenuContent").innerHTML = `
+<div style="
+font-size:28px;
+font-weight:800;
+color:#111;
+margin-bottom:18px;
+letter-spacing:-0.3px;
+">
+Remove Task
+</div>
+
+<div style="
+background:#f2f2f7;
+border-radius:20px;
+padding:18px;
+font-size:18px;
+font-weight:600;
+color:#666;
+margin-bottom:12px;
+line-height:1.5;
+box-sizing:border-box;
+">
+No current tasks to remove.
+Historical tasks are hidden from this screen.
+</div>
+
+<button onclick="manageTasks()" style="
+width:100%;
+padding:16px;
+font-size:20px;
+font-weight:700;
+border:none;
+border-radius:22px;
+background:#f5f5f7;
+color:#666;
+cursor:pointer;
+">
+Back
+</button>
+`;
+return;
+}
+
+
+  
 
 document.getElementById("taskMenuContent").innerHTML = `
 <div style="
@@ -2916,6 +2964,23 @@ loadTasks();
 manageTasks();
 
 }
+
+
+
+function getRealTodayTaskTime(){
+let now = new Date();
+return new Date(now.getFullYear(), now.getMonth(), now.getDate()).setHours(0,0,0,0);
+}
+
+function isHistoricalTask(task){
+if(task.end === null || task.end === undefined) return false;
+return Number(task.end) < getRealTodayTaskTime();
+}
+
+function getManageTaskList(){
+return taskList.filter(task => !isHistoricalTask(task));
+}
+
   
   function showAddTask(){
 
@@ -3042,14 +3107,61 @@ localStorage.setItem("taskList",JSON.stringify(taskList));
 manageTasks();
 loadTasks();
 
-}
 
+
+    
 function showRenameTask(){
 
 
 
-let options = taskList.map(t=>`<option>${t.name}</option>`).join("");
+let visibleTasks = getManageTaskList();
+let options = visibleTasks.map(t=>`<option>${t.name}</option>`).join("");
 
+if(!options){
+document.getElementById("taskMenuContent").innerHTML = `
+<div style="
+font-size:28px;
+font-weight:800;
+color:#111;
+margin-bottom:18px;
+letter-spacing:-0.3px;
+">
+Rename Task
+</div>
+
+<div style="
+background:#f2f2f7;
+border-radius:20px;
+padding:18px;
+font-size:18px;
+font-weight:600;
+color:#666;
+margin-bottom:12px;
+line-height:1.5;
+box-sizing:border-box;
+">
+No current tasks to rename.
+Historical tasks are hidden from this screen.
+</div>
+
+<button onclick="manageTasks()" style="
+width:100%;
+padding:16px;
+font-size:20px;
+font-weight:700;
+border:none;
+border-radius:22px;
+background:#f5f5f7;
+color:#666;
+cursor:pointer;
+">
+Back
+</button>
+`;
+return;
+}
+
+  
 document.getElementById("taskMenuContent").innerHTML = `
 <div style="
 font-size:28px;
