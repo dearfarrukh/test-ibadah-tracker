@@ -4926,6 +4926,12 @@ row.style.boxShadow = "none";
 row.style.border = "none";
 row.style.borderLeft = "none";
 row.style.transform = "scale(1)";
+
+let texts = row.querySelectorAll("div");
+texts.forEach(function(el){
+  el.style.fontWeight = "";
+  el.style.color = "";
+});
     }
   });
 }
@@ -4935,11 +4941,17 @@ function setCurrentSalahHighlight(rowId){
 
   let row = document.getElementById(rowId);
   if(row){
- row.style.background = "#cfd3df";
-row.style.boxShadow = "0 12px 28px rgba(0,0,0,0.22)";
-row.style.border = "1px solid rgba(0,0,0,0.16)";
-row.style.borderLeft = "8px solid #111";
-row.style.transform = "scale(1.02)";
+row.style.background = "#bfc5d6";
+row.style.boxShadow = "0 14px 32px rgba(0,0,0,0.25)";
+row.style.border = "1px solid rgba(0,0,0,0.20)";
+row.style.borderLeft = "10px solid #000";
+row.style.transform = "scale(1.03)";
+
+let texts = row.querySelectorAll("div");
+texts.forEach(function(el){
+  el.style.fontWeight = "800";
+  el.style.color = "#000";
+});
   }
 }
 
