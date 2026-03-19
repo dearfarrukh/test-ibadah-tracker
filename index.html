@@ -2065,13 +2065,31 @@ task.end = null;
 
 }
 
+let existingIndex = taskList.findIndex(t => {
+
+let sameName = (t.name || "").trim().toLowerCase() === name.toLowerCase();
+
+let sameStart = Number(t.start) === Number(task.start);
+let sameEnd = Number(t.end) === Number(task.end);
+
+let sameDays = JSON.stringify(t.days || []) === JSON.stringify(task.days || []);
+
+return sameName && sameStart && sameEnd && sameDays;
+});
+
+if(existingIndex !== -1){
+taskList[existingIndex] = {
+...taskList[existingIndex],
+...task
+};
+}else{
 taskList.push(task);
-
-localStorage.setItem("taskList", JSON.stringify(taskList));
-
-loadTasks();
-
 }
+
+localStorage.setItem("taskList",JSON.stringify(taskList));
+
+manageTasks();
+loadTasks();
 
 
   function showTaskOptions(){
