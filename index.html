@@ -355,7 +355,7 @@ style="display:flex;justify-content:space-between;text-align:center;">
 <div id="taskContainer"></div>
 
 <div style="margin-top:15px;text-align:center;">
-<button onclick="manageTasks()" style="
+<button onclick="openTaskManagerSafe()" style="
 padding:12px 30px;
 border-radius:16px;
 border:none;
@@ -1947,7 +1947,10 @@ let historicalTasks = taskList
   .map((task, originalIndex) => ({ ...task, originalIndex }))
   .filter(task => isHistoricalTask(task));
 
-let html = `
+let taskMenu = document.getElementById("taskMenu");
+if(!taskMenu) return;
+
+taskMenu.innerHTML = `
 <div style="
 position:fixed;
 top:0;
@@ -1961,7 +1964,7 @@ z-index:999999;
 display:flex;
 align-items:flex-end;
 justify-content:center;
-padding:0 0 env(safe-area-inset-bottom) 0;
+padding:0;
 box-sizing:border-box;
 " onclick="closeTaskManagerPopup(event)">
 
@@ -2097,7 +2100,7 @@ box-sizing:border-box;
           display:flex;
           gap:10px;
           ">
-            <button onclick="editTask(${task.originalIndex})" style="
+            <button onclick="showRenameTask()" style="
             flex:1;
             padding:14px;
             border:none;
@@ -2111,7 +2114,7 @@ box-sizing:border-box;
             Rename
             </button>
 
-            <button onclick="deleteTaskOption(${task.originalIndex})" style="
+            <button onclick="showRemoveTask()" style="
             flex:1;
             padding:14px;
             border:none;
@@ -2194,13 +2197,11 @@ box-sizing:border-box;
 </div>
 `;
 
-let taskMenu = document.getElementById("taskMenu");
-if(taskMenu){
-  taskMenu.innerHTML = html;
-  taskMenu.style.display = "block";
-}
+taskMenu.style.display = "block";
 }
 
+
+  
 function closeTaskManagerPopup(event){
 if(event && event.target !== event.currentTarget) return;
 
@@ -2211,7 +2212,14 @@ if(taskMenu){
 }
 }
 
-  
+  function openTaskManagerSafe(){
+let taskMenu = document.getElementById("taskMenu");
+if(!taskMenu){
+  alert("taskMenu container not found");
+  return;
+}
+manageTasks();
+}
 
 function closeTaskMenu(){
 document.getElementById("taskMenu").style.display = "none";
