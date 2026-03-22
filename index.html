@@ -2952,35 +2952,14 @@ Rename
 
 let name = document.getElementById("deleteSelect").value;
 
-let choice = prompt(
-"Delete Task:\n\n1 - Delete From Beginning\n2 - Delete From Today"
-);
-
-let today = new Date(currentDate).setHours(0,0,0,0);
-
-if(choice == "1"){
-
 // remove completely
 taskList = taskList.filter(t => t.name !== name);
 
-}
-
-else if(choice == "2"){
-
-// stop task from today forward
-let yesterday = new Date(today);
-yesterday.setDate(yesterday.getDate()-1);
-
-taskList = taskList.map(t=>{
-if(t.name === name){
-return {...t, end:yesterday.setHours(0,0,0,0)};
-}
-return t;
-});
-
-}
-
 localStorage.setItem("taskList", JSON.stringify(taskList));
+
+document.getElementById("deleteChoicePopup").style.display = "none";
+document.getElementById("taskMenu").style.display = "block";
+document.getElementById("menuOverlay").style.display = "block";
 
 loadTasks();
 manageTasks();
