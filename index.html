@@ -1941,8 +1941,13 @@ function manageTasks(){
 
 let allTasks = JSON.parse(localStorage.getItem("ibadahTasks") || "[]");
 
-let activeTasks = allTasks.filter(task => !isHistoricalTask(task));
-let historicalTasks = allTasks.filter(task => isHistoricalTask(task));
+let activeTasks = allTasks
+  .map((task, originalIndex) => ({ ...task, originalIndex }))
+  .filter(task => !isHistoricalTask(task));
+
+let historicalTasks = allTasks
+  .map((task, originalIndex) => ({ ...task, originalIndex }))
+  .filter(task => isHistoricalTask(task));
 
 let html = `
 <div style="
@@ -1957,9 +1962,8 @@ backdrop-filter:blur(10px);
 z-index:9999;
 display:flex;
 align-items:flex-end;
-padding-bottom:12px;
 justify-content:center;
-padding:0;
+padding:12px 0 0 0;
 box-sizing:border-box;
 " onclick="closeTaskManagerPopup(event)">
 
@@ -1967,14 +1971,13 @@ box-sizing:border-box;
   width:100%;
   max-width:520px;
   background:#f7f7fa;
-  border-top-left-radius:34px;
-  border-top-right-radius:34px;
+  border-top-left-radius:28px;
+  border-top-right-radius:28px;
   box-shadow:0 -12px 40px rgba(0,0,0,0.18);
   padding:18px 18px 30px 18px;
   box-sizing:border-box;
- max-height:80vh;
-overflow-y:auto;
-padding-bottom:40px;
+  max-height:80vh;
+  overflow-y:auto;
   " onclick="event.stopPropagation()">
 
     <div style="
@@ -2008,7 +2011,7 @@ padding-bottom:40px;
         margin-top:6px;
         line-height:1.4;
         ">
-        Add, edit, and organize your daily ibadah tasks
+        Add, rename, and remove your daily ibadah tasks
         </div>
       </div>
 
@@ -2048,7 +2051,7 @@ padding-bottom:40px;
       cursor:pointer;
       box-shadow:0 8px 20px rgba(0,0,0,0.16);
       ">
-      + Add New Task
+      Add Task
       </button>
     </div>
 
@@ -2105,7 +2108,7 @@ padding-bottom:40px;
         No active tasks yet.
         </div>
         `
-        : activeTasks.map((task, index) => `
+        : activeTasks.map(task => `
         <div style="
         background:#f7f7fa;
         border-radius:24px;
@@ -2151,9 +2154,11 @@ padding-bottom:40px;
           display:flex;
           gap:10px;
           margin-top:16px;
+          flex-wrap:wrap;
           ">
-            <button onclick="editTask(${index})" style="
+            <button onclick="editTask(${task.originalIndex})" style="
             flex:1;
+            min-width:140px;
             padding:14px;
             border:none;
             border-radius:18px;
@@ -2164,11 +2169,12 @@ padding-bottom:40px;
             cursor:pointer;
             box-shadow:0 3px 10px rgba(0,0,0,0.06);
             ">
-            Edit
+            Rename Task
             </button>
 
-            <button onclick="deleteTaskOption(${index})" style="
+            <button onclick="deleteTaskOption(${task.originalIndex})" style="
             flex:1;
+            min-width:140px;
             padding:14px;
             border:none;
             border-radius:18px;
@@ -2178,7 +2184,7 @@ padding-bottom:40px;
             font-weight:700;
             cursor:pointer;
             ">
-            Delete
+            Remove Task
             </button>
           </div>
         </div>
@@ -2191,6 +2197,7 @@ padding-bottom:40px;
     border-radius:28px;
     padding:18px 16px;
     box-shadow:0 8px 24px rgba(0,0,0,0.08);
+    margin-bottom:16px;
     ">
       <div style="
       display:flex;
@@ -2268,6 +2275,28 @@ padding-bottom:40px;
       }
     </div>
 
+    <div style="
+    background:white;
+    border-radius:28px;
+    padding:16px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+    ">
+      <button onclick="closeTaskManagerPopup()" style="
+      width:100%;
+      padding:17px;
+      font-size:20px;
+      font-weight:800;
+      border:none;
+      border-radius:22px;
+      background:#111;
+      color:white;
+      box-shadow:0 8px 20px rgba(0,0,0,0.12);
+      cursor:pointer;
+      ">
+      Close
+      </button>
+    </div>
+
   </div>
 </div>
 `;
@@ -2278,7 +2307,6 @@ if(taskMenu){
   taskMenu.style.display = "block";
 }
 }
-
 
 
   function closeTaskManagerPopup(event){
