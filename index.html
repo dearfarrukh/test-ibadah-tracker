@@ -1956,9 +1956,8 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(15,15,20,0.28);
-backdrop-filter:blur(10px);
--webkit-backdrop-filter:blur(10px);
+background:rgba(15,15,20,0.35);
+backdrop-filter:blur(12px);
 z-index:999999;
 display:flex;
 align-items:flex-end;
@@ -1975,7 +1974,6 @@ box-sizing:border-box;
   border-top-right-radius:28px;
   box-shadow:0 -12px 40px rgba(0,0,0,0.18);
   padding:18px 18px 30px 18px;
-  box-sizing:border-box;
   max-height:80vh;
   overflow-y:auto;
   " onclick="event.stopPropagation()">
@@ -1988,184 +1986,59 @@ box-sizing:border-box;
     margin:0 auto 18px auto;
     "></div>
 
-    <div style="
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
-    ">
+    <div style="display:flex;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="
-        font-size:32px;
-        font-weight:900;
-        color:#111;
-        letter-spacing:-0.6px;
-        line-height:1.1;
-        ">
-        Manage Tasks
-        </div>
-
-        <div style="
-        font-size:16px;
-        color:#6e6e73;
-        margin-top:6px;
-        line-height:1.4;
-        ">
-        Add, rename, and remove your daily ibadah tasks
-        </div>
+        <div style="font-size:30px;font-weight:900;">Manage Tasks</div>
+        <div style="font-size:15px;color:#6e6e73;">Add, rename and remove tasks</div>
       </div>
 
       <button onclick="closeTaskManagerPopup()" style="
-      width:42px;
-      height:42px;
-      border:none;
-      border-radius:50%;
-      background:white;
-      color:#111;
-      font-size:22px;
-      font-weight:700;
-      box-shadow:0 4px 14px rgba(0,0,0,0.10);
-      cursor:pointer;
-      ">
-      ✕
-      </button>
+      width:40px;height:40px;border-radius:50%;border:none;
+      background:white;font-size:20px;">✕</button>
     </div>
 
-    <div style="
-    background:white;
-    border-radius:28px;
-    padding:16px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.08);
-    margin-bottom:16px;
-    ">
-      <button onclick="showAddTask()" style="
-      width:100%;
-      padding:18px 20px;
-      border:none;
-      border-radius:22px;
-      background:#111;
-      color:white;
-      font-size:22px;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:0 8px 20px rgba(0,0,0,0.16);
-      ">
-      Add Task
-      </button>
-    </div>
+    <button onclick="showAddTask()" style="
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:22px;
+    background:#111;
+    color:white;
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:16px;">
+    Add Task
+    </button>
 
-    <div style="
-    background:white;
-    border-radius:28px;
-    padding:18px 16px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.08);
-    margin-bottom:16px;
-    ">
-      <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:14px;
-      ">
-        <div style="
-        font-size:23px;
-        font-weight:800;
-        color:#111;
-        ">
-        Active Tasks
-        </div>
-
-        <div style="
-        min-width:34px;
-        height:34px;
-        padding:0 12px;
-        border-radius:17px;
-        background:#f2f2f7;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:15px;
-        font-weight:800;
-        color:#111;
-        ">
-        ${activeTasks.length}
-        </div>
+    <div style="background:white;border-radius:24px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:22px;font-weight:800;margin-bottom:10px;">
+      Active Tasks (${activeTasks.length})
       </div>
 
       ${
         activeTasks.length === 0
-        ? `
-        <div style="
-        background:#f7f7fa;
-        border-radius:22px;
-        padding:18px;
-        font-size:17px;
-        color:#6e6e73;
-        ">
-        No active tasks yet.
-        </div>
-        `
+        ? `<div style="color:#6e6e73;">No active tasks</div>`
         : activeTasks.map(task => `
-        <div style="
-        background:#f7f7fa;
-        border-radius:24px;
-        padding:18px 16px;
-        margin-bottom:12px;
-        ">
-          
-          <div style="
-          font-size:21px;
-          font-weight:800;
-          color:#111;
-          margin-bottom:6px;
-          ">
-          ${task.name || "Untitled Task"}
+        <div style="padding:14px;background:#f2f2f7;border-radius:18px;margin-bottom:10px;">
+
+          <div style="font-size:20px;font-weight:800;">
+          ${task.name || "Task"}
           </div>
 
-          <div style="
-          font-size:16px;
-          color:#6e6e73;
-          margin-bottom:14px;
-          ">
-          ${(task.type || "Task")} • Active
+          <div style="color:#6e6e73;margin-bottom:10px;">
+          ${(task.type || "Task")}
           </div>
 
-          <div style="
-          display:flex;
-          gap:10px;
-          flex-wrap:wrap;
-          ">
-            
+          <div style="display:flex;gap:10px;">
             <button onclick="editTask(${task.originalIndex})" style="
-            flex:1;
-            min-width:140px;
-            padding:14px;
-            border:none;
-            border-radius:18px;
-            background:white;
-            color:#111;
-            font-size:18px;
-            font-weight:700;
-            cursor:pointer;
-            ">
-            Rename Task
+            flex:1;padding:12px;border-radius:14px;border:none;background:white;">
+            Rename
             </button>
 
             <button onclick="deleteTaskOption(${task.originalIndex})" style="
-            flex:1;
-            min-width:140px;
-            padding:14px;
-            border:none;
-            border-radius:18px;
-            background:#fff1f0;
-            color:#d93025;
-            font-size:18px;
-            font-weight:700;
-            cursor:pointer;
-            ">
-            Remove Task
+            flex:1;padding:12px;border-radius:14px;border:none;background:#ffe5e5;color:red;">
+            Remove
             </button>
-
           </div>
 
         </div>
@@ -2173,50 +2046,17 @@ box-sizing:border-box;
       }
     </div>
 
-    <div style="
-    background:white;
-    border-radius:28px;
-    padding:18px 16px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.08);
-    margin-bottom:16px;
-    ">
-      <div style="
-      font-size:23px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:14px;
-      ">
-      History
+    <div style="background:white;border-radius:24px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:22px;font-weight:800;margin-bottom:10px;">
+      History (${historicalTasks.length})
       </div>
 
       ${
         historicalTasks.length === 0
-        ? `
-        <div style="
-        background:#f7f7fa;
-        border-radius:22px;
-        padding:18px;
-        font-size:17px;
-        color:#6e6e73;
-        ">
-        No historical tasks yet.
-        </div>
-        `
+        ? `<div style="color:#6e6e73;">No history</div>`
         : historicalTasks.map(task => `
-        <div style="
-        background:#f7f7fa;
-        border-radius:24px;
-        padding:18px 16px;
-        margin-bottom:12px;
-        opacity:0.88;
-        ">
-          <div style="
-          font-size:20px;
-          font-weight:800;
-          color:#111;
-          ">
-          ${task.name || "Untitled Task"}
-          </div>
+        <div style="padding:14px;background:#f2f2f7;border-radius:18px;margin-bottom:10px;">
+        ${task.name || "Task"}
         </div>
         `).join("")
       }
@@ -2224,15 +2064,13 @@ box-sizing:border-box;
 
     <button onclick="closeTaskManagerPopup()" style="
     width:100%;
-    padding:18px;
-    font-size:20px;
-    font-weight:800;
+    padding:16px;
     border:none;
-    border-radius:22px;
+    border-radius:20px;
     background:#111;
     color:white;
-    cursor:pointer;
-    ">
+    font-size:18px;
+    font-weight:800;">
     Close
     </button>
 
@@ -2247,7 +2085,7 @@ if(taskMenu){
 }
 }
 
-  function closeTaskManagerPopup(event){
+function closeTaskManagerPopup(event){
 if(event && event.target !== event.currentTarget) return;
 
 let taskMenu = document.getElementById("taskMenu");
@@ -2256,7 +2094,6 @@ if(taskMenu){
   taskMenu.innerHTML = "";
 }
 }
-
 
   
 
