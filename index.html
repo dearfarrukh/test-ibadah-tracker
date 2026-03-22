@@ -2965,6 +2965,37 @@ loadTasks();
 manageTasks();
 
 }
+
+
+
+  function deleteTaskFromToday(){
+
+let name = document.getElementById("deleteSelect").value;
+
+let today = new Date(currentDate).setHours(0,0,0,0);
+
+let yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate()-1);
+
+taskList = taskList.map(t=>{
+if(t.name === name){
+return {...t, end:yesterday.setHours(0,0,0,0)};
+}
+return t;
+});
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+document.getElementById("deleteChoicePopup").style.display = "none";
+document.getElementById("taskMenu").style.display = "block";
+document.getElementById("menuOverlay").style.display = "block";
+
+loadTasks();
+manageTasks();
+
+}
+
+
   
   function showAddTask(){
 
@@ -5344,7 +5375,7 @@ color:#666;
 margin-bottom:18px;
 line-height:1.5;
 ">
-Are you sure you want to delete this task?
+Choose how you want to remove this task.
 </div>
 
 <button onclick="confirmDeleteTask()" style="
@@ -5359,8 +5390,26 @@ background:#ff3b30;
 color:white;
 cursor:pointer;
 box-shadow:0 6px 14px rgba(255,59,48,0.25);
+letter-spacing:-0.2px;
 ">
-Delete
+Delete From Beginning
+</button>
+
+<button onclick="deleteTaskFromToday()" style="
+width:100%;
+padding:16px;
+margin-bottom:10px;
+font-size:18px;
+font-weight:800;
+border:none;
+border-radius:16px;
+background:#e9e9ee;
+color:#111;
+cursor:pointer;
+box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
+letter-spacing:-0.2px;
+">
+Delete From Today
 </button>
 
 <button onclick="closeDeletePopup()" style="
@@ -5370,17 +5419,16 @@ font-size:17px;
 font-weight:700;
 border:none;
 border-radius:16px;
-background:#e9e9ee;
-color:#111;
+background:#f5f5f7;
+color:#666;
 cursor:pointer;
-box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
+letter-spacing:-0.2px;
 ">
 Cancel
 </button>
 
 </div>
 </div>
-
   
 <!-- Bottom Navigation -->
 <div id="bottomNav">
