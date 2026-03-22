@@ -5186,21 +5186,31 @@ function openSalahSettingsFromMenu(){
 
 <div id="taskMenu" style="
 position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:linear-gradient(180deg,#ffffff 0%,#f7f7fb 100%);
-border-radius:34px;
-padding:32px 24px 24px 24px;
-box-shadow:0 25px 60px rgba(0,0,0,0.25);
+left:0;
+right:0;
+bottom:0;
+top:auto;
+transform:none;
+background:linear-gradient(180deg,#fdfdff 0%,#f2f2f7 100%);
+border-top-left-radius:28px;
+border-top-right-radius:28px;
+border-bottom-left-radius:0;
+border-bottom-right-radius:0;
+padding:18px 18px 28px 18px;
+box-shadow:0 -8px 30px rgba(0,0,0,0.18);
 display:none;
 z-index:1000;
 text-align:center;
-width:360px;
-max-width:92%;
-border:1px solid rgba(255,255,255,0.7);
+width:100%;
+max-width:100%;
+border:none;
+box-sizing:border-box;
+max-height:85vh;
+overflow-y:auto;
 ">
 
+
+  
 <div id="taskMenuContent">
 
 <div style="
