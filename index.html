@@ -355,7 +355,7 @@ style="display:flex;justify-content:space-between;text-align:center;">
 <div id="taskContainer"></div>
 
 <div style="margin-top:15px;text-align:center;">
-<button onclick="openTaskManagerSafe()" style="
+<button onclick="manageTasks()" style="
 padding:12px 30px;
 border-radius:16px;
 border:none;
@@ -1939,286 +1939,83 @@ loadTasks();
 
 function manageTasks(){
 
-let activeTasks = taskList
-  .map((task, originalIndex) => ({ ...task, originalIndex }))
-  .filter(task => !isHistoricalTask(task));
-
-let historicalTasks = taskList
-  .map((task, originalIndex) => ({ ...task, originalIndex }))
-  .filter(task => isHistoricalTask(task));
-
-let taskMenu = document.getElementById("taskMenu");
-if(!taskMenu) return;
-
-taskMenu.innerHTML = `
+document.getElementById("taskMenuContent").innerHTML = `
 <div style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(15,15,20,0.35);
-backdrop-filter:blur(12px);
--webkit-backdrop-filter:blur(12px);
-z-index:999999;
-display:flex;
-align-items:flex-end;
-justify-content:center;
-padding:0;
-box-sizing:border-box;
-" onclick="closeTaskManagerPopup(event)">
-
-  <div style="
-  width:100%;
-  max-width:520px;
-  background:#f7f7fa;
-  border-top-left-radius:28px;
-  border-top-right-radius:28px;
-  box-shadow:0 -12px 40px rgba(0,0,0,0.18);
-  padding:18px 18px 30px 18px;
-  box-sizing:border-box;
-  max-height:80vh;
-  overflow-y:auto;
-  " onclick="event.stopPropagation()">
-
-    <div style="
-    width:48px;
-    height:5px;
-    background:#d1d1d6;
-    border-radius:999px;
-    margin:0 auto 18px auto;
-    "></div>
-
-    <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-    ">
-      <div>
-        <div style="
-        font-size:30px;
-        font-weight:900;
-        color:#111;
-        letter-spacing:-0.4px;
-        ">
-        Manage Tasks
-        </div>
-
-        <div style="
-        font-size:15px;
-        color:#6e6e73;
-        margin-top:4px;
-        ">
-        Add, rename and remove tasks
-        </div>
-      </div>
-
-      <button onclick="closeTaskManagerPopup()" style="
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      border:none;
-      background:white;
-      font-size:20px;
-      font-weight:700;
-      color:#111;
-      cursor:pointer;
-      box-shadow:0 4px 12px rgba(0,0,0,0.10);
-      ">
-      ✕
-      </button>
-    </div>
-
-    <button onclick="showAddTask()" style="
-    width:100%;
-    padding:18px;
-    margin-bottom:16px;
-    border:none;
-    border-radius:22px;
-    background:#111;
-    color:white;
-    font-size:22px;
-    font-weight:800;
-    cursor:pointer;
-    box-shadow:0 10px 24px rgba(0,0,0,0.14);
-    ">
-    Add Task
-    </button>
-
-    <div style="
-    background:white;
-    border-radius:24px;
-    padding:16px;
-    margin-bottom:16px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
-    ">
-      <div style="
-      font-size:22px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:12px;
-      ">
-      Active Tasks (${activeTasks.length})
-      </div>
-
-      ${
-        activeTasks.length === 0
-        ? `
-        <div style="
-        color:#6e6e73;
-        font-size:17px;
-        ">
-        No active tasks
-        </div>
-        `
-        : activeTasks.map(task => `
-        <div style="
-        padding:14px;
-        background:#f2f2f7;
-        border-radius:18px;
-        margin-bottom:10px;
-        ">
-          <div style="
-          font-size:20px;
-          font-weight:800;
-          color:#111;
-          margin-bottom:6px;
-          ">
-          ${task.name || "Task"}
-          </div>
-
-          <div style="
-          color:#6e6e73;
-          font-size:15px;
-          margin-bottom:12px;
-          ">
-          Active
-          </div>
-
-          <div style="
-          display:flex;
-          gap:10px;
-          ">
-            <button onclick="showRenameTask()" style="
-            flex:1;
-            padding:14px;
-            border:none;
-            border-radius:16px;
-            background:white;
-            color:#111;
-            font-size:18px;
-            font-weight:700;
-            cursor:pointer;
-            ">
-            Rename
-            </button>
-
-            <button onclick="showRemoveTask()" style="
-            flex:1;
-            padding:14px;
-            border:none;
-            border-radius:16px;
-            background:#ffe5e5;
-            color:#d93025;
-            font-size:18px;
-            font-weight:700;
-            cursor:pointer;
-            ">
-            Remove
-            </button>
-          </div>
-        </div>
-        `).join("")
-      }
-    </div>
-
-    <div style="
-    background:white;
-    border-radius:24px;
-    padding:16px;
-    margin-bottom:16px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
-    ">
-      <div style="
-      font-size:22px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:12px;
-      ">
-      History (${historicalTasks.length})
-      </div>
-
-      ${
-        historicalTasks.length === 0
-        ? `
-        <div style="
-        color:#6e6e73;
-        font-size:17px;
-        ">
-        No history
-        </div>
-        `
-        : historicalTasks.map(task => `
-        <div style="
-        padding:14px;
-        background:#f2f2f7;
-        border-radius:18px;
-        margin-bottom:10px;
-        opacity:0.88;
-        ">
-          <div style="
-          font-size:18px;
-          font-weight:700;
-          color:#111;
-          ">
-          ${task.name || "Task"}
-          </div>
-        </div>
-        `).join("")
-      }
-    </div>
-
-    <button onclick="closeTaskManagerPopup()" style="
-    width:100%;
-    padding:18px;
-    border:none;
-    border-radius:22px;
-    background:#111;
-    color:white;
-    font-size:20px;
-    font-weight:800;
-    cursor:pointer;
-    ">
-    Close
-    </button>
-
-  </div>
+font-size:30px;
+font-weight:900;
+color:#111;
+margin-bottom:20px;
+letter-spacing:-0.4px;
+">
+Manage Tasks
 </div>
+
+<button onclick="showAddTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#111;
+color:white;
+box-shadow:0 10px 24px rgba(0,0,0,0.14);
+cursor:pointer;
+">
+Add Task
+</button>
+
+<button onclick="showRenameTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#e9e9ee;
+color:#111;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+">
+Rename Task
+</button>
+
+<button onclick="showRemoveTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#e9e9ee;
+color:#111;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+">
+Remove Task
+</button>
+
+<button onclick="closeTaskMenu()" style="
+width:100%;
+padding:18px;
+background:#f5f5f7;
+font-size:22px;
+font-weight:700;
+border:none;
+border-radius:22px;
+color:#666;
+cursor:pointer;
+">
+Close
+</button>
 `;
 
-taskMenu.style.display = "block";
-}
+document.getElementById("taskMenu").style.display = "block";
+  document.getElementById("menuOverlay").style.display = "block";
 
-
-  
-function closeTaskManagerPopup(event){
-if(event && event.target !== event.currentTarget) return;
-
-let taskMenu = document.getElementById("taskMenu");
-if(taskMenu){
-  taskMenu.style.display = "none";
-  taskMenu.innerHTML = "";
-}
-}
-
-  function openTaskManagerSafe(){
-let taskMenu = document.getElementById("taskMenu");
-if(!taskMenu){
-  alert("taskMenu container not found");
-  return;
-}
-manageTasks();
 }
 
 function closeTaskMenu(){
@@ -3175,188 +2972,86 @@ manageTasks();
 
 }
   
-function showAddTask(){
+  function showAddTask(){
 
-let taskMenu = document.getElementById("taskMenu");
-if(!taskMenu) return;
+let area = document.getElementById("taskMenuContent");
 
-taskMenu.innerHTML = `
+area.innerHTML = `
 <div style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(15,15,20,0.28);
-backdrop-filter:blur(10px);
--webkit-backdrop-filter:blur(10px);
-z-index:9999;
-display:flex;
-align-items:flex-end;
-padding-bottom:12px;
-justify-content:center;
-padding:0;
-box-sizing:border-box;
-" onclick="closeTaskManagerPopup(event)">
-
-  <div style="
-  width:100%;
-  max-width:520px;
-  background:#f7f7fa;
-  border-top-left-radius:34px;
-  border-top-right-radius:34px;
-  box-shadow:0 -12px 40px rgba(0,0,0,0.18);
-  padding:18px 18px 30px 18px;
-  box-sizing:border-box;
- max-height:80vh;
-overflow-y:auto;
-padding-bottom:40px;
-  " onclick="event.stopPropagation()">
-
-    <div style="
-    width:48px;
-    height:5px;
-    background:#d1d1d6;
-    border-radius:999px;
-    margin:0 auto 18px auto;
-    "></div>
-
-    <div style="
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
-    ">
-      <div>
-        <div style="
-        font-size:32px;
-        font-weight:900;
-        color:#111;
-        letter-spacing:-0.6px;
-        line-height:1.1;
-        ">
-        Add Task
-        </div>
-
-        <div style="
-        font-size:16px;
-        color:#6e6e73;
-        margin-top:6px;
-        line-height:1.4;
-        ">
-        Create a new task in a clean Apple-style layout
-        </div>
-      </div>
-
-      <button onclick="manageTasks()" style="
-      width:42px;
-      height:42px;
-      border:none;
-      border-radius:50%;
-      background:white;
-      color:#111;
-      font-size:22px;
-      font-weight:700;
-      box-shadow:0 4px 14px rgba(0,0,0,0.10);
-      cursor:pointer;
-      ">
-      ←
-      </button>
-    </div>
-
-    <div style="
-    background:white;
-    border-radius:28px;
-    padding:18px 16px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.08);
-    margin-bottom:16px;
-    ">
-      <div style="
-      font-size:20px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:12px;
-      ">
-      Task Type
-      </div>
-
-      <select id="taskTypeSelect" style="
-      width:100%;
-      padding:16px 18px;
-      border:none;
-      border-radius:20px;
-      background:#f2f2f7;
-      font-size:18px;
-      font-weight:700;
-      color:#111;
-      outline:none;
-      box-sizing:border-box;
-      ">
-        <option value="">Select task type</option>
-        <option value="daily">Daily Task</option>
-        <option value="weekly">Weekly Task</option>
-        <option value="custom">Custom Task</option>
-      </select>
-    </div>
-
-    <div id="taskOptionsBox" style="
-    background:white;
-    border-radius:28px;
-    padding:18px 16px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.08);
-    margin-bottom:16px;
-    ">
-      <div style="
-      font-size:18px;
-      color:#8e8e93;
-      line-height:1.5;
-      ">
-      Select a task type to continue
-      </div>
-    </div>
-
-    <div style="
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    ">
-      <button onclick="createTask()" style="
-      width:100%;
-      padding:18px;
-      font-size:22px;
-      font-weight:800;
-      border:none;
-      border-radius:22px;
-      background:#111;
-      color:white;
-      box-shadow:0 10px 24px rgba(0,0,0,0.14);
-      cursor:pointer;
-      ">
-      Save Task
-      </button>
-
-      <button onclick="manageTasks()" style="
-      width:100%;
-      padding:17px;
-      font-size:20px;
-      font-weight:800;
-      border:none;
-      border-radius:22px;
-      background:white;
-      color:#111;
-      box-shadow:0 8px 20px rgba(0,0,0,0.08);
-      cursor:pointer;
-      ">
-      Back
-      </button>
-    </div>
-
-  </div>
+font-size:28px;
+font-weight:800;
+color:#111;
+margin-bottom:18px;
+letter-spacing:-0.3px;
+">
+Add Task
 </div>
-`;
 
+<input id="taskNameInput" placeholder="Task Name" style="
+width:100%;
+margin-bottom:12px;
+padding:16px 18px;
+font-size:20px;
+font-weight:600;
+border-radius:18px;
+border:none;
+background:#f2f2f7;
+box-sizing:border-box;
+color:#111;
+">
+
+<select id="taskTypeSelect" style="
+width:100%;
+margin-bottom:12px;
+padding:16px 18px;
+font-size:20px;
+font-weight:600;
+border-radius:18px;
+border:none;
+background:#f2f2f7;
+box-sizing:border-box;
+color:#111;
+">
+<option value="">Select Type</option>
+<option value="range">Date Range</option>
+<option value="today">Start Today</option>
+<option value="days">Specific Days</option>
+</select>
+
+<div id="taskExtra" style="margin-bottom:12px;"></div>
+
+<button onclick="createTask()" style="
+width:100%;
+margin-bottom:12px;
+padding:18px;
+font-size:22px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#111;
+color:white;
+box-shadow:0 10px 24px rgba(0,0,0,0.14);
+cursor:pointer;
+">
+Save
+</button>
+
+<button onclick="manageTasks()" style="
+width:100%;
+padding:16px;
+font-size:20px;
+font-weight:700;
+border:none;
+border-radius:22px;
+background:#f5f5f7;
+color:#666;
+cursor:pointer;
+">
+Back
+</button>
+`;
 document.getElementById("taskTypeSelect").onchange = showTaskOptions;
-taskMenu.style.display = "block";
+
 }
 
 function getTodayTaskTime(){
@@ -5489,8 +5184,102 @@ function openSalahSettingsFromMenu(){
   
   <div id="menuOverlay"></div>
 
+<div id="taskMenu" style="
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:linear-gradient(180deg,#ffffff 0%,#f7f7fb 100%);
+border-radius:34px;
+padding:32px 24px 24px 24px;
+box-shadow:0 25px 60px rgba(0,0,0,0.25);
+display:none;
+z-index:1000;
+text-align:center;
+width:360px;
+max-width:92%;
+border:1px solid rgba(255,255,255,0.7);
+">
+
+<div id="taskMenuContent">
+
+<div style="
+font-size:30px;
+font-weight:900;
+color:#111;
+margin-bottom:20px;
+letter-spacing:-0.4px;
+">
+Manage Tasks
+</div>
 
 
+
+<button onclick="showAddTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#111;
+color:white;
+box-shadow:0 10px 24px rgba(0,0,0,0.14);
+cursor:pointer;
+">
+Add Task
+</button>
+
+<button onclick="showRenameTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#e9e9ee;
+color:#111;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+">
+Rename Task
+</button>
+
+<button onclick="showRemoveTask()" style="
+width:100%;
+padding:20px;
+margin-bottom:12px;
+font-size:24px;
+font-weight:800;
+border:none;
+border-radius:22px;
+background:#e9e9ee;
+color:#111;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+">
+Remove Task
+</button>
+
+<button onclick="closeTaskMenu()" style="
+width:100%;
+padding:18px;
+background:#f5f5f7;
+font-size:22px;
+font-weight:700;
+border:none;
+border-radius:22px;
+color:#666;
+cursor:pointer;
+">
+Close
+</button>
+
+</div>
+
+</div>
 
 <div id="deleteChoicePopup" style="
 position:fixed;
@@ -6710,9 +6499,10 @@ Default source, calculation method, Ramadan settings, and more can be added here
   <script>
 // service worker removed for now
 </script>
-<div id="taskMenu" style="display:none;"></div>
+
 </body>
 
 
 
+</body>
 </html>
