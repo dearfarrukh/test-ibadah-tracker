@@ -4503,8 +4503,26 @@ changeSalahDay(-1);  // swipe right = previous day
 
   
 function openSalahPage(){
-document.getElementById("salahPage").style.display = "block";
-document.getElementById("floatingMenuBtn").style.display = "none";
+
+lastMainTab = "salah";
+
+let morePage = document.getElementById("morePage");
+let salahPage = document.getElementById("salahPage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(morePage) morePage.style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+
+if(salahPage) salahPage.style.display = "block";
+
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+window.scrollTo(0,0);
 }
 
 function closeSalahPage(){
