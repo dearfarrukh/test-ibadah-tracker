@@ -1573,7 +1573,7 @@ cursor:pointer;
 
   
   
-  <div onclick="openSalahSettingsFromMenu()" style="
+ <div onclick="openAppSettingsPage()" style="
 background:rgba(255,255,255,0.75);
 padding:16px 18px;
 border-radius:18px;
@@ -1584,8 +1584,10 @@ margin-bottom:14px;
 box-shadow:0 6px 14px rgba(0,0,0,0.08);
 cursor:pointer;
 ">
-⚙️ Salah Settings
+⚙️ App Settings
 </div>
+
+  
 </div>
 
 
@@ -5385,7 +5387,12 @@ function openSalahSettingsFromMenu(){
   window.scrollTo(0,0);
 }
 
-  
+  function openAppSettingsPage(){
+  document.getElementById("morePage").style.display = "none";
+  document.getElementById("appSettingsPage").style.display = "block";
+  document.getElementById("floatingMenuBtn").style.display = "none";
+  window.scrollTo(0,0);
+}
 
 
 
