@@ -3402,19 +3402,34 @@ manageTasks();
 
   
 function openMorePage(){
+
 lastMainTab = "more";
+
+document.getElementById("trackerPage").style.display = "none";
+document.getElementById("salahPage").style.display = "none";
 document.getElementById("morePage").style.display = "block";
+
+document.getElementById("tasbihPage").style.display = "none";
+document.getElementById("duaPage").style.display = "none";
+document.getElementById("qiblaPage").style.display = "none";
+
 document.getElementById("floatingMenuBtn").style.display = "none";
+
 window.scrollTo(0,0);
 }
 
 function closeMorePage(){
+
 lastMainTab = "tracker";
+
 document.getElementById("morePage").style.display = "none";
+document.getElementById("trackerPage").style.display = "block";
+document.getElementById("salahPage").style.display = "none";
+
 document.getElementById("floatingMenuBtn").style.display = "flex";
+
 window.scrollTo(0,0);
 }
-
 
   
 function openDuaPage(){
