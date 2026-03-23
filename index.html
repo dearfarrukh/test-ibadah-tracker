@@ -2218,32 +2218,20 @@ function openSelectedDefaultPage(){
 }
 
 function returnToDefaultPage(){
-  let defaultPage = getDefaultPage();
 
-  if(defaultPage === "salah"){
-    document.getElementById("salahPage").style.display = "block";
-    document.getElementById("tasbihPage").style.display = "none";
-    document.getElementById("morePage").style.display = "none";
-    document.getElementById("appSettingsPage").style.display = "none";
-    document.getElementById("floatingMenuBtn").style.display = "none";
-    window.scrollTo(0,0);
-    return;
-  }
+let defaultPage = localStorage.getItem("defaultPage") || "tracker";
 
-  if(defaultPage === "tasbih"){
-    document.getElementById("tasbihPage").style.display = "block";
-    document.getElementById("salahPage").style.display = "none";
-    document.getElementById("morePage").style.display = "none";
-    document.getElementById("appSettingsPage").style.display = "none";
-    document.getElementById("floatingMenuBtn").style.display = "none";
-    window.scrollTo(0,0);
-    return;
-  }
-
+if(defaultPage === "salah"){
+  openSalahPage();
+}
+else if(defaultPage === "tasbih"){
+  openTasbihPage();
+}
+else{
   openTrackerPage();
 }
 
-
+}
 
 
 
