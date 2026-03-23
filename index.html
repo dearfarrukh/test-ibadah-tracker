@@ -4516,6 +4516,16 @@ return;
 
 refreshMasjidSalahData();
 }
+
+
+  let salahTouchStartX = 0;
+let salahTouchEndX = 0;
+
+function handleSalahSwipeStart(e){
+if(!e.touches || !e.touches.length) return;
+salahTouchStartX = e.touches[0].clientX;
+}
+
 function handleSalahSwipeEnd(e){
 if(!e.changedTouches || !e.changedTouches.length) return;
 salahTouchEndX = e.changedTouches[0].clientX;
@@ -4531,7 +4541,7 @@ changeSalahDay(-1);  // swipe right = previous day
 }
 }
 
-
+  
   
 function openSalahPage(){
 
@@ -4559,9 +4569,9 @@ if(salahPage) salahPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
 
+renderSalahPage();
 window.scrollTo(0,0);
 }
-
 
   
 function closeSalahPage(){
