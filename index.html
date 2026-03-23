@@ -4604,6 +4604,7 @@ let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
+  updateSalahTopButton();
 
 if(morePage) morePage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
@@ -5522,6 +5523,43 @@ function updateDefaultPageChecks(){
 
 
 
+function handleSalahTopButton(){
+
+// if salah is home page → open menu
+if(localStorage.getItem("homePage") === "salah"){
+
+document.getElementById("morePage").style.display = "block";
+document.getElementById("salahPage").style.display = "none";
+
+}else{
+
+// normal behavior → go back
+closeSalahPage();
+
+}
+
+}
+
+
+  function updateSalahTopButton(){
+
+let btn = document.getElementById("salahTopBtn");
+
+if(!btn) return;
+
+if(localStorage.getItem("homePage") === "salah"){
+btn.innerHTML = "☰";
+}else{
+btn.innerHTML = "←";
+}
+
+}
+
+
+  
+
+
+  
 
   
 </script>
@@ -6559,21 +6597,21 @@ padding:10px 0 4px 0;
 ">
 
   <!-- Back Button -->
-  <button onclick="closeSalahPage()" style="
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:1px solid #d6d6d6;
-  background:white;
-  font-size:20px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 3px 10px rgba(0,0,0,0.12);
-  ">
-  ←
-  </button>
+  <button id="salahTopBtn" onclick="handleSalahTopButton()" style="
+width:38px;
+height:38px;
+border-radius:50%;
+border:1px solid #d6d6d6;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 3px 10px rgba(0,0,0,0.12);
+">
+←
+</button>
 
    <!-- SETTINGS BUTTON -->
   <button onclick="openSalahSettingsPage()" style="
