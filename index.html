@@ -5422,53 +5422,80 @@ function openSalahSettingsFromMenu(){
 
 function openAppSettingsPage(){
 
-  let morePage = document.getElementById("morePage");
-  let appSettingsPage = document.getElementById("appSettingsPage");
-  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let appSettingsPage = document.getElementById("appSettingsPage");
+let morePage = document.getElementById("morePage");
+let salahPage = document.getElementById("salahPage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let zikrPage = document.getElementById("zikrPage");
+let zikrDetailPage = document.getElementById("zikrDetailPage");
 
-  if(morePage){
-    morePage.style.display = "none";
-    morePage.style.visibility = "hidden";
-    morePage.style.pointerEvents = "none";
-  }
-
-  if(appSettingsPage){
-    appSettingsPage.style.display = "block";
-    appSettingsPage.style.visibility = "visible";
-    appSettingsPage.style.pointerEvents = "auto";
-  }
-
-  if(floatingMenuBtn){
-    floatingMenuBtn.style.display = "none";
-  }
-
-  updateDefaultPageSubtitle();
-  window.scrollTo(0,0);
+if(salahPage && salahPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "salah");
+}else if(morePage && morePage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "more");
+}else if(tasbihPage && tasbihPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "tasbih");
+}else if(duaPage && duaPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "dua");
+}else if(qiblaPage && qiblaPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "qibla");
+}else if(zikrDetailPage && zikrDetailPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "zikrDetail");
+}else if(zikrPage && zikrPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "zikr");
+}else{
+localStorage.setItem("appSettingsReturnPage", "more");
 }
 
+if(appSettingsPage) appSettingsPage.style.display = "block";
+window.scrollTo(0,0);
+}
+
+
+
+  
 function closeAppSettingsPage(){
 
-  let morePage = document.getElementById("morePage");
-  let appSettingsPage = document.getElementById("appSettingsPage");
-  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let appSettingsPage = document.getElementById("appSettingsPage");
+let morePage = document.getElementById("morePage");
+let salahPage = document.getElementById("salahPage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let zikrPage = document.getElementById("zikrPage");
+let zikrDetailPage = document.getElementById("zikrDetailPage");
+let returnPage = localStorage.getItem("appSettingsReturnPage");
 
-  if(appSettingsPage){
-    appSettingsPage.style.display = "none";
-    appSettingsPage.style.visibility = "hidden";
-    appSettingsPage.style.pointerEvents = "none";
-  }
+if(appSettingsPage) appSettingsPage.style.display = "none";
 
-  if(morePage){
-    morePage.style.display = "block";
-    morePage.style.visibility = "visible";
-    morePage.style.pointerEvents = "auto";
-  }
+if(morePage) morePage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+if(zikrPage) zikrPage.style.display = "none";
+if(zikrDetailPage) zikrDetailPage.style.display = "none";
 
-  if(floatingMenuBtn){
-    floatingMenuBtn.style.display = "none";
-  }
+if(returnPage === "salah"){
+if(salahPage) salahPage.style.display = "block";
+updateSalahTopButton();
+}else if(returnPage === "tasbih"){
+if(tasbihPage) tasbihPage.style.display = "block";
+}else if(returnPage === "dua"){
+if(duaPage) duaPage.style.display = "block";
+}else if(returnPage === "qibla"){
+if(qiblaPage) qiblaPage.style.display = "block";
+}else if(returnPage === "zikr"){
+if(zikrPage) zikrPage.style.display = "block";
+}else if(returnPage === "zikrDetail"){
+if(zikrDetailPage) zikrDetailPage.style.display = "block";
+}else{
+if(morePage) morePage.style.display = "block";
+}
 
-  window.scrollTo(0,0);
+window.scrollTo(0,0);
 }
 
 
