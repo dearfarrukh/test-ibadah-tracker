@@ -3404,7 +3404,7 @@ manageTasks();
 }
 
 
-  function openTrackerPage(){
+function openTrackerPage(){
 
 lastMainTab = "tracker";
 
@@ -3414,6 +3414,7 @@ let tasbihPage = document.getElementById("tasbihPage");
 let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let bottomNav = document.getElementById("bottomNav");
 
 if(morePage) morePage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
@@ -3422,6 +3423,7 @@ if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 }
@@ -3430,23 +3432,23 @@ function openMorePage(){
 
 lastMainTab = "more";
 
-let trackerPage = document.getElementById("trackerPage");
-let salahPage = document.getElementById("salahPage");
 let morePage = document.getElementById("morePage");
+let salahPage = document.getElementById("salahPage");
 let tasbihPage = document.getElementById("tasbihPage");
 let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let bottomNav = document.getElementById("bottomNav");
 
-if(trackerPage) trackerPage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
-if(morePage) morePage.style.display = "block";
-
 if(tasbihPage) tasbihPage.style.display = "none";
 if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 
+if(morePage) morePage.style.display = "block";
+
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 }
@@ -4512,6 +4514,7 @@ let tasbihPage = document.getElementById("tasbihPage");
 let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let bottomNav = document.getElementById("bottomNav");
 
 if(morePage) morePage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
@@ -4521,6 +4524,7 @@ if(qiblaPage) qiblaPage.style.display = "none";
 if(salahPage) salahPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 }
