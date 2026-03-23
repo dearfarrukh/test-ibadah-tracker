@@ -5387,28 +5387,56 @@ function openSalahSettingsFromMenu(){
   window.scrollTo(0,0);
 }
 
- function openAppSettingsPage(){
+function openAppSettingsPage(){
 
-  // fully close More page first
-  document.getElementById("morePage").style.display = "none";
+  let morePage = document.getElementById("morePage");
+  let appSettingsPage = document.getElementById("appSettingsPage");
+  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-  // small delay to avoid overlap glitch
-  setTimeout(function(){
-    document.getElementById("appSettingsPage").style.display = "block";
-    updateDefaultPageSubtitle();
-  }, 50);
+  if(morePage){
+    morePage.style.display = "none";
+    morePage.style.visibility = "hidden";
+    morePage.style.pointerEvents = "none";
+  }
 
-  document.getElementById("floatingMenuBtn").style.display = "none";
+  if(appSettingsPage){
+    appSettingsPage.style.display = "block";
+    appSettingsPage.style.visibility = "visible";
+    appSettingsPage.style.pointerEvents = "auto";
+  }
+
+  if(floatingMenuBtn){
+    floatingMenuBtn.style.display = "none";
+  }
+
+  updateDefaultPageSubtitle();
   window.scrollTo(0,0);
 }
 
 function closeAppSettingsPage(){
-  document.getElementById("appSettingsPage").style.display = "none";
-  document.getElementById("morePage").style.display = "block";
-  document.getElementById("floatingMenuBtn").style.display = "none";
+
+  let morePage = document.getElementById("morePage");
+  let appSettingsPage = document.getElementById("appSettingsPage");
+  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+  if(appSettingsPage){
+    appSettingsPage.style.display = "none";
+    appSettingsPage.style.visibility = "hidden";
+    appSettingsPage.style.pointerEvents = "none";
+  }
+
+  if(morePage){
+    morePage.style.display = "block";
+    morePage.style.visibility = "visible";
+    morePage.style.pointerEvents = "auto";
+  }
+
+  if(floatingMenuBtn){
+    floatingMenuBtn.style.display = "none";
+  }
+
   window.scrollTo(0,0);
 }
-
 
 
   function getDefaultPage(){
@@ -5850,14 +5878,14 @@ Istikhara Dua
 </div>
 </div>
 
-  <div id="appSettingsPage" style="
+ <div id="appSettingsPage" style="
 display:none;
 position:fixed;
 top:0;
 left:0;
 right:0;
 bottom:0;
-z-index:5000;
+z-index:10050;
 background:#e9e9ee;
 overflow:auto;
 -webkit-overflow-scrolling:touch;
