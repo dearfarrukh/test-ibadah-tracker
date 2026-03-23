@@ -2201,7 +2201,6 @@ loadTasks();
 
   
 
-<script>
 function getDefaultPage(){
   return localStorage.getItem("defaultPage") || "tracker";
 }
@@ -2223,7 +2222,6 @@ function returnToDefaultPage(){
 
   if(defaultPage === "salah"){
     document.getElementById("salahPage").style.display = "block";
-    document.getElementById("trackerPage").style.display = "none";
     document.getElementById("tasbihPage").style.display = "none";
     document.getElementById("morePage").style.display = "none";
     document.getElementById("appSettingsPage").style.display = "none";
@@ -2234,7 +2232,6 @@ function returnToDefaultPage(){
 
   if(defaultPage === "tasbih"){
     document.getElementById("tasbihPage").style.display = "block";
-    document.getElementById("trackerPage").style.display = "none";
     document.getElementById("salahPage").style.display = "none";
     document.getElementById("morePage").style.display = "none";
     document.getElementById("appSettingsPage").style.display = "none";
@@ -2245,7 +2242,6 @@ function returnToDefaultPage(){
 
   openTrackerPage();
 }
-</script>
 
 
 
@@ -5487,10 +5483,6 @@ function closeAppSettingsPage(){
 }
 
 
-  function getDefaultPage(){
- localStorage.setItem("defaultPage", "tracker");
-}
-
 function getDefaultPageLabel(){
   let page = getDefaultPage();
 
@@ -7288,7 +7280,7 @@ Default source, calculation method, Ramadan settings, and more can be added here
 // service worker removed for now
 </script>
 
-</body>
+
 
 
 
