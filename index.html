@@ -3403,6 +3403,28 @@ manageTasks();
 
 }
 
+
+  function openTrackerPage(){
+
+lastMainTab = "tracker";
+
+let morePage = document.getElementById("morePage");
+let salahPage = document.getElementById("salahPage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(morePage) morePage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+
+if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+
+window.scrollTo(0,0);
+}
   
 function openMorePage(){
 
@@ -5521,7 +5543,7 @@ Cancel
 
 <div class="navItem" onclick="openSalahPage()">🕒<br>Salah</div>
 
-<div class="navItem">✅<br>Tracker</div>
+<div class="navItem" onclick="openTrackerPage()">✅<br>Tracker</div>
 
 <div class="navItem" onclick="openMorePage()">◼︎<br>More</div>
 
