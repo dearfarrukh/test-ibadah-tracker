@@ -5525,11 +5525,10 @@ function updateDefaultPageChecks(){
 
 function handleSalahTopButton(){
 
-// if salah is home page → open menu
-if(localStorage.getItem("homePage") === "salah"){
+// if salah is the selected app home page → open side menu
+if(localStorage.getItem("defaultPage") === "salah"){
 
-document.getElementById("morePage").style.display = "block";
-document.getElementById("salahPage").style.display = "none";
+toggleSideMenu();
 
 }else{
 
@@ -5541,13 +5540,13 @@ closeSalahPage();
 }
 
 
-  function updateSalahTopButton(){
+ function updateSalahTopButton(){
 
 let btn = document.getElementById("salahTopBtn");
 
 if(!btn) return;
 
-if(localStorage.getItem("homePage") === "salah"){
+if(localStorage.getItem("defaultPage") === "salah"){
 btn.innerHTML = "☰";
 }else{
 btn.innerHTML = "←";
