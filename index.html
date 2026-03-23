@@ -5388,10 +5388,17 @@ function openSalahSettingsFromMenu(){
 }
 
  function openAppSettingsPage(){
+
+  // fully close More page first
   document.getElementById("morePage").style.display = "none";
-  document.getElementById("appSettingsPage").style.display = "block";
+
+  // small delay to avoid overlap glitch
+  setTimeout(function(){
+    document.getElementById("appSettingsPage").style.display = "block";
+    updateDefaultPageSubtitle();
+  }, 50);
+
   document.getElementById("floatingMenuBtn").style.display = "none";
-  updateDefaultPageSubtitle();
   window.scrollTo(0,0);
 }
 
