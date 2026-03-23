@@ -5387,13 +5387,45 @@ function openSalahSettingsFromMenu(){
   window.scrollTo(0,0);
 }
 
-  function openAppSettingsPage(){
+ function openAppSettingsPage(){
   document.getElementById("morePage").style.display = "none";
   document.getElementById("appSettingsPage").style.display = "block";
+  document.getElementById("floatingMenuBtn").style.display = "none";
+  updateDefaultPageSubtitle();
+  window.scrollTo(0,0);
+}
+
+function closeAppSettingsPage(){
+  document.getElementById("appSettingsPage").style.display = "none";
+  document.getElementById("morePage").style.display = "block";
   document.getElementById("floatingMenuBtn").style.display = "none";
   window.scrollTo(0,0);
 }
 
+
+
+  function getDefaultPage(){
+  return localStorage.getItem("defaultPage") || "dailyTask";
+}
+
+function getDefaultPageLabel(){
+  let page = getDefaultPage();
+
+  if(page === "salah") return "Salah Times";
+  if(page === "tasbih") return "Tasbih";
+
+  return "Daily Task";
+}
+
+function updateDefaultPageSubtitle(){
+  let el = document.getElementById("defaultPageSubtitle");
+  if(!el) return;
+  el.innerText = getDefaultPageLabel();
+}
+
+function openDefaultPagePicker(){
+  alert("Default Page picker coming in next step");
+}
 
 
 
@@ -5811,6 +5843,147 @@ Istikhara Dua
 </div>
 </div>
 
+  <div id="appSettingsPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:5000;
+background:#e9e9ee;
+overflow:auto;
+-webkit-overflow-scrolling:touch;
+">
+
+  <div style="
+  max-width:720px;
+  margin:0 auto;
+  min-height:100%;
+  padding:20px 16px 40px 16px;
+  box-sizing:border-box;
+  ">
+
+    <div style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:26px;
+    padding-top:4px;
+    ">
+      
+      <button onclick="closeAppSettingsPage()" style="
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:24px;
+      font-weight:700;
+      color:#111;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      flex-shrink:0;
+      ">
+      ←
+      </button>
+
+      <div style="
+      flex:1;
+      text-align:center;
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin:0 10px;
+      ">
+      Settings
+      </div>
+
+      <div style="width:42px;height:42px;flex-shrink:0;"></div>
+    </div>
+
+    <div style="
+    background:rgba(255,255,255,0.72);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    ">
+
+      <div onclick="openDefaultPagePicker()" style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:18px 16px;
+      cursor:pointer;
+      ">
+
+        <div style="
+        width:42px;
+        height:42px;
+        border-radius:14px;
+        background:white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:20px;
+        flex-shrink:0;
+        box-shadow:0 3px 8px rgba(0,0,0,0.06);
+        ">
+        🏠
+        </div>
+
+        <div style="flex:1;min-width:0;">
+          <div style="
+          font-size:18px;
+          font-weight:800;
+          color:#111;
+          line-height:1.2;
+          margin-bottom:3px;
+          ">
+          Default Page
+          </div>
+
+          <div id="defaultPageSubtitle" style="
+          font-size:14px;
+          color:#666;
+          line-height:1.35;
+          white-space:nowrap;
+          overflow:hidden;
+          text-overflow:ellipsis;
+          ">
+          Choose which page opens first
+          </div>
+        </div>
+
+        <div style="
+        font-size:22px;
+        color:#8a8a8e;
+        font-weight:700;
+        flex-shrink:0;
+        ">
+        ›
+        </div>
+      </div>
+
+    </div>
+
+    <div style="
+    text-align:center;
+    font-size:13px;
+    color:#777;
+    margin-top:18px;
+    ">
+    App Settings
+    </div>
+
+  </div>
+</div>
 
 
   
