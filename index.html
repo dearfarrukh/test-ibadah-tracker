@@ -1734,6 +1734,13 @@ Backup file ready. Save it in your Ibadah folder.
 
 
 
+
+
+
+
+
+
+  
 function buildTasbihBars(){
 
 let container = document.getElementById("tasbihProgress");
@@ -2193,6 +2200,57 @@ loadTasks();
 }
 
   
+
+<script>
+function getDefaultPage(){
+  return localStorage.getItem("defaultPage") || "tracker";
+}
+
+function openSelectedDefaultPage(){
+  let defaultPage = getDefaultPage();
+
+  if(defaultPage === "salah"){
+    openSalahPage();
+  }else if(defaultPage === "tasbih"){
+    openTasbihPage();
+  }else{
+    openTrackerPage();
+  }
+}
+
+function returnToDefaultPage(){
+  let defaultPage = getDefaultPage();
+
+  if(defaultPage === "salah"){
+    document.getElementById("salahPage").style.display = "block";
+    document.getElementById("trackerPage").style.display = "none";
+    document.getElementById("tasbihPage").style.display = "none";
+    document.getElementById("morePage").style.display = "none";
+    document.getElementById("appSettingsPage").style.display = "none";
+    document.getElementById("floatingMenuBtn").style.display = "none";
+    window.scrollTo(0,0);
+    return;
+  }
+
+  if(defaultPage === "tasbih"){
+    document.getElementById("tasbihPage").style.display = "block";
+    document.getElementById("trackerPage").style.display = "none";
+    document.getElementById("salahPage").style.display = "none";
+    document.getElementById("morePage").style.display = "none";
+    document.getElementById("appSettingsPage").style.display = "none";
+    document.getElementById("floatingMenuBtn").style.display = "none";
+    window.scrollTo(0,0);
+    return;
+  }
+
+  openTrackerPage();
+}
+</script>
+
+
+
+
+
   
 function increaseTasbih(){
 
@@ -4583,24 +4641,12 @@ window.scrollTo(0,0);
 function closeSalahPage(){
 
 let salahPage = document.getElementById("salahPage");
-let morePage = document.getElementById("morePage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
 
 if(salahPage) salahPage.style.display = "none";
 
-if(lastMainTab === "more"){
-if(morePage) morePage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-}else{
-if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+returnToDefaultPage();
+
 }
-
-if(bottomNav) bottomNav.style.display = "flex";
-
-window.scrollTo(0,0);
-}
-
 
 function toggleSideMenu(){
 let menu = document.getElementById("sideMenu");
@@ -5263,15 +5309,17 @@ function ibadahScheduleMidnightRefresh(){
 }
 
 if(document.readyState === "loading"){
-  document.addEventListener("DOMContentLoaded", function(){
-    ibadahPatchSalahFunctions();
-    ibadahScheduleMidnightRefresh();
-    setAsrToggleUI();
-  });
+ document.addEventListener("DOMContentLoaded", function(){
+  ibadahPatchSalahFunctions();
+  ibadahScheduleMidnightRefresh();
+  setAsrToggleUI();
+  openSelectedDefaultPage();
+});
 }else{
   ibadahPatchSalahFunctions();
   ibadahScheduleMidnightRefresh();
   setAsrToggleUI();
+  openSelectedDefaultPage();
 }
 
 })();
@@ -5440,7 +5488,7 @@ function closeAppSettingsPage(){
 
 
   function getDefaultPage(){
-  return localStorage.getItem("defaultPage") || "dailyTask";
+ localStorage.setItem("defaultPage", "tracker");
 }
 
 function getDefaultPageLabel(){
@@ -5488,7 +5536,7 @@ function updateDefaultPageChecks(){
   let tasbih = document.getElementById("defaultPageCheckTasbih");
 
   if(salah) salah.style.opacity = current === "salah" ? "1" : "0";
-  if(dailyTask) dailyTask.style.opacity = current === "dailyTask" ? "1" : "0";
+  if(dailyTask) dailyTask.style.opacity = current === "tracker" ? "1" : "0";
   if(tasbih) tasbih.style.opacity = current === "tasbih" ? "1" : "0";
 }
 
@@ -6114,7 +6162,7 @@ box-sizing:border-box;
       <div id="defaultPageCheckSalah" style="font-size:22px;color:#111;opacity:0;">✓</div>
     </div>
 
-    <div onclick="setDefaultPage('dailyTask')" style="
+<div onclick="setDefaultPage('tracker')" style="
     display:flex;
     align-items:center;
     justify-content:space-between;
