@@ -3518,15 +3518,38 @@ ref: `صحیح البخاری، الادب المفرد، باب قول: لا ح
 };
 
 function openZikrPage(){
+
+lastMainTab = "more";
+
+document.getElementById("homePage").style.display = "none";
+document.getElementById("salahPage").style.display = "none";
+document.getElementById("trackerPage").style.display = "none";
+document.getElementById("morePage").style.display = "none";
+
 document.getElementById("zikrPage").style.display = "block";
+
 document.getElementById("floatingMenuBtn").style.display = "none";
+
 window.scrollTo(0,0);
+
 }
 
 function closeZikrPage(){
+
 document.getElementById("zikrPage").style.display = "none";
+
+if(lastMainTab === "more"){
+document.getElementById("morePage").style.display = "block";
+document.getElementById("floatingMenuBtn").style.display = "none";
+}else{
+document.getElementById("trackerPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "flex";
 }
+
+window.scrollTo(0,0);
+
+}
+  
 function openZikrDetail(name){
 
 currentZikr = name;
