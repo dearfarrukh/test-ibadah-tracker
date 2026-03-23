@@ -5503,7 +5503,7 @@ position:fixed;
 top:0;
 left:0;
 right:0;
-bottom:0;
+bottom:92px;
 z-index:10001;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
@@ -5551,7 +5551,7 @@ grid-template-columns:1fr 1fr 1fr;
 gap:14px;
 ">
 
-<div onclick="closeMorePage();openTasbihPage();" style="
+<div onclick="document.getElementById('morePage').style.display='none'; openTasbihPage();" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
@@ -5563,7 +5563,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 <div style="font-size:15px;font-weight:700;color:#111;">Tasbih</div>
 </div>
 
-<div onclick="closeMorePage();openDuaPage();" style="
+<div onclick="document.getElementById('morePage').style.display='none'; openDuaPage();" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
@@ -5575,6 +5575,8 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 <div style="font-size:15px;font-weight:700;color:#111;">Dua</div>
 </div>
 
+
+  
 <div onclick="closeMorePage();openQiblaPage();" style="
 background:white;
 border-radius:22px;
