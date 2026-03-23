@@ -1194,7 +1194,7 @@ top:0;
 left:0;
 right:0;
 bottom:0;
-z-index:4100;
+z-index:6000;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
 padding:15px;
@@ -3587,13 +3587,17 @@ document.getElementById("zikrArabicText").innerHTML = data.arabic;
 document.getElementById("zikrMeaningText").innerHTML = data.meaning;
 document.getElementById("zikrRefText").innerHTML = data.ref;
 
+document.getElementById("zikrPage").style.display = "none";
 document.getElementById("zikrDetailPage").style.display = "block";
+
+window.scrollTo(0,0);
 }
 
 function closeZikrDetail(){
 document.getElementById("zikrDetailPage").style.display = "none";
+document.getElementById("zikrPage").style.display = "block";
+window.scrollTo(0,0);
 }
-
 function openWaqiyaPage(){
 
 document.getElementById("waqiyaPage").style.display = "block";
