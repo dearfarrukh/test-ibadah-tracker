@@ -4520,25 +4520,51 @@ let salahPage = document.getElementById("salahPage");
 let tasbihPage = document.getElementById("tasbihPage");
 let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
+let zikrPage = document.getElementById("zikrPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
+/* 🔥 IMPORTANT — hide EVERYTHING */
 if(morePage) morePage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
 if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
+if(zikrPage) zikrPage.style.display = "none";
 
+/* 🔥 THIS WAS MISSING */
+document.body.scrollTop = 0;
+document.documentElement.scrollTop = 0;
+
+/* SHOW SALAH */
 if(salahPage) salahPage.style.display = "block";
 
+/* UI */
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 }
 
+
+  
 function closeSalahPage(){
-document.getElementById("salahPage").style.display = "none";
-document.getElementById("floatingMenuBtn").style.display = "flex";
+
+let salahPage = document.getElementById("salahPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(salahPage){
+salahPage.style.display = "none";
+}
+
+/* 🔥 RETURN BASED ON WHERE YOU CAME FROM */
+if(lastMainTab === "more"){
+document.getElementById("morePage").style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+}else{
+if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+}
+
+window.scrollTo(0,0);
 }
 
 
