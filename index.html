@@ -3405,15 +3405,23 @@ function openMorePage(){
 
 lastMainTab = "more";
 
-document.getElementById("trackerPage").style.display = "none";
-document.getElementById("salahPage").style.display = "none";
-document.getElementById("morePage").style.display = "block";
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let morePage = document.getElementById("morePage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-document.getElementById("tasbihPage").style.display = "none";
-document.getElementById("duaPage").style.display = "none";
-document.getElementById("qiblaPage").style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "block";
 
-document.getElementById("floatingMenuBtn").style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
 window.scrollTo(0,0);
 }
@@ -3422,15 +3430,19 @@ function closeMorePage(){
 
 lastMainTab = "tracker";
 
-document.getElementById("morePage").style.display = "none";
-document.getElementById("trackerPage").style.display = "block";
-document.getElementById("salahPage").style.display = "none";
+let morePage = document.getElementById("morePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-document.getElementById("floatingMenuBtn").style.display = "flex";
+if(morePage) morePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "block";
+if(salahPage) salahPage.style.display = "none";
+
+if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 
 window.scrollTo(0,0);
 }
-
   
 function openDuaPage(){
 document.getElementById("duaPage").style.display = "block";
