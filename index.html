@@ -3402,12 +3402,14 @@ manageTasks();
 
   
 function openMorePage(){
+lastMainTab = "more";
 document.getElementById("morePage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
 window.scrollTo(0,0);
 }
 
 function closeMorePage(){
+lastMainTab = "tracker";
 document.getElementById("morePage").style.display = "none";
 document.getElementById("floatingMenuBtn").style.display = "flex";
 window.scrollTo(0,0);
@@ -3423,7 +3425,14 @@ window.scrollTo(0,0);
 
 function closeDuaPage(){
 document.getElementById("duaPage").style.display = "none";
+
+if(lastMainTab === "more"){
+document.getElementById("morePage").style.display = "block";
+document.getElementById("floatingMenuBtn").style.display = "none";
+}else{
 document.getElementById("floatingMenuBtn").style.display = "flex";
+}
+
 window.scrollTo(0,0);
 }
 
@@ -3449,6 +3458,7 @@ window.open("https://qiblafinder.withgoogle.com/","_blank");
 }
   
 let currentZikr = "";
+  let lastMainTab = "tracker";
 
 const zikrData = {
 subhanallah: {
@@ -3563,8 +3573,18 @@ if(drawer){
 drawer.style.right = "-70%";
 }
 
+if(lastMainTab === "more"){
+let morePage = document.getElementById("morePage");
+if(morePage){
+morePage.style.display = "block";
+}
+if(floatingMenuBtn){
+floatingMenuBtn.style.display = "none";
+}
+}else{
 if(floatingMenuBtn){
 floatingMenuBtn.style.display = "flex";
+}
 }
 
 window.scrollTo(0,0);
