@@ -6169,40 +6169,29 @@ function updateDefaultPageChecks(){
 
 
 
-// =========================
-// HANDLE SALAH TOP BUTTON
-// =========================
+// ==============================
+// SALAH TOP BUTTON ACTION
+// ==============================
+
 function handleSalahTopButton(){
 
-// if salah is the selected app home page → open side menu
-if(localStorage.getItem("defaultPage") === "salah"){
-
-toggleSideMenu();
-
-}else{
-
-// normal behavior → go back
-closeSalahPage();
-
-}
+openMenu();
 
 }
 
 
-// =========================
-// UPDATE SALAH TOP BUTTON
-// =========================
- function updateSalahTopButton(){
+// ==============================
+// SALAH TOP MENU BUTTON
+// ==============================
+
+function updateSalahTopButton(){
 
 let btn = document.getElementById("salahTopBtn");
+let icon = document.getElementById("salahTopBtnIcon");
 
-if(!btn) return;
+if(!btn || !icon) return;
 
-if(localStorage.getItem("defaultPage") === "salah"){
-btn.innerHTML = "☰";
-}else{
-btn.innerHTML = "←";
-}
+icon.textContent = "☰";
 
 }
 
