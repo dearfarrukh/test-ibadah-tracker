@@ -362,7 +362,8 @@ style="display:flex;justify-content:space-between;text-align:center;">
 <div id="taskContainer"></div>
 
 <div style="margin-top:15px;text-align:center;">
-<!-- Manage Tasks Button -->
+
+  <!-- Manage Tasks Button -->
 <button onclick="manageTasks()" style="
 padding:12px 30px;
 border-radius:16px;
@@ -6170,12 +6171,10 @@ function updateDefaultPageChecks(){
 
 
 // ==============================
-// SALAH TOP BUTTON ACTION
+// SALAH TOP BUTTON ACTION (NOT USED)
 // ==============================
 
 function handleSalahTopButton(){
-
-openMorePage();
 
 }
 
@@ -7338,7 +7337,7 @@ padding:10px 0 4px 0;
 
   <!-- Back Button -->
 <!-- Salah Top Button -->
-<button id="salahTopBtn" onclick="handleSalahTopButton()" style="
+<button id="salahTopBtn" onclick="toggleSideMenu()" style="
 width:38px;
 height:38px;
 border-radius:50%;
