@@ -523,7 +523,7 @@ z-index:5;
 <!-- BACK BUTTON -->
 <div id="tasbihTopBtnWrap" style="display:flex;align-items:center;justify-content:center;">
 
-  <button id="tasbihMenuBtn" onclick="toggleSideMenu()" style="
+<button id="tasbihMenuBtn" onclick="handleTasbihTopButton()" style="
   width:38px;
   height:38px;
   border-radius:50%;
@@ -4008,7 +4008,7 @@ isha: "8:30 PM"
 
 
 
-  function handleTasbihTopButton(){
+ function handleTasbihTopButton(){
 
 if(localStorage.getItem("defaultPage") === "tasbih"){
 toggleSideMenu();
