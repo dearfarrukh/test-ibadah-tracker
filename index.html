@@ -3761,6 +3761,42 @@ if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 }
+
+
+// ==============================
+// MAIN PAGE NAVIGATION FUNCTION
+// ==============================
+
+function goToMainPage(){
+
+let defaultPage = (localStorage.getItem("defaultPage") || "tracker").trim().toLowerCase();
+
+// Close menu/settings if open
+let morePage = document.getElementById("morePage");
+let appSettingsPage = document.getElementById("appSettingsPage");
+
+if(morePage) morePage.style.display = "none";
+if(appSettingsPage) appSettingsPage.style.display = "none";
+
+// Open correct page
+if(defaultPage === "salah"){
+openSalahPage();
+}
+else if(defaultPage === "tasbih"){
+openTasbihPage();
+}
+else if(defaultPage === "home"){
+openHomePage();
+}
+else{
+openTrackerPage();
+}
+
+}
+
+
+
+
   
 // =========================
 // OPEN MORE PAGE
