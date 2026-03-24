@@ -521,41 +521,21 @@ z-index:5;
 ">
 
 <!-- BACK BUTTON -->
-<div id="tasbihTopBtnWrap" style="display:flex;align-items:center;justify-content:center;">
-
-<button id="tasbihMenuBtn" onclick="handleTasbihTopButton()" style="
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:1px solid #d6d6d6;
-  background:white;
-  font-size:20px;
-  cursor:pointer;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 3px 10px rgba(0,0,0,0.12);
-  ">
-  ☰
-  </button>
-
-  <button id="tasbihBackBtn" onclick="closeTasbihPage()" style="
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:1px solid #d6d6d6;
-  background:white;
-  font-size:20px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 3px 10px rgba(0,0,0,0.12);
-  ">
-  ←
-  </button>
-
-</div>
+<button id="tasbihTopBtn" onclick="handleTasbihTopButton()" style="
+width:38px;
+height:38px;
+border-radius:50%;
+border:1px solid #d6d6d6;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 3px 10px rgba(0,0,0,0.12);
+">
+<span id="tasbihTopBtnIcon">←</span>
+</button>
 
   
 <!-- SETTINGS BUTTON -->
@@ -3711,11 +3691,13 @@ bottomNav.style.display = "flex";
 }
 
 applySavedTasbihStyle();
+
+setTimeout(function(){
 updateTasbihTopButton();
+}, 0);
 
 window.scrollTo(0,0);
 }
-
   
 function closeTasbihPage(){
 
@@ -4010,7 +3992,9 @@ isha: "8:30 PM"
 
  function handleTasbihTopButton(){
 
-if(localStorage.getItem("defaultPage") === "tasbih"){
+let defaultPage = (localStorage.getItem("defaultPage") || "").trim().toLowerCase();
+
+if(defaultPage === "tasbih"){
 toggleSideMenu();
 }else{
 closeTasbihPage();
@@ -4021,22 +4005,19 @@ closeTasbihPage();
 
 function updateTasbihTopButton(){
 
-let menuBtn = document.getElementById("tasbihMenuBtn");
-let backBtn = document.getElementById("tasbihBackBtn");
+let btn = document.getElementById("tasbihTopBtn");
+let icon = document.getElementById("tasbihTopBtnIcon");
 let defaultPage = (localStorage.getItem("defaultPage") || "").trim().toLowerCase();
 
-if(!menuBtn || !backBtn) return;
+if(!btn || !icon) return;
 
 if(defaultPage === "tasbih"){
-menuBtn.style.display = "flex";
-backBtn.style.display = "none";
+icon.textContent = "☰";
 }else{
-menuBtn.style.display = "none";
-backBtn.style.display = "flex";
+icon.textContent = "←";
 }
 
 }
-
 
   
 function formatSalahApiDate(dateObj){
