@@ -3966,8 +3966,7 @@ ref: `صحیح البخاری، الادب المفرد، باب قول: لا ح
 // =========================
 function openZikrPage(){
 
-lastMainTab = "more";
-
+let homePage = document.getElementById("homePage");
 let salahPage = document.getElementById("salahPage");
 let morePage = document.getElementById("morePage");
 let zikrPage = document.getElementById("zikrPage");
@@ -3977,6 +3976,13 @@ let qiblaPage = document.getElementById("qiblaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
+if(homePage && homePage.style.display === "block"){
+lastMainTab = "home";
+}else if(morePage && morePage.style.display === "block"){
+lastMainTab = "more";
+}
+
+if(homePage) homePage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
 if(morePage) morePage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
@@ -3993,13 +3999,12 @@ window.scrollTo(0,0);
 }
 
 
-  
-
 // =========================
 // CLOSE ZIKR PAGE
 // =========================
 function closeZikrPage(){
 
+let homePage = document.getElementById("homePage");
 let zikrPage = document.getElementById("zikrPage");
 let morePage = document.getElementById("morePage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
@@ -4007,10 +4012,15 @@ let bottomNav = document.getElementById("bottomNav");
 
 if(zikrPage) zikrPage.style.display = "none";
 
-if(lastMainTab === "more"){
+if(lastMainTab === "home"){
+if(homePage) homePage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+}
+else if(lastMainTab === "more"){
 if(morePage) morePage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-}else{
+}
+else{
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 }
 
@@ -4019,7 +4029,6 @@ if(bottomNav) bottomNav.style.display = "flex";
 window.scrollTo(0,0);
 
 }
-
   
   
 // =========================
@@ -4140,12 +4149,19 @@ closeTasbihPage();
 // OPEN TASBIH PAGE
 // =========================
 function openTasbihPage(){
+
+let homePage = document.getElementById("homePage");
+
+if(homePage) homePage.style.display = "none";
+
 document.getElementById("tasbihPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
-updateTasbihTopButton();
-window.scrollTo(0,0);
-}
 
+lastMainTab = "home";
+
+window.scrollTo(0,0);
+
+}
 // =========================
 // CLOSE TASBIH PAGE
 // =========================
@@ -6251,7 +6267,21 @@ arrow.textContent = "▼";
 }
 
 }
-  
+
+  // =========================
+// OPEN TASBIH PAGE FROM HOME
+// =========================
+function openHomeTasbihPage(){
+
+let homePage = document.getElementById("homePage");
+
+if(homePage) homePage.style.display = "none";
+
+lastMainTab = "home";
+
+openTasbihPage();
+
+}
 
 
   
@@ -6802,7 +6832,7 @@ View all Salah times
       ">
 
         <!-- TASBIH SHORTCUT -->
-        <div onclick="openTasbihPage()" style="
+<div onclick="openHomeTasbihPage()" style="
         background:#f8f8fa;
         border-radius:22px;
         padding:16px 8px;
