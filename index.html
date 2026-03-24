@@ -6196,6 +6196,26 @@ icon.textContent = "☰";
 
 
   
+// =========================
+// HOME PAGE - TOGGLE ALL SALAH TIMES
+// =========================
+function toggleHomeAllTimes(){
+
+let box = document.getElementById("homeAllTimesBox");
+let arrow = document.getElementById("homeTimesArrow");
+
+if(!box || !arrow) return;
+
+if(box.style.display === "none" || box.style.display === ""){
+box.style.display = "block";
+arrow.textContent = "▲";
+}else{
+box.style.display = "none";
+arrow.textContent = "▼";
+}
+
+}
+  
 
 
   
@@ -6451,7 +6471,372 @@ Cancel
 </div>
 
 
+<!-- =========================
+     HOME PAGE
+========================= -->
+<div id="homePage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:4500;
+background:#e9e9ee;
+overflow:auto;
+-webkit-overflow-scrolling:touch;
+">
 
+  <!-- HOME TOP WALLPAPER SECTION -->
+  <div style="
+  position:relative;
+  height:240px;
+  background:url('homewallpaper.jpg') center/cover no-repeat;
+  padding:14px 14px 20px 14px;
+  box-sizing:border-box;
+  color:white;
+  ">
+
+    <!-- TOP ROW -->
+    <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    ">
+
+      <!-- HOME MENU BUTTON -->
+      <button onclick="toggleSideMenu()" style="
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,0.22);
+      color:white;
+      font-size:20px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:0 6px 18px rgba(0,0,0,0.16);
+      cursor:pointer;
+      ">
+      ☰
+      </button>
+
+      <!-- LOCATION + DATES -->
+      <div style="
+      text-align:right;
+      background:rgba(255,255,255,0.18);
+      padding:10px 12px;
+      border-radius:18px;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:0 6px 18px rgba(0,0,0,0.14);
+      max-width:190px;
+      ">
+
+        <div id="homeLocationName" style="
+        font-size:15px;
+        font-weight:800;
+        line-height:1.2;
+        margin-bottom:4px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        ">
+        Loading...
+        </div>
+
+        <div id="homeIslamicDate" style="
+        font-size:12px;
+        font-weight:600;
+        opacity:0.96;
+        line-height:1.35;
+        ">
+        Islamic date
+        </div>
+
+        <div id="homeNormalDate" style="
+        font-size:12px;
+        font-weight:600;
+        opacity:0.96;
+        line-height:1.35;
+        ">
+        Normal date
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER TITLE -->
+    <div style="
+    position:absolute;
+    left:50%;
+    top:78px;
+    transform:translateX(-50%);
+    font-size:34px;
+    font-weight:800;
+    text-align:center;
+    text-shadow:0 4px 12px rgba(0,0,0,0.22);
+    letter-spacing:1px;
+    white-space:nowrap;
+    ">
+    🕋﷽🕋
+    </div>
+
+    <!-- NEXT SALAH + COUNTDOWN ROW -->
+    <div style="
+    position:absolute;
+    left:14px;
+    right:14px;
+    bottom:-62px;
+    display:flex;
+    gap:12px;
+    align-items:stretch;
+    ">
+
+      <!-- NEXT SALAH STAR CARD -->
+      <div style="
+      flex:1;
+      min-height:126px;
+      background:rgba(255,255,255,0.94);
+      border-radius:28px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.14);
+      padding:14px 14px 12px 14px;
+      box-sizing:border-box;
+      color:#111;
+      position:relative;
+      overflow:hidden;
+      ">
+
+        <!-- STAR + NEXT SALAH -->
+        <div style="
+        display:flex;
+        align-items:flex-start;
+        gap:10px;
+        margin-bottom:8px;
+        ">
+
+          <!-- SMALL STAR -->
+          <div style="
+          width:38px;
+          height:38px;
+          flex:0 0 38px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:22px;
+          line-height:1;
+          ">
+          ✦
+          </div>
+
+          <!-- NEXT SALAH TEXT -->
+          <div style="flex:1;min-width:0;">
+            <div id="homeNextSalahName" style="
+            font-size:12px;
+            font-weight:700;
+            color:#666;
+            margin-bottom:2px;
+            text-transform:uppercase;
+            letter-spacing:0.6px;
+            ">
+            Next Salah
+            </div>
+
+            <div id="homeNextSalahTime" style="
+            font-size:28px;
+            font-weight:900;
+            color:#111;
+            line-height:1.1;
+            ">
+            --:--
+            </div>
+          </div>
+        </div>
+
+        <!-- ALL SALAH TIMES TOGGLE ROW -->
+        <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-top:8px;
+        margin-bottom:6px;
+        cursor:pointer;
+        " onclick="toggleHomeAllTimes()">
+
+          <div style="
+          font-size:12px;
+          font-weight:700;
+          color:#666;
+          letter-spacing:0.3px;
+          ">
+          All Salah Times
+          </div>
+
+          <div id="homeTimesArrow" style="
+          font-size:14px;
+          font-weight:700;
+          color:#666;
+          ">
+          ▼
+          </div>
+        </div>
+
+        <!-- ALL SALAH TIMES -->
+        <div id="homeAllTimesBox" style="display:none;">
+          <div id="homeAllSalahTimes" style="
+          font-size:13px;
+          color:#333;
+          line-height:1.7;
+          padding-top:4px;
+          border-top:1px solid #ececec;
+          ">
+          Fajr --<br>
+          Dhuhr --<br>
+          Asr --<br>
+          Maghrib --<br>
+          Isha --
+          </div>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN CARD -->
+      <div style="
+      width:132px;
+      flex:0 0 132px;
+      min-height:126px;
+      background:rgba(255,255,255,0.94);
+      border-radius:28px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.14);
+      padding:14px 12px;
+      box-sizing:border-box;
+      text-align:center;
+      color:#111;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      ">
+
+        <div style="
+        font-size:12px;
+        font-weight:700;
+        color:#666;
+        text-transform:uppercase;
+        letter-spacing:0.6px;
+        margin-bottom:8px;
+        ">
+        Time Left
+        </div>
+
+        <div id="homeCountdown" style="
+        font-size:24px;
+        font-weight:900;
+        line-height:1.1;
+        color:#111;
+        ">
+        00:00:00
+        </div>
+
+        <div style="
+        font-size:11px;
+        font-weight:600;
+        color:#777;
+        margin-top:8px;
+        ">
+        until next salah
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHITE LOWER SECTION -->
+  <div style="
+  background:#e9e9ee;
+  padding:78px 16px 28px 16px;
+  ">
+
+    <!-- SHORTCUTS CARD -->
+    <div style="
+    background:white;
+    border-radius:28px;
+    padding:20px 14px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.08);
+    ">
+
+      <div style="
+      font-size:17px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:16px;
+      ">
+      Quick Access
+      </div>
+
+      <div style="
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      ">
+
+        <!-- TASBIH SHORTCUT -->
+        <div onclick="openTasbihPage()" style="
+        background:#f8f8fa;
+        border-radius:22px;
+        padding:16px 8px;
+        text-align:center;
+        cursor:pointer;
+        box-shadow:inset 0 0 0 1px rgba(0,0,0,0.04);
+        ">
+          <div style="font-size:24px;margin-bottom:8px;">📿</div>
+          <div style="font-size:13px;font-weight:700;color:#111;">Tasbih</div>
+        </div>
+
+        <!-- QIBLA SHORTCUT -->
+        <div onclick="openQiblaPage()" style="
+        background:#f8f8fa;
+        border-radius:22px;
+        padding:16px 8px;
+        text-align:center;
+        cursor:pointer;
+        box-shadow:inset 0 0 0 1px rgba(0,0,0,0.04);
+        ">
+          <div style="font-size:24px;margin-bottom:8px;">🧭</div>
+          <div style="font-size:13px;font-weight:700;color:#111;">Qibla</div>
+        </div>
+
+        <!-- DUA SHORTCUT -->
+        <div onclick="openDuaPage()" style="
+        background:#f8f8fa;
+        border-radius:22px;
+        padding:16px 8px;
+        text-align:center;
+        cursor:pointer;
+        box-shadow:inset 0 0 0 1px rgba(0,0,0,0.04);
+        ">
+          <div style="font-size:24px;margin-bottom:8px;">🤲</div>
+          <div style="font-size:13px;font-weight:700;color:#111;">Dua</div>
+        </div>
+
+        <!-- DAILY ZIKR SHORTCUT -->
+        <div onclick="openZikrPage()" style="
+        background:#f8f8fa;
+        border-radius:22px;
+        padding:16px 8px;
+        text-align:center;
+        cursor:pointer;
+        box-shadow:inset 0 0 0 1px rgba(0,0,0,0.04);
+        ">
+          <div style="font-size:24px;margin-bottom:8px;">✨</div>
+          <div style="font-size:13px;font-weight:700;color:#111;">Daily Zikr</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
 
