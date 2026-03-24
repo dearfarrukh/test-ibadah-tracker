@@ -521,21 +521,21 @@ z-index:5;
 ">
 
 <!-- BACK BUTTON -->
-<button onclick="closeTasbihPage()" style="
-width:42px;
-height:42px;
+<button id="tasbihTopBtn" onclick="handleTasbihTopButton()" style="
+width:38px;
+height:38px;
 border-radius:50%;
-border:none;
-background:rgba(255,255,255,0.15);
-color:white;
+border:1px solid #d6d6d6;
+background:white;
 font-size:20px;
+font-weight:700;
+cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
-backdrop-filter:blur(10px);
-cursor:pointer;
+box-shadow:0 3px 10px rgba(0,0,0,0.12);
 ">
-←
+<span id="tasbihTopBtnIcon">←</span>
 </button>
 
 <!-- SETTINGS BUTTON -->
@@ -3670,13 +3670,46 @@ document.getElementById("floatingMenuBtn").style.display = "flex";
 window.scrollTo(0,0);
 }
 
- 
+
+
+
+  function updateTasbihTopButton(){
+
+let btn = document.getElementById("tasbihTopBtn");
+let icon = document.getElementById("tasbihTopBtnIcon");
+let defaultPage = (localStorage.getItem("defaultPage") || "").trim().toLowerCase();
+
+if(!btn || !icon) return;
+
+if(defaultPage === "tasbih"){
+icon.innerHTML = "☰";
+}else{
+icon.innerHTML = "←";
+}
+
+}
+
+
+
+  function handleTasbihTopButton(){
+
+let defaultPage = (localStorage.getItem("defaultPage") || "").trim().toLowerCase();
+
+if(defaultPage === "tasbih"){
+openMorePage();
+}else{
+closeTasbihPage();
+}
+
+}
+
+
+  
 function openTasbihPage(){
 document.getElementById("tasbihPage").style.display = "block";
 document.getElementById("floatingMenuBtn").style.display = "none";
+updateTasbihTopButton();
 window.scrollTo(0,0);
-
-applySavedTasbihStyle();
 }
 
 function closeTasbihPage(){
