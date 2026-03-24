@@ -1608,7 +1608,7 @@ Menu
 </div>
 
 <!-- Go To Main Page Card -->
-<div onclick="openHomePage()" style="
+  <div onclick="goToMainPage()" style="
 background:rgba(255,255,255,0.75);
 padding:16px 18px;
 border-radius:18px;
@@ -3810,41 +3810,6 @@ if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 
 window.scrollTo(0,0);
 }
-
-
-/* ===================== HOME PAGE ===================== */
-/* Open Home Page (Dashboard) */
-function openHomePage(){
-
-let pagesToHide = [
-"trackerPage",
-"salahPage",
-"tasbihPage",
-"duaPage",
-"zikrPage",
-"zikrDetailPage",
-"qiblaPage",
-"morePage",
-"appSettingsPage"
-];
-
-pagesToHide.forEach(function(id){
-let el = document.getElementById(id);
-if(el) el.style.display = "none";
-});
-
-let homePage = document.getElementById("homePage");
-if(homePage) homePage.style.display = "block";
-
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-window.scrollTo(0,0);
-}
-
-
-
-  
   
 // =========================
 // OPEN DUA PAGE
@@ -4096,8 +4061,6 @@ closeTasbihPage();
 
 }
 
-
-  
 
   
 // =========================
@@ -4402,12 +4365,6 @@ isha: "8:30 PM"
 }
 };
 
-
-
-
-
-
-  
 // =========================
 // FORMAT SALAH API DATE
 // =========================
@@ -6472,7 +6429,7 @@ Cancel
 <!-- Bottom Navigation -->
 <div id="bottomNav">
 
-<div class="navItem" onclick="openHomePage()">🏠<br>Home</div>
+<div class="navItem">🏠<br>Home</div>
 
 <!-- Open Salah Page Card -->
 <div class="navItem" onclick="openSalahPage()">🕒<br>Salah</div>
@@ -8082,208 +8039,10 @@ Default source, calculation method, Ramadan settings, and more can be added here
 <!-- =========================
      JAVASCRIPT LOGIC
 ========================= -->
+  <script>
+// service worker removed for now
+</script>
 
-
-
-
-  <!-- ===================== HOME PAGE ===================== -->
-<div id="homePage" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-z-index:5000;
-background:#e9e9ee;
-overflow:auto;
--webkit-overflow-scrolling:touch;
-">
-
-<!-- ===== TOP WALLPAPER SECTION ===== -->
-<div style="
-height:240px;
-background:url('homewallpaper.jpg') center/cover no-repeat;
-position:relative;
-padding:15px;
-color:white;
-">
-
-<!-- ===== TOP BAR ===== -->
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-">
-
-<!-- MENU BUTTON -->
-<button onclick="openMorePage()" style="
-width:38px;
-height:38px;
-border-radius:50%;
-border:none;
-background:rgba(255,255,255,0.9);
-font-size:20px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 3px 10px rgba(0,0,0,0.15);
-">
-☰
-</button>
-
-<!-- LOCATION + DATE -->
-<div style="text-align:right;">
-
-<div id="homeLocation" style="
-font-size:16px;
-font-weight:700;
-">
-Mineola
-</div>
-
-<div id="homeHijriDate" style="
-font-size:12px;
-opacity:0.9;
-">
-14 Shawwal 1445
-</div>
-
-<div id="homeNormalDate" style="
-font-size:12px;
-opacity:0.9;
-">
-April 24, 2024
-</div>
-
-</div>
-
-</div>
-
-<!-- ===== CENTER HEADING ===== -->
-<div style="
-text-align:center;
-margin-top:10px;
-font-size:22px;
-font-weight:700;
-">
-🕋﷽🕋
-</div>
-
-<!-- ===== NEXT SALAH SECTION ===== -->
-<div style="
-position:absolute;
-bottom:-50px;
-left:0;
-right:0;
-display:flex;
-justify-content:space-between;
-padding:0 15px;
-">
-
-<!-- LEFT CARD -->
-<div style="
-width:48%;
-background:white;
-border-radius:22px;
-padding:14px;
-box-shadow:0 8px 20px rgba(0,0,0,0.15);
-text-align:center;
-">
-
-<div style="font-size:12px;color:#666;">Next Salah</div>
-
-<div id="homeNextSalahName" style="
-font-size:18px;
-font-weight:800;
-margin-top:4px;
-">
-Fajr
-</div>
-
-<div id="homeNextSalahTime" style="
-font-size:22px;
-font-weight:900;
-margin-top:2px;
-">
-5:12 AM
-</div>
-
-</div>
-
-<!-- RIGHT COUNTDOWN -->
-<div style="
-width:48%;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-color:white;
-">
-
-<div style="font-size:12px;">Time left</div>
-
-<div id="homeCountdown" style="
-font-size:26px;
-font-weight:900;
-margin-top:4px;
-">
-02:18:45
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ===== WHITE SECTION ===== -->
-<div style="
-margin-top:70px;
-padding:15px;
-">
-
-<!-- SHORTCUT CARD -->
-<div style="
-background:white;
-border-radius:24px;
-padding:18px;
-display:flex;
-justify-content:space-between;
-text-align:center;
-box-shadow:0 6px 16px rgba(0,0,0,0.08);
-">
-
-<!-- TASBIH -->
-<div onclick="openTasbihPage()" style="flex:1;cursor:pointer;">
-<div style="font-size:28px;">📿</div>
-<div style="font-size:13px;font-weight:600;">Tasbih</div>
-</div>
-
-<!-- QIBLA -->
-<div onclick="openQiblaPage()" style="flex:1;cursor:pointer;">
-<div style="font-size:28px;">🧭</div>
-<div style="font-size:13px;font-weight:600;">Qibla</div>
-</div>
-
-<!-- DUA -->
-<div onclick="openDuaPage()" style="flex:1;cursor:pointer;">
-<div style="font-size:28px;">🤲</div>
-<div style="font-size:13px;font-weight:600;">Dua</div>
-</div>
-
-<!-- ZIKR -->
-<div onclick="openZikrPage()" style="flex:1;cursor:pointer;">
-<div style="font-size:28px;">📖</div>
-<div style="font-size:13px;font-weight:600;">Zikr</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
 
 
 
