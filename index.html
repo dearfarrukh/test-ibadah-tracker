@@ -3840,11 +3840,154 @@ if(homePage) homePage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
 lastMainTab = "home";
+updateHomePageSalahSummary();
 window.scrollTo(0,0);
 
 }
 
 
+
+
+
+
+  // =========================
+// UPDATE HOME PAGE SALAH SUMMARY
+// =========================
+async function updateHomePageSalahSummary(){
+
+let locationEl = document.getElementById("homeLocationName");
+let islamicEl = document.getElementById("homeIslamicDate");
+let normalEl = document.getElementById("homeNormalDate");
+let nextNameEl = document.getElementById("homeNextSalahName");
+let nextTimeEl = document.getElementById("homeNextSalahTime");
+let countdownEl = document.getElementById("homeCountdown");
+
+if(!locationEl || !islamicEl || !normalEl || !nextNameEl || !nextTimeEl || !countdownEl) return;
+
+let now = new Date();
+
+normalEl.innerText = now.toLocaleDateString("en-US", {
+weekday:"long",
+month:"short",
+day:"numeric",
+year:"numeric"
+});
+
+islamicEl.innerText = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+day:"numeric",
+month:"long",
+year:"numeric"
+}).format(now);
+
+locationEl.innerText = "Loading...";
+nextNameEl.innerText = "Next Salah";
+nextTimeEl.innerText = "--:--";
+countdownEl.innerText = "00:00:00";
+
+try{
+
+let loc = await loadUserLocationData();
+
+locationEl.innerText = loc.city || "My Location";
+
+let liveData = await loadRealLocationSalahTimes(now);
+
+let salahList = [
+{name:"Fajr", time: liveData.fajr},
+{name:"Dhuhr", time: liveData.dhuhr},
+{name:"Asr", time: liveData.asr},
+{name:"Maghrib", time: liveData.maghrib},
+{name:"Isha", time: liveData.isha}
+];
+
+function convertTimeToDate(timeText){
+if(!timeText || timeText === "--:--") return null;
+
+let parts = timeText.trim().split(" ");
+if(parts.length < 2) return null;
+
+let hm = parts[0].split(":");
+if(hm.length < 2) return null;
+
+let hour = parseInt(hm[0],10);
+let minute = parseInt(hm[1],10);
+let ampm = parts[1].toUpperCase();
+
+if(ampm === "PM" && hour !== 12) hour += 12;
+if(ampm === "AM" && hour === 12) hour = 0;
+
+let d = new Date();
+d.setHours(hour, minute, 0, 0);
+return d;
+}
+
+let nextSalah = null;
+
+for(let i = 0; i < salahList.length; i++){
+let salahTime = convertTimeToDate(salahList[i].time);
+if(salahTime && salahTime > now){
+nextSalah = {
+name: salahList[i].name,
+time: salahList[i].time,
+dateObj: salahTime
+};
+break;
+}
+}
+
+if(!nextSalah){
+let tomorrowFajr = convertTimeToDate(liveData.fajr);
+if(tomorrowFajr){
+tomorrowFajr.setDate(tomorrowFajr.getDate() + 1);
+nextSalah = {
+name: "Fajr",
+time: liveData.fajr,
+dateObj: tomorrowFajr
+};
+}
+}
+
+if(nextSalah){
+nextNameEl.innerText = nextSalah.name;
+nextTimeEl.innerText = nextSalah.time;
+
+clearInterval(window.homeCountdownTimer);
+
+function updateCountdown(){
+let diff = nextSalah.dateObj.getTime() - new Date().getTime();
+
+if(diff < 0){
+countdownEl.innerText = "00:00:00";
+return;
+}
+
+let hours = Math.floor(diff / 3600000);
+let minutes = Math.floor((diff % 3600000) / 60000);
+let seconds = Math.floor((diff % 60000) / 1000);
+
+countdownEl.innerText =
+String(hours).padStart(2,"0") + ":" +
+String(minutes).padStart(2,"0") + ":" +
+String(seconds).padStart(2,"0");
+}
+
+updateCountdown();
+window.homeCountdownTimer = setInterval(updateCountdown, 1000);
+}
+
+}catch(err){
+
+locationEl.innerText = "Location unavailable";
+nextNameEl.innerText = "Next Salah";
+nextTimeEl.innerText = "--:--";
+countdownEl.innerText = "00:00:00";
+
+}
+
+}
+
+
+  
 
   
 // =========================
@@ -6017,13 +6160,17 @@ if(document.readyState === "loading"){
   ibadahScheduleMidnightRefresh();
   setAsrToggleUI();
   openSelectedDefaultPage();
+  updateHomePageSalahSummary();
 });
 }else{
   ibadahPatchSalahFunctions();
   ibadahScheduleMidnightRefresh();
   setAsrToggleUI();
   openSelectedDefaultPage();
+  updateHomePageSalahSummary();
 }
+
+})();
 
 })();
 
