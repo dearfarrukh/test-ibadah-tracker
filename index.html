@@ -534,9 +534,10 @@ align-items:center;
 justify-content:center;
 box-shadow:0 3px 10px rgba(0,0,0,0.12);
 ">
-←
+<span id="tasbihTopBtnIcon">←</span>
 </button>
 
+  
 <!-- SETTINGS BUTTON -->
 <button onclick="openTasbihSettings()" style="
 width:44px;
@@ -3691,12 +3692,13 @@ bottomNav.style.display = "flex";
 
 applySavedTasbihStyle();
 updateTasbihTopButton();
+setTimeout(updateTasbihTopButton, 50);
 
-
-  setTimeout(updateTasbihTopButton, 50);
 window.scrollTo(0,0);
 }
 
+
+  
 function closeTasbihPage(){
 
 let tasbihPage = document.getElementById("tasbihPage");
@@ -4001,17 +4003,16 @@ closeTasbihPage();
 
 function updateTasbihTopButton(){
 
-let btn = document.getElementById("tasbihTopBtn");
+let icon = document.getElementById("tasbihTopBtnIcon");
 
-if(!btn) return;
+if(!icon) return;
 
-// force correct value
 let defaultPage = localStorage.getItem("defaultPage") || "";
 
 if(defaultPage.trim().toLowerCase() === "tasbih"){
-btn.innerHTML = "☰";
+icon.textContent = "☰";
 }else{
-btn.innerHTML = "←";
+icon.textContent = "←";
 }
 
 }
@@ -5567,6 +5568,8 @@ function setDefaultPage(page){
   localStorage.setItem("defaultPage", page);
   updateDefaultPageSubtitle();
   updateDefaultPageChecks();
+  updateSalahTopButton();
+  updateTasbihTopButton();
   closeDefaultPagePopup();
 }
 
