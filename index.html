@@ -5459,40 +5459,25 @@ window.scrollTo(0,0);
 function closeAppSettingsPage(){
 
 let appSettingsPage = document.getElementById("appSettingsPage");
-let morePage = document.getElementById("morePage");
-let salahPage = document.getElementById("salahPage");
-let tasbihPage = document.getElementById("tasbihPage");
-let duaPage = document.getElementById("duaPage");
-let qiblaPage = document.getElementById("qiblaPage");
-let zikrPage = document.getElementById("zikrPage");
-let zikrDetailPage = document.getElementById("zikrDetailPage");
-let returnPage = localStorage.getItem("appSettingsReturnPage");
+let defaultPage = localStorage.getItem("defaultPage") || "tracker";
 
 if(appSettingsPage) appSettingsPage.style.display = "none";
 
-if(morePage) morePage.style.display = "none";
-if(salahPage) salahPage.style.display = "none";
-if(tasbihPage) tasbihPage.style.display = "none";
-if(duaPage) duaPage.style.display = "none";
-if(qiblaPage) qiblaPage.style.display = "none";
-if(zikrPage) zikrPage.style.display = "none";
-if(zikrDetailPage) zikrDetailPage.style.display = "none";
-
-if(returnPage === "salah"){
-if(salahPage) salahPage.style.display = "block";
-updateSalahTopButton();
-}else if(returnPage === "tasbih"){
-if(tasbihPage) tasbihPage.style.display = "block";
-}else if(returnPage === "dua"){
-if(duaPage) duaPage.style.display = "block";
-}else if(returnPage === "qibla"){
-if(qiblaPage) qiblaPage.style.display = "block";
-}else if(returnPage === "zikr"){
-if(zikrPage) zikrPage.style.display = "block";
-}else if(returnPage === "zikrDetail"){
-if(zikrDetailPage) zikrDetailPage.style.display = "block";
-}else{
-if(morePage) morePage.style.display = "block";
+// go to selected home page
+if(defaultPage === "salah"){
+openSalahPage();
+}
+else if(defaultPage === "tasbih"){
+openTasbihPage();
+}
+else if(defaultPage === "dua"){
+openDuaPage();
+}
+else if(defaultPage === "qibla"){
+openQiblaPage();
+}
+else{
+openTrackerPage();
 }
 
 window.scrollTo(0,0);
