@@ -6915,69 +6915,147 @@ overflow:auto;
 -webkit-overflow-scrolling:touch;
 ">
 
-    <!-- =========================
-       HOME TOP WALLPAPER SECTION
-       (HEIGHT INCREASED FOR CARD OVERLAP)
-  ========================= -->
-  <div style="
-  position:relative;
-  height:330px;
-  background:url('homewallpaper.jpg') center/cover no-repeat;
-  padding:14px 14px 20px 14px;
-  box-sizing:border-box;
-  color:white;
-  ">
-
-    <!-- TOP ROW -->
-    <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    ">
-
-      <!-- =========================
-     HOME WALLPAPER SALAH OVERLAY
+   <!-- =========================
+     HOME TOP WALLPAPER SECTION
 ========================= -->
 <div style="
-position:absolute;
-top:110px;
-left:0;
-right:0;
-text-align:center;
+position:relative;
+height:330px;
+background:url('homewallpaper.jpg') center/cover no-repeat;
+padding:14px 14px 20px 14px;
+box-sizing:border-box;
 color:white;
-z-index:5;
-pointer-events:none;
 ">
 
-  <!-- NEXT SALAH -->
-  <div id="homeNextSalahName" style="
-  font-size:18px;
-  font-weight:600;
-  opacity:0.85;
-  margin-bottom:6px;
+  <!-- TOP ROW -->
+  <div style="
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  position:relative;
+  z-index:6;
   ">
-  Next Salah
+
+    <!-- HOME MENU BUTTON -->
+    <button onclick="toggleSideMenu()" style="
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,0.22);
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 6px 18px rgba(0,0,0,0.16);
+    cursor:pointer;
+    ">
+    ☰
+    </button>
+
+    <!-- LOCATION + DATES -->
+    <div style="
+    text-align:right;
+    max-width:190px;
+    ">
+
+      <div id="homeLocationName" style="
+      font-size:15px;
+      font-weight:800;
+      line-height:1.2;
+      margin-bottom:4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      ">
+      Loading...
+      </div>
+
+      <div id="homeIslamicDate" style="
+      font-size:12px;
+      font-weight:600;
+      opacity:0.96;
+      line-height:1.35;
+      ">
+      Islamic date
+      </div>
+
+      <div id="homeNormalDate" style="
+      font-size:12px;
+      font-weight:600;
+      opacity:0.96;
+      line-height:1.35;
+      ">
+      Normal date
+      </div>
+    </div>
   </div>
 
-  <!-- TIME -->
-  <div id="homeNextSalahTime" style="
-  font-size:48px;
-  font-weight:900;
+  <!-- HOME WALLPAPER SALAH OVERLAY -->
+  <div style="
+  position:absolute;
+  top:110px;
+  left:0;
+  right:0;
+  text-align:center;
+  color:white;
+  z-index:5;
+  pointer-events:none;
+  padding:0 20px;
+  box-sizing:border-box;
+  ">
+
+    <!-- NEXT SALAH -->
+    <div id="homeNextSalahName" style="
+    font-size:18px;
+    font-weight:600;
+    opacity:0.85;
+    margin-bottom:6px;
+    ">
+    Next Salah
+    </div>
+
+    <!-- TIME -->
+    <div id="homeNextSalahTime" style="
+    font-size:48px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:8px;
+    text-shadow:0 4px 20px rgba(0,0,0,0.4);
+    ">
+    --:--
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div id="homeCountdown" style="
+    font-size:18px;
+    font-weight:600;
+    opacity:0.9;
+    text-shadow:0 2px 10px rgba(0,0,0,0.3);
+    ">
+    00:00:00
+    </div>
+  </div>
+
+  <!-- CENTER TITLE -->
+  <div style="
+  position:absolute;
+  left:50%;
+  top:78px;
+  transform:translateX(-50%);
+  font-size:34px;
+  font-weight:800;
+  text-align:center;
+  text-shadow:0 4px 12px rgba(0,0,0,0.22);
   letter-spacing:1px;
-  margin-bottom:8px;
-  text-shadow:0 4px 20px rgba(0,0,0,0.4);
+  white-space:nowrap;
+  z-index:4;
   ">
-  --:--
-  </div>
-
-  <!-- COUNTDOWN -->
-  <div id="homeCountdown" style="
-  font-size:18px;
-  font-weight:600;
-  opacity:0.9;
-  text-shadow:0 2px 10px rgba(0,0,0,0.3);
-  ">
-  00:00:00
+  🕋﷽🕋
   </div>
 
 </div>
