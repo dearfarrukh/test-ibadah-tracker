@@ -1608,7 +1608,7 @@ Menu
 </div>
 
 <!-- Go To Main Page Card -->
-  <div onclick="goToMainPage()" style="
+<div onclick="openHomePage()" style="
 background:rgba(255,255,255,0.75);
 padding:16px 18px;
 border-radius:18px;
@@ -3810,6 +3810,41 @@ if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 
 window.scrollTo(0,0);
 }
+
+
+/* ===================== HOME PAGE ===================== */
+/* Open Home Page (Dashboard) */
+function openHomePage(){
+
+let pagesToHide = [
+"trackerPage",
+"salahPage",
+"tasbihPage",
+"duaPage",
+"zikrPage",
+"zikrDetailPage",
+"qiblaPage",
+"morePage",
+"appSettingsPage"
+];
+
+pagesToHide.forEach(function(id){
+let el = document.getElementById(id);
+if(el) el.style.display = "none";
+});
+
+let homePage = document.getElementById("homePage");
+if(homePage) homePage.style.display = "block";
+
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+window.scrollTo(0,0);
+}
+
+
+
+  
   
 // =========================
 // OPEN DUA PAGE
@@ -4061,6 +4096,8 @@ closeTasbihPage();
 
 }
 
+
+  
 
   
 // =========================
@@ -4365,6 +4402,12 @@ isha: "8:30 PM"
 }
 };
 
+
+
+
+
+
+  
 // =========================
 // FORMAT SALAH API DATE
 // =========================
@@ -6429,7 +6472,7 @@ Cancel
 <!-- Bottom Navigation -->
 <div id="bottomNav">
 
-<div class="navItem">🏠<br>Home</div>
+<div class="navItem" onclick="openHomePage()">🏠<br>Home</div>
 
 <!-- Open Salah Page Card -->
 <div class="navItem" onclick="openSalahPage()">🕒<br>Salah</div>
