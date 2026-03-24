@@ -4007,11 +4007,17 @@ function updateTasbihTopButton(){
 
 let btn = document.getElementById("tasbihTopBtn");
 let icon = document.getElementById("tasbihTopBtnIcon");
-let defaultPage = (localStorage.getItem("defaultPage") || "").trim().toLowerCase();
 
 if(!btn || !icon) return;
 
-if(defaultPage === "tasbih"){
+// get saved default page
+let defaultPage = (localStorage.getItem("defaultPage") || "").trim().toLowerCase();
+
+// ALSO check if tasbih page is acting as main (fallback safety)
+let isTasbihVisible = document.getElementById("tasbihPage")?.style.display === "block";
+
+// FINAL LOGIC (safe)
+if(defaultPage === "tasbih" || isTasbihVisible){
 icon.textContent = "☰";
 }else{
 icon.textContent = "←";
