@@ -3692,6 +3692,8 @@ bottomNav.style.display = "flex";
 applySavedTasbihStyle();
 updateTasbihTopButton();
 
+
+  setTimeout(updateTasbihTopButton, 50);
 window.scrollTo(0,0);
 }
 
@@ -4003,7 +4005,10 @@ let btn = document.getElementById("tasbihTopBtn");
 
 if(!btn) return;
 
-if(localStorage.getItem("defaultPage") === "tasbih"){
+// force correct value
+let defaultPage = localStorage.getItem("defaultPage") || "";
+
+if(defaultPage.trim().toLowerCase() === "tasbih"){
 btn.innerHTML = "☰";
 }else{
 btn.innerHTML = "←";
