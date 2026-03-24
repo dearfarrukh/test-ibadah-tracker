@@ -3797,6 +3797,42 @@ openTrackerPage();
 
 
 
+  // =========================
+// OPEN HOME PAGE
+// =========================
+function openHomePage(){
+
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let morePage = document.getElementById("morePage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let zikrPage = document.getElementById("zikrPage");
+let zikrDetailPage = document.getElementById("zikrDetailPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let appSettingsPage = document.getElementById("appSettingsPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(zikrPage) zikrPage.style.display = "none";
+if(zikrDetailPage) zikrDetailPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+if(appSettingsPage) appSettingsPage.style.display = "none";
+
+if(homePage) homePage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+lastMainTab = "home";
+window.scrollTo(0,0);
+
+}
+
+
 
   
 // =========================
@@ -6847,7 +6883,7 @@ overflow:auto;
 <!-- Bottom Navigation -->
 <div id="bottomNav">
 
-<div class="navItem">🏠<br>Home</div>
+<div onclick="openHomePage()" class="navItem">🏠<br>Home</div>
 
 <!-- Open Salah Page Card -->
 <div class="navItem" onclick="openSalahPage()">🕒<br>Salah</div>
