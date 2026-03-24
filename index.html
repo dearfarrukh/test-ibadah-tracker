@@ -3961,6 +3961,30 @@ ref: `صحیح البخاری، الادب المفرد، باب قول: لا ح
 }
 };
 
+
+  // =========================
+// OPEN ZIKR PAGE FROM HOME
+// =========================
+function openHomeZikrPage(){
+
+lastMainTab = "home";
+openZikrPage();
+
+}
+
+
+  // =========================
+// OPEN ZIKR PAGE FROM MORE
+// =========================
+function openMoreZikrPage(){
+
+lastMainTab = "more";
+openZikrPage();
+
+}
+
+  
+  
 // =========================
 // OPEN ZIKR PAGE
 // =========================
@@ -3975,12 +3999,6 @@ let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
-
-if(homePage && homePage.style.display === "block"){
-lastMainTab = "home";
-}else if(morePage && morePage.style.display === "block"){
-lastMainTab = "more";
-}
 
 if(homePage) homePage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
@@ -3998,6 +4016,7 @@ window.scrollTo(0,0);
 
 }
 
+  
 
 // =========================
 // CLOSE ZIKR PAGE
@@ -6871,7 +6890,7 @@ View all Salah times
         </div>
 
         <!-- DAILY ZIKR SHORTCUT -->
-        <div onclick="openZikrPage()" style="
+        <div onclick="openHomeZikrPage()" style="
         background:#f8f8fa;
         border-radius:22px;
         padding:16px 8px;
@@ -6998,7 +7017,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 </div>
 
 <!-- Open Zikr Page Card -->
-<div onclick="openZikrPage()" style="
+<div onclick="openMoreZikrPage()" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
