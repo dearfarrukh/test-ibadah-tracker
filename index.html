@@ -5244,147 +5244,6 @@ card.style.transform = "translateX(80px)";
 card.style.opacity = "0";
 }
 
-// =========================
-// UPDATE HOME PAGE SALAH SUMMARY
-// =========================
-async function updateHomePageSalahSummary(){
-
-let locationEl = document.getElementById("homeLocationName");
-let islamicEl = document.getElementById("homeIslamicDate");
-let normalEl = document.getElementById("homeNormalDate");
-let nextNameEl = document.getElementById("homeNextSalahName");
-let nextTimeEl = document.getElementById("homeNextSalahTime");
-let countdownEl = document.getElementById("homeCountdown");
-
-if(!locationEl || !islamicEl || !normalEl || !nextNameEl || !nextTimeEl || !countdownEl) return;
-
-let now = new Date();
-
-normalEl.innerText = now.toLocaleDateString("en-US", {
-weekday:"long",
-month:"short",
-day:"numeric",
-year:"numeric"
-});
-
-islamicEl.innerText = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
-day:"numeric",
-month:"long",
-year:"numeric"
-}).format(now);
-
-locationEl.innerText = "Loading...";
-nextNameEl.innerText = "Next Salah";
-nextTimeEl.innerText = "--:--";
-countdownEl.innerText = "00:00:00";
-
-try{
-
-let loc = await loadUserLocationData();
-locationEl.innerText = loc.city || "My Location";
-
-let liveData = await loadRealLocationSalahTimes(now);
-
-let salahList = [
-{name:"Fajr", time: liveData.fajr},
-{name:"Dhuhr", time: liveData.dhuhr},
-{name:"Asr", time: liveData.asr},
-{name:"Maghrib", time: liveData.maghrib},
-{name:"Isha", time: liveData.isha}
-];
-
-function convertTimeToDate(timeText){
-if(!timeText || timeText === "--:--") return null;
-
-let parts = String(timeText).trim().split(" ");
-if(parts.length < 2) return null;
-
-let hm = parts[0].split(":");
-if(hm.length < 2) return null;
-
-let hour = parseInt(hm[0],10);
-let minute = parseInt(hm[1],10);
-let ampm = parts[1].toUpperCase();
-
-if(ampm === "PM" && hour !== 12) hour += 12;
-if(ampm === "AM" && hour === 12) hour = 0;
-
-let d = new Date();
-d.setHours(hour, minute, 0, 0);
-return d;
-}
-
-let nextSalah = null;
-
-for(let i = 0; i < salahList.length; i++){
-let salahTime = convertTimeToDate(salahList[i].time);
-
-if(salahTime && salahTime > now){
-nextSalah = {
-name: salahList[i].name,
-time: salahList[i].time,
-dateObj: salahTime
-};
-break;
-}
-}
-
-if(!nextSalah){
-let tomorrowFajr = convertTimeToDate(liveData.fajr);
-
-if(tomorrowFajr){
-tomorrowFajr.setDate(tomorrowFajr.getDate() + 1);
-
-nextSalah = {
-name: "Fajr",
-time: liveData.fajr,
-dateObj: tomorrowFajr
-};
-}
-}
-
-if(nextSalah){
-nextNameEl.innerText = nextSalah.name;
-nextTimeEl.innerText = nextSalah.time;
-
-clearInterval(window.homeCountdownTimer);
-
-function updateCountdown(){
-let diff = nextSalah.dateObj.getTime() - new Date().getTime();
-
-if(diff < 0){
-countdownEl.innerText = "00:00:00";
-return;
-}
-
-let hours = Math.floor(diff / 3600000);
-let minutes = Math.floor((diff % 3600000) / 60000);
-let seconds = Math.floor((diff % 60000) / 1000);
-
-countdownEl.innerText =
-String(hours).padStart(2,"0") + ":" +
-String(minutes).padStart(2,"0") + ":" +
-String(seconds).padStart(2,"0");
-}
-
-updateCountdown();
-window.homeCountdownTimer = setInterval(updateCountdown, 1000);
-}
-
-}catch(err){
-locationEl.innerText = "Location unavailable";
-nextNameEl.innerText = "Next Salah";
-nextTimeEl.innerText = "--:--";
-countdownEl.innerText = "00:00:00";
-}
-
-}
-
-
-  
-
-
-  
 setTimeout(function(){
 
 salahDayOffset = nextOffset;
@@ -6902,7 +6761,6 @@ Cancel
      HOME PAGE
 ========================= -->
 <div id="homePage" style="
-  position:relative;
 display:none;
 position:fixed;
 top:0;
@@ -6915,154 +6773,26 @@ overflow:auto;
 -webkit-overflow-scrolling:touch;
 ">
 
-   <!-- =========================
-     HOME TOP WALLPAPER SECTION
-========================= -->
-<div style="
-position:relative;
-height:330px;
-background:url('homewallpaper.jpg') center/cover no-repeat;
-padding:14px 14px 20px 14px;
-box-sizing:border-box;
-color:white;
-">
-
-  <!-- TOP ROW -->
+    <!-- =========================
+       HOME TOP WALLPAPER SECTION
+       (HEIGHT INCREASED FOR CARD OVERLAP)
+  ========================= -->
   <div style="
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
   position:relative;
-  z-index:6;
-  ">
-
-    <!-- HOME MENU BUTTON -->
-    <button onclick="toggleSideMenu()" style="
-    width:42px;
-    height:42px;
-    border:none;
-    border-radius:50%;
-    background:rgba(255,255,255,0.22);
-    color:white;
-    font-size:20px;
-    font-weight:700;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    box-shadow:0 6px 18px rgba(0,0,0,0.16);
-    cursor:pointer;
-    ">
-    ☰
-    </button>
-
-    <!-- LOCATION + DATES -->
-    <div style="
-    text-align:right;
-    max-width:190px;
-    ">
-
-      <div id="homeLocationName" style="
-      font-size:15px;
-      font-weight:800;
-      line-height:1.2;
-      margin-bottom:4px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      ">
-      Loading...
-      </div>
-
-      <div id="homeIslamicDate" style="
-      font-size:12px;
-      font-weight:600;
-      opacity:0.96;
-      line-height:1.35;
-      ">
-      Islamic date
-      </div>
-
-      <div id="homeNormalDate" style="
-      font-size:12px;
-      font-weight:600;
-      opacity:0.96;
-      line-height:1.35;
-      ">
-      Normal date
-      </div>
-    </div>
-  </div>
-
-  <!-- HOME WALLPAPER SALAH OVERLAY -->
-  <div style="
-  position:absolute;
-  top:110px;
-  left:0;
-  right:0;
-  text-align:center;
-  color:white;
-  z-index:5;
-  pointer-events:none;
-  padding:0 20px;
+  height:330px;
+  background:url('homewallpaper.jpg') center/cover no-repeat;
+  padding:14px 14px 20px 14px;
   box-sizing:border-box;
+  color:white;
   ">
 
-    <!-- NEXT SALAH -->
-    <div id="homeNextSalahName" style="
-    font-size:18px;
-    font-weight:600;
-    opacity:0.85;
-    margin-bottom:6px;
+    <!-- TOP ROW -->
+    <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
     ">
-    Next Salah
-    </div>
 
-    <!-- TIME -->
-    <div id="homeNextSalahTime" style="
-    font-size:48px;
-    font-weight:900;
-    letter-spacing:1px;
-    margin-bottom:8px;
-    text-shadow:0 4px 20px rgba(0,0,0,0.4);
-    ">
-    --:--
-    </div>
-
-    <!-- COUNTDOWN -->
-    <div id="homeCountdown" style="
-    font-size:18px;
-    font-weight:600;
-    opacity:0.9;
-    text-shadow:0 2px 10px rgba(0,0,0,0.3);
-    ">
-    00:00:00
-    </div>
-  </div>
-
-  <!-- CENTER TITLE -->
-  <div style="
-  position:absolute;
-  left:50%;
-  top:78px;
-  transform:translateX(-50%);
-  font-size:34px;
-  font-weight:800;
-  text-align:center;
-  text-shadow:0 4px 12px rgba(0,0,0,0.22);
-  letter-spacing:1px;
-  white-space:nowrap;
-  z-index:4;
-  ">
-  🕋﷽🕋
-  </div>
-
-</div>
-
-
-
-      
       <!-- HOME MENU BUTTON -->
       <button onclick="toggleSideMenu()" style="
       width:42px;
@@ -7149,7 +6879,147 @@ max-width:190px;
     align-items:stretch;
     ">
 
-     
+      <!-- NEXT SALAH STAR CARD -->
+      <div style="
+      flex:1;
+      min-height:126px;
+      background:rgba(255,255,255,0.96);
+      border-radius:28px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.14);
+      padding:14px 14px 12px 14px;
+      box-sizing:border-box;
+      color:#111;
+      position:relative;
+      overflow:hidden;
+      ">
+
+        <!-- STAR + NEXT SALAH -->
+        <div style="
+        display:flex;
+        align-items:flex-start;
+        gap:10px;
+        margin-bottom:8px;
+        ">
+
+          <!-- SMALL STAR -->
+          <div style="
+          width:38px;
+          height:38px;
+          flex:0 0 38px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:22px;
+          line-height:1;
+          ">
+          ✦
+          </div>
+
+          <!-- NEXT SALAH TEXT -->
+          <div style="flex:1;min-width:0;">
+            <div id="homeNextSalahName" style="
+            font-size:12px;
+            font-weight:700;
+            color:#666;
+            margin-bottom:2px;
+            text-transform:uppercase;
+            letter-spacing:0.6px;
+            ">
+            Next Salah
+            </div>
+
+            <div id="homeNextSalahTime" style="
+            font-size:28px;
+            font-weight:900;
+            color:#111;
+            line-height:1.1;
+            ">
+            --:--
+            </div>
+          </div>
+        </div>
+
+        <!-- OPEN SALAH PAGE ROW -->
+        <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-top:8px;
+        margin-bottom:6px;
+        cursor:pointer;
+        " onclick="openSalahPage()">
+
+          <!-- =========================
+     HOME NEXT SALAH ONLY 
+========================= -->
+<div style="
+font-size:12px;
+color:#888;
+font-weight:600;
+letter-spacing:0.3px;
+">
+View all Salah times
+</div>
+
+          <div id="homeTimesArrow" style="
+          font-size:18px;
+          font-weight:800;
+          color:#666;
+          padding-left:10px;
+          ">
+          ›
+          </div>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN CARD -->
+      <div style="
+      flex:1;
+      min-height:126px;
+      background:rgba(255,255,255,0.96);
+      border-radius:28px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.14);
+      padding:14px 12px;
+      box-sizing:border-box;
+      text-align:center;
+      color:#111;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      ">
+
+        <div style="
+        font-size:12px;
+        font-weight:700;
+        color:#666;
+        text-transform:uppercase;
+        letter-spacing:0.6px;
+        margin-bottom:8px;
+        ">
+        Time Left
+        </div>
+
+        <div id="homeCountdown" style="
+        font-size:24px;
+        font-weight:900;
+        line-height:1.1;
+        color:#111;
+        ">
+        00:00:00
+        </div>
+
+        <div style="
+        font-size:11px;
+        font-weight:600;
+        color:#777;
+        margin-top:8px;
+        ">
+        until next salah
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- =========================
       HOME LOWER SECTION SPACING FIX
  ========================= -->
