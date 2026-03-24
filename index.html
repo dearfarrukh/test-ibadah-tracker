@@ -6523,10 +6523,13 @@ overflow:auto;
 -webkit-overflow-scrolling:touch;
 ">
 
-  <!-- HOME TOP WALLPAPER SECTION -->
+    <!-- =========================
+       HOME TOP WALLPAPER SECTION
+       (HEIGHT INCREASED FOR CARD OVERLAP)
+  ========================= -->
   <div style="
   position:relative;
-  height:240px;
+  height:280px;
   background:url('homewallpaper.jpg') center/cover no-repeat;
   padding:14px 14px 20px 14px;
   box-sizing:border-box;
@@ -6702,17 +6705,17 @@ overflow:auto;
         cursor:pointer;
         " onclick="openSalahPage()">
 
-          <div id="homeAllSalahTimes" style="
-          font-size:13px;
-          color:#333;
-          line-height:1.55;
-          ">
-          Fajr --<br>
-          Dhuhr --<br>
-          Asr --<br>
-          Maghrib --<br>
-          Isha --
-          </div>
+          <!-- =========================
+     HOME NEXT SALAH ONLY 
+========================= -->
+<div style="
+font-size:12px;
+color:#888;
+font-weight:600;
+letter-spacing:0.3px;
+">
+View all Salah times
+</div>
 
           <div id="homeTimesArrow" style="
           font-size:18px;
