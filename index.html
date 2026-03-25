@@ -6868,16 +6868,19 @@ max-width:190px;
     🕋﷽🕋
     </div>
 
-    <!-- NEXT SALAH + COUNTDOWN ROW -->
-    <div style="
-    position:absolute;
-    left:14px;
-    right:14px;
-    bottom:-1px;
-    display:flex;
-    gap:12px;
-    align-items:stretch;
-    ">
+         <!-- NEXT SALAH STAR CARD -->
+      <div style="
+      flex:1;
+      min-height:126px;
+      background:transparent;
+      border-radius:0;
+      box-shadow:none;
+      padding:14px 14px 12px 14px;
+      box-sizing:border-box;
+      color:white;
+      position:relative;
+      overflow:hidden;
+      ">
 
       <!-- NEXT SALAH STAR CARD -->
       <div style="
@@ -6916,23 +6919,24 @@ max-width:190px;
           </div>
 
           <!-- NEXT SALAH TEXT -->
-          <div style="flex:1;min-width:0;">
             <div id="homeNextSalahName" style="
             font-size:12px;
             font-weight:700;
-            color:#666;
+            color:rgba(255,255,255,0.88);
             margin-bottom:2px;
             text-transform:uppercase;
             letter-spacing:0.6px;
+            text-shadow:0 4px 12px rgba(0,0,0,0.28);
             ">
             Next Salah
             </div>
 
-            <div id="homeNextSalahTime" style="
+                        <div id="homeNextSalahTime" style="
             font-size:28px;
             font-weight:900;
-            color:#111;
+            color:white;
             line-height:1.1;
+            text-shadow:0 4px 12px rgba(0,0,0,0.28);
             ">
             --:--
             </div>
@@ -6952,12 +6956,13 @@ max-width:190px;
           <!-- =========================
      HOME NEXT SALAH ONLY 
 ========================= -->
-<div style="
-font-size:12px;
-color:#888;
-font-weight:600;
-letter-spacing:0.3px;
-">
+                  <div id="homeTimesArrow" style="
+          font-size:18px;
+          font-weight:800;
+          color:white;
+          padding-left:10px;
+          text-shadow:0 4px 12px rgba(0,0,0,0.28);
+          ">
 View all Salah times
 </div>
 
@@ -6972,47 +6977,50 @@ View all Salah times
         </div>
       </div>
 
-      <!-- COUNTDOWN CARD -->
+            <!-- COUNTDOWN CARD -->
       <div style="
       flex:1;
       min-height:126px;
-      background:rgba(255,255,255,0.96);
-      border-radius:28px;
-      box-shadow:0 14px 30px rgba(0,0,0,0.14);
+      background:transparent;
+      border-radius:0;
+      box-shadow:none;
       padding:14px 12px;
       box-sizing:border-box;
       text-align:center;
-      color:#111;
+      color:white;
       display:flex;
       flex-direction:column;
       justify-content:center;
       ">
 
-        <div style="
+               <div style="
         font-size:12px;
         font-weight:700;
-        color:#666;
+        color:rgba(255,255,255,0.88);
         text-transform:uppercase;
         letter-spacing:0.6px;
         margin-bottom:8px;
+        text-shadow:0 4px 12px rgba(0,0,0,0.28);
         ">
         Time Left
         </div>
 
-        <div id="homeCountdown" style="
+                <div id="homeCountdown" style="
         font-size:24px;
         font-weight:900;
         line-height:1.1;
-        color:#111;
+        color:white;
+        text-shadow:0 4px 12px rgba(0,0,0,0.28);
         ">
         00:00:00
         </div>
 
-        <div style="
+                <div style="
         font-size:11px;
         font-weight:600;
-        color:#777;
+        color:rgba(255,255,255,0.88);
         margin-top:8px;
+        text-shadow:0 4px 12px rgba(0,0,0,0.28);
         ">
         until next salah
         </div>
