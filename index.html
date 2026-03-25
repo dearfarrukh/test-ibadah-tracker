@@ -4670,6 +4670,57 @@ isha: "8:30 PM"
 }
 };
 
+
+
+  // =========================
+// USE MY LOCATION BUTTON
+// =========================
+function handleUseMyLocation(){
+
+// show loading text
+let el = event.currentTarget;
+let originalText = el.innerHTML;
+el.innerHTML = "Getting location...";
+
+if(!navigator.geolocation){
+alert("Location not supported");
+el.innerHTML = originalText;
+return;
+}
+
+navigator.geolocation.getCurrentPosition(function(position){
+
+let lat = position.coords.latitude;
+let lon = position.coords.longitude;
+
+// 👉 SAVE (optional for later use)
+localStorage.setItem("userLat", lat);
+localStorage.setItem("userLon", lon);
+
+// 👉 RELOAD salah times
+if(typeof loadSalahTimes === "function"){
+loadSalahTimes();
+}
+
+// success text
+el.innerHTML = "Location updated ✓";
+
+setTimeout(()=>{
+el.innerHTML = originalText;
+},2000);
+
+}, function(){
+
+alert("Location permission denied");
+el.innerHTML = originalText;
+
+});
+
+}
+
+
+  
+
 // =========================
 // FORMAT SALAH API DATE
 // =========================
@@ -8128,6 +8179,20 @@ box-sizing:border-box;
     Enter Location
     </button>
   </div>
+
+  <!-- LOCATION UPDATE TEXT -->
+<div onclick="handleUseMyLocation()" style="
+text-align:center;
+margin-top:12px;
+margin-bottom:6px;
+font-size:14px;
+color:rgba(255,255,255,0.85);
+cursor:pointer;
+font-weight:500;
+letter-spacing:0.2px;
+">
+📍 Tap to update location
+</div>
 
 <!-- Entered Location Card -->
 <div id="enteredLocationCard" style="
