@@ -5390,6 +5390,37 @@ openSalahTopDropdown();
 }
 
 // =========================
+// OPEN ENTER LOCATION MODAL
+// =========================
+function openEnterLocationModal(){
+let overlay = document.getElementById("enterLocationModalOverlay");
+
+if(!overlay) return;
+
+overlay.style.display = "block";
+
+setTimeout(function(){
+let input = document.getElementById("modalLocationInput");
+if(input) input.focus();
+},120);
+}
+
+// =========================
+// CLOSE ENTER LOCATION MODAL
+// =========================
+function closeEnterLocationModal(){
+let overlay = document.getElementById("enterLocationModalOverlay");
+
+if(!overlay) return;
+
+overlay.style.display = "none";
+}
+  
+
+
+  
+
+// =========================
 // OPEN SALAH TOP DROPDOWN
 // =========================
 function openSalahTopDropdown(){
@@ -5439,26 +5470,17 @@ menu.style.display = "none";
 // =========================
 // CHOOSE SALAH TOP DROPDOWN ACTION
 // =========================
+// =========================
+// HANDLE DROPDOWN ACTION
+// =========================
 function chooseSalahTopDropdownAction(action){
 closeSalahTopDropdown();
 
 if(action === "entered"){
-
-let searchCard = document.getElementById("enteredLocationCard");
-
-if(searchCard){
-searchCard.style.display = "block";
-}
-
-setTimeout(function(){
-let input = document.getElementById("salahLocationInput");
-if(input) input.focus();
-},120);
-
+openEnterLocationModal();
 return;
 }
 }
-
 
 
   
@@ -9167,6 +9189,64 @@ Default source, calculation method, Ramadan settings, and more can be added here
 </script>
 
 
+
+
+  <!-- =========================
+     ENTER LOCATION MODAL
+========================= -->
+<div id="enterLocationModalOverlay" onclick="closeEnterLocationModal()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.35);
+z-index:10030;
+">
+
+  <!-- CARD -->
+  <div onclick="event.stopPropagation()" style="
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:92%;
+  max-width:420px;
+  background:white;
+  border-radius:26px;
+  padding:18px 16px 16px 16px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.25);
+  box-sizing:border-box;
+  ">
+
+    <!-- TITLE -->
+    <div style="
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:12px;
+    text-align:center;
+    ">
+    Enter Location
+    </div>
+
+    <!-- SEARCH INPUT -->
+    <input id="modalLocationInput" type="text" placeholder="Search city..." style="
+    width:100%;
+    padding:14px 14px;
+    border-radius:16px;
+    border:1px solid #ddd;
+    font-size:15px;
+    outline:none;
+    box-sizing:border-box;
+    margin-bottom:12px;
+    ">
+
+    <!-- RESULTS -->
+    <div id="modalLocationResults"></div>
+
+  </div>
+</div>
 
 
 
