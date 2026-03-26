@@ -5228,11 +5228,111 @@ d.setDate(d.getDate() + salahDayOffset);
 return d;
 }
 
+
+
+// =========================
+// TOGGLE SALAH TOP DROPDOWN
+// =========================
+function toggleSalahTopDropdown(){
+let overlay = document.getElementById("salahTopDropdownOverlay");
+let menu = document.getElementById("salahTopDropdownMenu");
+let arrow = document.getElementById("salahTopDropdownArrow");
+
+if(!overlay || !menu || !arrow) return;
+
+let isOpen = overlay.style.display === "block";
+
+if(isOpen){
+closeSalahTopDropdown();
+}else{
+openSalahTopDropdown();
+}
+}
+
+// =========================
+// OPEN SALAH TOP DROPDOWN
+// =========================
+function openSalahTopDropdown(){
+let overlay = document.getElementById("salahTopDropdownOverlay");
+let menu = document.getElementById("salahTopDropdownMenu");
+let arrow = document.getElementById("salahTopDropdownArrow");
+
+if(!overlay || !menu || !arrow) return;
+
+overlay.style.display = "block";
+menu.style.display = "block";
+
+setTimeout(function(){
+menu.style.opacity = "1";
+menu.style.transform = "translateX(-50%) translateY(0)";
+arrow.style.transform = "rotate(180deg)";
+},10);
+}
+
+// =========================
+// CLOSE SALAH TOP DROPDOWN
+// =========================
+function closeSalahTopDropdown(){
+let overlay = document.getElementById("salahTopDropdownOverlay");
+let menu = document.getElementById("salahTopDropdownMenu");
+let arrow = document.getElementById("salahTopDropdownArrow");
+
+if(!overlay || !menu || !arrow) return;
+
+menu.style.opacity = "0";
+menu.style.transform = "translateX(-50%) translateY(-8px)";
+arrow.style.transform = "rotate(0deg)";
+
+setTimeout(function(){
+overlay.style.display = "none";
+menu.style.display = "none";
+},220);
+}
+
+// =========================
+// OPEN SALAH TOP DROPDOWN FROM TAB
+// =========================
+function openSalahTopDropdownFromTab(){
+openSalahTopDropdown();
+}
+
+// =========================
+// CHOOSE SALAH TOP DROPDOWN ACTION
+// =========================
+function chooseSalahTopDropdownAction(action){
+closeSalahTopDropdown();
+
+if(action === "current"){
+setSalahSource("location");
+setTimeout(function(){
+handleUseMyLocation();
+},120);
+return;
+}
+
+if(action === "entered"){
+setSalahSource("entered");
+setTimeout(function(){
+let input = document.getElementById("salahLocationInput");
+if(input) input.focus();
+},120);
+return;
+}
+}
+
+
+
+  
+
+
+  
 // =========================
 // SET SALAH SOURCE
 // =========================
 function setSalahSource(source){
 salahSource = source;
+
+closeSalahTopDropdown();
 
 let locationBtn = document.getElementById("locationTabBtn");
 let masjidBtn = document.getElementById("masjidTabBtn");
@@ -5245,8 +5345,8 @@ locationBtn.style.color = source === "location" ? "white" : "#111";
 }
 
 if(masjidBtn){
-masjidBtn.style.background = source === "masjid" ? "#111" : "transparent";
-masjidBtn.style.color = source === "masjid" ? "white" : "#111";
+masjidBtn.style.background = "transparent";
+masjidBtn.style.color = "#111";
 }
 
 if(enteredBtn){
@@ -5262,8 +5362,6 @@ hideSalahLocationSuggestions();
 
 renderSalahPage();
 }
-  
-let salahSliding = false;
 
 // =========================
 // CHANGE SALAH DAY
@@ -5354,12 +5452,13 @@ refreshLocationSalahData();
 return;
 }
 
-refreshMasjidSalahData();
+if(salahSource === "entered"){
+refreshEnteredLocationSalahData();
+return;
 }
 
-
-  let salahTouchStartX = 0;
-let salahTouchEndX = 0;
+refreshMasjidSalahData();
+}
 
 // =========================
 // HANDLE SALAH SWIPE START
@@ -8106,18 +8205,131 @@ box-sizing:border-box;
     </div>
   </div>
 
-  <!-- LOCATION UPDATE TEXT -->
-<div onclick="handleUseMyLocation()" style="
-text-align:center;
+  <!-- SALAH TOP LOCATION DROPDOWN -->
+<div style="
+display:flex;
+justify-content:center;
 margin-top:12px;
-margin-bottom:6px;
-font-size:14px;
-color:rgba(255,255,255,0.85);
-cursor:pointer;
-font-weight:500;
-letter-spacing:0.2px;
+margin-bottom:10px;
+position:relative;
 ">
-📍 Tap to update location
+
+  <!-- Tiny Dropdown Button -->
+  <button id="salahTopLocationBtn" onclick="toggleSalahTopDropdown()" style="
+  border:none;
+  border-radius:16px;
+  padding:8px 14px;
+  background:rgba(255,255,255,0.18);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 6px 18px rgba(0,0,0,0.14);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  ">
+    <span>Location Options</span>
+    <span id="salahTopDropdownArrow" style="
+    display:inline-block;
+    transition:transform 0.22s ease;
+    font-size:12px;
+    ">
+    ▼
+    </span>
+  </button>
+</div>
+
+<!-- SALAH TOP DROPDOWN OVERLAY -->
+<div id="salahTopDropdownOverlay" onclick="closeSalahTopDropdown()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.22);
+backdrop-filter:blur(2px);
+-webkit-backdrop-filter:blur(2px);
+z-index:6998;
+"></div>
+
+<!-- SALAH TOP DROPDOWN MENU -->
+<div id="salahTopDropdownMenu" style="
+display:none;
+position:fixed;
+top:165px;
+left:50%;
+transform:translateX(-50%) translateY(-8px);
+width:calc(100% - 34px);
+max-width:360px;
+background:white;
+border-radius:24px;
+padding:10px;
+box-sizing:border-box;
+box-shadow:0 18px 45px rgba(0,0,0,0.22);
+z-index:6999;
+opacity:0;
+transition:opacity 0.22s ease, transform 0.22s ease;
+">
+
+  <!-- Use Current Location Button -->
+  <button onclick="chooseSalahTopDropdownAction('current')" style="
+  width:100%;
+  border:none;
+  background:#f7f7f9;
+  border-radius:18px;
+  padding:14px 14px;
+  text-align:left;
+  font-size:15px;
+  font-weight:700;
+  color:#111;
+  cursor:pointer;
+  margin-bottom:8px;
+  ">
+  1) Use current location
+  </button>
+
+  <!-- Enter New Location Button -->
+  <button onclick="chooseSalahTopDropdownAction('entered')" style="
+  width:100%;
+  border:none;
+  background:#f7f7f9;
+  border-radius:18px;
+  padding:14px 14px;
+  text-align:left;
+  font-size:15px;
+  font-weight:700;
+  color:#111;
+  cursor:pointer;
+  margin-bottom:10px;
+  ">
+  2) Enter new location
+  </button>
+
+  <div style="
+  font-size:12px;
+  font-weight:800;
+  color:#777;
+  padding:4px 6px 8px 6px;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  ">
+  Saved locations
+  </div>
+
+  <div style="
+  background:#f7f7f9;
+  border-radius:18px;
+  padding:14px 14px;
+  font-size:14px;
+  color:#666;
+  line-height:1.5;
+  ">
+  No saved locations yet
+  </div>
 </div>
 
 <div style="
@@ -8151,7 +8363,7 @@ letter-spacing:0.2px;
     </button>
 
 <!-- Saved Locations Button -->
-    <button id="masjidTabBtn" onclick="setSalahSource('masjid')" style="
+    <button id="masjidTabBtn" onclick="openSalahTopDropdownFromTab()" style="
     flex:1;
     border:none;
     border-radius:20px;
