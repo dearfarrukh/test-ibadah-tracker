@@ -8723,7 +8723,7 @@ text-align:center;
 margin-top:10px;
 ">
 
-  <!-- USE CURRENT LOCATION BUTTON  Saved Location -->
+  <!-- USE CURRENT LOCATION BUTTON -->
   <div onclick="useCurrentLocationFromSaved()" style="
   display:inline-block;
   padding:8px 14px;
@@ -8738,8 +8738,10 @@ margin-top:10px;
   ">
   📍 Use Current Location
   </div>
-  
-   <!-- SALAH TOP LOCATION DROPDOWN -->
+
+</div>
+
+<!-- SALAH TOP LOCATION DROPDOWN -->
 <div id="salahTopDropdownWrap" style="
 display:none;
 justify-content:center;
@@ -8749,38 +8751,38 @@ position:relative;
 ">
 
   <!-- Saved Location Search Bar + Dropdown Button -->
- <button id="salahTopLocationBtn" onclick="toggleSalahTopDropdown()" style="
-width:100%;
-max-width:360px;
-border:none;
-border-radius:20px;
-padding:14px 16px;
-background:rgba(255,255,255,0.92);
-color:#111;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:space-between;
-box-shadow:0 10px 28px rgba(0,0,0,0.12);
-backdrop-filter:blur(12px);
--webkit-backdrop-filter:blur(12px);
-">
+  <button id="salahTopLocationBtn" onclick="toggleSalahTopDropdown()" style="
+  width:100%;
+  max-width:360px;
+  border:none;
+  border-radius:20px;
+  padding:14px 16px;
+  background:rgba(255,255,255,0.92);
+  color:#111;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 10px 28px rgba(0,0,0,0.12);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  ">
 
     <!-- Left Text -->
-  <span>Saved locations</span>
+    <span>Saved locations</span>
 
-  <!-- Right Arrow -->
-  <span id="salahTopDropdownArrow" style="
-  font-size:16px;
-  transition:transform 0.22s ease;
-  color:#666;
-  ">
-  ›
-  </span>
+    <!-- Right Arrow -->
+    <span id="salahTopDropdownArrow" style="
+    font-size:16px;
+    transition:transform 0.22s ease;
+    color:#666;
+    ">
+    ›
+    </span>
 
-</button>
+  </button>
 </div>
 
 <!-- SALAH TOP DROPDOWN OVERLAY -->
