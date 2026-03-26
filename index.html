@@ -4959,13 +4959,24 @@ isha: isha
 
 async function refreshMasjidSalahData(){
 try{
-let data = await loadMuhammadiMasjidTimes();
+let picked = getSelectedSavedSalahLocation();
+
+if(!picked || !picked.lat || !picked.lon){
+document.getElementById("salahCityName").innerText = "Saved Location";
+document.getElementById("salahSourceLabel").innerText = "Choose or add a saved location";
+setSalahLoadingState();
+return;
+}
+
+let selectedDate = getSelectedSalahDate();
+let data = await loadSavedLocationSalahTimes(selectedDate, picked);
+
 if(salahSource === "masjid"){
 applySalahDataToScreen(data);
 }
 }catch(err){
 document.getElementById("salahCityName").innerText = "Saved Location";
-document.getElementById("salahSourceLabel").innerText = "Masjid site unavailable";
+document.getElementById("salahSourceLabel").innerText = "Could not load saved location";
 }
 }
 
@@ -5351,9 +5362,269 @@ let picked = savedLocations[index];
 setSelectedSavedSalahLocation(picked);
 renderSavedSalahLocationList();
 closeSalahTopDropdown();
+applySavedLocationObject(picked);
 }
 
 
+  let modalLocationSuggestions = [];
+let modalLocationTypingTimer = null;
+
+// =========================
+// HIDE MODAL LOCATION SUGGESTIONS
+// =========================
+function hideModalLocationSuggestions(){
+let box = document.getElementById("modalLocationSuggestions");
+if(box){
+box.style.display = "none";
+box.innerHTML = "";
+}
+modalLocationSuggestions = [];
+}
+
+// =========================
+// RENDER MODAL LOCATION SUGGESTIONS
+// =========================
+function renderModalLocationSuggestions(list){
+let box = document.getElementById("modalLocationSuggestions");
+if(!box) return;
+
+if(!list || !list.length){
+hideModalLocationSuggestions();
+return;
+}
+
+let html = "";
+
+list.forEach(function(item, index){
+let shortName = item.display_name || "Unknown Location";
+
+html += `
+<div onclick="selectModalLocationSuggestion(${index})" style="
+padding:14px 16px;
+font-size:15px;
+color:#111;
+cursor:pointer;
+border-bottom:${index === list.length - 1 ? "none" : "1px solid rgba(0,0,0,0.06)"};
+background:#f7f7f9;
+line-height:1.4;
+">
+${shortName}
+</div>
+`;
+});
+
+box.innerHTML = html;
+box.style.display = "block";
+}
+
+// =========================
+// HANDLE MODAL LOCATION TYPING
+// =========================
+function handleModalLocationTyping(){
+let input = document.getElementById("modalLocationInput");
+if(!input) return;
+
+let query = input.value.trim();
+
+if(modalLocationTypingTimer){
+clearTimeout(modalLocationTypingTimer);
+}
+
+if(query.length < 2){
+hideModalLocationSuggestions();
+return;
+}
+
+modalLocationTypingTimer = setTimeout(async function(){
+try{
+let results = await fetchSalahLocationSuggestions(query);
+modalLocationSuggestions = results;
+renderModalLocationSuggestions(results);
+}catch(err){
+hideModalLocationSuggestions();
+}
+}, 350);
+}
+
+// =========================
+// ADD SAVED SALAH LOCATION
+// =========================
+function addSavedSalahLocation(locationObj){
+if(!locationObj || !locationObj.name || !locationObj.lat || !locationObj.lon) return;
+
+let savedLocations = getSavedSalahLocations();
+
+let alreadyExists = savedLocations.some(function(item){
+return (
+item.name === locationObj.name &&
+String(item.lat) === String(locationObj.lat) &&
+String(item.lon) === String(locationObj.lon)
+);
+});
+
+if(!alreadyExists){
+savedLocations.unshift({
+name: locationObj.name,
+lat: locationObj.lat,
+lon: locationObj.lon
+});
+setSavedSalahLocations(savedLocations);
+}
+
+setSelectedSavedSalahLocation({
+name: locationObj.name,
+lat: locationObj.lat,
+lon: locationObj.lon
+});
+}
+
+// =========================
+// APPLY SAVED LOCATION OBJECT
+// =========================
+async function applySavedLocationObject(locationObj){
+if(!locationObj || !locationObj.lat || !locationObj.lon) return;
+
+setSelectedSavedSalahLocation(locationObj);
+salahSource = "masjid";
+
+document.getElementById("salahCityName").innerText = locationObj.name || "Saved Location";
+document.getElementById("salahSourceLabel").innerText = "Loading saved location...";
+setSalahLoadingState();
+
+try{
+let selectedDate = getSelectedSalahDate();
+let data = await loadSavedLocationSalahTimes(selectedDate, locationObj);
+
+if(salahSource === "masjid"){
+applySalahDataToScreen(data);
+}
+}catch(err){
+document.getElementById("salahCityName").innerText = locationObj.name || "Saved Location";
+document.getElementById("salahSourceLabel").innerText = "Could not load saved location";
+}
+}
+
+// =========================
+// SELECT MODAL LOCATION SUGGESTION
+// =========================
+async function selectModalLocationSuggestion(index){
+let item = modalLocationSuggestions[index];
+if(!item) return;
+
+let input = document.getElementById("modalLocationInput");
+if(input){
+input.value = item.display_name || "";
+}
+
+let pickedLocation = {
+name: (item.display_name || "").split(",")[0] || "Saved Location",
+lat: item.lat,
+lon: item.lon
+};
+
+addSavedSalahLocation(pickedLocation);
+hideModalLocationSuggestions();
+closeEnterLocationModal();
+renderSavedSalahLocationList();
+
+await applySavedLocationObject(pickedLocation);
+}
+
+// =========================
+// SEARCH MODAL LOCATION AND SAVE
+// =========================
+async function searchModalLocationAndSave(){
+let input = document.getElementById("modalLocationInput");
+if(!input) return;
+
+let query = input.value.trim();
+
+hideModalLocationSuggestions();
+
+if(!query){
+document.getElementById("salahCityName").innerText = "Enter a location";
+document.getElementById("salahSourceLabel").innerText = "Try: London, UK or Karachi, Pakistan";
+return;
+}
+
+try{
+document.getElementById("salahCityName").innerText = "Searching...";
+document.getElementById("salahSourceLabel").innerText = "Finding location...";
+setSalahLoadingState();
+
+let geoUrl =
+"https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=" +
+encodeURIComponent(query);
+
+let geoRes = await fetch(geoUrl, {
+headers: {
+"Accept": "application/json"
+}
+});
+
+let geoData = await geoRes.json();
+
+if(!geoData || !geoData.length){
+document.getElementById("salahCityName").innerText = "Location not found";
+document.getElementById("salahSourceLabel").innerText = "Try: London, UK • Karachi, Pakistan • Makkah, Saudi Arabia";
+return;
+}
+
+let found = geoData[0];
+
+let pickedLocation = {
+name: found.display_name.split(",")[0] || query,
+lat: found.lat,
+lon: found.lon
+};
+
+addSavedSalahLocation(pickedLocation);
+closeEnterLocationModal();
+renderSavedSalahLocationList();
+
+await applySavedLocationObject(pickedLocation);
+}catch(err){
+document.getElementById("salahCityName").innerText = "Could not load";
+document.getElementById("salahSourceLabel").innerText = "Check internet and try again";
+}
+}
+
+// =========================
+// LOAD SAVED LOCATION SALAH TIMES
+// =========================
+async function loadSavedLocationSalahTimes(dateObj, locationObj){
+if(!locationObj || !locationObj.lat || !locationObj.lon){
+throw new Error("No saved location selected");
+}
+
+let apiDate = formatSalahApiDate(dateObj);
+
+let salahUrl =
+"https://api.aladhan.com/v1/timings/" + apiDate
++ "?latitude=" + encodeURIComponent(locationObj.lat)
++ "&longitude=" + encodeURIComponent(locationObj.lon)
++ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
+
+let res = await fetch(salahUrl);
+let json = await res.json();
+
+if(!json || !json.data || !json.data.timings){
+throw new Error("Could not load saved location Salah times");
+}
+
+let t = json.data.timings;
+
+return {
+locationName: locationObj.name || "Saved Location",
+sourceLabel: "Saved Location - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
+fajr: to12Hour(t.Fajr),
+sunrise: to12Hour(t.Sunrise),
+dhuhr: to12Hour(t.Dhuhr),
+asr: to12Hour(t.Asr),
+maghrib: to12Hour(t.Maghrib),
+isha: to12Hour(t.Isha)
+};
+}
 
 
 
@@ -5405,15 +5676,24 @@ if(input) input.focus();
 },120);
 }
 
+
+  
 // =========================
 // CLOSE ENTER LOCATION MODAL
 // =========================
 function closeEnterLocationModal(){
 let overlay = document.getElementById("enterLocationModalOverlay");
+let input = document.getElementById("modalLocationInput");
 
 if(!overlay) return;
 
 overlay.style.display = "none";
+
+if(input){
+input.value = "";
+}
+
+hideModalLocationSuggestions();
 }
   
 
@@ -9191,7 +9471,7 @@ Default source, calculation method, Ramadan settings, and more can be added here
 
 
 
-  <!-- =========================
+<!-- =========================
      ENTER LOCATION MODAL
 ========================= -->
 <div id="enterLocationModalOverlay" onclick="closeEnterLocationModal()" style="
@@ -9226,24 +9506,85 @@ z-index:10030;
     font-weight:800;
     margin-bottom:12px;
     text-align:center;
+    color:#111;
     ">
     Enter Location
     </div>
 
-    <!-- SEARCH INPUT -->
-    <input id="modalLocationInput" type="text" placeholder="Search city..." style="
-    width:100%;
-    padding:14px 14px;
-    border-radius:16px;
-    border:1px solid #ddd;
-    font-size:15px;
-    outline:none;
-    box-sizing:border-box;
-    margin-bottom:12px;
+    <!-- SEARCH LABEL -->
+    <div style="
+    font-size:13px;
+    font-weight:700;
+    color:#666;
+    margin-bottom:10px;
     ">
+    Search city, state, or country
+    </div>
 
-    <!-- RESULTS -->
-    <div id="modalLocationResults"></div>
+    <!-- INPUT ROW -->
+    <div style="
+    display:flex;
+    gap:10px;
+    align-items:center;
+    ">
+      <input id="modalLocationInput" type="text" placeholder="Example: Makkah, London, Karachi" oninput="handleModalLocationTyping()" autocomplete="off" style="
+      flex:1;
+      border:none;
+      outline:none;
+      border-radius:18px;
+      padding:15px 16px;
+      font-size:15px;
+      background:#f7f7f9;
+      color:#111;
+      box-sizing:border-box;
+      ">
+
+      <button onclick="searchModalLocationAndSave()" style="
+      border:none;
+      border-radius:18px;
+      padding:15px 16px;
+      background:#111;
+      color:white;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      white-space:nowrap;
+      ">
+      Search
+      </button>
+    </div>
+
+    <!-- SUGGESTIONS -->
+    <div id="modalLocationSuggestions" style="
+    display:none;
+    margin-top:10px;
+    background:#f7f7f9;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.10);
+    border:1px solid rgba(0,0,0,0.06);
+    "></div>
+
+    <!-- FOOTER BUTTONS -->
+    <div style="
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:14px;
+    ">
+      <button onclick="closeEnterLocationModal()" style="
+      border:none;
+      border-radius:16px;
+      padding:12px 16px;
+      background:#f1f1f4;
+      color:#111;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      ">
+      Cancel
+      </button>
+    </div>
 
   </div>
 </div>
