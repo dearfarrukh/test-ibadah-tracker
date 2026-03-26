@@ -5443,11 +5443,18 @@ function chooseSalahTopDropdownAction(action){
 closeSalahTopDropdown();
 
 if(action === "entered"){
-setSalahSource("entered");
+
+let searchCard = document.getElementById("enteredLocationCard");
+
+if(searchCard){
+searchCard.style.display = "block";
+}
+
 setTimeout(function(){
 let input = document.getElementById("salahLocationInput");
 if(input) input.focus();
 },120);
+
 return;
 }
 }
@@ -5489,7 +5496,13 @@ enteredBtn.style.color = source === "entered" ? "white" : "#111";
 }
 
 if(searchCard){
-searchCard.style.display = source === "entered" ? "block" : "none";
+if(source === "entered"){
+searchCard.style.display = "block";
+}else if(source === "masjid"){
+// keep it as it is (do nothing)
+}else{
+searchCard.style.display = "none";
+}
 }
 
 if(dropdownWrap){
