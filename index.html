@@ -5514,7 +5514,7 @@ let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
-  updateSalahTopButton();
+updateSalahTopButton();
 
 if(morePage) morePage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
@@ -5528,7 +5528,7 @@ if(salahPage) salahPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
 
-renderSalahPage();
+setSalahSource(salahSource || "location");
 window.scrollTo(0,0);
 }
 
