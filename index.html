@@ -5338,6 +5338,7 @@ let locationBtn = document.getElementById("locationTabBtn");
 let masjidBtn = document.getElementById("masjidTabBtn");
 let enteredBtn = document.getElementById("enteredTabBtn");
 let searchCard = document.getElementById("enteredLocationCard");
+let dropdownWrap = document.getElementById("salahTopDropdownWrap");
 
 if(locationBtn){
 locationBtn.style.background = source === "location" ? "#111" : "transparent";
@@ -5345,8 +5346,8 @@ locationBtn.style.color = source === "location" ? "white" : "#111";
 }
 
 if(masjidBtn){
-masjidBtn.style.background = "transparent";
-masjidBtn.style.color = "#111";
+masjidBtn.style.background = source === "masjid" ? "#111" : "transparent";
+masjidBtn.style.color = source === "masjid" ? "white" : "#111";
 }
 
 if(enteredBtn){
@@ -5356,6 +5357,10 @@ enteredBtn.style.color = source === "entered" ? "white" : "#111";
 
 if(searchCard){
 searchCard.style.display = source === "entered" ? "block" : "none";
+}
+
+if(dropdownWrap){
+dropdownWrap.style.display = source === "masjid" ? "flex" : "none";
 }
 
 hideSalahLocationSuggestions();
@@ -8205,9 +8210,9 @@ box-sizing:border-box;
     </div>
   </div>
 
-  <!-- SALAH TOP LOCATION DROPDOWN -->
-<div style="
-display:flex;
+   <!-- SALAH TOP LOCATION DROPDOWN -->
+<div id="salahTopDropdownWrap" style="
+display:none;
 justify-content:center;
 margin-top:12px;
 margin-bottom:10px;
