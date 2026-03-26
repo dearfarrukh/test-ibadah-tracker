@@ -5778,6 +5778,11 @@ menu.style.display = "none";
 // =========================
 function chooseSalahTopDropdownAction(action){
 closeSalahTopDropdown();
+
+if(action === "entered"){
+openEnterLocationModal();
+return;
+}
 }
 
 
@@ -5793,12 +5798,41 @@ salahSource = source;
 
 closeSalahTopDropdown();
 
+let locationBtn = document.getElementById("locationTabBtn");
+let masjidBtn = document.getElementById("masjidTabBtn");
+let enteredBtn = document.getElementById("enteredTabBtn");
+let searchCard = document.getElementById("enteredLocationCard");
 let dropdownWrap = document.getElementById("salahTopDropdownWrap");
 let myLocationWrap = document.getElementById("salahMyLocationWrap");
 let useCurrentLocationWrap = document.getElementById("useCurrentLocationWrap");
+  
+if(locationBtn){
+locationBtn.style.background = source === "location" ? "#111" : "transparent";
+locationBtn.style.color = source === "location" ? "white" : "#111";
+}
+
+if(masjidBtn){
+masjidBtn.style.background = source === "masjid" ? "#111" : "transparent";
+masjidBtn.style.color = source === "masjid" ? "white" : "#111";
+}
+
+if(enteredBtn){
+enteredBtn.style.background = source === "entered" ? "#111" : "transparent";
+enteredBtn.style.color = source === "entered" ? "white" : "#111";
+}
+
+if(searchCard){
+if(source === "entered"){
+searchCard.style.display = "block";
+}else if(source === "masjid"){
+// keep it as it is (do nothing)
+}else{
+searchCard.style.display = "none";
+}
+}
 
 if(dropdownWrap){
-dropdownWrap.style.display = "flex";
+dropdownWrap.style.display = source === "masjid" ? "flex" : "none";
 }
 
 if(myLocationWrap){
@@ -5806,11 +5840,15 @@ myLocationWrap.style.display = source === "location" ? "block" : "none";
 }
 
 if(useCurrentLocationWrap){
-useCurrentLocationWrap.style.display = "block";
+useCurrentLocationWrap.style.display = source === "masjid" ? "block" : "none";
 }
 
+if(source === "masjid"){
 renderSavedSalahLocationList();
+}
+
 hideSalahLocationSuggestions();
+
 renderSalahPage();
 }
 
@@ -8782,9 +8820,22 @@ transition:opacity 0.22s ease, transform 0.22s ease;
 
 
 
-    <!-- ENTER LOCATION DROPDOWN BUTTON REMOVED -->
-
-  
+    <!-- Enter Location Button -->
+  <button onclick="chooseSalahTopDropdownAction('entered')" style="
+  width:100%;
+  border:none;
+  background:#f7f7f9;
+  border-radius:18px;
+  padding:14px 14px;
+  text-align:left;
+  font-size:15px;
+  font-weight:700;
+  color:#111;
+  cursor:pointer;
+  margin-bottom:12px;
+  ">
+  Enter Location
+  </button>
 
     <div style="
   font-size:12px;
@@ -8803,13 +8854,409 @@ transition:opacity 0.22s ease, transform 0.22s ease;
   <div id="savedSalahLocationListArea"></div>
 </div>
 
-<!-- OLD SALAH TABS REMOVED -->
+<div style="
+  background:rgba(232,234,245,0.96);
+  border-radius:28px;
+  padding:7px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.10);
+  margin-bottom:18px;
+  display:flex;
+  gap:7px;
+  box-sizing:border-box;
+  ">
 
- <!-- ENTER LOCATION CARD REMOVED -->
+  
+  
+
+<!-- Location Tab Button -->
+    <button id="locationTabBtn" onclick="setSalahSource('location')" style="
+    flex:1;
+    border:none;
+    border-radius:20px;
+    padding:14px 8px;
+    background:#111;
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    box-sizing:border-box;
+    ">
+    My Location
+    </button>
+
+<!-- Saved Locations Button -->
+<button id="masjidTabBtn" onclick="setSalahSource('masjid')" style="
+flex:1;
+border:none;
+border-radius:20px;
+padding:14px 8px;
+background:transparent;
+color:#111;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+box-sizing:border-box;
+">
+Saved Locations
+</button>
+
+<!-- Entered Tab Button -->
+    <button id="enteredTabBtn" onclick="setSalahSource('entered')" style="
+    flex:1;
+    border:none;
+    border-radius:20px;
+    padding:14px 8px;
+    background:transparent;
+    color:#111;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    box-sizing:border-box;
+    ">
+    Enter Location
+    </button>
+  </div>
 
   
 
+<!-- Entered Location Card -->
+<div id="enteredLocationCard" style="
+display:none;
+background:rgba(232,234,245,0.96);
+border-radius:28px;
+padding:14px;
+box-shadow:0 8px 20px rgba(0,0,0,0.10);
+margin-bottom:18px;
+width:100%;
+box-sizing:border-box;
+position:relative;
+">
 
+  <div style="
+  font-size:14px;
+  font-weight:700;
+  color:#111;
+  margin-bottom:10px;
+  ">
+  Search city, state, or country
+  </div>
+
+  <div style="
+  display:flex;
+  gap:10px;
+  align-items:center;
+  position:relative;
+  ">
+<!-- Salah Location Input -->
+    <input id="salahLocationInput" type="text" placeholder="Example: Makkah, London, Karachi" oninput="handleSalahLocationTyping()" autocomplete="off" style="
+    flex:1;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    padding:15px 16px;
+    font-size:15px;
+    background:white;
+    color:#111;
+    box-sizing:border-box;
+    ">
+
+<!-- Search Entered Location And Load Button -->
+    <button onclick="searchEnteredLocationAndLoad()" style="
+    border:none;
+    border-radius:18px;
+    padding:15px 16px;
+    background:#111;
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    ">
+    Search
+    </button>
+  </div>
+
+  <div id="salahLocationSuggestions" style="
+  display:none;
+  margin-top:10px;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,0.10);
+  border:1px solid rgba(0,0,0,0.06);
+  "></div>
+</div>
+
+
+  
+<!-- Salah Date Card -->
+<div id="salahDateCard" style="
+background:#e9e9ee;
+border-radius:22px;
+padding:14px 12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+margin-bottom:16px;
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+  
+   <div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+overflow:hidden;
+">
+
+<!-- Change Salah Day Button -->
+      <button onclick="changeSalahDay(-1)" style="
+     width:36px;
+height:36px;
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      ">
+      ‹
+      </button>
+
+   
+<div style="
+flex:1;
+text-align:center;
+min-width:0;
+overflow:hidden;
+">
+    <div id="salahSelectedDate" style="
+font-size:16px;
+font-weight:700;
+color:#111;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+">
+Saturday, Mar 14
+</div>
+
+<div id="salahSelectedHijri" style="
+font-size:12px;
+color:#888;
+margin-top:2px;
+font-weight:500;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+">
+        Loading Hijri date...
+        </div>
+      </div>
+
+<!-- Change Salah Day Button -->
+      <button onclick="changeSalahDay(1)" style="
+      width:36px;
+height:36px;
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      ">
+      ›
+      </button>
+
+    </div>
+
+     </div>
+
+<!-- Salah Times Card -->
+<div id="salahTimesCard" style="
+background:rgba(232,234,245,0.96);
+border-radius:28px;
+padding:24px 18px;
+box-shadow:0 6px 18px rgba(0,0,0,0.10);
+margin-bottom:16px;
+transition:transform 0.28s ease, opacity 0.28s ease;
+width:100%;
+box-sizing:border-box;
+">
+
+  <div style="
+font-size:19px;
+font-weight:800;
+color:#000;
+margin-bottom:8px;
+text-align:center;
+">
+Salah Times
+</div>
+
+<!-- FAJR -->
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(0,0,0,0.06);
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#fde7a3,#f7c873);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌅</div>
+
+    <div style="font-weight:600;font-size:17px;color:#111;">
+      Fajr
+    </div>
+  </div>
+
+  <div id="fajrTime" style="font-weight:800;font-size:16px;color:#111;">
+    --:--
+  </div>
+</div>
+
+<!-- SUNRISE -->
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(0,0,0,0.06);
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe8b8,#ffd58a);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌄</div>
+
+    <div style="font-weight:600;font-size:17px;color:#111;">
+      Sunrise
+    </div>
+  </div>
+
+  <div id="sunriseTime" style="font-weight:800;font-size:16px;color:#111;">
+    --:--
+  </div>
+</div>
+
+<!-- DHUHR -->
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(0,0,0,0.06);
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe7a1,#f4bf57);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">☀️</div>
+
+    <div style="font-weight:600;font-size:17px;color:#111;">
+      Dhuhr
+    </div>
+  </div>
+
+  <div id="dhuhrTime" style="font-weight:800;font-size:16px;color:#111;">
+    --:--
+  </div>
+</div>
+
+<!-- ASR -->
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(0,0,0,0.06);
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe4b5,#e7b96c);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌤️</div>
+
+    <div style="font-weight:600;font-size:17px;color:#111;">
+      Asr
+    </div>
+  </div>
+
+  <div id="asrTime" style="font-weight:800;font-size:16px;color:#111;">
+    --:--
+  </div>
+</div>
+
+<!-- MAGHRIB -->
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(0,0,0,0.06);
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#ffd6b3,#f59f6c);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌇</div>
+
+    <div style="font-weight:600;font-size:17px;color:#111;">
+      Maghrib
+    </div>
+  </div>
+
+  <div id="maghribTime" style="font-weight:800;font-size:16px;color:#111;">
+    --:--
+  </div>
+</div>
+
+<!-- ISHA -->
+<div style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 0;
+">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(180deg,#d9dcf8,#aeb6ea);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    ">🌙</div>
+
+    <div style="font-weight:600;font-size:17px;color:#111;">
+      Isha
+    </div>
+  </div>
+
+  <div id="ishaTime" style="font-weight:800;font-size:16px;color:#111;">
+    --:--
+  </div>
+</div>
   
    
 
