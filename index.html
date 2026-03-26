@@ -6918,78 +6918,60 @@ max-width:190px;
     ">
     🕋بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ🕋
     </div>
+<!-- NEXT SALAH + COUNTDOWN ROW -->
+<div style="
+position:absolute;
+left:10px;
+right:10px;
+bottom:20px;
+display:flex;
+justify-content:space-between;
+align-items:flex-end;
+gap:10px;
+">
 
-           <!-- NEXT SALAH + COUNTDOWN ROW -->
+  <!-- LEFT SIDE -->
+  <div style="
+  min-height:126px;
+  padding:14px 0px 12px 0px;
+  box-sizing:border-box;
+  color:white;
+  position:relative;
+  overflow:hidden;
+  ">
+
+    <!-- NEXT SALAH TEXT -->
     <div style="
-    position:absolute;
-    left:14px;
-    right:14px;
-    bottom:20px;
     display:flex;
-    gap:18px;
-    align-items:flex-end;
+    align-items:flex-start;
+    gap:0px;
+    margin-bottom:8px;
     ">
 
-      <!-- LEFT SIDE -->
-      <div style="
-      flex:1;
-      min-height:126px;
-      padding:14px 8px 12px 8px;
-      box-sizing:border-box;
-      color:white;
-      position:relative;
-      overflow:hidden;
-      ">
-
-        <!-- STAR + NEXT SALAH -->
-        <div style="
-        display:flex;
-        align-items:flex-start;
-        gap:10px;
-        margin-bottom:8px;
+      <div style="min-width:0;">
+        <div id="homeNextSalahName" style="
+        font-size:15px;
+        font-weight:800;
+        color:rgba(255,255,255,0.96);
+        margin-bottom:4px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+        text-shadow:0 4px 12px rgba(0,0,0,0.28);
         ">
-
-          <!-- SMALL STAR -->
-          <div style="
-          width:38px;
-          height:38px;
-          flex:0 0 38px;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          font-size:22px;
-          line-height:1;
-          color:white;
-          text-shadow:0 4px 12px rgba(0,0,0,0.28);
-          ">
-          ✦
-          </div>
-
-          <!-- NEXT SALAH TEXT -->
-          <div style="flex:1;min-width:0;">
-            <div id="homeNextSalahName" style="
-            font-size:12px;
-            font-weight:700;
-            color:rgba(255,255,255,0.88);
-            margin-bottom:2px;
-            text-transform:uppercase;
-            letter-spacing:0.6px;
-            text-shadow:0 4px 12px rgba(0,0,0,0.28);
-            ">
-            Next Salah
-            </div>
-
-            <div id="homeNextSalahTime" style="
-            font-size:28px;
-            font-weight:900;
-            color:white;
-            line-height:1.1;
-          text-shadow:0 6px 18px rgba(0,0,0,0.45);
-            ">
-            --:--
-            </div>
-          </div>
+        Next Salah
         </div>
+
+        <div id="homeNextSalahTime" style="
+        font-size:34px;
+        font-weight:900;
+        color:white;
+        line-height:1.1;
+        text-shadow:0 6px 18px rgba(0,0,0,0.45);
+        ">
+        --:--
+        </div>
+      </div>
+    </div>
 
         <!-- OPEN SALAH PAGE ROW -->
         <div style="
