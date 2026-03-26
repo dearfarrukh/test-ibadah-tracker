@@ -8150,21 +8150,23 @@ letter-spacing:0.2px;
     My Location
     </button>
 
-<!-- Masjid Tab Button -->
-    <button id="masjidTabBtn" onclick="setSalahSource('masjid')" style="
-    flex:1;
-    border:none;
-    border-radius:20px;
-    padding:14px 8px;
-    background:transparent;
-    color:#111;
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    box-sizing:border-box;
-    ">
-    My Masjid
-    </button>
+<!-- SAVED LOCATIONS TAB BUTTON -->
+<button id="savedLocationsTabBtn" onclick="toggleSavedLocationsDropdown(event)" style="
+flex:1;
+border:none;
+border-radius:20px;
+padding:14px 8px;
+background:transparent;
+color:#111;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+box-sizing:border-box;
+position:relative;
+z-index:2;
+">
+<span id="savedLocationsTabText">Saved Locations ▼</span>
+</button>
 
 <!-- Entered Tab Button -->
     <button id="enteredTabBtn" onclick="setSalahSource('entered')" style="
