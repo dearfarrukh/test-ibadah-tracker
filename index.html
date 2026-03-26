@@ -5339,6 +5339,7 @@ let masjidBtn = document.getElementById("masjidTabBtn");
 let enteredBtn = document.getElementById("enteredTabBtn");
 let searchCard = document.getElementById("enteredLocationCard");
 let dropdownWrap = document.getElementById("salahTopDropdownWrap");
+let myLocationWrap = document.getElementById("salahMyLocationWrap");
 
 if(locationBtn){
 locationBtn.style.background = source === "location" ? "#111" : "transparent";
@@ -5361,6 +5362,10 @@ searchCard.style.display = source === "entered" ? "block" : "none";
 
 if(dropdownWrap){
 dropdownWrap.style.display = source === "masjid" ? "flex" : "none";
+}
+
+if(myLocationWrap){
+myLocationWrap.style.display = source === "location" ? "block" : "none";
 }
 
 hideSalahLocationSuggestions();
@@ -8210,6 +8215,28 @@ box-sizing:border-box;
     </div>
   </div>
 
+<!-- MY LOCATION UPDATE BUTTON -->
+<div id="salahMyLocationWrap" style="
+display:none;
+text-align:center;
+margin-top:12px;
+margin-bottom:10px;
+">
+
+  <div onclick="handleUseMyLocation()" style="
+  font-size:14px;
+  color:rgba(255,255,255,0.85);
+  cursor:pointer;
+  font-weight:500;
+  letter-spacing:0.2px;
+  ">
+  📍 Tap to update location
+  </div>
+
+</div>
+
+
+  
    <!-- SALAH TOP LOCATION DROPDOWN -->
 <div id="salahTopDropdownWrap" style="
 display:none;
