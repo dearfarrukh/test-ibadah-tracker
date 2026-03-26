@@ -6936,122 +6936,120 @@ gap:10px;
   padding:14px 0px 12px 0px;
   box-sizing:border-box;
   color:white;
-  position:relative;
-  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:flex-start;
   ">
 
-    <!-- NEXT SALAH TEXT -->
+    <!-- NEXT SALAH -->
     <div style="
-    display:flex;
-    align-items:flex-start;
-    gap:0px;
     margin-bottom:8px;
     ">
 
-      <div style="min-width:0;">
-        <div id="homeNextSalahName" style="
-        font-size:15px;
-        font-weight:800;
-        color:rgba(255,255,255,0.96);
-        margin-bottom:4px;
-        text-transform:uppercase;
-        letter-spacing:0.8px;
-        text-shadow:0 4px 12px rgba(0,0,0,0.28);
-        ">
-        Next Salah
-        </div>
-
-        <div id="homeNextSalahTime" style="
-        font-size:34px;
-        font-weight:900;
-        color:white;
-        line-height:1.1;
-        text-shadow:0 6px 18px rgba(0,0,0,0.45);
-        ">
-        --:--
-        </div>
-      </div>
-    </div>
-
-        <!-- OPEN SALAH PAGE ROW -->
-        <div style="
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        margin-top:8px;
-        margin-bottom:6px;
-        cursor:pointer;
-        " onclick="openSalahPage()">
-
-          <div style="
-          font-size:12px;
-          color:rgba(255,255,255,0.88);
-          font-weight:600;
-          letter-spacing:0.3px;
-          text-shadow:0 4px 12px rgba(0,0,0,0.28);
-          ">
-          View all Salah times
-          </div>
-
-          <div id="homeTimesArrow" style="
-          font-size:18px;
-          font-weight:800;
-          color:white;
-          padding-left:10px;
-          text-shadow:0 4px 12px rgba(0,0,0,0.28);
-          ">
-          ›
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT SIDE -->
-      <div style="
-      flex:1;
-      min-height:126px;
-      padding:14px 8px 12px 8px;
-      box-sizing:border-box;
-      text-align:center;
-      color:white;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
+      <div id="homeNextSalahName" style="
+      font-size:15px;
+      font-weight:800;
+      color:rgba(255,255,255,0.96);
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+      text-shadow:0 4px 12px rgba(0,0,0,0.28);
       ">
-
-        <div style="
-        font-size:12px;
-        font-weight:700;
-        color:rgba(255,255,255,0.88);
-        text-transform:uppercase;
-        letter-spacing:0.6px;
-        margin-bottom:8px;
-        text-shadow:0 4px 12px rgba(0,0,0,0.28);
-        ">
-        Time Left
-        </div>
-
-        <div id="homeCountdown" style="
-        font-size:24px;
-        font-weight:900;
-        line-height:1.1;
-        color:white;
-        text-shadow:0 6px 18px rgba(0,0,0,0.45);
-        ">
-        00:00:00
-        </div>
-
-        <div style="
-        font-size:11px;
-        font-weight:600;
-        color:rgba(255,255,255,0.88);
-        margin-top:8px;
-        text-shadow:0 4px 12px rgba(0,0,0,0.28);
-        ">
-        until next salah
-        </div>
+      Next Salah
       </div>
+
+      <div id="homeNextSalahTime" style="
+      font-size:34px;
+      font-weight:900;
+      color:white;
+      line-height:1.1;
+      text-shadow:0 6px 18px rgba(0,0,0,0.45);
+      ">
+      --:--
+      </div>
+
     </div>
+
+    <!-- VIEW ALL -->
+    <div onclick="openSalahPage()" style="
+    display:flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    ">
+
+      <div style="
+      font-size:12px;
+      color:rgba(255,255,255,0.88);
+      font-weight:600;
+      letter-spacing:0.3px;
+      text-shadow:0 4px 12px rgba(0,0,0,0.28);
+      ">
+      View all Salah times
+      </div>
+
+      <div style="
+      font-size:16px;
+      font-weight:800;
+      color:white;
+      ">
+      ›
+      </div>
+
+    </div>
+
   </div>
+
+  <!-- RIGHT SIDE -->
+  <div style="
+  min-width:130px;
+  min-height:126px;
+  padding:14px 0px 12px 0px;
+  box-sizing:border-box;
+  text-align:right;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:flex-end;
+  ">
+
+    <div style="
+    font-size:12px;
+    font-weight:700;
+    color:rgba(255,255,255,0.88);
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    margin-bottom:8px;
+    text-shadow:0 4px 12px rgba(0,0,0,0.28);
+    ">
+    Time Left
+    </div>
+
+    <div id="homeCountdown" style="
+    font-size:26px;
+    font-weight:900;
+    line-height:1.1;
+    color:white;
+    text-shadow:0 6px 18px rgba(0,0,0,0.45);
+    ">
+    00:00:00
+    </div>
+
+    <div style="
+    font-size:11px;
+    font-weight:600;
+    color:rgba(255,255,255,0.88);
+    margin-top:8px;
+    text-shadow:0 4px 12px rgba(0,0,0,0.28);
+    ">
+    until next salah
+    </div>
+
+  </div>
+
+</div>
   <!-- =========================
       HOME LOWER SECTION SPACING FIX
  ========================= -->
