@@ -5217,6 +5217,146 @@ document.getElementById("salahCityName").innerText = "Could not load";
 document.getElementById("salahSourceLabel").innerText = "Check internet and try again";
 }
 }
+
+
+// =========================
+// GET SAVED SALAH LOCATIONS
+// =========================
+function getSavedSalahLocations(){
+let saved = localStorage.getItem("savedSalahLocations");
+
+if(!saved) return [];
+
+try{
+let parsed = JSON.parse(saved);
+return Array.isArray(parsed) ? parsed : [];
+}catch(err){
+return [];
+}
+}
+
+// =========================
+// SET SAVED SALAH LOCATIONS
+// =========================
+function setSavedSalahLocations(locations){
+localStorage.setItem("savedSalahLocations", JSON.stringify(locations || []));
+}
+
+// =========================
+// GET SELECTED SAVED SALAH LOCATION
+// =========================
+function getSelectedSavedSalahLocation(){
+let saved = localStorage.getItem("selectedSavedSalahLocation");
+
+if(!saved) return null;
+
+try{
+return JSON.parse(saved);
+}catch(err){
+return null;
+}
+}
+
+// =========================
+// SET SELECTED SAVED SALAH LOCATION
+// =========================
+function setSelectedSavedSalahLocation(locationObj){
+if(!locationObj){
+localStorage.removeItem("selectedSavedSalahLocation");
+return;
+}
+
+localStorage.setItem("selectedSavedSalahLocation", JSON.stringify(locationObj));
+}
+
+// =========================
+// RENDER SAVED SALAH LOCATION LIST
+// =========================
+function renderSavedSalahLocationList(){
+let area = document.getElementById("savedSalahLocationListArea");
+if(!area) return;
+
+let savedLocations = getSavedSalahLocations();
+let selectedSaved = getSelectedSavedSalahLocation();
+
+if(!savedLocations.length){
+area.innerHTML = `
+  <div style="
+  background:#f7f7f9;
+  border-radius:18px;
+  padding:14px 14px;
+  font-size:14px;
+  color:#666;
+  line-height:1.5;
+  ">
+  No saved locations yet
+  </div>
+  `;
+  return;
+}
+
+let html = "";
+
+savedLocations.forEach(function(location, index){
+let isSelected =
+selectedSaved &&
+selectedSaved.name === location.name &&
+String(selectedSaved.lat) === String(location.lat) &&
+String(selectedSaved.lon) === String(location.lon);
+
+html += `
+<button onclick="selectSavedSalahLocation(${index})" style="
+width:100%;
+border:none;
+background:${isSelected ? "#111" : "#f7f7f9"};
+color:${isSelected ? "white" : "#111"};
+border-radius:18px;
+padding:14px 14px;
+text-align:left;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+margin-bottom:8px;
+box-sizing:border-box;
+display:flex;
+align-items:center;
+justify-content:space-between;
+">
+  <span>${index + 1}) ${location.name || "Saved Location"}</span>
+  <span style="
+  font-size:13px;
+  opacity:${isSelected ? "0.9" : "0.45"};
+  ">
+  ${isSelected ? "Selected" : "›"}
+  </span>
+</button>
+`;
+});
+
+area.innerHTML = html;
+}
+
+
+
+  
+// =========================
+// SELECT SAVED SALAH LOCATION
+// =========================
+function selectSavedSalahLocation(index){
+let savedLocations = getSavedSalahLocations();
+
+if(index < 0 || index >= savedLocations.length) return;
+
+let picked = savedLocations[index];
+setSelectedSavedSalahLocation(picked);
+renderSavedSalahLocationList();
+closeSalahTopDropdown();
+}
+
+
+
+
+
   
 // =========================
 // GET SELECTED SALAH DATE
@@ -5259,13 +5399,15 @@ let arrow = document.getElementById("salahTopDropdownArrow");
 
 if(!overlay || !menu || !arrow) return;
 
+renderSavedSalahLocationList();
+
 overlay.style.display = "block";
 menu.style.display = "block";
 
 setTimeout(function(){
 menu.style.opacity = "1";
 menu.style.transform = "translateX(-50%) translateY(0)";
-arrow.style.transform = "rotate(180deg)";
+arrow.style.transform = "rotate(90deg)";
 },10);
 }
 
@@ -5356,6 +5498,10 @@ dropdownWrap.style.display = source === "masjid" ? "flex" : "none";
 
 if(myLocationWrap){
 myLocationWrap.style.display = source === "location" ? "block" : "none";
+}
+
+if(source === "masjid"){
+renderSavedSalahLocationList();
 }
 
 hideSalahLocationSuggestions();
@@ -8336,16 +8482,8 @@ transition:opacity 0.22s ease, transform 0.22s ease;
 
 
   
-  <div style="
-  background:#f7f7f9;
-  border-radius:18px;
-  padding:14px 14px;
-  font-size:14px;
-  color:#666;
-  line-height:1.5;
-  ">
-  No saved locations yet
-  </div>
+   <!-- Saved Location List Area -->
+  <div id="savedSalahLocationListArea"></div>
 </div>
 
 <div style="
