@@ -5302,14 +5302,6 @@ openSalahTopDropdown();
 function chooseSalahTopDropdownAction(action){
 closeSalahTopDropdown();
 
-if(action === "current"){
-setSalahSource("location");
-setTimeout(function(){
-handleUseMyLocation();
-},120);
-return;
-}
-
 if(action === "entered"){
 setSalahSource("entered");
 setTimeout(function(){
@@ -8307,24 +8299,9 @@ opacity:0;
 transition:opacity 0.22s ease, transform 0.22s ease;
 ">
 
-  <!-- Use Current Location Button -->
-  <button onclick="chooseSalahTopDropdownAction('current')" style="
-  width:100%;
-  border:none;
-  background:#f7f7f9;
-  border-radius:18px;
-  padding:14px 14px;
-  text-align:left;
-  font-size:15px;
-  font-weight:700;
-  color:#111;
-  cursor:pointer;
-  margin-bottom:8px;
-  ">
-  1) Use current location
-  </button>
 
-  <!-- Enter New Location Button -->
+
+   <!-- Enter New Location Button -->
   <button onclick="chooseSalahTopDropdownAction('entered')" style="
   width:100%;
   border:none;
@@ -8336,9 +8313,9 @@ transition:opacity 0.22s ease, transform 0.22s ease;
   font-weight:700;
   color:#111;
   cursor:pointer;
-  margin-bottom:10px;
+  margin-bottom:12px;
   ">
-  2) Enter new location
+  Enter new location
   </button>
 
   <div style="
