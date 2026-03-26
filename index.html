@@ -5292,9 +5292,7 @@ menu.style.display = "none";
 // =========================
 // OPEN SALAH TOP DROPDOWN FROM TAB
 // =========================
-function openSalahTopDropdownFromTab(){
-openSalahTopDropdown();
-}
+
 
 // =========================
 // CHOOSE SALAH TOP DROPDOWN ACTION
@@ -8372,20 +8370,20 @@ transition:opacity 0.22s ease, transform 0.22s ease;
     </button>
 
 <!-- Saved Locations Button -->
-    <button id="masjidTabBtn" onclick="openSalahTopDropdownFromTab()" style="
-    flex:1;
-    border:none;
-    border-radius:20px;
-    padding:14px 8px;
-    background:transparent;
-    color:#111;
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    box-sizing:border-box;
-    ">
-    Saved Locations
-    </button>
+<button id="masjidTabBtn" onclick="setSalahSource('masjid')" style="
+flex:1;
+border:none;
+border-radius:20px;
+padding:14px 8px;
+background:transparent;
+color:#111;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+box-sizing:border-box;
+">
+Saved Locations
+</button>
 
 <!-- Entered Tab Button -->
     <button id="enteredTabBtn" onclick="setSalahSource('entered')" style="
