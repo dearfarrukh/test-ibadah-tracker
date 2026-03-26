@@ -5485,6 +5485,7 @@ async function applySavedLocationObject(locationObj){
 if(!locationObj || !locationObj.lat || !locationObj.lon) return;
 
 setSelectedSavedSalahLocation(locationObj);
+  localStorage.setItem("salahLocationMode", "saved");
 salahSource = "masjid";
 
 document.getElementById("salahCityName").innerText = locationObj.name || "Saved Location";
@@ -5627,6 +5628,28 @@ isha: to12Hour(t.Isha)
 }
 
 
+
+
+
+  // =========================
+// USE CURRENT LOCATION FROM SAVED PAGE
+// =========================
+function useCurrentLocationFromSaved(){
+
+// set mode
+localStorage.setItem("salahLocationMode", "current");
+
+// switch to location source
+salahSource = "location";
+
+// update UI
+document.getElementById("salahCityName").innerText = "Getting location...";
+document.getElementById("salahSourceLabel").innerText = "Using current location...";
+setSalahLoadingState();
+
+// load location salah
+refreshLocationSalahData();
+}
 
   
 // =========================
@@ -8686,6 +8709,24 @@ margin-bottom:10px;
 
 </div>
 
+
+  
+<!-- USE CURRENT LOCATION BUTTON Saved Location Tab -->   
+<div onclick="useCurrentLocationFromSaved()" style="
+margin-top:10px;
+display:inline-block;
+padding:8px 14px;
+border-radius:14px;
+background:rgba(255,255,255,0.18);
+color:white;
+font-size:13px;
+font-weight:700;
+cursor:pointer;
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
+">
+📍 Use Current Location
+</div>
 
   
    <!-- SALAH TOP LOCATION DROPDOWN -->
