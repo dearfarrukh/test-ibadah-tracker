@@ -5804,7 +5804,8 @@ let enteredBtn = document.getElementById("enteredTabBtn");
 let searchCard = document.getElementById("enteredLocationCard");
 let dropdownWrap = document.getElementById("salahTopDropdownWrap");
 let myLocationWrap = document.getElementById("salahMyLocationWrap");
-
+let useCurrentLocationWrap = document.getElementById("useCurrentLocationWrap");
+  
 if(locationBtn){
 locationBtn.style.background = source === "location" ? "#111" : "transparent";
 locationBtn.style.color = source === "location" ? "white" : "#111";
@@ -5836,6 +5837,10 @@ dropdownWrap.style.display = source === "masjid" ? "flex" : "none";
 
 if(myLocationWrap){
 myLocationWrap.style.display = source === "location" ? "block" : "none";
+}
+
+if(useCurrentLocationWrap){
+useCurrentLocationWrap.style.display = source === "masjid" ? "block" : "none";
 }
 
 if(source === "masjid"){
@@ -8711,23 +8716,28 @@ margin-bottom:10px;
 
 
   
-<!-- USE CURRENT LOCATION BUTTON Saved Location Tab -->   
-<div onclick="useCurrentLocationFromSaved()" style="
+<!-- USE CURRENT LOCATION BUTTON WRAP -->
+<div id="useCurrentLocationWrap" style="
+display:none;
+text-align:center;
 margin-top:10px;
-display:inline-block;
-padding:8px 14px;
-border-radius:14px;
-background:rgba(255,255,255,0.18);
-color:white;
-font-size:13px;
-font-weight:700;
-cursor:pointer;
-backdrop-filter:blur(6px);
--webkit-backdrop-filter:blur(6px);
 ">
-📍 Use Current Location
-</div>
 
+  <!-- USE CURRENT LOCATION BUTTON  Saved Location -->
+  <div onclick="useCurrentLocationFromSaved()" style="
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.18);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  ">
+  📍 Use Current Location
+  </div>
   
    <!-- SALAH TOP LOCATION DROPDOWN -->
 <div id="salahTopDropdownWrap" style="
