@@ -8842,118 +8842,103 @@ transition:opacity 0.22s ease, transform 0.22s ease;
 
 
   
- 
+ <!-- Salah Date Card -->
+<div id="salahDateCard" style="
+background:#e9e9ee;
+border-radius:22px;
+padding:14px 12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+margin-bottom:16px;
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+  
+   <div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+overflow:hidden;
+">
+
+<!-- Change Salah Day Button -->
+      <button onclick="changeSalahDay(-1)" style="
+     width:36px;
+height:36px;
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      ">
+      ‹
+      </button>
+
+   
+<div style="
+flex:1;
+text-align:center;
+min-width:0;
+overflow:hidden;
+">
+    <div id="salahSelectedDate" style="
+font-size:16px;
+font-weight:700;
+color:#111;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+">
+Saturday, Mar 14
+</div>
+
+<div id="salahSelectedHijri" style="
+font-size:12px;
+color:#888;
+margin-top:2px;
+font-weight:500;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+">
+        Loading Hijri date...
+        </div>
+      </div>
+
+<!-- Change Salah Day Button -->
+      <button onclick="changeSalahDay(1)" style="
+      width:36px;
+height:36px;
+      border:none;
+      border-radius:50%;
+      background:white;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      ">
+      ›
+      </button>
+
+    </div>
+
+     </div>
 
 
 
   
 
-<!-- Salah Date Card -->
-<div id="salahDateCard" style="
-background:#e9e9ee;
-border-radius:22px;
-padding:14px 16px;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
-margin:0 0 16px 0;
-width:100%;
-max-width:none;
-box-sizing:border-box;
-overflow:hidden;
-display:flex;
-align-items:center;
-justify-content:space-between;
-">
 
-  <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  width:100%;
-  max-width:none;
-  box-sizing:border-box;
-  overflow:hidden;
-  ">
-
-    <!-- Change Salah Day Button -->
-    <button type="button"
-    onclick="event.stopPropagation(); changeSalahDay(-1);"
-    ontouchend="event.preventDefault(); event.stopPropagation(); changeSalahDay(-1);"
-    style="
-    width:36px;
-    height:36px;
-    border:none;
-    border-radius:50%;
-    background:white;
-    font-size:18px;
-    font-weight:700;
-    cursor:pointer;
-    box-shadow:0 2px 8px rgba(0,0,0,0.08);
-    position:relative;
-    z-index:7;
-    pointer-events:auto;
-    touch-action:manipulation;
-    -webkit-tap-highlight-color:transparent;
-    ">
-    ‹
-    </button>
-
-    <div style="
-    flex:1;
-    text-align:center;
-    min-width:0;
-    overflow:hidden;
-    ">
-      <div id="salahSelectedDate" style="
-      font-size:16px;
-      font-weight:700;
-      color:#111;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      ">
-      Saturday, Mar 14
-      </div>
-
-      <div id="salahSelectedHijri" style="
-      font-size:12px;
-      color:#888;
-      margin-top:2px;
-      font-weight:500;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      ">
-      Loading Hijri date...
-      </div>
-    </div>
-
-    <!-- Change Salah Day Button -->
-    <button type="button"
-    onclick="event.stopPropagation(); changeSalahDay(1);"
-    ontouchend="event.preventDefault(); event.stopPropagation(); changeSalahDay(1);"
-    style="
-    width:36px;
-    height:36px;
-    border:none;
-    border-radius:50%;
-    background:white;
-    font-size:18px;
-    font-weight:700;
-    cursor:pointer;
-    box-shadow:0 2px 8px rgba(0,0,0,0.08);
-    position:relative;
-    z-index:7;
-    pointer-events:auto;
-    touch-action:manipulation;
-    -webkit-tap-highlight-color:transparent;
-    ">
-    ›
-    </button>
-
-  </div>
-
-</div>
 
 <!-- Salah Times Card -->
 <div id="salahTimesCard" style="
