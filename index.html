@@ -8847,6 +8847,7 @@ transition:opacity 0.22s ease, transform 0.22s ease;
 
 
   
+
 <!-- Salah Date Card -->
 <div id="salahDateCard" style="
 background:#e9e9ee;
@@ -8861,9 +8862,12 @@ overflow:hidden;
 display:flex;
 align-items:center;
 justify-content:space-between;
+position:relative;
+z-index:5;
+pointer-events:auto;
 ">
   
-     <div style="
+        <div style="
 display:flex;
 align-items:center;
 justify-content:space-between;
@@ -8872,10 +8876,13 @@ width:100%;
 max-width:none;
 box-sizing:border-box;
 overflow:hidden;
+position:relative;
+z-index:6;
+pointer-events:auto;
 ">
 
 <!-- Change Salah Day Button -->
-      <button onclick="changeSalahDay(-1)" style="
+     <button onclick="changeSalahDay(-1)" style="
      width:36px;
 height:36px;
       border:none;
@@ -8885,6 +8892,9 @@ height:36px;
       font-weight:700;
       cursor:pointer;
       box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      position:relative;
+      z-index:7;
+      pointer-events:auto;
       ">
       ‹
       </button>
@@ -8921,7 +8931,7 @@ text-overflow:ellipsis;
       </div>
 
 <!-- Change Salah Day Button -->
-      <button onclick="changeSalahDay(1)" style="
+     <button onclick="changeSalahDay(1)" style="
       width:36px;
 height:36px;
       border:none;
@@ -8931,6 +8941,9 @@ height:36px;
       font-weight:700;
       cursor:pointer;
       box-shadow:0 2px 8px rgba(0,0,0,0.08);
+      position:relative;
+      z-index:7;
+      pointer-events:auto;
       ">
       ›
       </button>
