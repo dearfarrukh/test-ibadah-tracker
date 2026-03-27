@@ -5885,12 +5885,58 @@ salahSliding = false;
 }
 
 // =========================
+// BIND SALAH DATE BUTTONS
+// =========================
+function bindSalahDateButtons(){
+
+let prevBtn = document.getElementById("salahPrevDayBtn");
+let nextBtn = document.getElementById("salahNextDayBtn");
+
+if(prevBtn && !prevBtn.dataset.bound){
+prevBtn.dataset.bound = "yes";
+
+prevBtn.addEventListener("click", function(e){
+e.preventDefault();
+e.stopPropagation();
+changeSalahDay(-1);
+});
+
+prevBtn.addEventListener("touchend", function(e){
+e.preventDefault();
+e.stopPropagation();
+changeSalahDay(-1);
+}, { passive:false });
+}
+
+if(nextBtn && !nextBtn.dataset.bound){
+nextBtn.dataset.bound = "yes";
+
+nextBtn.addEventListener("click", function(e){
+e.preventDefault();
+e.stopPropagation();
+changeSalahDay(1);
+});
+
+nextBtn.addEventListener("touchend", function(e){
+e.preventDefault();
+e.stopPropagation();
+changeSalahDay(1);
+}, { passive:false });
+}
+
+}
+
+
+  
+// =========================
 // RENDER SALAH PAGE
 // =========================
 function renderSalahPage(){
 
-let selectedDate = getSelectedSalahDate();
+bindSalahDateButtons();
 
+let selectedDate = getSelectedSalahDate();
+  
 let dateText = selectedDate.toLocaleDateString("en-US", {
 weekday:"long",
 month:"short",
@@ -8870,7 +8916,7 @@ overflow:hidden;
 ">
 
 <!-- Change Salah Day Button -->
-      <button onclick="changeSalahDay(-1)" style="
+      <button id="salahPrevDayBtn" type="button" onclick="changeSalahDay(-1)" style="
      width:36px;
 height:36px;
       border:none;
@@ -8916,7 +8962,8 @@ text-overflow:ellipsis;
       </div>
 
 <!-- Change Salah Day Button -->
-      <button onclick="changeSalahDay(1)" style="
+     <!-- Change Salah Day Button -->
+      <button id="salahNextDayBtn" type="button" onclick="changeSalahDay(1)" style="
       width:36px;
 height:36px;
       border:none;
