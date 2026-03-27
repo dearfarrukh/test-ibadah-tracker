@@ -8713,11 +8713,17 @@ box-sizing:border-box;
     <!-- =========================
      SALAH CITY NAME (CLICK TO CHANGE LOCATION)
 ========================= -->
-<div onclick="toggleSalahTopDropdown()" style="
+<!-- =========================
+     SALAH CITY CLICK WRAPPER (FIXED CLICK AREA)
+========================= -->
+<div id="salahCityClickWrap" onclick="toggleSalahTopDropdown()" style="
 text-align:center;
 cursor:pointer;
+display:inline-block;
+width:100%;
 ">
 
+  <!-- CITY NAME -->
   <div id="salahCityName" style="
   font-size:22px;
   font-weight:800;
@@ -8726,16 +8732,24 @@ cursor:pointer;
   Loading location...
   </div>
 
- <div style="
-font-size:12px;
-font-weight:600;
-color:white;
-opacity:0.85;
-margin-top:2px;
-text-shadow:0 2px 6px rgba(0,0,0,0.3);
-">
-🔎 Tap to change location
-</div>
+  <!-- TAP TEXT -->
+  <div style="
+  font-size:13px;
+  font-weight:600;
+  color:white;
+  opacity:0.85;
+  margin-top:3px;
+  text-shadow:0 2px 6px rgba(0,0,0,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  ">
+
+    <span style="font-size:13px; opacity:0.9;">🔎</span>
+    <span>Tap to change location</span>
+
+  </div>
 
 </div>
 
