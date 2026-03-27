@@ -5786,71 +5786,51 @@ return;
 }
 
 
-  
 
-
-  
 // =========================
-// SET SALAH SOURCE
+// SET SALAH SOURCE SAVED LOCATION ONLY
 // =========================
 function setSalahSource(source){
-salahSource = source;
+salahSource = "masjid";
 
 closeSalahTopDropdown();
 
-let locationBtn = document.getElementById("locationTabBtn");
 let masjidBtn = document.getElementById("masjidTabBtn");
-let enteredBtn = document.getElementById("enteredTabBtn");
 let searchCard = document.getElementById("enteredLocationCard");
 let dropdownWrap = document.getElementById("salahTopDropdownWrap");
 let myLocationWrap = document.getElementById("salahMyLocationWrap");
 let useCurrentLocationWrap = document.getElementById("useCurrentLocationWrap");
-  
-if(locationBtn){
-locationBtn.style.background = source === "location" ? "#111" : "transparent";
-locationBtn.style.color = source === "location" ? "white" : "#111";
-}
 
 if(masjidBtn){
-masjidBtn.style.background = source === "masjid" ? "#111" : "transparent";
-masjidBtn.style.color = source === "masjid" ? "white" : "#111";
-}
-
-if(enteredBtn){
-enteredBtn.style.background = source === "entered" ? "#111" : "transparent";
-enteredBtn.style.color = source === "entered" ? "white" : "#111";
+masjidBtn.style.background = "#111";
+masjidBtn.style.color = "white";
 }
 
 if(searchCard){
-if(source === "entered"){
-searchCard.style.display = "block";
-}else if(source === "masjid"){
-// keep it as it is (do nothing)
-}else{
 searchCard.style.display = "none";
-}
 }
 
 if(dropdownWrap){
-dropdownWrap.style.display = source === "masjid" ? "flex" : "none";
+dropdownWrap.style.display = "flex";
 }
 
 if(myLocationWrap){
-myLocationWrap.style.display = source === "location" ? "block" : "none";
+myLocationWrap.style.display = "none";
 }
 
 if(useCurrentLocationWrap){
-useCurrentLocationWrap.style.display = source === "masjid" ? "block" : "none";
+useCurrentLocationWrap.style.display = "block";
 }
 
-if(source === "masjid"){
 renderSavedSalahLocationList();
-}
-
 hideSalahLocationSuggestions();
-
 renderSalahPage();
 }
+
+  
+
+
+  
 
 // =========================
 // CHANGE SALAH DAY
