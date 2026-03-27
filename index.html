@@ -8635,10 +8635,12 @@ box-shadow:0 3px 10px rgba(0,0,0,0.12);
 
 </div>
   
+<!-- SALAH PAGE CONTENT WRAP -->
 <div style="
 width:100%;
-margin:0 auto;
-padding:0 12px 120px 12px;
+max-width:none;
+margin:0;
+padding:0 14px 120px 14px;
 box-sizing:border-box;
 ">
 
@@ -8678,10 +8680,12 @@ box-sizing:border-box;
 <!-- USE CURRENT LOCATION BUTTON WRAP -->
 <div id="useCurrentLocationWrap" style="
 display:none;
-text-align:center;
+width:100%;
 margin-top:10px;
+box-sizing:border-box;
 ">
 
+  
   <!-- USE CURRENT LOCATION BUTTON -->
   <div onclick="useCurrentLocationFromSaved()" style="
   display:inline-block;
@@ -8704,19 +8708,20 @@ margin-top:10px;
 <div id="salahTopDropdownWrap" style="
 display:none;
 width:100%;
-max-width:600px;
-padding:0 12px;
-margin:12px auto 10px auto;
+max-width:none;
+padding:0;
+margin:12px 0 10px 0;
 position:relative;
+box-sizing:border-box;
 ">
 
   <!-- Saved Location Search Bar + Dropdown Button -->
   <button id="salahTopLocationBtn" onclick="toggleSalahTopDropdown()" style="
   width:100%;
-  max-width:360px;
+  max-width:none;
   border:none;
   border-radius:20px;
-  padding:14px 16px;
+  padding:16px 16px;
   background:rgba(255,255,255,0.92);
   color:#111;
   font-size:15px;
@@ -8728,8 +8733,8 @@ position:relative;
   box-shadow:0 10px 28px rgba(0,0,0,0.12);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
+  box-sizing:border-box;
   ">
-
     <!-- Left Text -->
     <span>Saved locations</span>
 
@@ -8766,8 +8771,8 @@ position:fixed;
 top:165px;
 left:50%;
 transform:translateX(-50%) translateY(-8px);
-width:calc(100% - 34px);
-max-width:360px;
+width:calc(100% - 28px);
+max-width:520px;
 background:white;
 border-radius:24px;
 padding:10px;
