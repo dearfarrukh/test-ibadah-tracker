@@ -5790,8 +5790,10 @@ return;
 // =========================
 // SET SALAH SOURCE WITHOUT OLD TAB BUTTON
 // =========================
-function setSalahSource(source){
-salahSource = "masjid";
+
+  
+  function setSalahSource(source){
+salahSource = source || "location";
 
 closeSalahTopDropdown();
 
@@ -6026,7 +6028,14 @@ if(salahPage) salahPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
 
-setSalahSource(salahSource || "location");
+let savedMode = localStorage.getItem("salahLocationMode") || "current";
+
+if(savedMode === "saved"){
+setSalahSource("masjid");
+}else{
+setSalahSource("location");
+}
+
 window.scrollTo(0,0);
 }
 
