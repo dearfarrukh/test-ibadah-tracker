@@ -5631,10 +5631,13 @@ isha: to12Hour(t.Isha)
 
 
 
-  // =========================
+ // =========================
 // USE CURRENT LOCATION FROM SAVED PAGE
 // =========================
 function useCurrentLocationFromSaved(){
+
+// ✅ CLOSE DROPDOWN FIRST
+closeSalahTopDropdown();
 
 // set mode
 localStorage.setItem("salahLocationMode", "current");
