@@ -5673,9 +5673,8 @@ return d;
 function toggleSalahTopDropdown(){
 let overlay = document.getElementById("salahTopDropdownOverlay");
 let menu = document.getElementById("salahTopDropdownMenu");
-let arrow = document.getElementById("salahTopDropdownArrow");
 
-if(!overlay || !menu || !arrow) return;
+if(!overlay || !menu) return;
 
 let isOpen = overlay.style.display === "block";
 
@@ -5722,19 +5721,14 @@ input.value = "";
 hideModalLocationSuggestions();
 }
   
-
-
-  
-
 // =========================
 // OPEN SALAH TOP DROPDOWN
 // =========================
 function openSalahTopDropdown(){
 let overlay = document.getElementById("salahTopDropdownOverlay");
 let menu = document.getElementById("salahTopDropdownMenu");
-let arrow = document.getElementById("salahTopDropdownArrow");
 
-if(!overlay || !menu || !arrow) return;
+if(!overlay || !menu) return;
 
 renderSavedSalahLocationList();
 
@@ -5744,23 +5738,21 @@ menu.style.display = "block";
 setTimeout(function(){
 menu.style.opacity = "1";
 menu.style.transform = "translateX(-50%) translateY(0)";
-arrow.style.transform = "rotate(90deg)";
 },10);
 }
 
-// =========================
+
+  // =========================
 // CLOSE SALAH TOP DROPDOWN
 // =========================
 function closeSalahTopDropdown(){
 let overlay = document.getElementById("salahTopDropdownOverlay");
 let menu = document.getElementById("salahTopDropdownMenu");
-let arrow = document.getElementById("salahTopDropdownArrow");
 
-if(!overlay || !menu || !arrow) return;
+if(!overlay || !menu) return;
 
 menu.style.opacity = "0";
 menu.style.transform = "translateX(-50%) translateY(-8px)";
-arrow.style.transform = "rotate(0deg)";
 
 setTimeout(function(){
 overlay.style.display = "none";
@@ -5768,13 +5760,8 @@ menu.style.display = "none";
 },220);
 }
 
-// =========================
-// OPEN SALAH TOP DROPDOWN FROM TAB
-// =========================
+  
 
-
-// =========================
-// CHOOSE SALAH TOP DROPDOWN ACTION
 // =========================
 // =========================
 // HANDLE DROPDOWN ACTION
