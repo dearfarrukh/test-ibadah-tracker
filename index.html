@@ -2345,7 +2345,9 @@ function getDefaultPage(){
 function openSelectedDefaultPage(){
   let defaultPage = getDefaultPage();
 
-  if(defaultPage === "salah"){
+  if(defaultPage === "home"){
+    showHomePage();
+  }else if(defaultPage === "salah"){
     openSalahPage();
   }else if(defaultPage === "tasbih"){
     openTasbihPage();
@@ -7036,6 +7038,7 @@ window.scrollTo(0,0);
 function getDefaultPageLabel(){
   let page = getDefaultPage();
 
+  if(page === "home") return "Home Page";
   if(page === "salah") return "Salah Times";
   if(page === "tasbih") return "Tasbih";
 
@@ -7088,10 +7091,12 @@ function setDefaultPage(page){
 function updateDefaultPageChecks(){
   let current = getDefaultPage();
 
+  let home = document.getElementById("defaultPageCheckHome");
   let salah = document.getElementById("defaultPageCheckSalah");
   let dailyTask = document.getElementById("defaultPageCheckDailyTask");
   let tasbih = document.getElementById("defaultPageCheckTasbih");
 
+  if(home) home.style.opacity = current === "home" ? "1" : "0";
   if(salah) salah.style.opacity = current === "salah" ? "1" : "0";
   if(dailyTask) dailyTask.style.opacity = current === "tracker" ? "1" : "0";
   if(tasbih) tasbih.style.opacity = current === "tasbih" ? "1" : "0";
@@ -8155,6 +8160,33 @@ box-sizing:border-box;
     ">
     Choose which page should open first when the app starts
     </div>
+
+
+<!-- Set Default Page Card -->
+    <div onclick="setDefaultPage('home')" style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 14px;
+    background:white;
+    border-radius:18px;
+    margin-bottom:10px;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,0.06);
+    ">
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#111;">Home Page</div>
+        <div style="font-size:13px;color:#777;margin-top:2px;">Open the Home page first</div>
+      </div>
+<!-- =========================
+     DEFAULT PAGE CHECK HOME
+========================= -->
+      <div id="defaultPageCheckHome" style="font-size:22px;color:#111;opacity:0;">✓</div>
+    </div>
+
+
+
+   
 
 <!-- Set Default Page Card -->
     <div onclick="setDefaultPage('salah')" style="
