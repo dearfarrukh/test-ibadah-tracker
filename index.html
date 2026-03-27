@@ -5788,23 +5788,17 @@ return;
 
 
 // =========================
-// SET SALAH SOURCE SAVED LOCATION ONLY
+// SET SALAH SOURCE WITHOUT OLD TAB BUTTON
 // =========================
 function setSalahSource(source){
 salahSource = "masjid";
 
 closeSalahTopDropdown();
 
-let masjidBtn = document.getElementById("masjidTabBtn");
 let searchCard = document.getElementById("enteredLocationCard");
 let dropdownWrap = document.getElementById("salahTopDropdownWrap");
 let myLocationWrap = document.getElementById("salahMyLocationWrap");
 let useCurrentLocationWrap = document.getElementById("useCurrentLocationWrap");
-
-if(masjidBtn){
-masjidBtn.style.background = "#111";
-masjidBtn.style.color = "white";
-}
 
 if(searchCard){
 searchCard.style.display = "none";
@@ -5826,7 +5820,6 @@ renderSavedSalahLocationList();
 hideSalahLocationSuggestions();
 renderSalahPage();
 }
-
   
 
 
@@ -8836,21 +8829,6 @@ transition:opacity 0.22s ease, transform 0.22s ease;
 
 
 
-<!-- Saved Locations Button -->
-<button id="masjidTabBtn" onclick="setSalahSource('masjid')" style="
-flex:1;
-border:none;
-border-radius:20px;
-padding:14px 8px;
-background:transparent;
-color:#111;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-box-sizing:border-box;
-">
-Saved Location
-</button>
 
 
 
