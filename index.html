@@ -6995,7 +6995,7 @@ arrow.style.transform = "rotate(180deg)";
 // SET SALAH ASR METHOD
 // =========================
 function setSalahAsrMethod(method){
-localStorage.setItem("salahAsrMethod", method);
+localStorage.setItem("asrMethod", method);
 
 updateSalahAsrMethodText();
 
@@ -7023,7 +7023,7 @@ function updateSalahAsrMethodText(){
 let currentText = document.getElementById("salahAsrMethodCurrentText");
 if(!currentText) return;
 
-let savedMethod = (localStorage.getItem("salahAsrMethod") || "hanafi").toLowerCase();
+let savedMethod = (localStorage.getItem("asrMethod") || "hanafi").toLowerCase();
 
 if(savedMethod === "shafi"){
 currentText.textContent = "Shafi";
