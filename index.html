@@ -2345,9 +2345,7 @@ function getDefaultPage(){
 function openSelectedDefaultPage(){
   let defaultPage = getDefaultPage();
 
-  if(defaultPage === "home"){
-    openHomePage();
-  }else if(defaultPage === "salah"){
+  if(defaultPage === "salah"){
     openSalahPage();
   }else if(defaultPage === "tasbih"){
     openTasbihPage();
@@ -6935,128 +6933,27 @@ async function selectAsrMethod(method){
   }
 }
 
-
 // =========================
-// SALAH SETTINGS OVERLAY FUNCTIONS
+// OPEN SALAH SETTINGS PAGE
 // =========================
 function openSalahSettingsPage(){
-let overlay = document.getElementById("salahSettingsOverlay");
-let card = document.getElementById("salahSettingsCard");
-
-if(!overlay || !card) return;
-
-updateSalahAsrMethodText();
-
-overlay.style.display = "flex";
-
-setTimeout(function(){
-card.style.opacity = "1";
-card.style.transform = "translateY(0)";
-},10);
-}
-
-// =========================
-// CLOSE SALAH SETTINGS OVERLAY
-// =========================
-function closeSalahSettingsOverlay(event){
-let overlay = document.getElementById("salahSettingsOverlay");
-let card = document.getElementById("salahSettingsCard");
-
-if(!overlay || !card) return;
-
-card.style.opacity = "0";
-card.style.transform = "translateY(18px)";
-
-setTimeout(function(){
-overlay.style.display = "none";
-},220);
-}
-
-// =========================
-// TOGGLE SALAH ASR DROPDOWN
-// =========================
-function toggleSalahAsrDropdown(){
-let box = document.getElementById("salahAsrDropdownBox");
-let arrow = document.getElementById("salahAsrDropdownArrow");
-
-if(!box || !arrow) return;
-
-if(box.style.display === "block"){
-box.style.display = "none";
-arrow.style.transform = "rotate(0deg)";
-}
-else{
-box.style.display = "block";
-arrow.style.transform = "rotate(180deg)";
-}
-}
-
-// =========================
-// SET SALAH ASR METHOD
-// =========================
-function setSalahAsrMethod(method){
-localStorage.setItem("asrMethod", method);
-
-updateSalahAsrMethodText();
-
-let box = document.getElementById("salahAsrDropdownBox");
-let arrow = document.getElementById("salahAsrDropdownArrow");
-
-if(box) box.style.display = "none";
-if(arrow) arrow.style.transform = "rotate(0deg)";
-
-if(typeof loadSalahTimes === "function"){
-loadSalahTimes();
-}
-else if(typeof refreshSalahTimes === "function"){
-refreshSalahTimes();
-}
-else if(typeof openSalahPage === "function"){
-openSalahPage();
-}
-}
-
-// =========================
-// UPDATE SALAH ASR METHOD TEXT
-// =========================
-function updateSalahAsrMethodText(){
-let currentText = document.getElementById("salahAsrMethodCurrentText");
-if(!currentText) return;
-
-let savedMethod = (localStorage.getItem("asrMethod") || "hanafi").toLowerCase();
-
-if(savedMethod === "shafi"){
-currentText.textContent = "Shafi";
-}
-else{
-currentText.textContent = "Hanafi";
-}
-}
-
-
-
-  
-// =========================
-// OPEN OLD SALAH SETTINGS PAGE
-// =========================
-function openOldSalahSettingsPage(){
   document.getElementById("salahSettingsPage").style.display = "block";
   updateSalahSettingsChecks();
   window.scrollTo(0,0);
 }
 
 // =========================
-// CLOSE OLD SALAH SETTINGS PAGE
+// CLOSE SALAH SETTINGS PAGE
 // =========================
-function closeOldSalahSettingsPage(){
+function closeSalahSettingsPage(){
   document.getElementById("salahSettingsPage").style.display = "none";
   window.scrollTo(0,0);
 }
 
 // =========================
-// OPEN OLD SALAH SETTINGS FROM MENU
+// OPEN SALAH SETTINGS FROM MENU
 // =========================
-function openOldSalahSettingsFromMenu(){
+function openSalahSettingsFromMenu(){
   closeSideMenu();
   document.getElementById("salahSettingsPage").style.display = "block";
   updateSalahSettingsChecks();
@@ -7139,7 +7036,6 @@ window.scrollTo(0,0);
 function getDefaultPageLabel(){
   let page = getDefaultPage();
 
-  if(page === "home") return "Home Page";
   if(page === "salah") return "Salah Times";
   if(page === "tasbih") return "Tasbih";
 
@@ -7192,12 +7088,10 @@ function setDefaultPage(page){
 function updateDefaultPageChecks(){
   let current = getDefaultPage();
 
-  let home = document.getElementById("defaultPageCheckHome");
   let salah = document.getElementById("defaultPageCheckSalah");
   let dailyTask = document.getElementById("defaultPageCheckDailyTask");
   let tasbih = document.getElementById("defaultPageCheckTasbih");
 
-  if(home) home.style.opacity = current === "home" ? "1" : "0";
   if(salah) salah.style.opacity = current === "salah" ? "1" : "0";
   if(dailyTask) dailyTask.style.opacity = current === "tracker" ? "1" : "0";
   if(tasbih) tasbih.style.opacity = current === "tasbih" ? "1" : "0";
@@ -8261,33 +8155,6 @@ box-sizing:border-box;
     ">
     Choose which page should open first when the app starts
     </div>
-
-
-<!-- Set Default Page Card -->
-    <div onclick="setDefaultPage('home')" style="
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:16px 14px;
-    background:white;
-    border-radius:18px;
-    margin-bottom:10px;
-    cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,0.06);
-    ">
-      <div>
-        <div style="font-size:17px;font-weight:800;color:#111;">Home Page</div>
-        <div style="font-size:13px;color:#777;margin-top:2px;">Open the Home page first</div>
-      </div>
-<!-- =========================
-     DEFAULT PAGE CHECK HOME
-========================= -->
-      <div id="defaultPageCheckHome" style="font-size:22px;color:#111;opacity:0;">✓</div>
-    </div>
-
-
-
-   
 
 <!-- Set Default Page Card -->
     <div onclick="setDefaultPage('salah')" style="
@@ -9682,161 +9549,6 @@ z-index:10030;
   </div>
 </div>
 
-
-
-
-  <!-- =========================
-     SALAH SETTINGS OVERLAY
-========================= -->
-<div id="salahSettingsOverlay" onclick="closeSalahSettingsOverlay(event)" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-z-index:99999;
-background:rgba(0,0,0,0.38);
-backdrop-filter:blur(6px);
--webkit-backdrop-filter:blur(6px);
-padding:24px 16px;
-box-sizing:border-box;
-align-items:center;
-justify-content:center;
-">
-
-  <!-- SALAH SETTINGS BIG CARD -->
-  <div id="salahSettingsCard" onclick="event.stopPropagation()" style="
-  width:100%;
-  max-width:420px;
-  background:rgba(255,255,255,0.96);
-  border-radius:28px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.20);
-  padding:18px 16px 16px 16px;
-  box-sizing:border-box;
-  transform:translateY(18px);
-  opacity:0;
-  transition:all 0.25s ease;
-  ">
-
-    <!-- SALAH SETTINGS TITLE -->
-    <div style="
-    text-align:center;
-    font-size:20px;
-    font-weight:800;
-    color:#111;
-    margin-bottom:16px;
-    ">
-    Salah Settings
-    </div>
-
-    <!-- ASR METHOD BUTTON -->
-    <button id="salahAsrMethodBtn" onclick="toggleSalahAsrDropdown()" style="
-    width:100%;
-    border:none;
-    background:#f6f6f8;
-    border-radius:20px;
-    padding:16px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    cursor:pointer;
-    box-sizing:border-box;
-    margin-bottom:10px;
-    ">
-      <div style="text-align:left;">
-        <div style="
-        font-size:15px;
-        font-weight:800;
-        color:#111;
-        ">
-        Asr Method
-        </div>
-
-        <div id="salahAsrMethodCurrentText" style="
-        font-size:13px;
-        font-weight:600;
-        color:#666;
-        margin-top:3px;
-        ">
-        Hanafi
-        </div>
-      </div>
-
-      <div id="salahAsrDropdownArrow" style="
-      font-size:18px;
-      font-weight:700;
-      color:#111;
-      transition:transform 0.25s ease;
-      ">
-      ▾
-      </div>
-    </button>
-
-    <!-- ASR METHOD DROPDOWN BOX -->
-    <div id="salahAsrDropdownBox" style="
-    display:none;
-    background:#f9f9fb;
-    border-radius:20px;
-    padding:8px;
-    margin-top:-2px;
-    margin-bottom:10px;
-    box-sizing:border-box;
-    ">
-
-      <!-- HANAFI OPTION -->
-      <button onclick="setSalahAsrMethod('hanafi')" style="
-      width:100%;
-      border:none;
-      background:white;
-      border-radius:16px;
-      padding:14px;
-      text-align:left;
-      font-size:15px;
-      font-weight:700;
-      color:#111;
-      cursor:pointer;
-      box-shadow:0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom:8px;
-      ">
-      Hanafi
-      </button>
-
-      <!-- SHAFI OPTION -->
-      <button onclick="setSalahAsrMethod('shafi')" style="
-      width:100%;
-      border:none;
-      background:white;
-      border-radius:16px;
-      padding:14px;
-      text-align:left;
-      font-size:15px;
-      font-weight:700;
-      color:#111;
-      cursor:pointer;
-      box-shadow:0 2px 8px rgba(0,0,0,0.05);
-      ">
-      Shafi
-      </button>
-    </div>
-
-    <!-- SETTINGS PLACEHOLDER ROW -->
-    <div style="
-    background:#f6f6f8;
-    border-radius:20px;
-    padding:16px;
-    font-size:15px;
-    font-weight:700;
-    color:#999;
-    ">
-    More settings coming here later
-    </div>
-
-  </div>
-</div>
-
-
-  
 
 
 </body>
