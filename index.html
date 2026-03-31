@@ -295,90 +295,96 @@ height:auto;
 
 <div id="bg"></div>
 
-<!-- =========================
-     TRACKER PAGE
-========================= -->
-<div id="trackerPage" style="
-display:block;
+<div id="topHeader">
+
+<h1 style="text-align:center;margin-bottom:10px;">📿 Ibadah Tracker</h1>
+
+<!-- DATE CARD -->
+<div class="card">
+
+<div style="display:flex;align-items:center;gap:10px;">
+
+<!-- Prev Day Button -->
+<button onclick="prevDay()">⬅️</button>
+
+<div style="flex:1;text-align:center;position:relative;">
+
+<div id="displayDate" style="font-weight:600;"></div>
+<div id="hijriDate" style="font-size:14px;color:gray;"></div>
+
+<input type="date"
+id="datePicker"
+onchange="manualPick(this.value)"
+style="
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+opacity:0;
+cursor:pointer;
+z-index:5;
 ">
 
-  <div id="topHeader">
+</div>
 
-    <h1 style="text-align:center;margin-bottom:10px;">📿 Ibadah Tracker</h1>
-
-    <!-- DATE CARD -->
-    <div class="card">
-
-      <div style="display:flex;align-items:center;gap:10px;">
-
-        <!-- Prev Day Button -->
-        <button onclick="prevDay()">⬅️</button>
-
-        <div style="flex:1;text-align:center;position:relative;">
-
-          <div id="displayDate" style="font-weight:600;"></div>
-          <div id="hijriDate" style="font-size:14px;color:gray;"></div>
-
-          <input type="date"
-          id="datePicker"
-          onchange="manualPick(this.value)"
-          style="
-          position:absolute;
-          top:0;
-          left:0;
-          width:100%;
-          height:100%;
-          opacity:0;
-          cursor:pointer;
-          z-index:5;
-          ">
-
-        </div>
-
-        <!-- Next Day Button -->
-        <button onclick="nextDay()">➡️</button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- SALAH -->
-  <div class="card">
-    <h3>🕌 Daily Salah</h3>
-
-    <!-- Salah Container -->
-    <div id="salahContainer" style="display:flex;justify-content:space-between;text-align:center;"></div>
-  </div>
-
-  <!-- TASKS -->
-  <div class="card">
-    <h3>📝 Daily Tasks</h3>
-
-    <!-- Task Container -->
-    <div id="taskContainer"></div>
-
-    <div style="margin-top:15px;text-align:center;">
-
-      <!-- Manage Tasks Button -->
-      <button onclick="manageTasks()" style="
-      padding:12px 30px;
-      border-radius:16px;
-      border:none;
-      background:#007aff;
-      color:white;
-      font-weight:700;
-      cursor:pointer;
-      ">
-      Manage Tasks
-      </button>
-
-    </div>
-  </div>
+<!-- Next Day Button -->
+<button onclick="nextDay()">➡️</button>
 
 </div>
+
+</div>
+
+</div>
+
+
   
+
+<!-- SALAH -->
+<div class="card">
+<h3>🕌 Daily Salah</h3>
+
+<!-- Salah Container -->
+<div id="salahContainer"
+style="display:flex;justify-content:space-between;text-align:center;">
+</div>
+
+</div>
+
+  
+
+  
+<!-- TASKS -->
+<div class="card">
+<h3>📝 Daily Tasks</h3>
+
+<!-- Task Container -->
+<div id="taskContainer"></div>
+
+<div style="margin-top:15px;text-align:center;">
+
+  <!-- Manage Tasks Button -->
+<button onclick="manageTasks()" style="
+padding:12px 30px;
+border-radius:16px;
+border:none;
+background:#007aff;
+color:white;
+font-weight:700;
+cursor:pointer;
+">
+Manage Tasks
+</button>
+</div>
+
+</div>
+
+  
+ 
+  
+  
+
+
 <!-- =========================
      TASBIH PAGE
 ========================= -->
@@ -4819,9 +4825,7 @@ async function loadRealLocationSalahTimes(dateObj){
 
 let dateKey = formatKey(dateObj);
 let methodKey = getAsrMethod();
-let calculationKey = getSalahCalculationMethod();
-let activeCalculationKey = getActiveSalahCalculationMethod();
-let cacheKey = dateKey + "-" + methodKey + "-" + calculationKey + "-" + activeCalculationKey;
+let cacheKey = dateKey + "-" + methodKey;
 
 if(salahLiveCache[cacheKey]){
 return salahLiveCache[cacheKey];
@@ -4830,7 +4834,11 @@ return salahLiveCache[cacheKey];
 let loc = await loadUserLocationData();
 let apiDate = formatSalahApiDate(dateObj);
 
-let salahUrl = getSalahApiUrl(apiDate, loc.lat, loc.lon);
+let salahUrl =
+"https://api.aladhan.com/v1/timings/" + apiDate
++ "?latitude=" + encodeURIComponent(loc.lat)
++ "&longitude=" + encodeURIComponent(loc.lon)
++ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
 
 let res = await fetch(salahUrl);
 let json = await res.json();
@@ -4843,7 +4851,7 @@ let t = json.data.timings;
 
 let liveData = {
 locationName: loc.city || "My Location",
-sourceLabel: getCalculationMethodSourceLabel(),
+sourceLabel: "North America Timings",
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -5172,7 +5180,11 @@ throw new Error("No entered location yet");
 
 let apiDate = formatSalahApiDate(dateObj);
 
-let salahUrl = getSalahApiUrl(apiDate, salahEnteredLocation.lat, salahEnteredLocation.lon);
+let salahUrl =
+"https://api.aladhan.com/v1/timings/" + apiDate
++ "?latitude=" + encodeURIComponent(salahEnteredLocation.lat)
++ "&longitude=" + encodeURIComponent(salahEnteredLocation.lon)
++ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
 
 let res = await fetch(salahUrl);
 let json = await res.json();
@@ -5185,7 +5197,7 @@ let t = json.data.timings;
 
 return {
 locationName: salahEnteredLocation.locationName || "Entered Location",
-sourceLabel: "Entered Location - " + getCalculationMethodSourceLabel(),
+sourceLabel: "Entered Location Timings",
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -5588,7 +5600,11 @@ throw new Error("No saved location selected");
 
 let apiDate = formatSalahApiDate(dateObj);
 
-let salahUrl = getSalahApiUrl(apiDate, locationObj.lat, locationObj.lon);
+let salahUrl =
+"https://api.aladhan.com/v1/timings/" + apiDate
++ "?latitude=" + encodeURIComponent(locationObj.lat)
++ "&longitude=" + encodeURIComponent(locationObj.lon)
++ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
 
 let res = await fetch(salahUrl);
 let json = await res.json();
@@ -5601,7 +5617,7 @@ let t = json.data.timings;
 
 return {
 locationName: locationObj.name || "Saved Location",
-sourceLabel: "Saved Location - " + getCalculationMethodSourceLabel(),
+sourceLabel: "Saved Location - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -6693,9 +6709,12 @@ function ibadahLoadLiveSalah(){
             "My Location";
         }
 
-       return fetch(
-  getSalahApiUrl(ibadahApiDate(d), lat, lon)
-)
+        return fetch(
+          "https://api.aladhan.com/v1/timings/" +
+          ibadahApiDate(d) +
+          "?latitude=" + encodeURIComponent(lat) +
+          "&longitude=" + encodeURIComponent(lon) +
+          "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0")
         )
         .then(function(r){ return r.json(); })
         .then(function(data){
@@ -6811,126 +6830,6 @@ if(document.readyState === "loading"){
 })();
 
 
-// =========================
-// GET SALAH CALCULATION METHOD
-// =========================
-function getSalahCalculationMethod(){
-  let method = localStorage.getItem("salahCalculationMethod");
-
-  if(!method){
-    localStorage.setItem("salahCalculationMethod", "auto");
-    return "auto";
-  }
-
-  return method;
-}
-
-// =========================
-// GET AUTO CALCULATION METHOD
-// =========================
-function getAutoCalculationMethod(){
-  let country = (salahLocationData.country || "").toLowerCase().trim();
-
-  if(country.includes("united states") || country.includes("usa") || country.includes("canada")){
-    return "isna";
-  }
-
-  if(
-    country.includes("pakistan") ||
-    country.includes("india") ||
-    country.includes("bangladesh") ||
-    country.includes("afghanistan")
-  ){
-    return "karachi";
-  }
-
-  if(
-    country.includes("saudi arabia") ||
-    country.includes("saudi")
-  ){
-    return "ummalqura";
-  }
-
-  return "mwl";
-}
-
-// =========================
-// GET ACTIVE SALAH CALCULATION METHOD
-// =========================
-function getActiveSalahCalculationMethod(){
-  let selected = getSalahCalculationMethod();
-
-  if(selected === "auto"){
-    return getAutoCalculationMethod();
-  }
-
-  return selected;
-}
-
-// =========================
-// GET ALADHAN METHOD NUMBER
-// =========================
-function getAladhanMethodNumber(){
-  let method = getActiveSalahCalculationMethod();
-
-  if(method === "isna") return 2;
-  if(method === "karachi") return 1;
-  if(method === "mwl") return 3;
-  if(method === "ummalqura") return 4;
-  if(method === "1815") return 99;
-
-  return 2;
-}
-
-// =========================
-// GET SALAH API URL
-// =========================
-function getSalahApiUrl(apiDate, lat, lon){
-  let activeMethod = getActiveSalahCalculationMethod();
-  let school = getAsrMethod() === "hanafi" ? "1" : "0";
-
-  if(activeMethod === "1815"){
-    return "https://api.aladhan.com/v1/timings/" + apiDate
-      + "?latitude=" + encodeURIComponent(lat)
-      + "&longitude=" + encodeURIComponent(lon)
-      + "&method=99"
-      + "&school=" + school
-      + "&methodSettings=18,null,15";
-  }
-
-  return "https://api.aladhan.com/v1/timings/" + apiDate
-    + "?latitude=" + encodeURIComponent(lat)
-    + "&longitude=" + encodeURIComponent(lon)
-    + "&method=" + getAladhanMethodNumber()
-    + "&school=" + school;
-}
-
-// =========================
-// GET CALCULATION METHOD SOURCE LABEL
-// =========================
-function getCalculationMethodSourceLabel(){
-  let selected = getSalahCalculationMethod();
-  let active = getActiveSalahCalculationMethod();
-  let asr = getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi";
-
-  if(selected === "auto"){
-    if(active === "isna") return "Auto - ISNA - " + asr;
-    if(active === "karachi") return "Auto - Karachi - " + asr;
-    if(active === "mwl") return "Auto - MWL - " + asr;
-    if(active === "ummalqura") return "Auto - Umm al-Qura - " + asr;
-    if(active === "1815") return "Auto - 18° / 15° - " + asr;
-  }
-
-  if(active === "isna") return "ISNA - " + asr;
-  if(active === "karachi") return "Karachi - " + asr;
-  if(active === "mwl") return "MWL - " + asr;
-  if(active === "ummalqura") return "Umm al-Qura - " + asr;
-  if(active === "1815") return "18° / 15° - " + asr;
-
-  return "ISNA - " + asr;
-}
-
-  
 
 // =========================
 // GET ASR METHOD
@@ -7086,9 +6985,8 @@ function toggleAsrCalculationDropdown(){
 // SELECT CALCULATION METHOD
 // =========================
 function selectCalculationMethod(method){
- localStorage.setItem("salahCalculationMethod", method);
-salahLiveCache = {};
-updateCalculationMethodUI();
+  localStorage.setItem("salahCalculationMethod", method);
+  updateCalculationMethodUI();
 
   let selectedText = document.getElementById("selectedCalculationMethodText");
   if(selectedText){
