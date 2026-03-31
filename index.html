@@ -4824,8 +4824,9 @@ return salahLocationData;
 async function loadRealLocationSalahTimes(dateObj){
 
 let dateKey = formatKey(dateObj);
-let methodKey = getAsrMethod();
-let cacheKey = dateKey + "-" + methodKey;
+let asrKey = getAsrMethod();
+let calcKey = getResolvedCalculationMethod((salahLocationData.country || ""));
+let cacheKey = dateKey + "-" + asrKey + "-" + calcKey;
 
 if(salahLiveCache[cacheKey]){
 return salahLiveCache[cacheKey];
@@ -4833,12 +4834,14 @@ return salahLiveCache[cacheKey];
 
 let loc = await loadUserLocationData();
 let apiDate = formatSalahApiDate(dateObj);
+let apiMethod = getAladhanMethodNumber(loc.country);
 
 let salahUrl =
 "https://api.aladhan.com/v1/timings/" + apiDate
 + "?latitude=" + encodeURIComponent(loc.lat)
 + "&longitude=" + encodeURIComponent(loc.lon)
-+ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
++ "&method=" + apiMethod
++ "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
 
 let res = await fetch(salahUrl);
 let json = await res.json();
@@ -4851,7 +4854,7 @@ let t = json.data.timings;
 
 let liveData = {
 locationName: loc.city || "My Location",
-sourceLabel: "North America Timings",
+sourceLabel: getCalculationMethodSourceLabel(loc.country) + " - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -5179,12 +5182,14 @@ throw new Error("No entered location yet");
 }
 
 let apiDate = formatSalahApiDate(dateObj);
+let apiMethod = getAladhanMethodNumber(salahEnteredLocation.query);
 
 let salahUrl =
 "https://api.aladhan.com/v1/timings/" + apiDate
 + "?latitude=" + encodeURIComponent(salahEnteredLocation.lat)
 + "&longitude=" + encodeURIComponent(salahEnteredLocation.lon)
-+ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
++ "&method=" + apiMethod
++ "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
 
 let res = await fetch(salahUrl);
 let json = await res.json();
@@ -5197,7 +5202,7 @@ let t = json.data.timings;
 
 return {
 locationName: salahEnteredLocation.locationName || "Entered Location",
-sourceLabel: "Entered Location Timings",
+sourceLabel: getCalculationMethodSourceLabel(salahEnteredLocation.query) + " - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -5206,7 +5211,6 @@ maghrib: to12Hour(t.Maghrib),
 isha: to12Hour(t.Isha)
 };
 }
-
 async function refreshEnteredLocationSalahData(){
 try{
 if(!salahEnteredLocation.lat || !salahEnteredLocation.lon){
@@ -5599,12 +5603,14 @@ throw new Error("No saved location selected");
 }
 
 let apiDate = formatSalahApiDate(dateObj);
+let apiMethod = getAladhanMethodNumber(locationObj.name);
 
 let salahUrl =
 "https://api.aladhan.com/v1/timings/" + apiDate
 + "?latitude=" + encodeURIComponent(locationObj.lat)
 + "&longitude=" + encodeURIComponent(locationObj.lon)
-+ "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
++ "&method=" + apiMethod
++ "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
 
 let res = await fetch(salahUrl);
 let json = await res.json();
@@ -5617,7 +5623,7 @@ let t = json.data.timings;
 
 return {
 locationName: locationObj.name || "Saved Location",
-sourceLabel: "Saved Location - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
+sourceLabel: getCalculationMethodSourceLabel(locationObj.name) + " - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
 fajr: to12Hour(t.Fajr),
 sunrise: to12Hour(t.Sunrise),
 dhuhr: to12Hour(t.Dhuhr),
@@ -6709,13 +6715,16 @@ function ibadahLoadLiveSalah(){
             "My Location";
         }
 
-        return fetch(
-          "https://api.aladhan.com/v1/timings/" +
-          ibadahApiDate(d) +
-          "?latitude=" + encodeURIComponent(lat) +
-          "&longitude=" + encodeURIComponent(lon) +
-          "&method=2&school=" + (getAsrMethod() === "hanafi" ? "1" : "0")
-        )
+      let apiMethod = getAladhanMethodNumber(place && place.address ? place.address.country : "");
+
+return fetch(
+  "https://api.aladhan.com/v1/timings/" +
+  ibadahApiDate(d) +
+  "?latitude=" + encodeURIComponent(lat) +
+  "&longitude=" + encodeURIComponent(lon) +
+  "&method=" + apiMethod +
+  "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0")
+)
         .then(function(r){ return r.json(); })
         .then(function(data){
           if(!data || !data.data || !data.data.timings || !data.data.date || !data.data.date.hijri){
@@ -6845,6 +6854,98 @@ function getAsrMethod(){
   return m;
 }
 
+// =========================
+// GET SAVED CALCULATION METHOD
+// =========================
+function getSavedCalculationMethod(){
+  let method = localStorage.getItem("salahCalculationMethod");
+
+  if(!method){
+    localStorage.setItem("salahCalculationMethod", "auto");
+    return "auto";
+  }
+
+  return method;
+}
+
+// =========================
+// GET AUTO CALCULATION METHOD
+// =========================
+function getAutoCalculationMethod(countryName){
+  let country = (countryName || "").trim().toLowerCase();
+
+  if(
+    country === "united states" ||
+    country === "united states of america" ||
+    country === "usa" ||
+    country === "us" ||
+    country === "canada"
+  ){
+    return "isna";
+  }
+
+  if(
+    country === "pakistan" ||
+    country === "india" ||
+    country === "bangladesh" ||
+    country === "afghanistan"
+  ){
+    return "karachi";
+  }
+
+  if(
+    country === "saudi arabia" ||
+    country === "saudi"
+  ){
+    return "ummalqura";
+  }
+
+  return "mwl";
+}
+
+// =========================
+// GET RESOLVED CALCULATION METHOD
+// =========================
+function getResolvedCalculationMethod(countryName){
+  let savedMethod = getSavedCalculationMethod();
+
+  if(savedMethod === "auto"){
+    return getAutoCalculationMethod(countryName);
+  }
+
+  return savedMethod;
+}
+
+// =========================
+// GET ALADHAN METHOD NUMBER
+// =========================
+function getAladhanMethodNumber(countryName){
+  let method = getResolvedCalculationMethod(countryName);
+
+  if(method === "isna") return 2;
+  if(method === "karachi") return 1;
+  if(method === "mwl") return 3;
+  if(method === "ummalqura") return 4;
+  if(method === "1815") return 13;
+
+  return 3;
+}
+
+// =========================
+// GET CALCULATION METHOD SOURCE LABEL
+// =========================
+function getCalculationMethodSourceLabel(countryName){
+  let savedMethod = getSavedCalculationMethod();
+  let resolvedMethod = getResolvedCalculationMethod(countryName);
+
+  if(savedMethod === "auto"){
+    return "Auto - " + getCalculationMethodLabel(resolvedMethod);
+  }
+
+  return getCalculationMethodLabel(resolvedMethod);
+}
+  
+  
 // =========================
 // SET ASR TOGGLE UI
 // =========================
@@ -6999,6 +7100,7 @@ function selectCalculationMethod(method){
   if(dropdown) dropdown.style.display = "none";
   if(arrow) arrow.style.transform = "rotate(0deg)";
 
+  salahLiveCache = {};
   refreshSalahAfterSettingChange();
 }
 
