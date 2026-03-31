@@ -8579,7 +8579,33 @@ box-sizing:border-box;
     Choose which page should open first when the app starts
     </div>
 
+
+   
 <!-- Set Default Page Card -->
+<div onclick="setDefaultPage('home')" style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:16px 14px;
+background:white;
+border-radius:18px;
+margin-bottom:10px;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.06);
+">
+  <div>
+    <div style="font-size:17px;font-weight:800;color:#111;">Home</div>
+    <div style="font-size:13px;color:#777;margin-top:2px;">Open the home page first</div>
+  </div>
+
+  <div id="defaultPageCheckHome" style="
+  font-size:22px;
+  color:#111;
+  opacity:0;
+  ">
+  ✓
+  </div>
+</div>
     <div onclick="setDefaultPage('salah')" style="
     display:flex;
     align-items:center;
