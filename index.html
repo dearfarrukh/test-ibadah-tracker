@@ -4753,6 +4753,28 @@ return hour + ":" + minute + " " + ampm;
 }
 
 // =========================
+// APPLY ISNA FAJR 18 OVERRIDE
+// =========================
+function applyIsnaFajr18Override(baseTimings, overrideTimings){
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+
+  if(savedMethod !== "isna") return baseTimings;
+  if(!getIsnaFajr18Enabled()) return baseTimings;
+  if(!overrideTimings || !overrideTimings.Fajr) return baseTimings;
+
+  return {
+    Fajr: overrideTimings.Fajr,
+    Sunrise: baseTimings.Sunrise,
+    Dhuhr: baseTimings.Dhuhr,
+    Asr: baseTimings.Asr,
+    Maghrib: baseTimings.Maghrib,
+    Isha: baseTimings.Isha
+  };
+}
+
+
+  
+// =========================
 // GET LOCATION POSITION
 // =========================
 function getLocationPosition(){
@@ -4851,6 +4873,25 @@ throw new Error("Could not load Salah times");
 }
 
 let t = json.data.timings;
+
+if(
+  (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
+  getIsnaFajr18Enabled()
+){
+  let overrideUrl =
+  "https://api.aladhan.com/v1/timings/" + apiDate
+  + "?latitude=" + encodeURIComponent(loc.lat)
+  + "&longitude=" + encodeURIComponent(loc.lon)
+  + "&method=13"
+  + "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
+
+  let overrideRes = await fetch(overrideUrl);
+  let overrideJson = await overrideRes.json();
+
+  if(overrideJson && overrideJson.data && overrideJson.data.timings){
+    t = applyIsnaFajr18Override(t, overrideJson.data.timings);
+  }
+}
 
 let liveData = {
 locationName: loc.city || "My Location",
@@ -5199,6 +5240,25 @@ throw new Error("Could not load entered location Salah times");
 }
 
 let t = json.data.timings;
+
+if(
+  (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
+  getIsnaFajr18Enabled()
+){
+  let overrideUrl =
+  "https://api.aladhan.com/v1/timings/" + apiDate
+  + "?latitude=" + encodeURIComponent(salahEnteredLocation.lat)
+  + "&longitude=" + encodeURIComponent(salahEnteredLocation.lon)
+  + "&method=13"
+  + "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
+
+  let overrideRes = await fetch(overrideUrl);
+  let overrideJson = await overrideRes.json();
+
+  if(overrideJson && overrideJson.data && overrideJson.data.timings){
+    t = applyIsnaFajr18Override(t, overrideJson.data.timings);
+  }
+}
 
 return {
 locationName: salahEnteredLocation.locationName || "Entered Location",
@@ -5620,6 +5680,25 @@ throw new Error("Could not load saved location Salah times");
 }
 
 let t = json.data.timings;
+
+if(
+  (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
+  getIsnaFajr18Enabled()
+){
+  let overrideUrl =
+  "https://api.aladhan.com/v1/timings/" + apiDate
+  + "?latitude=" + encodeURIComponent(locationObj.lat)
+  + "&longitude=" + encodeURIComponent(locationObj.lon)
+  + "&method=13"
+  + "&school=" + (getAsrMethod() === "hanafi" ? "1" : "0");
+
+  let overrideRes = await fetch(overrideUrl);
+  let overrideJson = await overrideRes.json();
+
+  if(overrideJson && overrideJson.data && overrideJson.data.timings){
+    t = applyIsnaFajr18Override(t, overrideJson.data.timings);
+  }
+}
 
 return {
 locationName: locationObj.name || "Saved Location",
@@ -6854,6 +6933,65 @@ function getAsrMethod(){
   return m;
 }
 
+
+// =========================
+// GET ISNA FAJR 18 ENABLED
+// =========================
+function getIsnaFajr18Enabled(){
+  return localStorage.getItem("isnaFajr18") === "true";
+}
+
+// =========================
+// SET ISNA FAJR 18 TOGGLE UI
+// =========================
+function setIsnaFajr18ToggleUI(){
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+  let enabled = getIsnaFajr18Enabled();
+
+  let toggle = document.getElementById("isnaFajr18Toggle");
+  let knob = document.getElementById("isnaFajr18Knob");
+  let label = document.getElementById("isnaFajr18Label");
+
+  if(!toggle || !knob || !label) return;
+
+  let isIsna = savedMethod === "isna";
+
+  if(isIsna){
+    toggle.style.opacity = "1";
+    toggle.style.pointerEvents = "auto";
+    label.style.opacity = "1";
+  }else{
+    toggle.style.opacity = "0.45";
+    toggle.style.pointerEvents = "none";
+    label.style.opacity = "0.45";
+  }
+
+  if(enabled){
+    toggle.style.background = "#111";
+    knob.style.left = "20px";
+  }else{
+    toggle.style.background = "#d1d1d6";
+    knob.style.left = "2px";
+  }
+}
+
+// =========================
+// TOGGLE ISNA FAJR 18
+// =========================
+function toggleIsnaFajr18(){
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+
+  if(savedMethod !== "isna") return;
+
+  let nextValue = !getIsnaFajr18Enabled();
+  localStorage.setItem("isnaFajr18", nextValue ? "true" : "false");
+
+  salahLiveCache = {};
+  setIsnaFajr18ToggleUI();
+  refreshSalahAfterSettingChange();
+}
+
+  
 // =========================
 // GET SAVED CALCULATION METHOD
 // =========================
@@ -7088,6 +7226,7 @@ function toggleAsrCalculationDropdown(){
 function selectCalculationMethod(method){
   localStorage.setItem("salahCalculationMethod", method);
   updateCalculationMethodUI();
+  setIsnaFajr18ToggleUI();
 
   let selectedText = document.getElementById("selectedCalculationMethodText");
   if(selectedText){
@@ -7147,6 +7286,7 @@ function loadSalahSettingsUI(){
 
   updateCalculationMethodUI();
   updateAsrCalculationUI();
+  setIsnaFajr18ToggleUI();
 
   let calcDropdown = document.getElementById("calculationMethodDropdown");
   let calcArrow = document.getElementById("calculationMethodArrow");
@@ -7184,6 +7324,8 @@ function updateCalculationMethodUI(){
   if(selectedText){
     selectedText.textContent = getCalculationMethodLabel(savedMethod);
   }
+
+  setIsnaFajr18ToggleUI();
 }
 
 // =========================
@@ -9674,25 +9816,77 @@ z-index:10060;
             <div id="calcCheckAuto" style="font-size:28px;font-weight:900;color:#111;">✓</div>
           </button>
 
-          <button onclick="selectCalculationMethod('isna')" style="
-          width:100%;
-          border:none;
-          background:transparent;
-          padding:16px 14px;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          text-align:left;
-          cursor:pointer;
-          box-sizing:border-box;
-          border-bottom:1px solid rgba(0,0,0,0.05);
-          ">
-            <div>
-              <div style="font-size:16px;font-weight:800;color:#111;">ISNA</div>
-              <div style="font-size:13px;color:#666;font-weight:600;margin-top:3px;">Commonly used in North America</div>
-            </div>
-            <div id="calcCheckIsna" style="font-size:28px;font-weight:900;color:#111;opacity:0;">✓</div>
-          </button>
+         <div style="
+width:100%;
+padding:16px 14px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-sizing:border-box;
+border-bottom:1px solid rgba(0,0,0,0.05);
+gap:12px;
+">
+
+  <!-- LEFT SIDE -->
+  <div onclick="selectCalculationMethod('isna')" style="
+  flex:1;
+  min-width:0;
+  cursor:pointer;
+  ">
+    <div style="font-size:16px;font-weight:800;color:#111;">ISNA</div>
+    <div style="font-size:13px;color:#666;font-weight:600;margin-top:3px;">Commonly used in North America</div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+  ">
+    <div id="isnaFajr18Label" style="
+    font-size:13px;
+    font-weight:700;
+    color:#666;
+    white-space:nowrap;
+    ">
+    Fajr 18°
+    </div>
+
+    <div onclick="event.stopPropagation();toggleIsnaFajr18()" id="isnaFajr18Toggle" style="
+    width:46px;
+    height:28px;
+    border-radius:999px;
+    background:#d1d1d6;
+    position:relative;
+    cursor:pointer;
+    transition:background 0.22s ease;
+    ">
+      <div id="isnaFajr18Knob" style="
+      position:absolute;
+      top:2px;
+      left:2px;
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      background:white;
+      box-shadow:0 2px 6px rgba(0,0,0,0.12);
+      transition:left 0.22s ease;
+      "></div>
+    </div>
+
+    <div id="calcCheckIsna" style="
+    font-size:28px;
+    font-weight:900;
+    color:#111;
+    opacity:0;
+    margin-left:2px;
+    ">
+    ✓
+    </div>
+  </div>
+
+</div>
 
           <button onclick="selectCalculationMethod('karachi')" style="
           width:100%;
