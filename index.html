@@ -2349,6 +2349,8 @@ function openSelectedDefaultPage(){
     openSalahPage();
   }else if(defaultPage === "tasbih"){
     openTasbihPage();
+  }else if(defaultPage === "home"){
+    openHomePage();
   }else{
     openTrackerPage();
   }
@@ -2366,6 +2368,9 @@ if(defaultPage === "salah"){
 }
 else if(defaultPage === "tasbih"){
   openTasbihPage();
+}
+else if(defaultPage === "home"){
+  openHomePage();
 }
 else{
   openTrackerPage();
@@ -6404,10 +6409,7 @@ window.scrollTo(0,0);
 // =========================
 // GO TO MAIN PAGE
 // =========================
- function goToMainPage(){
-closeSideMenu();
-location.reload();
-}
+// duplicate old version removed
 
 // =========================
 // OPEN TASBIH SETTINGS
@@ -7437,11 +7439,8 @@ openSalahPage();
 else if(defaultPage === "tasbih"){
 openTasbihPage();
 }
-else if(defaultPage === "dua"){
-openDuaPage();
-}
-else if(defaultPage === "qibla"){
-openQiblaPage();
+else if(defaultPage === "home"){
+openHomePage();
 }
 else{
 openTrackerPage();
@@ -7457,6 +7456,7 @@ window.scrollTo(0,0);
 function getDefaultPageLabel(){
   let page = getDefaultPage();
 
+  if(page === "home") return "Home";
   if(page === "salah") return "Salah Times";
   if(page === "tasbih") return "Tasbih";
 
@@ -7509,10 +7509,12 @@ function setDefaultPage(page){
 function updateDefaultPageChecks(){
   let current = getDefaultPage();
 
+  let home = document.getElementById("defaultPageCheckHome");
   let salah = document.getElementById("defaultPageCheckSalah");
   let dailyTask = document.getElementById("defaultPageCheckDailyTask");
   let tasbih = document.getElementById("defaultPageCheckTasbih");
 
+  if(home) home.style.opacity = current === "home" ? "1" : "0";
   if(salah) salah.style.opacity = current === "salah" ? "1" : "0";
   if(dailyTask) dailyTask.style.opacity = current === "tracker" ? "1" : "0";
   if(tasbih) tasbih.style.opacity = current === "tasbih" ? "1" : "0";
