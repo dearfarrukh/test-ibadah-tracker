@@ -302,91 +302,83 @@ height:auto;
 display:block;
 ">
 
-<div id="topHeader">
+  <div id="topHeader">
 
-<h1 style="text-align:center;margin-bottom:10px;">📿 Ibadah Tracker</h1>
+    <h1 style="text-align:center;margin-bottom:10px;">📿 Ibadah Tracker</h1>
 
-<!-- DATE CARD -->
-<div class="card">
+    <!-- DATE CARD -->
+    <div class="card">
 
-<div style="display:flex;align-items:center;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
 
-<!-- Prev Day Button -->
-<button onclick="prevDay()">⬅️</button>
+        <!-- Prev Day Button -->
+        <button onclick="prevDay()">⬅️</button>
 
-<div style="flex:1;text-align:center;position:relative;">
+        <div style="flex:1;text-align:center;position:relative;">
 
-<div id="displayDate" style="font-weight:600;"></div>
-<div id="hijriDate" style="font-size:14px;color:gray;"></div>
+          <div id="displayDate" style="font-weight:600;"></div>
+          <div id="hijriDate" style="font-size:14px;color:gray;"></div>
 
-<input type="date"
-id="datePicker"
-onchange="manualPick(this.value)"
-style="
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-opacity:0;
-cursor:pointer;
-z-index:5;
-">
+          <input type="date"
+          id="datePicker"
+          onchange="manualPick(this.value)"
+          style="
+          position:absolute;
+          top:0;
+          left:0;
+          width:100%;
+          height:100%;
+          opacity:0;
+          cursor:pointer;
+          z-index:5;
+          ">
+
+        </div>
+
+        <!-- Next Day Button -->
+        <button onclick="nextDay()">➡️</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SALAH -->
+  <div class="card">
+    <h3>🕌 Daily Salah</h3>
+
+    <!-- Salah Container -->
+    <div id="salahContainer" style="display:flex;justify-content:space-between;text-align:center;"></div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="card">
+    <h3>📝 Daily Tasks</h3>
+
+    <!-- Task Container -->
+    <div id="taskContainer"></div>
+
+    <div style="margin-top:15px;text-align:center;">
+
+      <!-- Manage Tasks Button -->
+      <button onclick="manageTasks()" style="
+      padding:12px 30px;
+      border-radius:16px;
+      border:none;
+      background:#007aff;
+      color:white;
+      font-weight:700;
+      cursor:pointer;
+      ">
+      Manage Tasks
+      </button>
+
+    </div>
+  </div>
 
 </div>
-
-<!-- Next Day Button -->
-<button onclick="nextDay()">➡️</button>
-
-</div>
-
-</div>
-
-</div>
-
-
   
-
-<!-- SALAH -->
-<div class="card">
-<h3>🕌 Daily Salah</h3>
-
-<!-- Salah Container -->
-<div id="salahContainer"
-style="display:flex;justify-content:space-between;text-align:center;">
-</div>
-
-</div>
-
-  
-
-  
-<!-- TASKS -->
-<div class="card">
-<h3>📝 Daily Tasks</h3>
-
-<!-- Task Container -->
-<div id="taskContainer"></div>
-
-<div style="margin-top:15px;text-align:center;">
-
-  <!-- Manage Tasks Button -->
-<button onclick="manageTasks()" style="
-padding:12px 30px;
-border-radius:16px;
-border:none;
-background:#007aff;
-color:white;
-font-weight:700;
-cursor:pointer;
-">
-Manage Tasks
-</button>
-</div>
-
-</div>
-</div>
-</div>
 <!-- =========================
      TASBIH PAGE
 ========================= -->
