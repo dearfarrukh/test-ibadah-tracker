@@ -4025,7 +4025,11 @@ let bottomNav = document.getElementById("bottomNav");
 // remember where More was opened from
 if(homePage && homePage.style.display === "block"){
 lastMainTab = "home";
-}else{
+}
+else if(salahPage && salahPage.style.display === "block"){
+lastMainTab = "salah";
+}
+else{
 lastMainTab = "tracker";
 }
 
@@ -4056,15 +4060,23 @@ let salahPage = document.getElementById("salahPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(morePage) morePage.style.display = "none";
-if(salahPage) salahPage.style.display = "none";
 
 if(lastMainTab === "home"){
 if(homePage) homePage.style.display = "block";
 if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-}else{
+}
+else if(lastMainTab === "salah"){
+if(salahPage) salahPage.style.display = "block";
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+}
+else{
 if(trackerPage) trackerPage.style.display = "block";
 if(homePage) homePage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 }
 
