@@ -7865,12 +7865,24 @@ overflow:auto;
 -webkit-overflow-scrolling:touch;
 ">
 
+  <!-- HOME UNDER TOP WALLPAPER BACKGROUND -->
+  <div style="
+  position:absolute;
+  top:330px;
+  left:0;
+  right:0;
+  bottom:0;
+  background:url('Images/home-under-wallpaper.png') center top / cover no-repeat;
+  z-index:0;
+  pointer-events:none;
+  "></div>
     <!-- =========================
        HOME TOP WALLPAPER SECTION
        (HEIGHT INCREASED FOR CARD OVERLAP)
   ========================= -->
-  <div style="
+   <div style="
   position:relative;
+  z-index:1;
   height:330px;
   background:url('homewallpaper.jpg') center/cover no-repeat;
   padding:14px 14px 20px 14px;
@@ -8097,14 +8109,14 @@ gap:10px;
  
 
 </div>
-  <!-- =========================
+   <!-- =========================
       HOME LOWER SECTION SPACING FIX
  ========================= -->
   <div style="
-background:url('Images/home-under-wallpaper.png') center top / cover no-repeat;
-min-height:150vh;
-padding:44px 16px 120px 16px;
-">
+  position:relative;
+  z-index:1;
+  padding:44px 16px 28px 16px;
+  ">
 
    <!-- SHORTCUTS CARD -->
 <div style="
