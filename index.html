@@ -4012,8 +4012,8 @@ countdownEl.innerText = "00:00:00";
 // =========================
 function openMorePage(){
 
-lastMainTab = "more";
-
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
 let morePage = document.getElementById("morePage");
 let salahPage = document.getElementById("salahPage");
 let tasbihPage = document.getElementById("tasbihPage");
@@ -4022,6 +4022,15 @@ let qiblaPage = document.getElementById("qiblaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
+// remember where More was opened from
+if(homePage && homePage.style.display === "block"){
+lastMainTab = "home";
+}else{
+lastMainTab = "tracker";
+}
+
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
 if(duaPage) duaPage.style.display = "none";
@@ -4040,18 +4049,24 @@ window.scrollTo(0,0);
 // =========================
 function closeMorePage(){
 
-lastMainTab = "tracker";
-
+let homePage = document.getElementById("homePage");
 let morePage = document.getElementById("morePage");
 let trackerPage = document.getElementById("trackerPage");
 let salahPage = document.getElementById("salahPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(morePage) morePage.style.display = "none";
-if(trackerPage) trackerPage.style.display = "block";
 if(salahPage) salahPage.style.display = "none";
 
+if(lastMainTab === "home"){
+if(homePage) homePage.style.display = "block";
+if(trackerPage) trackerPage.style.display = "none";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+}else{
+if(trackerPage) trackerPage.style.display = "block";
+if(homePage) homePage.style.display = "none";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+}
 
 window.scrollTo(0,0);
 }
