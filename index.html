@@ -3784,12 +3784,14 @@ window.scrollTo(0,0);
 // ==============================
 // MAIN PAGE NAVIGATION FUNCTION
 // ==============================
-
 function goToMainPage(){
 
 let defaultPage = (localStorage.getItem("defaultPage") || "tracker").trim().toLowerCase();
 
-// Close menu/settings if open
+// ✅ VERY IMPORTANT — CLOSE SIDE MENU
+closeSideMenu();
+
+// Close other pages if open
 let morePage = document.getElementById("morePage");
 let appSettingsPage = document.getElementById("appSettingsPage");
 
