@@ -7784,15 +7784,16 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
     }
 
     row.innerHTML = `
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;width:9%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:normal;line-height:1.1;width:14%;">${formatIslamicDateForTable(hijri, previousHijri)}</td>
-      <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:nowrap;width:10%;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
-      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
+    row.innerHTML = `
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;width:9%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:5px 3px;text-align:center;font-size:9px;white-space:normal;line-height:1.15;width:14%;">${formatIslamicDateForTable(hijri, previousHijri)}</td>
+      <td style="border:1px solid #999;padding:5px 3px;text-align:center;font-size:9px;white-space:nowrap;width:10%;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
     `;
 
     tbody.appendChild(row);
@@ -7874,18 +7875,17 @@ function openMonthlySalahPrintPreviewPage(){
             cursor:pointer;
           }
 
-          .page{
+         .page{
             width:100%;
             max-width:190mm;
-            min-height:287mm;
+            min-height:292mm;
             margin:0 auto;
             background:white;
-            padding:5mm 6mm 8mm 6mm;
+            padding:3mm 6mm 6mm 6mm;
             box-sizing:border-box;
             box-shadow:0 10px 30px rgba(0,0,0,0.10);
             border-radius:18px;
           }
-
           table{
             width:100%;
             border-collapse:collapse;
@@ -7928,9 +7928,8 @@ function openMonthlySalahPrintPreviewPage(){
               margin:0;
               box-shadow:none;
               border-radius:0;
-              padding:5mm 6mm 8mm 6mm;
+              padding:3mm 6mm 6mm 6mm;
             }
-
             @page{
               size:A4 portrait;
               margin:8mm;
@@ -11198,10 +11197,10 @@ left:0;
 top:0;
 width:100%;
 max-width:190mm;
-min-height:287mm;
+min-height:292mm;
 margin:0 auto;
 background:white;
-padding:5mm 6mm 8mm 6mm;
+padding:3mm 6mm 6mm 6mm;
 box-sizing:border-box;
 color:#111;
 font-family:Arial, sans-serif;
