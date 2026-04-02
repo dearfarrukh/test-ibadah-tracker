@@ -7598,30 +7598,20 @@ async function generateMonthlySalahTimetable(actionType){
 // GET MONTHLY SALAH TIMETABLE STATE
 // =========================
 async function getMonthlySalahTimetableState(){
+
   let cityName = getMonthlySalahTimetableCityName();
 
-  // -------------------------
-  // LOCATION
-  // -------------------------
-  let latitude =
-    window.currentLatitude ||
-    window.userLatitude ||
-    window.salahLatitude ||
-    window.savedLatitude ||
-    (window.selectedSalahLocation && (window.selectedSalahLocation.latitude || window.selectedSalahLocation.lat)) ||
-    (window.enteredLocationData && (window.enteredLocationData.latitude || window.enteredLocationData.lat)) ||
-    localStorage.getItem("salahLatitude") ||
-    localStorage.getItem("savedLatitude");
+  let latitude = null;
+  let longitude = null;
 
-  let longitude =
-    window.currentLongitude ||
-    window.userLongitude ||
-    window.salahLongitude ||
-    window.savedLongitude ||
-    (window.selectedSalahLocation && (window.selectedSalahLocation.longitude || window.selectedSalahLocation.lng || window.selectedSalahLocation.lon)) ||
-    (window.enteredLocationData && (window.enteredLocationData.longitude || window.enteredLocationData.lng || window.enteredLocationData.lon)) ||
-    localStorage.getItem("salahLongitude") ||
-    localStorage.getItem("savedLongitude");
+  // -------------------------
+  // SIMPLE SAFE LOCATION (no break)
+  // -------------------------
+  if(typeof salahLocationData !== "undefined"){
+    latitude = salahLocationData.lat;
+    longitude = salahLocationData.lon;
+    cityName = salahLocationData.city || cityName;
+  }
 
   latitude = Number(latitude);
   longitude = Number(longitude);
@@ -7629,106 +7619,17 @@ async function getMonthlySalahTimetableState(){
   // -------------------------
   // CALCULATION METHOD
   // -------------------------
-  let calcMethodKey =
-    (localStorage.getItem("salahCalculationMethod") ||
-     localStorage.getItem("calculationMethod") ||
-     localStorage.getItem("selectedCalculationMethod") ||
-     "auto").toString().trim().toLowerCase();
-
-  let methodNumber = 2;
-
-  if(calcMethodKey === "auto") methodNumber = 2;
-  else if(calcMethodKey === "isna") methodNumber = 2;
-  else if(calcMethodKey === "karachi") methodNumber = 1;
-  else if(calcMethodKey === "mwl") methodNumber = 3;
-  else if(calcMethodKey === "umm al-qura") methodNumber = 4;
-  else if(calcMethodKey === "umm al qura") methodNumber = 4;
-  else if(calcMethodKey === "18° / 15°".toLowerCase()) methodNumber = 2;
-  else if(calcMethodKey === "18/15") methodNumber = 2;
-  else if(calcMethodKey === "18 15") methodNumber = 2;
+  let methodNumber = 2; // default ISNA
 
   // -------------------------
   // ASR METHOD
   // -------------------------
-  let asrValue =
-    (localStorage.getItem("asrMethod") || "hanafi").toString().trim().toLowerCase();
-
-  let schoolNumber = asrValue === "shafi" ? 0 : 1;
+  let schoolNumber = 1; // hanafi default
 
   // -------------------------
-  // FAJR 18 OVERRIDE
+  // FAJR 18
   // -------------------------
-  let useFajr18Override = isFajr18OverrideEnabled();
-
-  return {
-    cityName: cityName,
-    latitude: latitude,
-    longitude: longitude,
-    methodNumber: methodNumber,
-    schoolNumber: schoolNumber,
-    useFajr18Override: useFajr18Override
-  };
-}
-  // -------------------------
-  // LOCATION
-  // -------------------------
-  // This tries to use existing app values first.
-  let latitude =
-    window.currentLatitude ||
-    window.userLatitude ||
-    window.salahLatitude ||
-    window.savedLatitude ||
-    (window.selectedSalahLocation && (window.selectedSalahLocation.latitude || window.selectedSalahLocation.lat)) ||
-    (window.enteredLocationData && (window.enteredLocationData.latitude || window.enteredLocationData.lat)) ||
-    localStorage.getItem("salahLatitude") ||
-    localStorage.getItem("savedLatitude");
-
-  let longitude =
-    window.currentLongitude ||
-    window.userLongitude ||
-    window.salahLongitude ||
-    window.savedLongitude ||
-    (window.selectedSalahLocation && (window.selectedSalahLocation.longitude || window.selectedSalahLocation.lng || window.selectedSalahLocation.lon)) ||
-    (window.enteredLocationData && (window.enteredLocationData.longitude || window.enteredLocationData.lng || window.enteredLocationData.lon)) ||
-    localStorage.getItem("salahLongitude") ||
-    localStorage.getItem("savedLongitude");
-
-  latitude = Number(latitude);
-  longitude = Number(longitude);
-
-  // -------------------------
-  // CALCULATION METHOD
-  // -------------------------
-  let calcMethodKey =
-    (localStorage.getItem("salahCalculationMethod") ||
-     localStorage.getItem("calculationMethod") ||
-     localStorage.getItem("selectedCalculationMethod") ||
-     "auto").toString().trim().toLowerCase();
-
-  let methodNumber = 2;
-
-  if(calcMethodKey === "auto") methodNumber = 2;
-  else if(calcMethodKey === "isna") methodNumber = 2;
-  else if(calcMethodKey === "karachi") methodNumber = 1;
-  else if(calcMethodKey === "mwl") methodNumber = 3;
-  else if(calcMethodKey === "umm al-qura") methodNumber = 4;
-  else if(calcMethodKey === "umm al qura") methodNumber = 4;
-  else if(calcMethodKey === "18° / 15°") methodNumber = 2;
-  else if(calcMethodKey === "18/15") methodNumber = 2;
-  else if(calcMethodKey === "18 15") methodNumber = 2;
-
-  // -------------------------
-  // ASR METHOD
-  // -------------------------
-  let asrValue =
-    (localStorage.getItem("asrMethod") || "hanafi").toString().trim().toLowerCase();
-
-  let schoolNumber = asrValue === "shafi" ? 0 : 1;
-
-  // -------------------------
-  // FAJR 18 OVERRIDE
-  // -------------------------
-  let useFajr18Override = isFajr18OverrideEnabled();
+  let useFajr18Override = false;
 
   return {
     cityName: cityName,
