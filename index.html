@@ -7951,16 +7951,16 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
       row.style.background = "#ffffff";
     }
 
-    row.innerHTML = `
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:9%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:5px 3px;text-align:center;font-size:10px;white-space:normal;line-height:1.15;width:14%;">${formatIslamicDateForTable(hijri, previousHijri)}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
-      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:11%;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
+   row.innerHTML = `
+      <td style="border:1px solid #999;padding:5px 4px;text-align:center;font-size:10px;white-space:nowrap;width:15%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:5px 3px;text-align:center;font-size:10px;white-space:normal;line-height:1.15;width:12%;">${formatIslamicDateForTable(hijri, previousHijri)}</td>
+      <td style="border:1px solid #999;padding:5px 3px;text-align:center;font-size:10px;white-space:nowrap;width:12%;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:10.16%;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:10.16%;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:10.16%;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:10.16%;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:10.16%;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
+      <td style="border:1px solid #999;padding:5px 2px;text-align:center;font-size:10px;white-space:nowrap;width:10.16%;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
     `;
 
     tbody.appendChild(row);
@@ -7981,44 +7981,43 @@ function applyMonthlySalahTableColumnWidths(){
     if(!cells || cells.length < 9) return;
 
     // 1 = Day
-    cells[0].style.width = "9%";
+    cells[0].style.width = "15%";
     cells[0].style.whiteSpace = "nowrap";
 
     // 2 = Hijri
-    cells[1].style.width = "14%";
+    cells[1].style.width = "12%";
     cells[1].style.whiteSpace = "normal";
     cells[1].style.lineHeight = "1.15";
 
     // 3 = Date
-    cells[2].style.width = "11%";
+    cells[2].style.width = "12%";
     cells[2].style.whiteSpace = "nowrap";
 
     // 4 = Fajr
-    cells[3].style.width = "11%";
+    cells[3].style.width = "10.16%";
     cells[3].style.whiteSpace = "nowrap";
 
     // 5 = Sunrise
-    cells[4].style.width = "11%";
+    cells[4].style.width = "10.16%";
     cells[4].style.whiteSpace = "nowrap";
 
     // 6 = Dhuhr
-    cells[5].style.width = "11%";
+    cells[5].style.width = "10.16%";
     cells[5].style.whiteSpace = "nowrap";
 
     // 7 = Asr
-    cells[6].style.width = "11%";
+    cells[6].style.width = "10.16%";
     cells[6].style.whiteSpace = "nowrap";
 
     // 8 = Maghrib
-    cells[7].style.width = "11%";
+    cells[7].style.width = "10.16%";
     cells[7].style.whiteSpace = "nowrap";
 
     // 9 = Isha
-    cells[8].style.width = "11%";
+    cells[8].style.width = "10.16%";
     cells[8].style.whiteSpace = "nowrap";
   });
 }
-
 // =========================
 // OPEN MONTHLY PRINT WINDOW
 // =========================
@@ -8456,7 +8455,7 @@ function formatGregorianDateForTable(dateString){
 }
 
 // =========================
-// GET SHORT WEEKDAY NAME
+// GET FULL WEEKDAY NAME
 // =========================
 function getShortWeekdayName(dateString){
   if(!dateString) return "-";
@@ -8466,7 +8465,7 @@ function getShortWeekdayName(dateString){
 
   let jsDate = new Date(parts[2], Number(parts[1]) - 1, parts[0]);
 
-  return jsDate.toLocaleDateString("en-US", { weekday: "short" });
+  return jsDate.toLocaleDateString("en-US", { weekday: "long" });
 }
 
 // =========================
