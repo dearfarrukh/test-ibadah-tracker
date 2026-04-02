@@ -7600,59 +7600,65 @@ async function generateMonthlySalahTimetable(actionType){
 async function getMonthlySalahTimetableState(){
   let cityName = getMonthlySalahTimetableCityName();
 
-  let latitude = null;
-  let longitude = null;
-
   // -------------------------
-  // LOCATION - USE REAL SALAH PAGE STATE
+  // LOCATION
   // -------------------------
-  if(salahSource === "location"){
-    if((salahLocationData.lat === null || salahLocationData.lon === null) && typeof loadUserLocationData === "function"){
-      try{
-        await loadUserLocationData();
-      }catch(err){}
-    }
+  let latitude =
+    window.currentLatitude ||
+    window.userLatitude ||
+    window.salahLatitude ||
+    window.savedLatitude ||
+    (window.selectedSalahLocation && (window.selectedSalahLocation.latitude || window.selectedSalahLocation.lat)) ||
+    (window.enteredLocationData && (window.enteredLocationData.latitude || window.enteredLocationData.lat)) ||
+    localStorage.getItem("salahLatitude") ||
+    localStorage.getItem("savedLatitude");
 
-    latitude = salahLocationData.lat;
-    longitude = salahLocationData.lon;
-    cityName = salahLocationData.city || cityName || "My Location";
-  }
-  else if(salahSource === "masjid"){
-    let picked = typeof getSelectedSavedSalahLocation === "function"
-      ? getSelectedSavedSalahLocation()
-      : null;
-
-    if(picked){
-      latitude = picked.lat;
-      longitude = picked.lon;
-      cityName = picked.name || cityName || "Saved Location";
-    }
-  }
-  else if(salahSource === "entered"){
-    latitude = salahEnteredLocation.lat;
-    longitude = salahEnteredLocation.lon;
-    cityName = salahEnteredLocation.locationName || cityName || "Entered Location";
-  }
+  let longitude =
+    window.currentLongitude ||
+    window.userLongitude ||
+    window.salahLongitude ||
+    window.savedLongitude ||
+    (window.selectedSalahLocation && (window.selectedSalahLocation.longitude || window.selectedSalahLocation.lng || window.selectedSalahLocation.lon)) ||
+    (window.enteredLocationData && (window.enteredLocationData.longitude || window.enteredLocationData.lng || window.enteredLocationData.lon)) ||
+    localStorage.getItem("salahLongitude") ||
+    localStorage.getItem("savedLongitude");
 
   latitude = Number(latitude);
   longitude = Number(longitude);
 
   // -------------------------
-  // CALCULATION METHOD - USE REAL APP LOGIC
+  // CALCULATION METHOD
   // -------------------------
-  let methodNumber = getAladhanMethodNumber(cityName);
+  let calcMethodKey =
+    (localStorage.getItem("salahCalculationMethod") ||
+     localStorage.getItem("calculationMethod") ||
+     localStorage.getItem("selectedCalculationMethod") ||
+     "auto").toString().trim().toLowerCase();
+
+  let methodNumber = 2;
+
+  if(calcMethodKey === "auto") methodNumber = 2;
+  else if(calcMethodKey === "isna") methodNumber = 2;
+  else if(calcMethodKey === "karachi") methodNumber = 1;
+  else if(calcMethodKey === "mwl") methodNumber = 3;
+  else if(calcMethodKey === "umm al-qura") methodNumber = 4;
+  else if(calcMethodKey === "umm al qura") methodNumber = 4;
+  else if(calcMethodKey === "18° / 15°".toLowerCase()) methodNumber = 2;
+  else if(calcMethodKey === "18/15") methodNumber = 2;
+  else if(calcMethodKey === "18 15") methodNumber = 2;
 
   // -------------------------
   // ASR METHOD
   // -------------------------
-  let schoolNumber = getAsrMethod() === "hanafi" ? 1 : 0;
+  let asrValue =
+    (localStorage.getItem("asrMethod") || "hanafi").toString().trim().toLowerCase();
+
+  let schoolNumber = asrValue === "shafi" ? 0 : 1;
 
   // -------------------------
   // FAJR 18 OVERRIDE
   // -------------------------
-  let useFajr18Override =
-    (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
-    getIsnaFajr18Enabled();
+  let useFajr18Override = isFajr18OverrideEnabled();
 
   return {
     cityName: cityName,
@@ -7663,7 +7669,6 @@ async function getMonthlySalahTimetableState(){
     useFajr18Override: useFajr18Override
   };
 }
-
   // -------------------------
   // LOCATION
   // -------------------------
