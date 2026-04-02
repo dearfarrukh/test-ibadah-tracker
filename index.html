@@ -7686,12 +7686,12 @@ async function generateMonthlySalahTimetable(actionType){
     });
 
     if(monthlyState.useFajr18Override){
-      let fajrOverrideData = await fetchMonthlySalahCalendar({
+            let fajrOverrideData = await fetchMonthlySalahCalendar({
         latitude: monthlyState.latitude,
         longitude: monthlyState.longitude,
         month: month,
         year: year,
-        method: 2,
+        method: 13,
         school: monthlyState.schoolNumber
       });
 
@@ -7734,12 +7734,45 @@ async function getMonthlySalahTimetableState(){
   let longitude = null;
 
   // -------------------------
-  // SIMPLE SAFE LOCATION (no break)
+  // LOCATION: CURRENT GPS
   // -------------------------
-  if(typeof salahLocationData !== "undefined"){
+  if(
+    salahSource === "location" &&
+    typeof salahLocationData !== "undefined" &&
+    salahLocationData &&
+    salahLocationData.lat &&
+    salahLocationData.lon
+  ){
     latitude = salahLocationData.lat;
     longitude = salahLocationData.lon;
     cityName = salahLocationData.city || cityName;
+  }
+
+  // -------------------------
+  // LOCATION: SAVED LOCATION
+  // -------------------------
+  else if(salahSource === "masjid"){
+    let picked = getSelectedSavedSalahLocation();
+    if(picked && picked.lat && picked.lon){
+      latitude = picked.lat;
+      longitude = picked.lon;
+      cityName = picked.name || cityName;
+    }
+  }
+
+  // -------------------------
+  // LOCATION: ENTERED LOCATION
+  // -------------------------
+  else if(
+    salahSource === "entered" &&
+    typeof salahEnteredLocation !== "undefined" &&
+    salahEnteredLocation &&
+    salahEnteredLocation.lat &&
+    salahEnteredLocation.lon
+  ){
+    latitude = salahEnteredLocation.lat;
+    longitude = salahEnteredLocation.lon;
+    cityName = salahEnteredLocation.locationName || cityName;
   }
 
   latitude = Number(latitude);
@@ -7748,17 +7781,29 @@ async function getMonthlySalahTimetableState(){
   // -------------------------
   // CALCULATION METHOD
   // -------------------------
-  let methodNumber = 2; // default ISNA
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+  let resolvedMethod = getResolvedCalculationMethod(cityName);
+
+  if(savedMethod === "auto"){
+    resolvedMethod = getResolvedCalculationMethod(cityName);
+  }else{
+    resolvedMethod = savedMethod;
+  }
+
+  let methodNumber = getAladhanMethodNumber(cityName);
 
   // -------------------------
   // ASR METHOD
   // -------------------------
-  let schoolNumber = 1; // hanafi default
+  let schoolNumber = getAsrMethod() === "hanafi" ? 1 : 0;
 
   // -------------------------
-  // FAJR 18
+  // FAJR 18 OVERRIDE
+  // ONLY FOR ISNA + TOGGLE ON
   // -------------------------
-  let useFajr18Override = false;
+  let useFajr18Override =
+    resolvedMethod === "isna" &&
+    getIsnaFajr18Enabled();
 
   return {
     cityName: cityName,
@@ -8210,8 +8255,8 @@ function cleanSalahTime(timeValue){
 
   let cleaned = String(timeValue).replace(/\s*\(.+?\)\s*/g, "").trim();
 
-  if(typeof convertTo12Hour === "function"){
-    return convertTo12Hour(cleaned);
+  if(typeof to12Hour === "function"){
+    return to12Hour(cleaned);
   }
 
   return cleaned;
