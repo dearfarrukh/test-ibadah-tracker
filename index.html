@@ -8365,12 +8365,14 @@ function cleanSalahTime(timeValue){
   let cleaned = String(timeValue).replace(/\s*\(.+?\)\s*/g, "").trim();
 
   if(typeof to12Hour === "function"){
-    return to12Hour(cleaned);
+    let formatted = to12Hour(cleaned);
+
+    formatted = formatted.replace(/\s?(AM|PM)$/i, "");
+    return formatted.trim();
   }
 
   return cleaned;
 }
-
 // =========================
 // FORMAT ISLAMIC DATE FOR TABLE
 // =========================
