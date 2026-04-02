@@ -8137,26 +8137,32 @@ function openMonthlySalahPrintPreviewPage(){
             }
           }
 
-          @media print{
-            body{
-              background:white;
+                   @media print{
+            html, body{
+              width:210mm;
+              margin:0;
               padding:0;
+              background:white;
               -webkit-text-size-adjust:100%;
               text-size-adjust:100%;
+              -webkit-print-color-adjust:exact;
+              print-color-adjust:exact;
             }
 
             .topBar{
-              display:none;
+              display:none !important;
             }
 
             .page{
-              max-width:none;
-              width:auto;
+              width:194mm;
+              max-width:194mm;
               min-height:auto;
-              margin:0;
+              margin:0 auto;
               box-shadow:none;
               border-radius:0;
+              background:white;
               padding:5mm 6mm 8mm 6mm;
+              box-sizing:border-box;
               overflow:visible;
             }
 
@@ -8165,7 +8171,6 @@ function openMonthlySalahPrintPreviewPage(){
               margin:8mm;
             }
           }
-
           @media print and (max-width: 768px){
             .page{
               width:100%;
