@@ -7753,16 +7753,16 @@ async function fetchMonthlySalahCalendarFromUrl(month, year, overrideMethod){
 // MONTHLY TIMETABLE SELECTED DATE HELPERS
 // =========================
 function getMonthlySalahSelectedMonthYear(){
-  let savedMonth = parseInt(localStorage.getItem("monthlySalahSelectedMonth"), 10);
-  let savedYear = parseInt(localStorage.getItem("monthlySalahSelectedYear"), 10);
-
   let now = new Date();
 
-  if(isNaN(savedMonth) || savedMonth < 1 || savedMonth > 12){
+  let savedMonth = Number(window.monthlySalahSelectedMonth);
+  let savedYear = Number(window.monthlySalahSelectedYear);
+
+  if(!savedMonth || savedMonth < 1 || savedMonth > 12){
     savedMonth = now.getMonth() + 1;
   }
 
-  if(isNaN(savedYear) || savedYear < 2000 || savedYear > 2100){
+  if(!savedYear || savedYear < 2000 || savedYear > 2100){
     savedYear = now.getFullYear();
   }
 
@@ -7776,10 +7776,20 @@ function getMonthlySalahSelectedMonthYear(){
 // SET MONTHLY SALAH SELECTED MONTH YEAR
 // =========================
 function setMonthlySalahSelectedMonthYear(month, year){
-  localStorage.setItem("monthlySalahSelectedMonth", String(month));
-  localStorage.setItem("monthlySalahSelectedYear", String(year));
+  window.monthlySalahSelectedMonth = Number(month);
+  window.monthlySalahSelectedYear = Number(year);
 }
 
+// =========================
+// RESET MONTHLY SALAH SELECTED MONTH YEAR
+// =========================
+function resetMonthlySalahSelectedMonthYear(){
+  window.monthlySalahSelectedMonth = null;
+  window.monthlySalahSelectedYear = null;
+}
+
+
+  
 // =========================
 // GET MONTHLY SALAH MONTH LABEL
 // =========================
@@ -7890,6 +7900,7 @@ function openMonthlySalahTimetableActions(){
 
   if(!overlay || !sheet) return;
 
+  resetMonthlySalahSelectedMonthYear();
   updateMonthlySalahActionSheetLabels();
 
   overlay.style.display = "block";
@@ -7900,7 +7911,6 @@ function openMonthlySalahTimetableActions(){
     sheet.style.transform = "translateY(0)";
   },10);
 }
-
 // =========================
 // CLOSE MONTHLY TIMETABLE ACTION SHEET
 // =========================
@@ -7916,6 +7926,7 @@ function closeMonthlySalahTimetableActions(){
   setTimeout(function(){
     overlay.style.display = "none";
     sheet.style.display = "none";
+    resetMonthlySalahSelectedMonthYear();
   },250);
 }
 
