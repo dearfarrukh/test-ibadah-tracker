@@ -7483,7 +7483,99 @@ function refreshSalahAfterSettingChange(){
   }
 }
 
+// =========================
+// MONTHLY TIMETABLE SHARED SALAH SETTINGS HELPERS
+// =========================
 
+function getMonthlySalahTimetableEffectiveSettings(){
+  let method = localStorage.getItem("salahCalcMethod") || "auto";
+  let asr = localStorage.getItem("asrMethod") || "hanafi";
+  let fajr18Enabled = localStorage.getItem("fajr18Toggle") === "true";
+
+  let school = asr === "hanafi" ? 1 : 0;
+
+  let apiMethod = 2;
+
+  if(method === "auto"){
+    apiMethod = 2;
+  }else if(method === "isna"){
+    apiMethod = 2;
+  }else if(method === "karachi"){
+    apiMethod = 1;
+  }else if(method === "mwl"){
+    apiMethod = 3;
+  }else if(method === "ummalqura"){
+    apiMethod = 4;
+  }else if(method === "18/15"){
+    apiMethod = 99;
+  }else{
+    apiMethod = 2;
+  }
+
+  return {
+    selectedMethod: method,
+    apiMethod: apiMethod,
+    asrMethod: asr,
+    school: school,
+    fajr18Enabled: fajr18Enabled
+  };
+}
+
+// =========================
+// MONTHLY TIMETABLE LOCATION HELPER
+// =========================
+function getMonthlySalahTimetableActiveLocation(){
+  if(salahSource === "location" && window.userLat && window.userLng){
+    return {
+      latitude: window.userLat,
+      longitude: window.userLng,
+      label: getMonthlySalahTimetableCityName()
+    };
+  }
+
+  if(salahSource === "masjid" && window.selectedMasjid && selectedMasjid.latitude && selectedMasjid.longitude){
+    return {
+      latitude: selectedMasjid.latitude,
+      longitude: selectedMasjid.longitude,
+      label: selectedMasjid.name || getMonthlySalahTimetableCityName()
+    };
+  }
+
+  if(window.enteredLat && window.enteredLng){
+    return {
+      latitude: window.enteredLat,
+      longitude: window.enteredLng,
+      label: getMonthlySalahTimetableCityName()
+    };
+  }
+
+  return null;
+}
+
+// =========================
+// MONTHLY TIMETABLE API URL BUILDER
+// =========================
+function buildMonthlySalahTimetableCalendarUrl(month, year){
+  let location = getMonthlySalahTimetableActiveLocation();
+  if(!location){
+    return null;
+  }
+
+  let settings = getMonthlySalahTimetableEffectiveSettings();
+
+  let url =
+    "https://api.aladhan.com/v1/calendar?" +
+    "latitude=" + encodeURIComponent(location.latitude) +
+    "&longitude=" + encodeURIComponent(location.longitude) +
+    "&method=" + encodeURIComponent(settings.apiMethod) +
+    "&school=" + encodeURIComponent(settings.school) +
+    "&month=" + encodeURIComponent(month) +
+    "&year=" + encodeURIComponent(year);
+
+  return url;
+}
+
+    
 
   // =========================
 // MONTHLY SALAH TIMETABLE FUNCTIONS
