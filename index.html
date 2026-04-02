@@ -7964,15 +7964,12 @@ async function generateMonthlySalahTimetable(actionType){
       return;
     }
 
-       let selected = getMonthlySalahSelectedMonthYear();
+           let selected = getMonthlySalahSelectedMonthYear();
     let selectedDate = new Date(selected.year, selected.month - 1, 1);
     let month = selected.month;
     let year = selected.year;
 
     let baseData = await fetchMonthlySalahCalendarFromUrl(month, year);
-
-    let baseData = await fetchMonthlySalahCalendarFromUrl(month, year);
-
     let useFajr18Override =
       settings.resolvedMethod === "isna" &&
       settings.fajr18Enabled;
