@@ -7520,7 +7520,17 @@ function closeMonthlySalahTimetableActions(){
 // =========================
 async function printMonthlySalahTimetable(){
   closeMonthlySalahTimetableActions();
-  closeSalahSettingsPage();
+
+  let settingsOverlay = document.getElementById("salahSettingsOverlay");
+  let settingsCard = document.getElementById("salahSettingsCard");
+
+  if(settingsCard){
+    settingsCard.style.transform = "translateX(100%)";
+  }
+
+  if(settingsOverlay){
+    settingsOverlay.style.display = "none";
+  }
 
   await new Promise(function(resolve){
     setTimeout(resolve, 320);
@@ -7753,7 +7763,7 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
 
     row.innerHTML = `
       <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;width:9%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:nowrap;width:14%;">${escapeHtml(formatIslamicDateForTable(hijri, previousHijri))}</td>
+      <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:normal;line-height:1.1;width:14%;">${formatIslamicDateForTable(hijri, previousHijri)}</td>
       <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:nowrap;width:10%;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
       <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
       <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
@@ -8105,7 +8115,7 @@ function formatIslamicDateForTable(hijri, previousHijri){
   let prevMonth = previousHijri && previousHijri.month && previousHijri.month.en ? previousHijri.month.en : "";
 
   if(day === "1" || month !== prevMonth){
-    return (day + " " + month).trim();
+    return day + "<br><span style='font-size:8px;font-weight:600;line-height:1.1;display:block;margin-top:1px;'>" + month + "</span>";
   }
 
   return day;
