@@ -7488,10 +7488,9 @@ function refreshSalahAfterSettingChange(){
 // =========================
 
 function getMonthlySalahTimetableEffectiveSettings(){
-  let method = localStorage.getItem("salahCalcMethod") || "auto";
-  let asr = localStorage.getItem("asrMethod") || "hanafi";
-  let fajr18Enabled = localStorage.getItem("fajr18Toggle") === "true";
-
+ let method = localStorage.getItem("salahCalculationMethod") || "auto";
+let asr = localStorage.getItem("asrMethod") || "hanafi";
+let fajr18Enabled = localStorage.getItem("isnaFajr18") === "true";
   let school = asr === "hanafi" ? 1 : 0;
 
   let apiMethod = 2;
