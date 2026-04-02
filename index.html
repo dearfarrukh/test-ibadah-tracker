@@ -7600,6 +7600,70 @@ async function generateMonthlySalahTimetable(actionType){
 async function getMonthlySalahTimetableState(){
   let cityName = getMonthlySalahTimetableCityName();
 
+  let latitude = null;
+  let longitude = null;
+
+  // -------------------------
+  // LOCATION - USE REAL SALAH PAGE STATE
+  // -------------------------
+  if(salahSource === "location"){
+    if((salahLocationData.lat === null || salahLocationData.lon === null) && typeof loadUserLocationData === "function"){
+      try{
+        await loadUserLocationData();
+      }catch(err){}
+    }
+
+    latitude = salahLocationData.lat;
+    longitude = salahLocationData.lon;
+    cityName = salahLocationData.city || cityName || "My Location";
+  }
+  else if(salahSource === "masjid"){
+    let picked = typeof getSelectedSavedSalahLocation === "function"
+      ? getSelectedSavedSalahLocation()
+      : null;
+
+    if(picked){
+      latitude = picked.lat;
+      longitude = picked.lon;
+      cityName = picked.name || cityName || "Saved Location";
+    }
+  }
+  else if(salahSource === "entered"){
+    latitude = salahEnteredLocation.lat;
+    longitude = salahEnteredLocation.lon;
+    cityName = salahEnteredLocation.locationName || cityName || "Entered Location";
+  }
+
+  latitude = Number(latitude);
+  longitude = Number(longitude);
+
+  // -------------------------
+  // CALCULATION METHOD - USE REAL APP LOGIC
+  // -------------------------
+  let methodNumber = getAladhanMethodNumber(cityName);
+
+  // -------------------------
+  // ASR METHOD
+  // -------------------------
+  let schoolNumber = getAsrMethod() === "hanafi" ? 1 : 0;
+
+  // -------------------------
+  // FAJR 18 OVERRIDE
+  // -------------------------
+  let useFajr18Override =
+    (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
+    getIsnaFajr18Enabled();
+
+  return {
+    cityName: cityName,
+    latitude: latitude,
+    longitude: longitude,
+    methodNumber: methodNumber,
+    schoolNumber: schoolNumber,
+    useFajr18Override: useFajr18Override
+  };
+}
+
   // -------------------------
   // LOCATION
   // -------------------------
