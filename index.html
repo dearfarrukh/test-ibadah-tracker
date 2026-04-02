@@ -7520,7 +7520,7 @@ function closeMonthlySalahTimetableActions(){
 // =========================
 async function printMonthlySalahTimetable(){
   closeMonthlySalahTimetableActions();
-  await generateMonthlySalahTimetable("print");
+  await generateMonthlySalahTimetable("preview");
 }
 
 // =========================
@@ -7582,10 +7582,10 @@ async function generateMonthlySalahTimetable(actionType){
 
     buildMonthlySalahPrintTable(baseData, monthlyState.cityName, now);
 
-    if(actionType === "print"){
-      openMonthlySalahPrintWindow();
+        if(actionType === "preview"){
+      await openMonthlySalahTimetablePDFPreview(cityNameForFile(monthlyState.cityName), now);
     }else{
-      await saveMonthlySalahTimetablePDF(cityNameForFile(monthlyState.cityName), now);
+      await openMonthlySalahTimetablePDFPreview(cityNameForFile(monthlyState.cityName), now);
     }
 
   }catch(error){
@@ -7848,6 +7848,9 @@ async function saveMonthlySalahTimetablePDF(cityName, nowDate){
 
   let fileName = cityName + "-" + monthLabel + "-Salah-Timetable.pdf";
 
+
+
+  
   // -------------------------
   // MAKE TEMP CLONE FOR PDF
   // -------------------------
@@ -7905,6 +7908,80 @@ async function saveMonthlySalahTimetablePDF(cityName, nowDate){
   }
 }
 
+
+async function openMonthlySalahTimetablePDFPreview(cityName, nowDate){
+  let printArea = document.getElementById("monthlySalahPrintArea");
+  if(!printArea) return;
+
+  let monthLabel = nowDate.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric"
+  }).replace(/\s+/g, "-");
+
+  let fileName = cityName + "-" + monthLabel + "-Salah-Timetable.pdf";
+
+  let cloneWrap = document.createElement("div");
+  cloneWrap.style.position = "fixed";
+  cloneWrap.style.left = "-10000px";
+  cloneWrap.style.top = "0";
+  cloneWrap.style.width = "190mm";
+  cloneWrap.style.minHeight = "277mm";
+  cloneWrap.style.background = "#ffffff";
+  cloneWrap.style.padding = "0";
+  cloneWrap.style.margin = "0";
+  cloneWrap.style.opacity = "1";
+  cloneWrap.style.pointerEvents = "none";
+  cloneWrap.style.zIndex = "99999";
+
+  let clone = printArea.cloneNode(true);
+  clone.style.position = "static";
+  clone.style.left = "auto";
+  clone.style.top = "auto";
+  clone.style.width = "190mm";
+  clone.style.minHeight = "277mm";
+  clone.style.opacity = "1";
+  clone.style.pointerEvents = "none";
+  clone.style.zIndex = "auto";
+  clone.style.display = "block";
+  clone.style.background = "#ffffff";
+
+  cloneWrap.appendChild(clone);
+  document.body.appendChild(cloneWrap);
+
+  await new Promise(function(resolve){
+    setTimeout(resolve, 300);
+  });
+
+  let options = {
+    margin: [8, 8, 8, 8],
+    filename: fileName,
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff"
+    },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "portrait"
+    },
+    pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+  };
+
+  try{
+    let pdfBlob = await html2pdf().set(options).from(clone).outputPdf("blob");
+    let pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, "_blank");
+
+    setTimeout(function(){
+      URL.revokeObjectURL(pdfUrl);
+    }, 60000);
+  }finally{
+    cloneWrap.remove();
+  }
+}
+  
   
 // =========================
 // CLEAN SALAH TIME
@@ -10954,24 +11031,10 @@ transition:all 0.25s ease;
   margin-bottom:10px;
   cursor:pointer;
   ">
-    🖨️ Print Timetable
+    📄 Open PDF
   </button>
 
-  <button onclick="downloadMonthlySalahTimetablePDF()" style="
-  width:100%;
-  border:none;
-  border-radius:18px;
-  background:white;
-  padding:16px;
-  font-size:16px;
-  font-weight:700;
-  color:#111;
-  box-shadow:0 4px 14px rgba(0,0,0,0.06);
-  margin-bottom:10px;
-  cursor:pointer;
-  ">
-    📄 Download PDF
-  </button>
+ 
 
   <button onclick="closeMonthlySalahTimetableActions()" style="
   width:100%;
@@ -10997,6 +11060,7 @@ left:0;
 top:0;
 width:100%;
 max-width:190mm;
+min-height:277mm;
 margin:0 auto;
 background:white;
 padding:10mm 6mm;
