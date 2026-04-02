@@ -7242,6 +7242,28 @@ function closeSalahSettingsPage(){
   },280);
 }
 
+function openMonthlyPrintFromSettings(){
+
+  // CLOSE SETTINGS PANEL FIRST
+  let settingsOverlay = document.getElementById("salahSettingsOverlay");
+  let settingsCard = document.getElementById("salahSettingsCard");
+
+  if(settingsCard){
+    settingsCard.style.transform = "translateX(100%)";
+  }
+
+  if(settingsOverlay){
+    settingsOverlay.style.display = "none";
+  }
+
+  // WAIT FOR CLOSE ANIMATION
+  setTimeout(function(){
+    openMonthlySalahTimetableActions(); // opens your bottom popup
+  }, 300);
+}
+
+
+  
 // =========================
 // OPEN SALAH SETTINGS FROM MENU
 // =========================
@@ -10908,7 +10930,12 @@ gap:12px;
       cursor:pointer;
       -webkit-tap-highlight-color:transparent;
       ">
-        <div style="display:flex;align-items:center;gap:12px;">
+        <div onclick="openMonthlyPrintFromSettings()" style="
+display:flex;
+align-items:center;
+gap:12px;
+cursor:pointer;
+">
           <div style="
           width:42px;
           height:42px;
