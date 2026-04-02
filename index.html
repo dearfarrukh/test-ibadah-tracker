@@ -7488,31 +7488,23 @@ function refreshSalahAfterSettingChange(){
 // =========================
 
 function getMonthlySalahTimetableEffectiveSettings(){
- let method = localStorage.getItem("salahCalculationMethod") || "auto";
-let asr = localStorage.getItem("asrMethod") || "hanafi";
-let fajr18Enabled = localStorage.getItem("isnaFajr18") === "true";
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+  let asr = localStorage.getItem("asrMethod") || "hanafi";
+  let fajr18Enabled = localStorage.getItem("isnaFajr18") === "true";
+
+  let activeLocation = getMonthlySalahTimetableActiveLocation();
+  let countryName = activeLocation && activeLocation.country ? activeLocation.country : "";
+  let resolvedMethod = getResolvedCalculationMethod(countryName);
+  let apiMethod = getAladhanMethodNumber(countryName);
   let school = asr === "hanafi" ? 1 : 0;
 
-  let apiMethod = 2;
-
-  if(method === "auto"){
-    apiMethod = 2;
-  }else if(method === "isna"){
-    apiMethod = 2;
-  }else if(method === "karachi"){
-    apiMethod = 1;
-  }else if(method === "mwl"){
-    apiMethod = 3;
-  }else if(method === "ummalqura"){
-    apiMethod = 4;
-  }else if(method === "18/15"){
-    apiMethod = 99;
-  }else{
-    apiMethod = 2;
+  if(savedMethod !== "auto"){
+    resolvedMethod = savedMethod;
   }
 
   return {
-    selectedMethod: method,
+    selectedMethod: savedMethod,
+    resolvedMethod: resolvedMethod,
     apiMethod: apiMethod,
     asrMethod: asr,
     school: school,
@@ -7520,61 +7512,110 @@ let fajr18Enabled = localStorage.getItem("isnaFajr18") === "true";
   };
 }
 
+
+  
 // =========================
 // MONTHLY TIMETABLE LOCATION HELPER
 // =========================
 function getMonthlySalahTimetableActiveLocation(){
-  if(salahSource === "location" && window.userLat && window.userLng){
+
+  if(
+    salahSource === "location" &&
+    typeof salahLocationData !== "undefined" &&
+    salahLocationData &&
+    salahLocationData.lat &&
+    salahLocationData.lon
+  ){
     return {
-      latitude: window.userLat,
-      longitude: window.userLng,
-      label: getMonthlySalahTimetableCityName()
+      latitude: Number(salahLocationData.lat),
+      longitude: Number(salahLocationData.lon),
+      label: salahLocationData.city || getMonthlySalahTimetableCityName(),
+      country: salahLocationData.country || ""
     };
   }
 
-  if(salahSource === "masjid" && window.selectedMasjid && selectedMasjid.latitude && selectedMasjid.longitude){
-    return {
-      latitude: selectedMasjid.latitude,
-      longitude: selectedMasjid.longitude,
-      label: selectedMasjid.name || getMonthlySalahTimetableCityName()
-    };
+  if(salahSource === "masjid"){
+    let picked = getSelectedSavedSalahLocation();
+
+    if(picked && picked.lat && picked.lon){
+      return {
+        latitude: Number(picked.lat),
+        longitude: Number(picked.lon),
+        label: picked.name || getMonthlySalahTimetableCityName(),
+        country: picked.name || ""
+      };
+    }
   }
 
-  if(window.enteredLat && window.enteredLng){
+  if(
+    salahSource === "entered" &&
+    typeof salahEnteredLocation !== "undefined" &&
+    salahEnteredLocation &&
+    salahEnteredLocation.lat &&
+    salahEnteredLocation.lon
+  ){
     return {
-      latitude: window.enteredLat,
-      longitude: window.enteredLng,
-      label: getMonthlySalahTimetableCityName()
+      latitude: Number(salahEnteredLocation.lat),
+      longitude: Number(salahEnteredLocation.lon),
+      label: salahEnteredLocation.locationName || getMonthlySalahTimetableCityName(),
+      country: salahEnteredLocation.query || ""
     };
   }
 
   return null;
 }
+  
 
 // =========================
 // MONTHLY TIMETABLE API URL BUILDER
 // =========================
-function buildMonthlySalahTimetableCalendarUrl(month, year){
+function buildMonthlySalahTimetableCalendarUrl(month, year, overrideMethod){
   let location = getMonthlySalahTimetableActiveLocation();
   if(!location){
     return null;
   }
 
   let settings = getMonthlySalahTimetableEffectiveSettings();
+  let methodToUse = overrideMethod || settings.apiMethod;
 
   let url =
     "https://api.aladhan.com/v1/calendar?" +
     "latitude=" + encodeURIComponent(location.latitude) +
     "&longitude=" + encodeURIComponent(location.longitude) +
-    "&method=" + encodeURIComponent(settings.apiMethod) +
+    "&method=" + encodeURIComponent(methodToUse) +
     "&school=" + encodeURIComponent(settings.school) +
     "&month=" + encodeURIComponent(month) +
-    "&year=" + encodeURIComponent(year);
+    "&year=" + encodeURIComponent(year) +
+    "&t=" + Date.now();
 
   return url;
 }
 
-    
+
+
+// =========================
+// MONTHLY TIMETABLE FETCH USING SHARED URL BUILDER
+// =========================
+async function fetchMonthlySalahCalendarFromUrl(month, year, overrideMethod){
+  let url = buildMonthlySalahTimetableCalendarUrl(month, year, overrideMethod);
+
+  if(!url){
+    throw new Error("Monthly timetable URL could not be built");
+  }
+
+  let response = await fetch(url, {
+    method: "GET",
+    cache: "no-store"
+  });
+
+  let data = await response.json();
+
+  if(!data || !data.data || !Array.isArray(data.data)){
+    throw new Error("Monthly timetable data not found");
+  }
+
+  return data.data;
+}  
 
   // =========================
 // MONTHLY SALAH TIMETABLE FUNCTIONS
@@ -7665,9 +7706,10 @@ async function downloadMonthlySalahTimetablePDF(){
 // =========================
 async function generateMonthlySalahTimetable(actionType){
   try{
-    let monthlyState = await getMonthlySalahTimetableState();
+       let location = getMonthlySalahTimetableActiveLocation();
+    let settings = getMonthlySalahTimetableEffectiveSettings();
 
-    if(!monthlyState.latitude || !monthlyState.longitude){
+    if(!location || !location.latitude || !location.longitude){
       alert("Location not found. Please open Salah page first and make sure your location is loaded.");
       return;
     }
@@ -7676,24 +7718,14 @@ async function generateMonthlySalahTimetable(actionType){
     let month = now.getMonth() + 1;
     let year = now.getFullYear();
 
-    let baseData = await fetchMonthlySalahCalendar({
-      latitude: monthlyState.latitude,
-      longitude: monthlyState.longitude,
-      month: month,
-      year: year,
-      method: monthlyState.methodNumber,
-      school: monthlyState.schoolNumber
-    });
+    let baseData = await fetchMonthlySalahCalendarFromUrl(month, year);
 
-    if(monthlyState.useFajr18Override){
-            let fajrOverrideData = await fetchMonthlySalahCalendar({
-        latitude: monthlyState.latitude,
-        longitude: monthlyState.longitude,
-        month: month,
-        year: year,
-        method: 13,
-        school: monthlyState.schoolNumber
-      });
+    let useFajr18Override =
+      settings.resolvedMethod === "isna" &&
+      settings.fajr18Enabled;
+
+    if(useFajr18Override){
+      let fajrOverrideData = await fetchMonthlySalahCalendarFromUrl(month, year, 13);
 
       if(Array.isArray(baseData) && Array.isArray(fajrOverrideData)){
         for(let i = 0; i < baseData.length; i++){
@@ -7709,7 +7741,7 @@ async function generateMonthlySalahTimetable(actionType){
       }
     }
 
-    buildMonthlySalahPrintTable(baseData, monthlyState.cityName, now);
+    buildMonthlySalahPrintTable(baseData, location.label || getMonthlySalahTimetableCityName(), now);
 
            if(actionType === "printview"){
       openMonthlySalahPrintPreviewPage();
