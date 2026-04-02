@@ -7521,6 +7521,11 @@ function closeMonthlySalahTimetableActions(){
 async function printMonthlySalahTimetable(){
   closeMonthlySalahTimetableActions();
   closeSalahSettingsPage();
+
+  await new Promise(function(resolve){
+    setTimeout(resolve, 320);
+  });
+
   await generateMonthlySalahTimetable("printview");
 }
 
@@ -7734,6 +7739,9 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
     let timings = dayItem.timings || {};
     let gregorian = dayItem.date && dayItem.date.gregorian ? dayItem.date.gregorian : {};
     let hijri = dayItem.date && dayItem.date.hijri ? dayItem.date.hijri : {};
+    let previousHijri = index > 0 && monthData[index - 1] && monthData[index - 1].date && monthData[index - 1].date.hijri
+      ? monthData[index - 1].date.hijri
+      : null;
 
     let row = document.createElement("tr");
 
@@ -7744,15 +7752,15 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
     }
 
     row.innerHTML = `
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(formatIslamicDateForTable(hijri))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
-      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;width:9%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:nowrap;width:14%;">${escapeHtml(formatIslamicDateForTable(hijri, previousHijri))}</td>
+      <td style="border:1px solid #999;padding:4px 3px;text-align:center;font-size:9px;white-space:nowrap;width:10%;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
+      <td style="border:1px solid #999;padding:4px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
     `;
 
     tbody.appendChild(row);
@@ -7781,7 +7789,7 @@ function openMonthlySalahPrintPreviewPage(){
         <style>
           body{
             margin:0;
-            padding:20px 14px 40px 14px;
+            padding:12px 12px 28px 12px;
             font-family:Arial,sans-serif;
             color:#111;
             background:#e9e9ee;
@@ -7789,20 +7797,30 @@ function openMonthlySalahPrintPreviewPage(){
 
           .topBar{
             max-width:210mm;
-            margin:0 auto 14px auto;
+            margin:0 auto 10px auto;
             display:flex;
             justify-content:space-between;
             align-items:center;
             gap:10px;
+            flex-wrap:wrap;
+          }
+
+          .leftBtns,
+          .rightBtns{
+            display:flex;
+            align-items:center;
+            gap:8px;
           }
 
           .topTitle{
-            font-size:16px;
+            font-size:15px;
             font-weight:700;
             color:#111;
+            flex:1;
+            text-align:center;
           }
 
-          .printBtn{
+          .actionBtn{
             border:none;
             border-radius:14px;
             background:#111;
@@ -7813,13 +7831,24 @@ function openMonthlySalahPrintPreviewPage(){
             cursor:pointer;
           }
 
+          .backBtn{
+            border:none;
+            border-radius:14px;
+            background:#dcdce3;
+            color:#111;
+            padding:10px 14px;
+            font-size:14px;
+            font-weight:700;
+            cursor:pointer;
+          }
+
           .page{
             width:100%;
             max-width:190mm;
-            min-height:277mm;
+            min-height:287mm;
             margin:0 auto;
             background:white;
-            padding:10mm 6mm;
+            padding:5mm 6mm 8mm 6mm;
             box-sizing:border-box;
             box-shadow:0 10px 30px rgba(0,0,0,0.10);
             border-radius:18px;
@@ -7844,7 +7873,7 @@ function openMonthlySalahPrintPreviewPage(){
 
           td{
             border:1px solid #999;
-            padding:3px 2px;
+            padding:4px 2px;
             text-align:center;
             font-size:9px;
             white-space:nowrap;
@@ -7867,20 +7896,27 @@ function openMonthlySalahPrintPreviewPage(){
               margin:0;
               box-shadow:none;
               border-radius:0;
-              padding:10mm 6mm;
+              padding:5mm 6mm 8mm 6mm;
             }
 
             @page{
               size:A4 portrait;
-              margin:10mm;
+              margin:8mm;
             }
           }
         </style>
       </head>
       <body>
         <div class="topBar">
+          <div class="leftBtns">
+            <button class="backBtn" onclick="window.close()">← Back</button>
+          </div>
+
           <div class="topTitle">Monthly Salah Timetable</div>
-          <button class="printBtn" onclick="window.print()">Print</button>
+
+          <div class="rightBtns">
+            <button class="actionBtn" onclick="window.print()">Print</button>
+          </div>
         </div>
 
         <div class="page">
@@ -8061,13 +8097,18 @@ function cleanSalahTime(timeValue){
 // =========================
 // FORMAT ISLAMIC DATE FOR TABLE
 // =========================
-function formatIslamicDateForTable(hijri){
+function formatIslamicDateForTable(hijri, previousHijri){
   if(!hijri) return "-";
 
   let day = hijri.day || "";
   let month = hijri.month && hijri.month.en ? hijri.month.en : "";
+  let prevMonth = previousHijri && previousHijri.month && previousHijri.month.en ? previousHijri.month.en : "";
 
-  return (day + " " + month).trim();
+  if(day === "1" || month !== prevMonth){
+    return (day + " " + month).trim();
+  }
+
+  return day;
 }
 
 // =========================
@@ -11120,10 +11161,10 @@ left:0;
 top:0;
 width:100%;
 max-width:190mm;
-min-height:277mm;
+min-height:287mm;
 margin:0 auto;
 background:white;
-padding:10mm 6mm;
+padding:5mm 6mm 8mm 6mm;
 box-sizing:border-box;
 color:#111;
 font-family:Arial, sans-serif;
@@ -11131,19 +11172,21 @@ opacity:0;
 pointer-events:none;
 z-index:-1;
 ">
-  <div id="monthlySalahPrintHeader" style="text-align:center;margin-bottom:14px;">
-    <div id="monthlySalahPrintCity" style="
-    font-size:22px;
+  <div id="monthlySalahPrintHeader" style="text-align:center;margin-bottom:8px;">
+   <div id="monthlySalahPrintCity" style="
+    font-size:20px;
     font-weight:700;
-    margin-bottom:4px;
+    margin-bottom:2px;
+    line-height:1.15;
     ">
       City Name
     </div>
 
-    <div id="monthlySalahPrintMonth" style="
-    font-size:16px;
+   <div id="monthlySalahPrintMonth" style="
+    font-size:14px;
     color:#444;
     font-weight:600;
+    line-height:1.15;
     ">
       Month Year
     </div>
