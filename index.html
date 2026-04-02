@@ -7743,15 +7743,15 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
     }
 
     row.innerHTML = `
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(formatIslamicDateForTable(hijri))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
-      <td style="border:1px solid #999;padding:5px 4px;text-align:center;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(formatIslamicDateForTable(hijri))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(formatGregorianDateForTable(gregorian.date))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Fajr))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Sunrise))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Dhuhr))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Asr))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Maghrib))}</td>
+      <td style="border:1px solid #999;padding:3px 2px;text-align:center;font-size:9px;white-space:nowrap;">${escapeHtml(cleanSalahTime(timings.Isha))}</td>
     `;
 
     tbody.appendChild(row);
@@ -7855,7 +7855,7 @@ async function saveMonthlySalahTimetablePDF(cityName, nowDate){
   cloneWrap.style.position = "fixed";
   cloneWrap.style.left = "-10000px";
   cloneWrap.style.top = "0";
-  cloneWrap.style.width = "794px";
+  cloneWrap.style.width = "190mm";
   cloneWrap.style.background = "#ffffff";
   cloneWrap.style.padding = "0";
   cloneWrap.style.margin = "0";
@@ -7867,7 +7867,7 @@ async function saveMonthlySalahTimetablePDF(cityName, nowDate){
   clone.style.position = "static";
   clone.style.left = "auto";
   clone.style.top = "auto";
-  clone.style.width = "794px";
+  clone.style.width = "190mm";
   clone.style.opacity = "1";
   clone.style.pointerEvents = "none";
   clone.style.zIndex = "auto";
@@ -7929,9 +7929,8 @@ function formatIslamicDateForTable(hijri){
 
   let day = hijri.day || "";
   let month = hijri.month && hijri.month.en ? hijri.month.en : "";
-  let year = hijri.year || "";
 
-  return (day + " " + month + " " + year).trim();
+  return (day + " " + month).trim();
 }
 
 // =========================
@@ -7943,7 +7942,7 @@ function formatGregorianDateForTable(dateString){
   let parts = dateString.split("-");
   if(parts.length !== 3) return dateString;
 
-  return parts[2] + "-" + parts[1] + "-" + parts[0];
+  return parts[0];
 }
 
 // =========================
@@ -10996,9 +10995,11 @@ transition:all 0.25s ease;
 position:fixed;
 left:0;
 top:0;
-width:794px;
+width:100%;
+max-width:190mm;
+margin:0 auto;
 background:white;
-padding:22px;
+padding:10mm 6mm;
 box-sizing:border-box;
 color:#111;
 font-family:Arial, sans-serif;
@@ -11024,22 +11025,24 @@ z-index:-1;
     </div>
   </div>
 
-  <table id="monthlySalahPrintTable" style="
-  width:100%;
-  border-collapse:collapse;
-  font-size:11px;
-  ">
+<table id="monthlySalahPrintTable" style="
+width:100%;
+border-collapse:collapse;
+table-layout:fixed;
+font-size:10px;
+text-align:center;
+">
     <thead>
       <tr style="background:#222;color:white;">
-        <th style="border:1px solid #666;padding:6px 4px;">Day</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Islamic Date</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Date</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Fajr</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Sunrise</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Dhuhr</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Asr</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Maghrib</th>
-        <th style="border:1px solid #666;padding:6px 4px;">Isha</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Day</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Hijri</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Date</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Fajr</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Sunrise</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Dhuhr</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Asr</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Maghrib</th>
+        <th style="border:1px solid #666;padding:4px 2px;font-size:9px;white-space:nowrap;">Isha</th>
       </tr>
     </thead>
     <tbody id="monthlySalahPrintTableBody"></tbody>
