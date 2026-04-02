@@ -8057,7 +8057,7 @@ function openMonthlySalahPrintPreviewPage(){
           table{
             width:100%;
             border-collapse:collapse;
-            table-layout:fixed;
+            table-layout:auto;
             font-size:11px;
             text-align:center;
           }
@@ -11376,6 +11376,9 @@ font-family:Arial, sans-serif;
 opacity:0;
 pointer-events:none;
 z-index:-1;
+overflow-x:auto;
+overflow-y:hidden;
+-webkit-overflow-scrolling:touch;
 ">
   <div id="monthlySalahPrintHeader" style="text-align:center;margin-bottom:8px;">
   <div id="monthlySalahPrintCity" style="
@@ -11400,7 +11403,7 @@ z-index:-1;
 <table id="monthlySalahPrintTable" style="
 width:100%;
 border-collapse:collapse;
-table-layout:fixed;
+table-layout:auto;
 font-size:11px;
 text-align:center;
 ">
