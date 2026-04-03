@@ -7459,22 +7459,44 @@ closeWallpaperSelector();
 
   
 // =========================
-// UPDATE DARK NIGHT NUMBER
+// DARK NIGHT WALLPAPER FUNCTIONS
 // =========================
-function updateDarkNightNumber(){
-
-let main = document.getElementById("tasbihScreen");
-let dark = document.getElementById("darkTasbihNumber");
-
-if(main && dark){
-dark.innerText = main.innerText;
+function openWallpaperSelector(){
+  let overlay = document.getElementById("wallpaperSelectorOverlay");
+  if(overlay){
+    overlay.style.display = "flex";
+  }
 }
 
+function closeWallpaperSelector(){
+  let overlay = document.getElementById("wallpaperSelectorOverlay");
+  if(overlay){
+    overlay.style.display = "none";
+  }
 }
 
-  
-(function(){
+function applyTasbihWallpaper(){
+  let darkNightTasbih = document.getElementById("darkNightTasbih");
+  if(!darkNightTasbih) return;
 
+  let savedWallpaper = localStorage.getItem("darkTasbihWallpaper") || "wall1";
+  let wallpaperUrl = "Images/dark-tasbih-bg.jpg";
+
+  if(savedWallpaper === "wall2"){
+    wallpaperUrl = "Images/tasbih-wall-2.jpg";
+  }
+  else if(savedWallpaper === "wall3"){
+    wallpaperUrl = "Images/tasbih-wall-3.jpg";
+  }
+
+  darkNightTasbih.style.background = "url('" + wallpaperUrl + "') center/cover no-repeat";
+}
+
+function setTasbihWallpaper(wallpaperId){
+  localStorage.setItem("darkTasbihWallpaper", wallpaperId);
+  applyTasbihWallpaper();
+  closeWallpaperSelector();
+}
 // =========================
 // IBADAH SET TEXT
 // =========================
@@ -12492,7 +12514,117 @@ text-align:center;
 ========================= -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  
+  <!-- =========================
+     DARK NIGHT WALLPAPER SELECTOR
+========================= -->
+<div id="wallpaperSelectorOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+
+  <!-- POPUP CARD -->
+  <div style="
+  background:#111;
+  border-radius:28px;
+  padding:20px;
+  width:90%;
+  max-width:320px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  ">
+
+    <!-- TITLE -->
+    <div style="
+    font-size:18px;
+    font-weight:700;
+    color:white;
+    margin-bottom:16px;
+    ">
+      Choose Wallpaper
+    </div>
+
+    <!-- OPTIONS -->
+    <div style="
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    ">
+
+      <!-- WALL 1 -->
+      <div onclick="setTasbihWallpaper('wall1')" style="
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid #333;
+      cursor:pointer;
+      ">
+        <img src="Images/dark-tasbih-bg.jpg" style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        ">
+      </div>
+
+      <!-- WALL 2 -->
+      <div onclick="setTasbihWallpaper('wall2')" style="
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid #333;
+      cursor:pointer;
+      ">
+        <img src="Images/tasbih-wall-2.jpg" style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        ">
+      </div>
+
+      <!-- WALL 3 -->
+      <div onclick="setTasbihWallpaper('wall3')" style="
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid #333;
+      cursor:pointer;
+      ">
+        <img src="Images/tasbih-wall-3.jpg" style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        ">
+      </div>
+
+    </div>
+
+    <!-- CLOSE BUTTON -->
+    <div style="margin-top:18px;">
+      <button onclick="closeWallpaperSelector()" style="
+      width:100%;
+      height:42px;
+      border:none;
+      border-radius:16px;
+      background:#e9e9ee;
+      font-weight:700;
+      cursor:pointer;
+      ">
+        Close
+      </button>
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>
