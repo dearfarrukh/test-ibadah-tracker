@@ -746,15 +746,35 @@ text-shadow:
 </div>
   </div>
 
- <!-- ROYAL TARGET SELECTOR -->
+<!-- =========================
+     ROYAL TARGET SELECTOR CONTAINER (FINAL)
+========================= -->
 <div style="
 position:absolute;
-top:180px;
+top:180px; /* keep your value */
 left:50%;
 transform:translateX(-50%);
 width:78%;
 max-width:340px;
 z-index:5;
+
+/* ROYAL BLUE GLASS */
+background:rgba(20,40,90,0.38);
+backdrop-filter:blur(16px);
+
+/* GOLD BORDER */
+border:1px solid rgba(212,175,55,0.45);
+
+/* FULL ROUND */
+border-radius:999px;
+
+/* INNER SPACING */
+padding:6px;
+
+/* PREMIUM SHADOW */
+box-shadow:
+0 6px 18px rgba(0,0,0,0.18),
+0 0 14px rgba(212,175,55,0.18);
 ">
   <div id="royalTasbihModes" style="
   display:flex;
