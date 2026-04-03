@@ -1065,63 +1065,6 @@ box-sizing:border-box;
     </button>
   </div>
 
-  <!-- =========================
-       TASBIH VIBRATION SETTING
-  ========================= -->
-  <div style="
-  font-size:15px;
-  font-weight:700;
-  color:#666;
-  margin-bottom:10px;
-  letter-spacing:0.2px;
-  ">
-    Vibration
-  </div>
-
-  <button id="tasbihVibrationBtn" onclick="toggleVibrationSetting()" style="
-  width:100%;
-  border:none;
-  border-radius:20px;
-  background:white;
-  padding:16px 16px;
-  text-align:left;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-  cursor:pointer;
-  margin-bottom:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  ">
-    
-    <div>
-      <div id="tasbihVibrationTitle" style="
-      font-size:17px;
-      font-weight:800;
-      color:#111;
-      ">
-        Vibration On
-      </div>
-
-      <div id="tasbihVibrationSubtext" style="
-      font-size:13px;
-      color:#666;
-      margin-top:4px;
-      ">
-        Tap feedback is enabled
-      </div>
-    </div>
-
-    <div id="tasbihVibrationIcon" style="
-    font-size:24px;
-    min-width:34px;
-    text-align:center;
-    ">
-      🔔
-    </div>
-
-  </button>
-  
-  
   <div style="
   font-size:15px;
   font-weight:700;
@@ -1247,6 +1190,26 @@ color:#111;
 
 </div>
 
+ <div class="card" style="
+text-align:center;
+max-width:360px;
+margin:10px auto 16px auto;
+padding:20px;
+background:#cfcfd6;
+border-radius:24px;
+box-shadow:0 6px 18px rgba(0,0,0,0.12);
+">
+
+<div style="
+font-size:28px;
+font-weight:800;
+color:#5c4632;
+letter-spacing:1px;
+">
+📿 Tasbih Counter
+</div>
+
+</div>
 
 <div class="card" style="
 width:92%;
@@ -2874,16 +2837,8 @@ counter.classList.add("glow");
 }
 
 if(isVibrationEnabled()){
-
-if(typeof clickSound !== "undefined" && clickSound){
 clickSound.currentTime = 0;
 clickSound.play().catch(()=>{});
-}
-
-if(navigator.vibrate){
-navigator.vibrate(30);
-}
-
 }
 
 if(isVibrationEnabled() && count === target){
@@ -3416,8 +3371,6 @@ zikrCount++;
 updateZikrDisplay();
 
 if(isVibrationEnabled()){
-
-if(typeof clickSound !== "undefined" && clickSound){
 clickSound.currentTime = 0;
 clickSound.play().catch(()=>{});
 }
@@ -3426,7 +3379,6 @@ if(navigator.vibrate){
 navigator.vibrate(30);
 }
 
-}
 }
 
 // =========================
@@ -3547,62 +3499,14 @@ localStorage.setItem("tasbih-vibration", enabled);
 // IS VIBRATION ENABLED
 // =========================
 function isVibrationEnabled(){
-let saved = localStorage.getItem("tasbih-vibration");
-
-if(saved === null){
-localStorage.setItem("tasbih-vibration", "true");
-return true;
+return localStorage.getItem("tasbih-vibration") === "true";
 }
-
-return saved === "true";
-}
+document.addEventListener("DOMContentLoaded",()=>{
+setDate(islamicToday());
+});
 
  
 
-// =========================
-// UPDATE TASBIH VIBRATION BUTTON UI
-// =========================
-function updateTasbihVibrationButtonUI(){
-
-let title = document.getElementById("tasbihVibrationTitle");
-let subtext = document.getElementById("tasbihVibrationSubtext");
-let icon = document.getElementById("tasbihVibrationIcon");
-
-if(!title || !subtext || !icon) return;
-
-if(isVibrationEnabled()){
-title.innerText = "Vibration On";
-subtext.innerText = "Tap feedback is enabled";
-icon.innerText = "🔔";
-}else{
-title.innerText = "Vibration Off";
-subtext.innerText = "Tap feedback is disabled";
-icon.innerText = "🔕🚫";
-}
-
-}
-
-// =========================
-// TOGGLE TASBIH VIBRATION SETTING
-// =========================
-function toggleVibrationSetting(){
-
-let enabled = isVibrationEnabled();
-
-localStorage.setItem("tasbih-vibration", enabled ? "false" : "true");
-
-updateTasbihVibrationButtonUI();
-
-if(!enabled && navigator.vibrate){
-navigator.vibrate(30);
-}
-
-}
-
-
-
-
-  
 // =========================
 // SHOW REMOVE TASK
 // =========================
@@ -7007,9 +6911,8 @@ if(drawer){
 drawer.style.right = "0";
 }
 
-updateTasbihVibrationButtonUI();
-
 }
+
 // =========================
 // CLOSE TASBIH SETTINGS
 // =========================
