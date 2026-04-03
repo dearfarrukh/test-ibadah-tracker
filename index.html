@@ -7222,9 +7222,35 @@ function updateRoyalTasbihUI(){
     centerText.innerText = target === "inf" ? String(count) : (count + " / " + target);
   }
 
-  let btn33 = document.getElementById("royalMode33");
-  let btn100 = document.getElementById("royalMode100");
-  let btnInf = document.getElementById("royalModeInf");
+ let mode33 = document.getElementById("royalMode33");
+let mode100 = document.getElementById("royalMode100");
+let modeInf = document.getElementById("royalModeInf");
+
+// RESET ALL (default look)
+[mode33, mode100, modeInf].forEach(btn=>{
+  btn.style.background = "rgba(255,255,255,0.45)";
+  btn.style.color = "#d4af37";
+  btn.style.boxShadow = "none";
+});
+
+// APPLY GOLD TO SELECTED
+if(tasbihMode === 33){
+  mode33.style.background = "linear-gradient(180deg, #f5d27a 0%, #d4af37 100%)";
+  mode33.style.color = "#1a1a1a";
+  mode33.style.boxShadow = "0 2px 6px rgba(212,175,55,0.5)";
+}
+
+if(tasbihMode === 100){
+  mode100.style.background = "linear-gradient(180deg, #f5d27a 0%, #d4af37 100%)";
+  mode100.style.color = "#1a1a1a";
+  mode100.style.boxShadow = "0 2px 6px rgba(212,175,55,0.5)";
+}
+
+if(tasbihMode === 'inf'){
+  modeInf.style.background = "linear-gradient(180deg, #f5d27a 0%, #d4af37 100%)";
+  modeInf.style.color = "#1a1a1a";
+  modeInf.style.boxShadow = "0 2px 6px rgba(212,175,55,0.5)";
+}
 
   if(btn33){
     btn33.style.background = String(target) === "33" ? "#34c759" : "transparent";
