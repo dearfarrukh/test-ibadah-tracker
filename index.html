@@ -760,12 +760,17 @@ z-index:5;
   display:flex;
   border-radius:999px;
   overflow:hidden;
-  background:rgba(60,90,180,0.28);
-backdrop-filter:blur(16px);
+
+  /* LIGHTER BLUE GLASS */
+  background:rgba(120,150,220,0.25);
+  backdrop-filter:blur(16px);
+
   box-shadow:0 10px 24px rgba(0,0,0,0.20);
   padding:4px;
   gap:4px;
   ">
+
+   <!-- 33 -->
    <button id="royalMode33" onclick="setTasbihMode(33);updateRoyalTasbihUI();" style="
 flex:1;
 height:34px;
@@ -775,9 +780,9 @@ border-radius:999px;
 background:rgba(255,255,255,0.25);
 backdrop-filter:blur(10px);
 
-color:#d4af37;
-font-size:20px;
-font-weight:700;
+color:#f6e27a;
+font-size:22px;
+font-weight:900;
 
 cursor:pointer;
 transition:all 0.2s ease;
@@ -785,53 +790,48 @@ transition:all 0.2s ease;
 33
 </button>
 
-      <button id="royalMode100" onclick="setTasbihMode(100);updateRoyalTasbihUI();" style="
-     flex:1;
-      height:34px;
-      border:none;
-      border-radius:999px;
+   <!-- 100 -->
+   <button id="royalMode100" onclick="setTasbihMode(100);updateRoyalTasbihUI();" style="
+flex:1;
+height:34px;
+border:none;
+border-radius:999px;
 
-      background:rgba(255,255,255,0.25);
-      backdrop-filter:blur(10px);
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(10px);
 
-      color:#d4af37;
-      font-size:20px;
-      font-weight:700;
+color:#f6e27a;
+font-size:22px;
+font-weight:900;
 
-      text-shadow:
-      0 0 4px rgba(212,175,55,0.6),
-      0 0 8px rgba(212,175,55,0.4);
+cursor:pointer;
+transition:all 0.2s ease;
+">
+100
+</button>
 
-      cursor:pointer;
-      transition:all 0.2s ease;
-      ">
-        100
-      </button>
+   <!-- INF -->
+   <button id="royalModeInf" onclick="setTasbihMode('inf');updateRoyalTasbihUI();" style="
+flex:1;
+height:34px;
+border:none;
+border-radius:999px;
 
-      <button id="royalModeInf" onclick="setTasbihMode('inf');updateRoyalTasbihUI();" style="
-     flex:1;
-      height:34px;
-      border:none;
-      border-radius:999px;
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(10px);
 
-      background:rgba(255,255,255,0.25);
-      backdrop-filter:blur(10px);
+color:#f6e27a;
+font-size:22px;
+font-weight:900;
 
-     color:#d4af37;
-      font-size:20px;
-      font-weight:700;
+cursor:pointer;
+transition:all 0.2s ease;
+">
+∞
+</button>
 
-      text-shadow:
-      0 0 4px rgba(212,175,55,0.6),
-      0 0 8px rgba(212,175,55,0.4);
-
-      cursor:pointer;
-      transition:all 0.2s ease;
-      ">
-        ∞
-      </button>
-    </div>
   </div>
+</div>
 
   <!-- ROYAL BIG CIRCLE -->
   <div onclick="increaseTasbih();updateRoyalTasbihUI();" style="
