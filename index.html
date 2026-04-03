@@ -1229,61 +1229,7 @@ outline:none;
 -webkit-tap-highlight-color:transparent;
 ">
 
-  // =========================
-// BUILD ROYAL TASBIH BARS
-// =========================
-function buildRoyalTasbihBars(){
-
-  let container = document.getElementById("royalTasbihProgress");
-  if(!container) return;
-
-  container.innerHTML = "";
-
-  let totalBars = 70;
-  let ringSize = 270;
-  let center = ringSize / 2;
-  let radius = 124;
-  let barWidth = 3;
-  let barHeight = 14;
-
-  let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
-  let target = localStorage.getItem(getTargetKey()) || 33;
-
-  let filledBars = 0;
-
-  if(target !== "inf" && Number(target) > 0){
-    filledBars = Math.round((count / Number(target)) * totalBars);
-  }
-
-  if(filledBars < 0) filledBars = 0;
-  if(filledBars > totalBars) filledBars = totalBars;
-
-  for(let i = 0; i < totalBars; i++){
-
-    let angle = (i / totalBars) * (Math.PI * 2) - (Math.PI / 2);
-
-    let x = center + Math.cos(angle) * radius;
-    let y = center + Math.sin(angle) * radius;
-
-    let bar = document.createElement("div");
-    bar.style.position = "absolute";
-    bar.style.width = barWidth + "px";
-    bar.style.height = barHeight + "px";
-    bar.style.left = x + "px";
-    bar.style.top = y + "px";
-    bar.style.transform = "translate(-50%,-50%) rotate(" + (angle * 180 / Math.PI + 90) + "deg)";
-    bar.style.borderRadius = "999px";
-
-    if(i < filledBars){
-      bar.style.background = "#34c759";
-      bar.style.boxShadow = "0 0 6px rgba(52,199,89,0.45)";
-    }else{
-      bar.style.background = "rgba(255,255,255,0.30)";
-    }
-
-    container.appendChild(bar);
-  }
-}
+ 
 
 <!-- Set Tasbih Mode Button -->
   <button class="modeBtn" onclick="setTasbihMode(33)" style="font-size:20px;color:#5c4632;">33</button>
@@ -2288,6 +2234,63 @@ container.appendChild(bar);
 }
 
 }
+
+  // =========================
+// BUILD ROYAL TASBIH BARS
+// =========================
+function buildRoyalTasbihBars(){
+
+  let container = document.getElementById("royalTasbihProgress");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  let totalBars = 70;
+  let ringSize = 270;
+  let center = ringSize / 2;
+  let radius = 124;
+  let barWidth = 3;
+  let barHeight = 14;
+
+  let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
+  let target = localStorage.getItem(getTargetKey()) || 33;
+
+  let filledBars = 0;
+
+  if(target !== "inf" && Number(target) > 0){
+    filledBars = Math.round((count / Number(target)) * totalBars);
+  }
+
+  if(filledBars < 0) filledBars = 0;
+  if(filledBars > totalBars) filledBars = totalBars;
+
+  for(let i = 0; i < totalBars; i++){
+
+    let angle = (i / totalBars) * (Math.PI * 2) - (Math.PI / 2);
+
+    let x = center + Math.cos(angle) * radius;
+    let y = center + Math.sin(angle) * radius;
+
+    let bar = document.createElement("div");
+    bar.style.position = "absolute";
+    bar.style.width = barWidth + "px";
+    bar.style.height = barHeight + "px";
+    bar.style.left = x + "px";
+    bar.style.top = y + "px";
+    bar.style.transform = "translate(-50%,-50%) rotate(" + (angle * 180 / Math.PI + 90) + "deg)";
+    bar.style.borderRadius = "999px";
+
+    if(i < filledBars){
+      bar.style.background = "#34c759";
+      bar.style.boxShadow = "0 0 6px rgba(52,199,89,0.45)";
+    }else{
+      bar.style.background = "rgba(255,255,255,0.30)";
+    }
+
+    container.appendChild(bar);
+  }
+}
+
 
   
 // =========================
