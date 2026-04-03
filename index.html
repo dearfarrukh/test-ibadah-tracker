@@ -401,115 +401,7 @@ overflow:auto;
 padding:15px 15px 110px 15px;
 ">
 
-<!-- TASBIH SETTINGS OVERLAY -->
-<!-- =========================
-     TASBIH SETTINGS OVERLAY
-========================= -->
-<!-- Tasbih Settings Overlay Card -->
-<div id="tasbihSettingsOverlay" onclick="closeTasbihSettings()" style="
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-background:rgba(0,0,0,0.35);
-backdrop-filter:blur(3px);
--webkit-backdrop-filter:blur(3px);
-z-index:8000;
-display:none;
-"></div>
-
-<!-- TASBIH SETTINGS PANEL -->
-<!-- =========================
-     TASBIH SETTINGS DRAWER
-========================= -->
-<div id="tasbihSettingsDrawer" style="
-position:fixed;
-top:0;
-right:-70%;
-width:70%;
-max-width:380px;
-height:100%;
-background:white;
-z-index:8100;
-box-shadow:-10px 0 30px rgba(0,0,0,0.2);
-transition:0.25s;
-padding:20px;
-box-sizing:border-box;
-">
-
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-">
-
-<div style="
-font-size:22px;
-font-weight:800;
-">
-Settings
-</div>
-
-<!-- Close Tasbih Settings Button -->
-<button onclick="closeTasbihSettings()" style="
-border:none;
-background:#e9e9ee;
-width:36px;
-height:36px;
-border-radius:10px;
-font-size:18px;
-cursor:pointer;
-">
-✕
-</button>
-
-</div>
-
-<div style="
-font-size:18px;
-font-weight:800;
-margin-bottom:12px;
-color:#111;
-">
-Style
-</div>
-
-<!-- Show Classic Mode Button -->
-<button onclick="showClassicMode()" style="
-width:100%;
-padding:18px;
-border-radius:18px;
-border:none;
-background:#f3f3f3;
-margin-bottom:12px;
-cursor:pointer;
-font-size:20px;
-font-weight:800;
-color:#111;
-text-align:left;
-">
-Classic
-</button>
-
-<!-- Show Dark Night Mode Button -->
-<button onclick="showDarkNightMode()" style="
-width:100%;
-padding:18px;
-border-radius:18px;
-border:none;
-background:#f3f3f3;
-cursor:pointer;
-font-size:20px;
-font-weight:800;
-color:#111;
-text-align:left;
-">
-Dark Night
-</button>
-  
-</div>
+<!-- TASBIH SETTINGS OVERLAY REMOVED - OLD DUPLICATE DRAWER DELETED -->
 
 
 
@@ -4816,6 +4708,8 @@ if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
 
 updateTasbihTopButton();
+loadTasbih();
+applySavedTasbihStyle();
 window.scrollTo(0,0);
 
 }
