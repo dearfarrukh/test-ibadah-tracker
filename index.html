@@ -471,6 +471,36 @@ justify-content:center;
 
 </div>
 
+<!-- =========================
+     DARK NIGHT VIBRATION BUTTON
+========================= -->
+<div style="
+position:absolute;
+top:110px;
+right:20px;
+z-index:6;
+">
+  <button id="darkNightVibrationBtn" onclick="toggleDarkNightVibration()" style="
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:16px;
+  background:rgba(255,255,255,0.16);
+  color:white;
+  font-size:24px;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 8px 18px rgba(0,0,0,0.18);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  ">
+    🔔
+  </button>
+</div>
+
+  
 <!-- TARGET + RESET -->
 <div style="
 position:absolute;
@@ -3505,6 +3535,42 @@ document.addEventListener("DOMContentLoaded",()=>{
 setDate(islamicToday());
 });
 
+
+// =========================
+// UPDATE DARK NIGHT VIBRATION BUTTON
+// =========================
+function updateDarkNightVibrationButton(){
+
+let btn = document.getElementById("darkNightVibrationBtn");
+if(!btn) return;
+
+if(isVibrationEnabled()){
+btn.innerText = "🔔";
+btn.style.opacity = "1";
+}else{
+btn.innerText = "🔕";
+btn.style.opacity = "0.75";
+}
+
+}
+
+// =========================
+// TOGGLE DARK NIGHT VIBRATION
+// =========================
+function toggleDarkNightVibration(){
+
+let enabled = isVibrationEnabled();
+
+localStorage.setItem("tasbih-vibration", enabled ? "false" : "true");
+
+updateDarkNightVibrationButton();
+
+if(!enabled && navigator.vibrate){
+navigator.vibrate(30);
+}
+
+}
+  
  
 
 // =========================
@@ -6960,6 +7026,10 @@ increaseTasbih();
 animateDarkNightRing();
 updateDarkNightNumber();
 
+if(isVibrationEnabled() && navigator.vibrate){
+navigator.vibrate(30);
+}
+
 }
 document.addEventListener("click", function(e){
 
@@ -7091,7 +7161,7 @@ let darkTargetText = document.getElementById("darkTargetText");
 if(darkTargetText){
   darkTargetText.innerText = savedTarget === "inf" ? "∞" : savedTarget;
 }
-
+updateDarkNightVibrationButton();
 }
 
 
