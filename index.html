@@ -7222,27 +7222,39 @@ function updateRoyalTasbihUI(){
     centerText.innerText = target === "inf" ? String(count) : (count + " / " + target);
   }
 
-document.getElementById("royalMode33").style.background = ...
-document.getElementById("royalMode100").style.background = ...
-document.getElementById("royalModeInf").style.background = ...
-  if(btn33){
-    btn33.style.background = String(target) === "33" ? "#34c759" : "transparent";
-    btn33.style.color = String(target) === "33" ? "white" : "#6b4321";
+  let btn33 = document.getElementById("royalMode33");
+  let btn100 = document.getElementById("royalMode100");
+  let btnInf = document.getElementById("royalModeInf");
+
+  // default look for all buttons
+  [btn33, btn100, btnInf].forEach(function(btn){
+    if(!btn) return;
+    btn.style.background = "rgba(255,255,255,0.45)";
+    btn.style.color = "#d4af37";
+    btn.style.boxShadow = "none";
+  });
+
+  // selected gold look
+  if(String(target) === "33" && btn33){
+    btn33.style.background = "linear-gradient(180deg, #f5d27a 0%, #d4af37 100%)";
+    btn33.style.color = "#1a1a1a";
+    btn33.style.boxShadow = "0 2px 6px rgba(212,175,55,0.5)";
   }
 
-  if(btn100){
-    btn100.style.background = String(target) === "100" ? "#34c759" : "transparent";
-    btn100.style.color = String(target) === "100" ? "white" : "#6b4321";
+  if(String(target) === "100" && btn100){
+    btn100.style.background = "linear-gradient(180deg, #f5d27a 0%, #d4af37 100%)";
+    btn100.style.color = "#1a1a1a";
+    btn100.style.boxShadow = "0 2px 6px rgba(212,175,55,0.5)";
   }
 
-  if(btnInf){
-    btnInf.style.background = String(target) === "inf" ? "#34c759" : "transparent";
-    btnInf.style.color = String(target) === "inf" ? "white" : "#6b4321";
+  if(String(target) === "inf" && btnInf){
+    btnInf.style.background = "linear-gradient(180deg, #f5d27a 0%, #d4af37 100%)";
+    btnInf.style.color = "#1a1a1a";
+    btnInf.style.boxShadow = "0 2px 6px rgba(212,175,55,0.5)";
   }
 
   buildRoyalTasbihBars();
 }
-
   
 
 // =========================
