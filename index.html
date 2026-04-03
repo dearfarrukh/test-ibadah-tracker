@@ -833,14 +833,14 @@ transition:all 0.2s ease;
   </div>
 </div>
 
-  <!-- ROYAL BIG CIRCLE -->
+   <!-- ROYAL BIG CIRCLE -->
   <div onclick="increaseTasbih();updateRoyalTasbihUI();" style="
   position:absolute;
   left:50%;
   top:56%;
   transform:translate(-50%,-50%);
-  width:315px;
-  height:315px;
+  width:270px;
+  height:270px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -852,9 +852,19 @@ transition:all 0.2s ease;
   touch-action:manipulation;
   ">
 
+    <!-- ROYAL PROGRESS BARS -->
+    <div id="royalTasbihProgress" style="
+    position:absolute;
+    width:270px;
+    height:270px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:1;
+    "></div>
+
     <div style="
-    width:245px;
-    height:245px;
+    width:205px;
+    height:205px;
     border-radius:50%;
     background:radial-gradient(circle at center, #ffffff 0%, #f7f7f7 70%, #f0f0f0 100%);
     display:flex;
@@ -864,9 +874,10 @@ transition:all 0.2s ease;
       inset 0 2px 8px rgba(255,255,255,0.95),
       inset 0 -10px 22px rgba(0,0,0,0.08);
     position:relative;
+    z-index:2;
     ">
       <div id="royalTasbihCenterText" style="
-      font-size:50px;
+      font-size:44px;
       font-weight:600;
       color:#d4af37;
       letter-spacing:1px;
@@ -1217,6 +1228,62 @@ height:52px;
 outline:none;
 -webkit-tap-highlight-color:transparent;
 ">
+
+  // =========================
+// BUILD ROYAL TASBIH BARS
+// =========================
+function buildRoyalTasbihBars(){
+
+  let container = document.getElementById("royalTasbihProgress");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  let totalBars = 70;
+  let ringSize = 270;
+  let center = ringSize / 2;
+  let radius = 124;
+  let barWidth = 3;
+  let barHeight = 14;
+
+  let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
+  let target = localStorage.getItem(getTargetKey()) || 33;
+
+  let filledBars = 0;
+
+  if(target !== "inf" && Number(target) > 0){
+    filledBars = Math.round((count / Number(target)) * totalBars);
+  }
+
+  if(filledBars < 0) filledBars = 0;
+  if(filledBars > totalBars) filledBars = totalBars;
+
+  for(let i = 0; i < totalBars; i++){
+
+    let angle = (i / totalBars) * (Math.PI * 2) - (Math.PI / 2);
+
+    let x = center + Math.cos(angle) * radius;
+    let y = center + Math.sin(angle) * radius;
+
+    let bar = document.createElement("div");
+    bar.style.position = "absolute";
+    bar.style.width = barWidth + "px";
+    bar.style.height = barHeight + "px";
+    bar.style.left = x + "px";
+    bar.style.top = y + "px";
+    bar.style.transform = "translate(-50%,-50%) rotate(" + (angle * 180 / Math.PI + 90) + "deg)";
+    bar.style.borderRadius = "999px";
+
+    if(i < filledBars){
+      bar.style.background = "#34c759";
+      bar.style.boxShadow = "0 0 6px rgba(52,199,89,0.45)";
+    }else{
+      bar.style.background = "rgba(255,255,255,0.30)";
+    }
+
+    container.appendChild(bar);
+  }
+}
 
 <!-- Set Tasbih Mode Button -->
   <button class="modeBtn" onclick="setTasbihMode(33)" style="font-size:20px;color:#5c4632;">33</button>
@@ -7165,8 +7232,9 @@ function updateRoyalTasbihUI(){
     btnInf.style.background = String(target) === "inf" ? "#34c759" : "transparent";
     btnInf.style.color = String(target) === "inf" ? "white" : "#6b4321";
   }
-}
 
+  buildRoyalTasbihBars();
+}
 
   
 
