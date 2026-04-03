@@ -758,32 +758,39 @@ width:78%;
 max-width:340px;
 z-index:5;
 ">
+
   <div id="royalTasbihModes" style="
   display:flex;
+  align-items:center;
   border-radius:999px;
   overflow:hidden;
 
-  /* MORE LIGHT BLUE GLASS */
-  background:rgba(200,220,255,0.18);
-  backdrop-filter:blur(16px);
+  /* LIGHTER GLASS EFFECT */
+  background:rgba(255,255,255,0.28);
+  backdrop-filter:blur(18px);
 
-  box-shadow:0 10px 24px rgba(0,0,0,0.20);
+  box-shadow:
+  0 6px 16px rgba(0,0,0,0.12),
+  inset 0 1px 0 rgba(255,255,255,0.35);
+
   padding:4px;
   gap:4px;
+
+  height:42px;
   ">
 
    <!-- 33 -->
    <button id="royalMode33" onclick="setTasbihMode(33);updateRoyalTasbihUI();" style="
 flex:1;
-height:34px;
+height:30px;
 border:none;
 border-radius:999px;
 
-background:rgba(255,255,255,0.25);
-backdrop-filter:blur(10px);
+/* LIGHT BUTTON */
+background:rgba(255,255,255,0.55);
 
 color:#d4af37;
-font-size:22px;
+font-size:20px;
 font-weight:900;
 
 cursor:pointer;
@@ -795,15 +802,14 @@ transition:all 0.2s ease;
    <!-- 100 -->
    <button id="royalMode100" onclick="setTasbihMode(100);updateRoyalTasbihUI();" style="
 flex:1;
-height:34px;
+height:30px;
 border:none;
 border-radius:999px;
 
-background:rgba(255,255,255,0.25);
-backdrop-filter:blur(10px);
+background:rgba(255,255,255,0.55);
 
 color:#d4af37;
-font-size:22px;
+font-size:20px;
 font-weight:900;
 
 cursor:pointer;
@@ -815,15 +821,14 @@ transition:all 0.2s ease;
    <!-- INF -->
    <button id="royalModeInf" onclick="setTasbihMode('inf');updateRoyalTasbihUI();" style="
 flex:1;
-height:34px;
+height:30px;
 border:none;
 border-radius:999px;
 
-background:rgba(255,255,255,0.25);
-backdrop-filter:blur(10px);
+background:rgba(255,255,255,0.55);
 
 color:#d4af37;
-font-size:22px;
+font-size:20px;
 font-weight:900;
 
 cursor:pointer;
