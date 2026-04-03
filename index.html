@@ -2248,9 +2248,9 @@ function buildRoyalTasbihBars(){
   let totalBars = 70;
   let ringSize = 270;
   let center = ringSize / 2;
-  let radius = 124;
+  let radius = 110;
   let barWidth = 3;
-  let barHeight = 14;
+  let barHeight = 10;
 
   let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
   let target = localStorage.getItem(getTargetKey()) || 33;
@@ -2269,7 +2269,7 @@ function buildRoyalTasbihBars(){
     let angle = (i / totalBars) * (Math.PI * 2) - (Math.PI / 2);
 
     let x = center + Math.cos(angle) * radius;
-    let y = center + Math.sin(angle) * radius;
+    let y = center + Math.sin(angle) * radius + 2;
 
     let bar = document.createElement("div");
     bar.style.position = "absolute";
