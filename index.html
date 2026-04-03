@@ -7045,12 +7045,17 @@ closeDarkTargetMenu();
 // =========================
 function showDarkNightMode(){
 
+let classic = document.getElementById("classicTasbih");
 let dark = document.getElementById("darkNightTasbih");
 let royal = document.getElementById("royalTasbih");
 let drawer = document.getElementById("tasbihSettingsDrawer");
 let overlay = document.getElementById("tasbihSettingsOverlay");
 
 saveTasbihStyle("dark");
+
+if(classic){
+  classic.style.display = "none";
+}
 
 if(dark){
   dark.style.display = "block";
@@ -7087,12 +7092,17 @@ if(darkTargetText){
 // =========================
 function showClassicMode(){
 
+let classic = document.getElementById("classicTasbih");
 let dark = document.getElementById("darkNightTasbih");
 let royal = document.getElementById("royalTasbih");
 let drawer = document.getElementById("tasbihSettingsDrawer");
 let overlay = document.getElementById("tasbihSettingsOverlay");
 
 saveTasbihStyle("classic");
+
+if(classic){
+  classic.style.display = "block";
+}
 
 if(dark){
   dark.style.display = "none";
@@ -7114,7 +7124,6 @@ updateTasbihStyleButtons("classic");
 closeDarkTargetMenu();
 
 }
-
 // =========================
 // SET TASBIH STYLE
 // =========================
@@ -7150,12 +7159,17 @@ function updateTasbihStyleButtons(activeStyle){
 // =========================
 function showRoyalMode(){
 
+  let classic = document.getElementById("classicTasbih");
   let dark = document.getElementById("darkNightTasbih");
   let royal = document.getElementById("royalTasbih");
   let drawer = document.getElementById("tasbihSettingsDrawer");
   let overlay = document.getElementById("tasbihSettingsOverlay");
 
   saveTasbihStyle("royal");
+
+  if(classic){
+    classic.style.display = "none";
+  }
 
   if(dark){
     dark.style.display = "none";
