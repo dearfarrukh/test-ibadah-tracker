@@ -609,6 +609,40 @@ align-items:center;
 
 </div>
 
+
+<!-- =========================
+     DARK NIGHT WALLPAPER BUTTON
+========================= -->
+<div style="
+position:absolute;
+right:20px;
+top:43%;
+transform:translateY(-50%);
+z-index:15;
+">
+
+  <button onclick="openWallpaperSelector()" style="
+  width:56px;
+  height:56px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,0.18);
+  border:2px solid rgba(255,255,255,0.78);
+  color:white;
+  font-size:22px;
+  font-weight:700;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.22);
+  ">
+  🖼️
+  </button>
+
+</div>
+
+
+  
 <!-- BIG RING -->
 <!-- Dark Night Ring Card -->
 <div id="darkNightRing" onclick="tapDarkNightRing()" style="
@@ -2167,6 +2201,108 @@ box-sizing:border-box;
 </div>
 
 
+<!-- =========================
+     DARK NIGHT WALLPAPER SELECTOR POPUP
+========================= -->
+<div id="wallpaperSelectorOverlay" onclick="closeWallpaperSelector()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+z-index:8750;
+">
+
+  <div onclick="event.stopPropagation()" style="
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:280px;
+  max-width:90%;
+  background:rgba(20,20,20,0.94);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:28px;
+  padding:18px 16px 16px 16px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  ">
+
+    <div style="
+    color:white;
+    font-size:20px;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:14px;
+    ">
+    Choose Wallpaper
+    </div>
+
+    <div style="
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    ">
+
+      <!-- Wallpaper Preview 1 -->
+      <div onclick="setTasbihWallpaper('1')" style="
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:url('Images/dark-tasbih-bg.jpg') center/cover no-repeat;
+      border:2px solid rgba(255,255,255,0.85);
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      "></div>
+
+      <!-- Wallpaper Preview 2 -->
+      <div onclick="setTasbihWallpaper('2')" style="
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:url('Images/tasbih-wall-2.jpg') center/cover no-repeat;
+      border:2px solid rgba(255,255,255,0.35);
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      "></div>
+
+      <!-- Wallpaper Preview 3 -->
+      <div onclick="setTasbihWallpaper('3')" style="
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:url('Images/tasbih-wall-3.jpg') center/cover no-repeat;
+      border:2px solid rgba(255,255,255,0.35);
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      "></div>
+
+    </div>
+
+    <button onclick="closeWallpaperSelector()" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:14px 12px;
+    margin-top:16px;
+    background:rgba(255,255,255,0.08);
+    color:#d6d6d6;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    ">
+    Cancel
+    </button>
+
+  </div>
+</div>
+
+
+
+  
   
   
 <!-- =========================
@@ -7083,6 +7219,7 @@ if(overlay){
 }
 
 updateTasbihStyleButtons("dark");
+applyTasbihWallpaper();
 updateDarkNightNumber();
 closeDarkTargetMenu();
 
@@ -7264,6 +7401,63 @@ function hideDarkNightTasbih(){
 document.getElementById("darkNightTasbih").style.display="none";
 }
 
+// =========================
+// OPEN WALLPAPER SELECTOR
+// =========================
+function openWallpaperSelector(){
+let overlay = document.getElementById("wallpaperSelectorOverlay");
+if(overlay){
+overlay.style.display = "block";
+}
+}
+
+// =========================
+// CLOSE WALLPAPER SELECTOR
+// =========================
+function closeWallpaperSelector(){
+let overlay = document.getElementById("wallpaperSelectorOverlay");
+if(overlay){
+overlay.style.display = "none";
+}
+}
+
+// =========================
+// APPLY TASBIH WALLPAPER
+// =========================
+function applyTasbihWallpaper(){
+
+let darkNightTasbih = document.getElementById("darkNightTasbih");
+if(!darkNightTasbih) return;
+
+let savedWallpaper = localStorage.getItem("darkTasbihWallpaper") || "1";
+
+let image = "Images/dark-tasbih-bg.jpg";
+
+if(savedWallpaper === "2"){
+image = "Images/tasbih-wall-2.jpg";
+}
+else if(savedWallpaper === "3"){
+image = "Images/tasbih-wall-3.jpg";
+}
+
+darkNightTasbih.style.background = "url('" + image + "') center/cover no-repeat";
+}
+
+// =========================
+// SET TASBIH WALLPAPER
+// =========================
+function setTasbihWallpaper(wallpaperId){
+
+localStorage.setItem("darkTasbihWallpaper", wallpaperId);
+
+applyTasbihWallpaper();
+closeWallpaperSelector();
+
+}
+
+
+
+  
 // =========================
 // UPDATE DARK NIGHT NUMBER
 // =========================
