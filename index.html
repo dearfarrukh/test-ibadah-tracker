@@ -7401,59 +7401,7 @@ function hideDarkNightTasbih(){
 document.getElementById("darkNightTasbih").style.display="none";
 }
 
-// =========================
-// OPEN WALLPAPER SELECTOR
-// =========================
-function openWallpaperSelector(){
-let overlay = document.getElementById("wallpaperSelectorOverlay");
-if(overlay){
-overlay.style.display = "block";
-}
-}
 
-// =========================
-// CLOSE WALLPAPER SELECTOR
-// =========================
-function closeWallpaperSelector(){
-let overlay = document.getElementById("wallpaperSelectorOverlay");
-if(overlay){
-overlay.style.display = "none";
-}
-}
-
-// =========================
-// APPLY TASBIH WALLPAPER
-// =========================
-function applyTasbihWallpaper(){
-
-let darkNightTasbih = document.getElementById("darkNightTasbih");
-if(!darkNightTasbih) return;
-
-let savedWallpaper = localStorage.getItem("darkTasbihWallpaper") || "1";
-
-let image = "Images/dark-tasbih-bg.jpg";
-
-if(savedWallpaper === "2"){
-image = "Images/tasbih-wall-2.jpg";
-}
-else if(savedWallpaper === "3"){
-image = "Images/tasbih-wall-3.jpg";
-}
-
-darkNightTasbih.style.background = "url('" + image + "') center/cover no-repeat";
-}
-
-// =========================
-// SET TASBIH WALLPAPER
-// =========================
-function setTasbihWallpaper(wallpaperId){
-
-localStorage.setItem("darkTasbihWallpaper", wallpaperId);
-
-applyTasbihWallpaper();
-closeWallpaperSelector();
-
-}
 
 
 
@@ -7479,13 +7427,13 @@ function applyTasbihWallpaper(){
   let darkNightTasbih = document.getElementById("darkNightTasbih");
   if(!darkNightTasbih) return;
 
-  let savedWallpaper = localStorage.getItem("darkTasbihWallpaper") || "wall1";
+  let savedWallpaper = localStorage.getItem("darkTasbihWallpaper") || "1";
   let wallpaperUrl = "Images/dark-tasbih-bg.jpg";
 
-  if(savedWallpaper === "wall2"){
+  if(savedWallpaper === "2"){
     wallpaperUrl = "Images/tasbih-wall-2.jpg";
   }
-  else if(savedWallpaper === "wall3"){
+  else if(savedWallpaper === "3"){
     wallpaperUrl = "Images/tasbih-wall-3.jpg";
   }
 
