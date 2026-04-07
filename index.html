@@ -9001,7 +9001,33 @@ function openMonthlySalahPrintPreviewPage(){
     </html>
   `);
 
+  
+ 
+  
   previewWindow.document.close();
+
+ 
+  // FORCE FIT TO ONE PAGE (IPHONE PRINT FIX)
+  
+setTimeout(function(){
+  try{
+    var page = previewWindow.document.querySelector(".page");
+    if(!page) return;
+
+    var fullHeight = page.scrollHeight;
+    var maxHeight = 1040; // safe A4 height
+
+    if(fullHeight > maxHeight){
+      var scale = maxHeight / fullHeight;
+
+      if(scale < 0.94) scale = 0.94;
+
+      page.style.transform = "scale(" + scale + ")";
+      page.style.transformOrigin = "top center";
+    }
+  }catch(e){}
+}, 300);
+  
 }
 
   
