@@ -9498,31 +9498,53 @@ async function updateSalahWeatherFromCityName(cityName){
   try{
     if(!cityName) return;
 
-    const cleanCity = String(cityName)
+    let cleanCity = String(cityName)
       .replace("📍", "")
       .replace("Tap to update location", "")
       .replace("Loading...", "")
+      .replace(/^Village of\s+/i, "")
+      .replace(/^City of\s+/i, "")
+      .replace(/^Town of\s+/i, "")
       .trim();
 
     if(!cleanCity) return;
 
     console.log("Geocoding Salah city:", cleanCity);
 
-    const geoUrl =
+    let geoUrl =
       "https://geocoding-api.open-meteo.com/v1/search?name=" +
       encodeURIComponent(cleanCity) +
       "&count=1&language=en&format=json";
 
-    const response = await fetch(geoUrl);
-    const data = await response.json();
+    let response = await fetch(geoUrl);
+    let data = await response.json();
 
     console.log("Salah geocoding data:", data);
 
     if(!data || !data.results || !data.results.length){
-      return;
+      const shortCity = cleanCity.split(",")[0].trim();
+
+      if(!shortCity) return;
+
+      console.log("Trying shorter geocoding city:", shortCity);
+
+      geoUrl =
+        "https://geocoding-api.open-meteo.com/v1/search?name=" +
+        encodeURIComponent(shortCity) +
+        "&count=1&language=en&format=json";
+
+      response = await fetch(geoUrl);
+      data = await response.json();
+
+      console.log("Short city geocoding data:", data);
+
+      if(!data || !data.results || !data.results.length){
+        return;
+      }
     }
 
     const result = data.results[0];
+    console.log("Weather coords found:", result.latitude, result.longitude);
     await updateSalahWeatherFromCoords(result.latitude, result.longitude);
   }catch(error){
     console.log("Salah city geocoding error:", error);
