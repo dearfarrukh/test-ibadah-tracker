@@ -12557,11 +12557,17 @@ text-align:center;
 ========================= -->
 <div id="quranPage" class="page" style="
 display:none;
-min-height:100vh;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100vh;
 background:#dcebdc;
-position:relative;
 padding:0;
+overflow-y:auto;
 overflow-x:hidden;
+z-index:9999;
+box-sizing:border-box;
 ">
 
   <!-- =========================
@@ -12698,7 +12704,19 @@ function openQuranPage(){
     page.style.display = 'none';
   });
 
-  document.getElementById('quranPage').style.display = 'block';
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+
+  let quranPage = document.getElementById('quranPage');
+  if(quranPage){
+    quranPage.style.display = 'block';
+    quranPage.style.position = 'fixed';
+    quranPage.style.top = '0';
+    quranPage.style.left = '0';
+    quranPage.style.width = '100%';
+    quranPage.style.height = '100vh';
+    quranPage.style.zIndex = '9999';
+  }
 }
 </script>
 
