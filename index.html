@@ -6688,7 +6688,7 @@ toast.style.display = "block";
 
 clearTimeout(window.backupToastTimer);
 
-window.backupToastTimer = 
+window.backupToastTimer = setTimeout(function(){
 toast.style.display = "none";
 }, 2600);
 }
@@ -6770,7 +6770,7 @@ a.click();
 localStorage.setItem("lastBackupAt", new Date().toISOString());
 updateBackupLastSavedText();
 
-
+setTimeout(function(){
 showBackupToast("Backup file ready. Save it in your Ibadah folder.");
 closeBackupPopup();
 URL.revokeObjectURL(a.href);
@@ -6844,7 +6844,7 @@ localStorage.setItem("lastBackupAt", new Date().toISOString());
 
 closeBackupPopup();
 
-
+setTimeout(function(){
 location.reload();
 }, 300);
   
@@ -6902,7 +6902,7 @@ let drawer = document.getElementById("tasbihSettingsDrawer");
 
 if(overlay){
 overlay.style.display = "block";
-
+setTimeout(function(){
 overlay.style.opacity = "1";
 },10);
 }
@@ -8635,15 +8635,11 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
 
     let row = document.createElement("tr");
 
-   let dayName = getShortWeekdayName(gregorian.date);
-
-if(dayName === "Fri"){
-  row.style.background = "#f3f3f3";
-}else if(index % 2 === 0){
-  row.style.background = "#fafafa";
-}else{
-  row.style.background = "#ffffff";
-}
+    if(index % 2 === 0){
+      row.style.background = "#fafafa";
+    }else{
+      row.style.background = "#ffffff";
+    }
 
    row.innerHTML = `
       <td style="border:1px solid #999;padding:5px 4px;text-align:center;font-size:10px;white-space:nowrap;width:15%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
@@ -8789,27 +8785,27 @@ function openMonthlySalahPrintPreviewPage(){
             cursor:pointer;
           }
 
-         .page{
-  width:100%;
-  max-width:190mm;
-  min-height:287mm;
-  margin:0 auto;
-  background:white;
-  padding:4mm 5mm 5mm 5mm;
-  box-sizing:border-box;
-  box-shadow:0 10px 30px rgba(0,0,0,0.10);
-  border-radius:18px;
-}
+          .page{
+            width:100%;
+            max-width:190mm;
+            min-height:287mm;
+            margin:0 auto;
+            background:white;
+            padding:5mm 6mm 8mm 6mm;
+            box-sizing:border-box;
+            box-shadow:0 10px 30px rgba(0,0,0,0.10);
+            border-radius:18px;
+          }
 
           /* =========================
              DESKTOP PREVIEW FORCE FIX
           ========================= */
-         .page #monthlySalahPrintCity{
-  font-size:28px !important;
-  font-weight:800 !important;
-  margin-bottom:2px !important;
-  line-height:1.05 !important;
-}
+          .page #monthlySalahPrintCity{
+            font-size:24px !important;
+            font-weight:700 !important;
+            margin-bottom:3px !important;
+            line-height:1.15 !important;
+          }
 
           .page #monthlySalahPrintMonth{
             font-size:16px !important;
@@ -8818,167 +8814,115 @@ function openMonthlySalahPrintPreviewPage(){
             line-height:1.15 !important;
           }
 
-        .page #monthlySalahPrintTable{
-  width:100% !important;
-  border-collapse:collapse !important;
-  table-layout:fixed !important;
-  font-size:11px !important;
-  text-align:center !important;
-  font-weight:700 !important;
-}
+                   .page #monthlySalahPrintTable{
+            width:100% !important;
+            border-collapse:collapse !important;
+            table-layout:fixed !important;
+            font-size:11px !important;
+            text-align:center !important;
+          }
 
-.page #monthlySalahPrintTable th{
-  background:#222 !important;
-  color:white !important;
-  border:1px solid #666 !important;
-  padding:8px 3px !important;
-  font-size:15px !important;
-  font-weight:900 !important;
-  white-space:nowrap !important;
-}
+          .page #monthlySalahPrintTable th{
+            background:#222 !important;
+            color:white !important;
+            border:1px solid #666 !important;
+            padding:5px 2px !important;
+            font-size:10px !important;
+            white-space:nowrap !important;
+          }
 
-.page #monthlySalahPrintTable td{
-  border:1px solid #999 !important;
-  padding:6px 3px !important;
-  text-align:center !important;
-  font-size:15px !important;
-  font-weight:700 !important;
-  white-space:nowrap !important;
-}
+          .page #monthlySalahPrintTable td{
+            border:1px solid #999 !important;
+            padding:5px 2px !important;
+            text-align:center !important;
+            font-size:10px !important;
+            white-space:nowrap !important;
+          }
 
+          /* =========================
+             MOBILE ONLY MONTHLY PRINT PREVIEW FIX
+          ========================= */
+          @media screen and (max-width: 768px){
+            body{
+              padding:12px 12px 20px 12px;
+            }
 
-/* =========================
-   MOBILE ONLY MONTHLY PRINT PREVIEW FIX
-========================= */
-@media screen and (max-width: 768px){
-  html, body{
-    margin:0;
-    padding:8px;
-    background:#e9e9ee;
-    overflow-x:hidden;
-    -webkit-text-size-adjust:100%;
-    text-size-adjust:100%;
-  }
+            .page{
+              max-width:186mm;
+              min-height:auto;
+              padding:4mm 4mm 5mm 4mm;
+              overflow-x:auto;
+              -webkit-overflow-scrolling:touch;
+            }
 
-  .topBar{
-    max-width:100%;
-    margin:0 0 8px 0;
-    gap:8px;
-  }
+            .page #monthlySalahPrintCity{
+              font-size:22px !important;
+            }
 
-  .topTitle{
-    font-size:16px;
-  }
+            .page #monthlySalahPrintMonth{
+              font-size:15px !important;
+            }
 
-  .actionBtn,
-  .backBtn{
-    padding:10px 12px;
-    font-size:14px;
-  }
+            .page #monthlySalahPrintTable{
+              font-size:10px !important;
+            }
 
-  .page{
-    width:100%;
-    max-width:186mm;
-    min-height:auto;
-    margin:0 auto;
-    padding:3mm 3mm 4mm 3mm;
-    box-sizing:border-box;
-    overflow:visible;
-    border-radius:16px;
-  }
+            .page #monthlySalahPrintTable th{
+              padding:4px 1px !important;
+              font-size:9px !important;
+            }
 
-  .page #monthlySalahPrintCity{
-    font-size:22px !important;
-    font-weight:800 !important;
-    margin-bottom:2px !important;
-    line-height:1.04 !important;
-  }
+            .page #monthlySalahPrintTable td{
+              padding:4px 1px !important;
+              font-size:9px !important;
+            }
+          }
 
-  .page #monthlySalahPrintMonth{
-    font-size:15px !important;
-    font-weight:700 !important;
-    line-height:1.05 !important;
-    margin-bottom:4px !important;
-  }
+                   @media print{
+            html, body{
+              width:210mm;
+              margin:0;
+              padding:0;
+              background:white;
+              -webkit-text-size-adjust:100%;
+              text-size-adjust:100%;
+              -webkit-print-color-adjust:exact;
+              print-color-adjust:exact;
+            }
 
-  .page #monthlySalahPrintTable{
-    width:100% !important;
-    border-collapse:collapse !important;
-    table-layout:fixed !important;
-    font-size:11px !important;
-    text-align:center !important;
-    font-weight:700 !important;
-  }
+            .topBar{
+              display:none !important;
+            }
 
- .page #monthlySalahPrintTable th{
-  background:#222 !important;
-  color:white !important;
-  border:1px solid #666 !important;
-  padding:4px 1px !important;
-  font-size:10px !important;
-  font-weight:900 !important;
-  white-space:nowrap !important;
-  line-height:1.05 !important;
-}
-  .page #monthlySalahPrintTable td{
-  border:1px solid #999 !important;
-  padding:3px 1px !important;
-  text-align:center !important;
-  font-size:10px !important;
-  font-weight:700 !important;
-  white-space:nowrap !important;
-  line-height:1.05 !important;
-}
-}
+            .page{
+              width:194mm;
+              max-width:194mm;
+              min-height:auto;
+              margin:0 auto;
+              box-shadow:none;
+              border-radius:0;
+              background:white;
+              padding:5mm 6mm 8mm 6mm;
+              box-sizing:border-box;
+              overflow:visible;
+            }
 
-@media print{
-  html, body{
-    width:210mm;
-    margin:0;
-    padding:0;
-    background:white;
-    -webkit-text-size-adjust:100%;
-    text-size-adjust:100%;
-    -webkit-print-color-adjust:exact;
-    print-color-adjust:exact;
-  }
+            @page{
+              size:A4 portrait;
+              margin:8mm;
+            }
+          }
+          @media print and (max-width: 768px){
+            .page{
+              width:100%;
+              padding:4mm 4mm 5mm 4mm;
+            }
 
-  .topBar{
-    display:none !important;
-  }
-
- .page{
-  width:186mm;
-  max-width:186mm;
-  min-height:auto;
-  margin:0 auto;
-  box-shadow:none;
-  border-radius:0;
-  background:white;
-  padding:3mm 3mm 4mm 3mm;
-  box-sizing:border-box;
-  overflow:visible;
-  }
-
-  @page{
-    size:A4 portrait;
-    margin:8mm;
-  }
-}
-
-@media print and (max-width: 768px){
-  .page{
-    width:194mm;
-    max-width:194mm;
-    padding:3mm 3mm 4mm 3mm;
-    margin:0 auto;
-  }
-
-  @page{
-    size:A4 portrait;
-    margin:4mm;
-  }
-}
+            @page{
+              size:A4 portrait;
+              margin:5mm;
+            }
+          }
         </style>
       </head>
       <body>
@@ -9001,50 +8945,8 @@ function openMonthlySalahPrintPreviewPage(){
     </html>
   `);
 
-  
- 
-  
   previewWindow.document.close();
-
- 
- // IPHONE ONLY PRINT FIT
-previewWindow.addEventListener("beforeprint", function(){
-  try{
-    var ua = previewWindow.navigator.userAgent || "";
-    var isIphone = /iPhone/i.test(ua);
-
-    var page = previewWindow.document.querySelector(".page");
-    if(!page) return;
-
-    // reset first
-    page.style.transform = "none";
-    page.style.transformOrigin = "top center";
-
-    // desktop stays unchanged
-    if(!isIphone) return;
-
-  
-   // tiny iPhone-only print shrink
-page.style.transform = "scale(0.94)";
-page.style.transformOrigin = "top center";
-page.style.marginBottom = "-8mm";
-  }catch(e){}
-});
-
-previewWindow.addEventListener("afterprint", function(){
-  try{
-    var page = previewWindow.document.querySelector(".page");
-    if(!page) return;
-
-    page.style.transform = "none";
-    page.style.transformOrigin = "top center";
-    page.style.marginBottom = "0";
-  }catch(e){}
-});
-  
 }
-
-  
   
 // =========================
 // SAVE MONTHLY TIMETABLE PDF
@@ -12346,20 +12248,20 @@ overflow-y:hidden;
 -webkit-overflow-scrolling:touch;
 ">
   <div id="monthlySalahPrintHeader" style="text-align:center;margin-bottom:8px;">
- <div id="monthlySalahPrintCity" style="
-    font-size:28px;
-    font-weight:800;
-    margin-bottom:4px;
+  <div id="monthlySalahPrintCity" style="
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:3px;
     line-height:1.15;
     ">
       City Name
     </div>
 
    <div id="monthlySalahPrintMonth" style="
-    font-size:18px;
-    color:#333;
-    font-weight:700;
-    line-height:1.2;
+    font-size:16px;
+    color:#444;
+    font-weight:600;
+    line-height:1.15;
     ">
       Month Year
     </div>
@@ -12369,21 +12271,20 @@ overflow-y:hidden;
 width:100%;
 border-collapse:collapse;
 table-layout:auto;
-font-size:16px;
+font-size:11px;
 text-align:center;
-font-weight:700;
 ">
     <thead>
-      <tr style="background:#222;color:white;height:52px;">
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Day</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Hijri</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Date</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Fajr</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Sunrise</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Dhuhr</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Asr</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Maghrib</th>
-        <th style="border:1px solid #666;padding:12px 6px;font-size:14px;font-weight:900;white-space:nowrap;">Isha</th>
+      <tr style="background:#222;color:white;">
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Day</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Hijri</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Date</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Fajr</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Sunrise</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Dhuhr</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Asr</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Maghrib</th>
+        <th style="border:1px solid #666;padding:5px 2px;font-size:10px;white-space:nowrap;">Isha</th>
       </tr>
     </thead>
     <tbody id="monthlySalahPrintTableBody"></tbody>
