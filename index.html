@@ -4787,16 +4787,6 @@ lastMainTab = "more";
 openTasbihPage();
 
 }
-
-  // =========================
-// OPEN QURAN FROM MORE
-// =========================
-function openMoreQuranPage(){
-
-lastMainTab = "more";
-openQuranPage();
-
-}
   
   
 // =========================
@@ -10363,21 +10353,6 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 <div style="font-size:15px;font-weight:700;color:#111;">Daily Dhikr</div>
 </div>
 
-
-
-<!-- Open Quran Page Card -->
-<div id="openQuranCard" onclick="openMoreQuranPage()" style="
-background:white;
-border-radius:22px;
-padding:18px 10px;
-text-align:center;
-cursor:pointer;
-box-shadow:0 6px 16px rgba(0,0,0,0.08);
-">
-<div style="font-size:28px;margin-bottom:8px;">📖</div>
-<div style="font-size:15px;font-weight:700;color:#111;">Quran</div>
-</div>
-  
 <!-- Open Qibla Page Card -->
 <div onclick="document.getElementById('morePage').style.display='none'; openQiblaPage();" style="
 background:white;
@@ -10389,6 +10364,8 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 ">
 <div style="font-size:28px;margin-bottom:8px;">🧭</div>
 <div style="font-size:15px;font-weight:700;color:#111;">Qibla</div>
+
+
 
 </div>
 
@@ -12572,191 +12549,6 @@ text-align:center;
      HTML TO PDF LIBRARY
 ========================= -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-
-
-<!-- =========================
-     QURAN MAIN PAGE
-========================= -->
-<div id="quranPage" class="page" style="
-display:none;
-min-height:100vh;
-background:#dcebdc;
-position:relative;
-padding:0;
-overflow-x:hidden;
-box-sizing:border-box;
-">
-
-  <!-- =========================
-       QURAN TOP HEADER
-  ========================= -->
-  <div style="
-  background:#166a1f;
-  height:120px;
-  display:flex;
-  align-items:flex-end;
-  padding:0 18px 22px 18px;
-  box-sizing:border-box;
-  ">
-    
-    <!-- QURAN MENU / BACK BUTTON -->
-    <button id="quranTopBtn" style="
-    width:44px;
-    height:44px;
-    border:none;
-    background:transparent;
-    color:white;
-    font-size:30px;
-    font-weight:700;
-    cursor:pointer;
-    margin-right:14px;
-    ">
-      ☰
-    </button>
-
-    <!-- QURAN PAGE TITLE -->
-    <div style="
-    color:white;
-    font-size:28px;
-    font-weight:800;
-    letter-spacing:0.2px;
-    ">
-      Holy Quran
-    </div>
-  </div>
-
-  <!-- =========================
-       QURAN DECORATIVE FRAME AREA
-  ========================= -->
-  <div style="
-  padding:18px 14px 34px 14px;
-  ">
-
-    <!-- QURAN MAIN FRAME -->
-    <div style="
-    max-width:420px;
-    margin:0 auto;
-    background:#cfe1cf;
-    border:4px solid #2d6b36;
-    border-radius:28px;
-    padding:18px;
-    box-shadow:
-      inset 0 0 0 3px rgba(255,255,255,0.45),
-      0 10px 25px rgba(0,0,0,0.08);
-    ">
-
-      <!-- INNER FRAME -->
-      <div style="
-      border:3px solid #4b8452;
-      border-radius:22px;
-      padding:18px 14px 20px 14px;
-      ">
-
-        <!-- RESUME BUTTON CARD -->
-        <button id="quranResumeBtn" style="
-        width:100%;
-        border:none;
-        border-radius:0;
-        background:#166a1f;
-        color:white;
-        font-size:25px;
-        font-weight:800;
-        padding:28px 16px;
-        margin-bottom:18px;
-        cursor:pointer;
-        box-shadow:0 4px 10px rgba(0,0,0,0.08);
-        ">
-          Resume
-        </button>
-
-        <!-- SURAH INDEX BUTTON CARD -->
-        <button id="quranSurahIndexBtn" style="
-        width:100%;
-        border:none;
-        border-radius:0;
-        background:#166a1f;
-        color:white;
-        font-size:25px;
-        font-weight:800;
-        padding:28px 16px;
-        margin-bottom:18px;
-        cursor:pointer;
-        box-shadow:0 4px 10px rgba(0,0,0,0.08);
-        ">
-          Surah Index
-        </button>
-
-        <!-- BOOKMARKS BUTTON CARD -->
-        <button id="quranBookmarksBtn" style="
-        width:100%;
-        border:none;
-        border-radius:0;
-        background:#166a1f;
-        color:white;
-        font-size:25px;
-        font-weight:800;
-        padding:28px 16px;
-        cursor:pointer;
-        box-shadow:0 4px 10px rgba(0,0,0,0.08);
-        ">
-          Bookmarks
-        </button>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-<script>
-
-// =========================
-// OPEN QURAN PAGE
-// =========================
-function openQuranPage(){
-
-let homePage = document.getElementById("homePage");
-let trackerPage = document.getElementById("trackerPage");
-let salahPage = document.getElementById("salahPage");
-let morePage = document.getElementById("morePage");
-let duaPage = document.getElementById("duaPage");
-let zikrPage = document.getElementById("zikrPage");
-let zikrDetailPage = document.getElementById("zikrDetailPage");
-let qiblaPage = document.getElementById("qiblaPage");
-let tasbihPage = document.getElementById("tasbihPage");
-let quranPage = document.getElementById("quranPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
-
-// CLOSE ALL
-if(homePage) homePage.style.display = "none";
-if(trackerPage) trackerPage.style.display = "none";
-if(salahPage) salahPage.style.display = "none";
-if(morePage) morePage.style.display = "none";
-if(duaPage) duaPage.style.display = "none";
-if(zikrPage) zikrPage.style.display = "none";
-if(zikrDetailPage) zikrDetailPage.style.display = "none";
-if(qiblaPage) qiblaPage.style.display = "none";
-if(tasbihPage) tasbihPage.style.display = "none";
-
-// OPEN QURAN
-if(quranPage) quranPage.style.display = "block";
-
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-if(bottomNav) bottomNav.style.display = "flex";
-
-window.scrollTo(0,0);
-
-}
-
-
-</script>
-
 
   
 
