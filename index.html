@@ -8856,23 +8856,24 @@ function openMonthlySalahPrintPreviewPage(){
   }
 
   .page{
-    width:194mm;
-    max-width:194mm;
+    width:100%;
+    max-width:100%;
     min-height:auto;
-    padding:3mm 3mm 4mm 3mm;
-    overflow:visible;
+    padding:10px 10px 12px 10px;
+    overflow-x:auto;
+    overflow-y:visible;
     -webkit-overflow-scrolling:touch;
   }
 
   .page #monthlySalahPrintCity{
-    font-size:24px !important;
+    font-size:22px !important;
     font-weight:800 !important;
     margin-bottom:2px !important;
     line-height:1.05 !important;
   }
 
   .page #monthlySalahPrintMonth{
-    font-size:16px !important;
+    font-size:15px !important;
     font-weight:700 !important;
     line-height:1.05 !important;
     margin-bottom:4px !important;
@@ -8880,9 +8881,10 @@ function openMonthlySalahPrintPreviewPage(){
 
   .page #monthlySalahPrintTable{
     width:100% !important;
+    min-width:920px !important;
     border-collapse:collapse !important;
     table-layout:fixed !important;
-    font-size:13px !important;
+    font-size:12px !important;
     text-align:center !important;
     font-weight:700 !important;
   }
@@ -8946,13 +8948,45 @@ function openMonthlySalahPrintPreviewPage(){
   .page{
     width:194mm;
     max-width:194mm;
-    padding:3mm 3mm 4mm 3mm;
+    padding:2.5mm 2.5mm 3mm 2.5mm;
     margin:0 auto;
+  }
+
+  .page #monthlySalahPrintCity{
+    font-size:24px !important;
+    font-weight:800 !important;
+    margin-bottom:1px !important;
+    line-height:1.02 !important;
+  }
+
+  .page #monthlySalahPrintMonth{
+    font-size:15px !important;
+    font-weight:700 !important;
+    margin-bottom:3px !important;
+    line-height:1.02 !important;
+  }
+
+  .page #monthlySalahPrintTable{
+    width:100% !important;
+    table-layout:fixed !important;
+    font-size:11px !important;
+  }
+
+  .page #monthlySalahPrintTable th{
+    padding:5px 2px !important;
+    font-size:11px !important;
+    font-weight:900 !important;
+  }
+
+  .page #monthlySalahPrintTable td{
+    padding:4px 2px !important;
+    font-size:11px !important;
+    font-weight:700 !important;
   }
 
   @page{
     size:A4 portrait;
-    margin:4mm;
+    margin:3mm;
   }
 }
         </style>
@@ -8966,7 +9000,7 @@ function openMonthlySalahPrintPreviewPage(){
           <div class="topTitle">Monthly Salah Timetable</div>
 
           <div class="rightBtns">
-            <button class="actionBtn" onclick="window.print()">Print</button>
+            <button class="actionBtn" onclick="setTimeout(function(){ window.print(); }, 150)">Print</button>
           </div>
         </div>
 
