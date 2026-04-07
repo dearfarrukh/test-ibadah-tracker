@@ -9023,8 +9023,11 @@ previewWindow.addEventListener("beforeprint", function(){
     // desktop stays unchanged
     if(!isIphone) return;
 
-    // tiny iPhone-only print shrink
-    page.style.transform = "scale(0.965)";
+  
+   // tiny iPhone-only print shrink
+page.style.transform = "scale(0.96)";
+page.style.transformOrigin = "top center";
+page.style.marginBottom = "-8mm";
   }catch(e){}
 });
 
@@ -9035,6 +9038,7 @@ previewWindow.addEventListener("afterprint", function(){
 
     page.style.transform = "none";
     page.style.transformOrigin = "top center";
+    page.style.marginBottom = "0";
   }catch(e){}
 });
   
