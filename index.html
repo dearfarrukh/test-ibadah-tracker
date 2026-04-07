@@ -9423,6 +9423,8 @@ function applySalahWeatherBackground(bgType){
     imagePath = "Images/weather-night.jpg";
   }
 
+  console.log("Applying Salah weather background:", bgType, imagePath);
+
   salahPage.style.backgroundImage =
     "linear-gradient(rgba(8,12,20,0.18), rgba(8,12,20,0.18)), url('" + imagePath + "')";
   salahPage.style.backgroundSize = "cover";
@@ -9521,22 +9523,24 @@ async function updateSalahWeatherFromCityName(cityName){
    REFRESH WHEN SALAH CITY CHANGES
 ========================= */
 async function refreshSalahWeatherBackground(){
-  const salahPage = document.getElementById("salahPage");
   const cityEl = document.getElementById("salahCityName");
 
-  if(!salahPage || !cityEl) return;
-
-  const pageVisible = salahPage.style.display !== "none";
-  if(!pageVisible) return;
+  if(!cityEl) return;
 
   const currentCity = cityEl.innerText.trim();
   if(!currentCity) return;
 
-  if(currentCity === salahWeatherLastCity){
+  if(
+    currentCity === salahWeatherLastCity ||
+    currentCity === "Loading..." ||
+    currentCity === "Tap to update location" ||
+    currentCity === "📍 Tap to update location"
+  ){
     return;
   }
 
   salahWeatherLastCity = currentCity;
+  console.log("Weather city detected:", currentCity);
   await updateSalahWeatherFromCityName(currentCity);
 }
 
@@ -9550,17 +9554,16 @@ function startSalahWeatherBackgroundWatcher(){
 
   salahWeatherRefreshTimer = setInterval(function(){
     refreshSalahWeatherBackground();
-  }, 1500);
+  }, 2000);
 
   setTimeout(function(){
     refreshSalahWeatherBackground();
-  }, 600);
+  }, 1000);
+
+  setTimeout(function(){
+    refreshSalahWeatherBackground();
+  }, 3000);
 }
-
-document.addEventListener("DOMContentLoaded", function(){
-  startSalahWeatherBackgroundWatcher();
-});
-
 
   
 
