@@ -8888,17 +8888,17 @@ function openMonthlySalahPrintPreviewPage(){
   }
 
   .page #monthlySalahPrintCity{
-    font-size:21px !important;
+    font-size:22px !important;
     font-weight:800 !important;
-    margin-bottom:1px !important;
-    line-height:1.02 !important;
+    margin-bottom:2px !important;
+    line-height:1.04 !important;
   }
 
   .page #monthlySalahPrintMonth{
-    font-size:14px !important;
+    font-size:15px !important;
     font-weight:700 !important;
-    margin-bottom:3px !important;
-    line-height:1.02 !important;
+    line-height:1.05 !important;
+    margin-bottom:4px !important;
   }
 
   .page #monthlySalahPrintTable{
@@ -8910,26 +8910,25 @@ function openMonthlySalahPrintPreviewPage(){
     font-weight:700 !important;
   }
 
-  .page #monthlySalahPrintTable th{
-    background:#222 !important;
-    color:white !important;
-    border:1px solid #666 !important;
-    padding:3px 1px !important;
-    font-size:9.5px !important;
-    font-weight:900 !important;
-    white-space:nowrap !important;
-    line-height:1.0 !important;
-  }
-
+ .page #monthlySalahPrintTable th{
+  background:#222 !important;
+  color:white !important;
+  border:1px solid #666 !important;
+  padding:4px 1px !important;
+  font-size:10px !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+  line-height:1.05 !important;
+}
   .page #monthlySalahPrintTable td{
-    border:1px solid #999 !important;
-    padding:2px 1px !important;
-    text-align:center !important;
-    font-size:9.5px !important;
-    font-weight:700 !important;
-    white-space:nowrap !important;
-    line-height:1.0 !important;
-  }
+  border:1px solid #999 !important;
+  padding:3px 1px !important;
+  text-align:center !important;
+  font-size:10px !important;
+  font-weight:700 !important;
+  white-space:nowrap !important;
+  line-height:1.05 !important;
+}
 }
 
 @media print{
@@ -8938,7 +8937,6 @@ function openMonthlySalahPrintPreviewPage(){
     margin:0;
     padding:0;
     background:white;
-    overflow:visible !important;
     -webkit-text-size-adjust:100%;
     text-size-adjust:100%;
     -webkit-print-color-adjust:exact;
@@ -8949,69 +8947,36 @@ function openMonthlySalahPrintPreviewPage(){
     display:none !important;
   }
 
-  .page{
-    width:186mm;
-    max-width:186mm;
-    min-height:auto;
-    margin:0 auto;
-    box-shadow:none;
-    border-radius:0;
-    background:white;
-    padding:3mm 3mm 4mm 3mm;
-    box-sizing:border-box;
-    overflow:visible;
-    page-break-inside:avoid;
-    break-inside:avoid;
-  }
-
-  .page #monthlySalahPrintCity{
-    font-size:21px !important;
-    font-weight:800 !important;
-    margin-bottom:1px !important;
-    line-height:1.02 !important;
-  }
-
-  .page #monthlySalahPrintMonth{
-    font-size:14px !important;
-    color:#444 !important;
-    font-weight:700 !important;
-    margin-bottom:3px !important;
-    line-height:1.02 !important;
-  }
-
-  .page #monthlySalahPrintTable{
-    width:100% !important;
-    border-collapse:collapse !important;
-    table-layout:fixed !important;
-    font-size:11px !important;
-    text-align:center !important;
-    font-weight:700 !important;
-  }
-
-  .page #monthlySalahPrintTable th{
-    background:#222 !important;
-    color:white !important;
-    border:1px solid #666 !important;
-    padding:3px 1px !important;
-    font-size:9.5px !important;
-    font-weight:900 !important;
-    white-space:nowrap !important;
-    line-height:1.0 !important;
-  }
-
-  .page #monthlySalahPrintTable td{
-    border:1px solid #999 !important;
-    padding:2px 1px !important;
-    text-align:center !important;
-    font-size:9.5px !important;
-    font-weight:700 !important;
-    white-space:nowrap !important;
-    line-height:1.0 !important;
+ .page{
+  width:186mm;
+  max-width:186mm;
+  min-height:auto;
+  margin:0 auto;
+  box-shadow:none;
+  border-radius:0;
+  background:white;
+  padding:3mm 3mm 4mm 3mm;
+  box-sizing:border-box;
+  overflow:visible;
   }
 
   @page{
     size:A4 portrait;
     margin:8mm;
+  }
+}
+
+@media print and (max-width: 768px){
+  .page{
+    width:194mm;
+    max-width:194mm;
+    padding:3mm 3mm 4mm 3mm;
+    margin:0 auto;
+  }
+
+  @page{
+    size:A4 portrait;
+    margin:4mm;
   }
 }
         </style>
