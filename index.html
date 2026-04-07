@@ -12708,7 +12708,6 @@ box-sizing:border-box;
 
 
 
-  <script>
 <script>
 /* =========================
    GLOBAL OPEN QURAN PAGE FUNCTION
@@ -12721,7 +12720,8 @@ window.openQuranPage = function openQuranPage(){
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 
-  let quranPage = document.getElementById('quranPage');
+  var quranPage = document.getElementById('quranPage');
+
   if(quranPage){
     quranPage.style.display = 'block';
     quranPage.style.position = 'fixed';
@@ -12732,11 +12732,8 @@ window.openQuranPage = function openQuranPage(){
     quranPage.style.zIndex = '9999';
   }
 };
-</script>
-</script>
 
 
-  <script>
 /* =========================
    CONNECT QURAN CARD CLICK
 ========================= */
@@ -12746,9 +12743,7 @@ window.addEventListener("load", function(){
 
   if(openQuranCard){
     openQuranCard.addEventListener("click", function(){
-      if(typeof window.openQuranPage === "function"){
-        window.openQuranPage();
-      }
+      window.openQuranPage();
     });
   }
 
