@@ -8912,18 +8912,25 @@ function openMonthlySalahPrintPreviewPage(){
               margin:8mm;
             }
           }
-          @media print and (max-width: 768px){
-            .page{
-              width:100%;
-              padding:4mm 4mm 5mm 4mm;
-            }
+       @media print and (max-width: 768px){
+  .page{
+    width:100%;
+    padding:4mm 4mm 5mm 4mm;
+  }
 
-            @page{
-              size:A4 portrait;
-              margin:5mm;
-            }
-          }
-        </style>
+  .page #monthlySalahPrintTable th{
+    padding:6px 2px !important;
+  }
+
+  .page #monthlySalahPrintTable td{
+    padding:6px 2px !important;
+  }
+
+  @page{
+    size:A4 portrait;
+    margin:5mm;
+  }
+}        </style>
       </head>
       <body>
         <div class="topBar">
