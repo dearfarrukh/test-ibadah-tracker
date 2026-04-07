@@ -10356,7 +10356,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 
 
 <!-- Open Quran Page Card -->
-<div onclick="openQuranPage()" style="
+<div id="openQuranCard" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
@@ -12733,6 +12733,26 @@ window.openQuranPage = function openQuranPage(){
   }
 };
 </script>
+</script>
+
+
+  <script>
+/* =========================
+   CONNECT QURAN CARD CLICK
+========================= */
+window.addEventListener("load", function(){
+
+  var openQuranCard = document.getElementById("openQuranCard");
+
+  if(openQuranCard){
+    openQuranCard.addEventListener("click", function(){
+      if(typeof window.openQuranPage === "function"){
+        window.openQuranPage();
+      }
+    });
+  }
+
+});
 </script>
 
 
