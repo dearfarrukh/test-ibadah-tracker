@@ -8961,32 +8961,7 @@ function openMonthlySalahPrintPreviewPage(){
     overflow:visible;
     page-break-inside:avoid;
     break-inside:avoid;
-  }
-
-  /* =========================
-     FINAL MOBILE PRINT HEIGHT FIX
-     (only affects printing)
-  ========================= */
-  .page #monthlySalahPrintTable th{
-    padding:3px 1px !important;
-    font-size:10px !important;
-    line-height:1.0 !important;
-  }
-
-  .page #monthlySalahPrintTable td{
-    padding:2px 1px !important;
-    font-size:10px !important;
-    line-height:1.0 !important;
-  }
-
-  .page #monthlySalahPrintCity{
-    margin-bottom:1px !important;
-    line-height:1.02 !important;
-  }
-
-  .page #monthlySalahPrintMonth{
-    margin-bottom:2px !important;
-    line-height:1.02 !important;
+    transform-origin:top center;
   }
 
   @page{
@@ -9005,13 +8980,53 @@ function openMonthlySalahPrintPreviewPage(){
           <div class="topTitle">Monthly Salah Timetable</div>
 
           <div class="rightBtns">
-            <button class="actionBtn" onclick="window.print()">Print</button>
+            <button class="actionBtn" onclick="fitMonthlySalahPrintForMobile(); setTimeout(function(){ window.print(); }, 120);">Print</button>
           </div>
         </div>
 
-        <div class="page">
+        <div class="page" id="monthlyPrintPage">
           ${printArea.innerHTML}
         </div>
+
+        <script>
+          function fitMonthlySalahPrintForMobile(){
+            try{
+              var isMobile = window.innerWidth <= 768;
+              if(!isMobile) return;
+
+              var page = document.getElementById("monthlyPrintPage");
+              if(!page) return;
+
+              page.style.transform = "none";
+              page.style.marginBottom = "0";
+              page.style.width = "186mm";
+              page.style.maxWidth = "186mm";
+
+              var fullHeight = page.scrollHeight;
+              var safeHeight = 1040;
+
+              if(fullHeight > safeHeight){
+                var scale = safeHeight / fullHeight;
+
+                if(scale < 0.92) scale = 0.92;
+                if(scale > 1) scale = 1;
+
+                page.style.transform = "scale(" + scale + ")";
+                page.style.marginBottom = "-" + Math.round(fullHeight * (1 - scale)) + "px";
+              }
+            }catch(err){
+              console.log("Monthly mobile print fit skipped", err);
+            }
+          }
+
+          window.addEventListener("load", function(){
+            setTimeout(fitMonthlySalahPrintForMobile, 150);
+          });
+
+          window.addEventListener("beforeprint", function(){
+            fitMonthlySalahPrintForMobile();
+          });
+        </script>
       </body>
     </html>
   `);
