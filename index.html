@@ -9007,26 +9007,36 @@ function openMonthlySalahPrintPreviewPage(){
   previewWindow.document.close();
 
  
-  // FORCE FIT TO ONE PAGE (IPHONE PRINT FIX)
-  
-setTimeout(function(){
+ // IPHONE ONLY PRINT FIT
+previewWindow.addEventListener("beforeprint", function(){
+  try{
+    var ua = previewWindow.navigator.userAgent || "";
+    var isIphone = /iPhone/i.test(ua);
+
+    var page = previewWindow.document.querySelector(".page");
+    if(!page) return;
+
+    // reset first
+    page.style.transform = "none";
+    page.style.transformOrigin = "top center";
+
+    // desktop stays unchanged
+    if(!isIphone) return;
+
+    // tiny iPhone-only print shrink
+    page.style.transform = "scale(0.97)";
+  }catch(e){}
+});
+
+previewWindow.addEventListener("afterprint", function(){
   try{
     var page = previewWindow.document.querySelector(".page");
     if(!page) return;
 
-    var fullHeight = page.scrollHeight;
-    var maxHeight = 1040; // safe A4 height
-
-    if(fullHeight > maxHeight){
-      var scale = maxHeight / fullHeight;
-
-      if(scale < 0.94) scale = 0.94;
-
-      page.style.transform = "scale(" + scale + ")";
-      page.style.transformOrigin = "top center";
-    }
+    page.style.transform = "none";
+    page.style.transformOrigin = "top center";
   }catch(e){}
-}, 300);
+});
   
 }
 
