@@ -8919,14 +8919,19 @@ function openMonthlySalahPrintPreviewPage(){
 
   .page #monthlySalahPrintTable th{
     padding:7px 2px !important;
-    font-size:13px !important;
+    font-size:12px !important;
     font-weight:700 !important;
   }
 
   .page #monthlySalahPrintTable td{
     padding:7px 2px !important;
-    font-size:13px !important;
+    font-size:12px !important;
     font-weight:600 !important;
+  }
+
+  /* zebra rows */
+  .page #monthlySalahPrintTable tr:nth-child(even){
+    background:#e5e5ea !important;
   }
 
   @page{
