@@ -12570,16 +12570,11 @@ text-align:center;
 ========================= -->
 <div id="quranPage" class="page" style="
 display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100vh;
+min-height:100vh;
 background:#dcebdc;
+position:relative;
 padding:0;
-overflow-y:auto;
 overflow-x:hidden;
-z-index:9999;
 box-sizing:border-box;
 ">
 
@@ -12709,28 +12704,43 @@ box-sizing:border-box;
 
 
 <script>
-/* =========================
-   GLOBAL OPEN QURAN PAGE FUNCTION
-========================= */
+// =========================
+// OPEN QURAN PAGE
+// =========================
 window.openQuranPage = function openQuranPage(){
-  document.querySelectorAll('.page').forEach(function(page){
-    page.style.display = 'none';
-  });
 
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let morePage = document.getElementById("morePage");
+let duaPage = document.getElementById("duaPage");
+let zikrPage = document.getElementById("zikrPage");
+let zikrDetailPage = document.getElementById("zikrDetailPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let tasbihPage = document.getElementById("tasbihPage");
+let quranPage = document.getElementById("quranPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let bottomNav = document.getElementById("bottomNav");
 
-  var quranPage = document.getElementById('quranPage');
+// CLOSE ALL
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(zikrPage) zikrPage.style.display = "none";
+if(zikrDetailPage) zikrDetailPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
 
-  if(quranPage){
-    quranPage.style.display = 'block';
-    quranPage.style.position = 'fixed';
-    quranPage.style.top = '0';
-    quranPage.style.left = '0';
-    quranPage.style.width = '100%';
-    quranPage.style.height = '100vh';
-    quranPage.style.zIndex = '9999';
-  }
+// OPEN QURAN
+if(quranPage) quranPage.style.display = "block";
+
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
 };
 
 
