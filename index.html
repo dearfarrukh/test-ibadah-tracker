@@ -12709,10 +12709,11 @@ box-sizing:border-box;
 
 
   <script>
+<script>
 /* =========================
-   TEMP QURAN PAGE TEST FUNCTION
+   GLOBAL OPEN QURAN PAGE FUNCTION
 ========================= */
-function openQuranPage(){
+window.openQuranPage = function openQuranPage(){
   document.querySelectorAll('.page').forEach(function(page){
     page.style.display = 'none';
   });
@@ -12730,7 +12731,8 @@ function openQuranPage(){
     quranPage.style.height = '100vh';
     quranPage.style.zIndex = '9999';
   }
-}
+};
+</script>
 </script>
 
 
