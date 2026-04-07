@@ -4787,6 +4787,16 @@ lastMainTab = "more";
 openTasbihPage();
 
 }
+
+  // =========================
+// OPEN QURAN FROM MORE
+// =========================
+function openMoreQuranPage(){
+
+lastMainTab = "more";
+openQuranPage();
+
+}
   
   
 // =========================
@@ -10356,7 +10366,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 
 
 <!-- Open Quran Page Card -->
-<div id="openQuranCard" onclick="window.openQuranPage()" style="
+<div id="openQuranCard" onclick="openMoreQuranPage()" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
@@ -12704,10 +12714,11 @@ box-sizing:border-box;
 
 
 <script>
+
 // =========================
 // OPEN QURAN PAGE
 // =========================
-window.openQuranPage = function openQuranPage(){
+function openQuranPage(){
 
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
@@ -12741,7 +12752,7 @@ if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 
-};
+}
 
 
 
