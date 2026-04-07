@@ -6688,7 +6688,7 @@ toast.style.display = "block";
 
 clearTimeout(window.backupToastTimer);
 
-window.backupToastTimer = setTimeout(function(){
+window.backupToastTimer = 
 toast.style.display = "none";
 }, 2600);
 }
@@ -6770,7 +6770,7 @@ a.click();
 localStorage.setItem("lastBackupAt", new Date().toISOString());
 updateBackupLastSavedText();
 
-setTimeout(function(){
+
 showBackupToast("Backup file ready. Save it in your Ibadah folder.");
 closeBackupPopup();
 URL.revokeObjectURL(a.href);
@@ -6844,7 +6844,7 @@ localStorage.setItem("lastBackupAt", new Date().toISOString());
 
 closeBackupPopup();
 
-setTimeout(function(){
+
 location.reload();
 }, 300);
   
@@ -6902,7 +6902,7 @@ let drawer = document.getElementById("tasbihSettingsDrawer");
 
 if(overlay){
 overlay.style.display = "block";
-setTimeout(function(){
+
 overlay.style.opacity = "1";
 },10);
 }
@@ -9025,7 +9025,7 @@ previewWindow.addEventListener("beforeprint", function(){
 
   
    // tiny iPhone-only print shrink
-page.style.transform = "scale(0.90)";
+page.style.transform = "scale(0.94)";
 page.style.transformOrigin = "top center";
 page.style.marginBottom = "-8mm";
   }catch(e){}
