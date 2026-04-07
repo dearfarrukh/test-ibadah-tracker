@@ -8635,11 +8635,15 @@ function buildMonthlySalahPrintTable(monthData, cityName, nowDate){
 
     let row = document.createElement("tr");
 
-    if(index % 2 === 0){
-      row.style.background = "#fafafa";
-    }else{
-      row.style.background = "#ffffff";
-    }
+   let dayName = getShortWeekdayName(gregorian.date);
+
+if(dayName === "Fri"){
+  row.style.background = "#f3f3f3";
+}else if(index % 2 === 0){
+  row.style.background = "#fafafa";
+}else{
+  row.style.background = "#ffffff";
+}
 
    row.innerHTML = `
       <td style="border:1px solid #999;padding:5px 4px;text-align:center;font-size:10px;white-space:nowrap;width:15%;">${escapeHtml(getShortWeekdayName(gregorian.date))}</td>
@@ -8814,30 +8818,33 @@ function openMonthlySalahPrintPreviewPage(){
             line-height:1.15 !important;
           }
 
-                   .page #monthlySalahPrintTable{
-            width:100% !important;
-            border-collapse:collapse !important;
-            table-layout:fixed !important;
-            font-size:11px !important;
-            text-align:center !important;
-          }
+         .page #monthlySalahPrintTable{
+  width:100% !important;
+  border-collapse:collapse !important;
+  table-layout:fixed !important;
+  font-size:14px !important;
+  text-align:center !important;
+  font-weight:700 !important;
+}
 
-          .page #monthlySalahPrintTable th{
-            background:#222 !important;
-            color:white !important;
-            border:1px solid #666 !important;
-            padding:5px 2px !important;
-            font-size:10px !important;
-            white-space:nowrap !important;
-          }
+.page #monthlySalahPrintTable th{
+  background:#222 !important;
+  color:white !important;
+  border:1px solid #666 !important;
+  padding:12px 6px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+}
 
-          .page #monthlySalahPrintTable td{
-            border:1px solid #999 !important;
-            padding:5px 2px !important;
-            text-align:center !important;
-            font-size:10px !important;
-            white-space:nowrap !important;
-          }
+.page #monthlySalahPrintTable td{
+  border:1px solid #999 !important;
+  padding:10px 4px !important;
+  text-align:center !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+  white-space:nowrap !important;
+}
 
           /* =========================
              MOBILE ONLY MONTHLY PRINT PREVIEW FIX
