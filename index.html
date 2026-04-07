@@ -8910,25 +8910,26 @@ function openMonthlySalahPrintPreviewPage(){
     font-weight:700 !important;
   }
 
- .page #monthlySalahPrintTable th{
-  background:#222 !important;
-  color:white !important;
-  border:1px solid #666 !important;
-  padding:4px 1px !important;
-  font-size:10px !important;
-  font-weight:900 !important;
-  white-space:nowrap !important;
-  line-height:1.05 !important;
-}
+  .page #monthlySalahPrintTable th{
+    background:#222 !important;
+    color:white !important;
+    border:1px solid #666 !important;
+    padding:4px 1px !important;
+    font-size:10px !important;
+    font-weight:900 !important;
+    white-space:nowrap !important;
+    line-height:1.05 !important;
+  }
+
   .page #monthlySalahPrintTable td{
-  border:1px solid #999 !important;
-  padding:3px 1px !important;
-  text-align:center !important;
-  font-size:10px !important;
-  font-weight:700 !important;
-  white-space:nowrap !important;
-  line-height:1.05 !important;
-}
+    border:1px solid #999 !important;
+    padding:3px 1px !important;
+    text-align:center !important;
+    font-size:10px !important;
+    font-weight:700 !important;
+    white-space:nowrap !important;
+    line-height:1.05 !important;
+  }
 }
 
 @media print{
@@ -8941,71 +8942,56 @@ function openMonthlySalahPrintPreviewPage(){
     text-size-adjust:100%;
     -webkit-print-color-adjust:exact;
     print-color-adjust:exact;
-
-  
-    /* =========================
-   FINAL MOBILE PRINT HEIGHT FIX
-   (only affects printing)
-========================= */
-
-.page #monthlySalahPrintTable th{
-  padding:3px 1px !important;
-  font-size:10px !important;
-  line-height:1.0 !important;
-}
-
-.page #monthlySalahPrintTable td{
-  padding:2px 1px !important;
-  font-size:10px !important;
-  line-height:1.0 !important;
-}
-
-/* tighten heading spacing */
-.page #monthlySalahPrintCity{
-  margin-bottom:1px !important;
-  line-height:1.02 !important;
-}
-
-.page #monthlySalahPrintMonth{
-  margin-bottom:2px !important;
-  line-height:1.02 !important;
-}
   }
 
   .topBar{
     display:none !important;
   }
 
- .page{
-  width:186mm;
-  max-width:186mm;
-  min-height:auto;
-  margin:0 auto;
-  box-shadow:none;
-  border-radius:0;
-  background:white;
-  padding:3mm 3mm 4mm 3mm;
-  box-sizing:border-box;
-  overflow:visible;
+  .page{
+    width:186mm;
+    max-width:186mm;
+    min-height:auto;
+    margin:0 auto;
+    box-shadow:none;
+    border-radius:0;
+    background:white;
+    padding:3mm 3mm 4mm 3mm;
+    box-sizing:border-box;
+    overflow:visible;
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+
+  /* =========================
+     FINAL MOBILE PRINT HEIGHT FIX
+     (only affects printing)
+  ========================= */
+  .page #monthlySalahPrintTable th{
+    padding:3px 1px !important;
+    font-size:10px !important;
+    line-height:1.0 !important;
+  }
+
+  .page #monthlySalahPrintTable td{
+    padding:2px 1px !important;
+    font-size:10px !important;
+    line-height:1.0 !important;
+  }
+
+  .page #monthlySalahPrintCity{
+    margin-bottom:1px !important;
+    line-height:1.02 !important;
+  }
+
+  .page #monthlySalahPrintMonth{
+    margin-bottom:2px !important;
+    line-height:1.02 !important;
   }
 
   @page{
     size:A4 portrait;
     margin:8mm;
-  }
-}
-
-@media print and (max-width: 768px){
-  .page{
-    width:194mm;
-    max-width:194mm;
-    padding:3mm 3mm 4mm 3mm;
-    margin:0 auto;
-  }
-
-  @page{
-    size:A4 portrait;
-    margin:4mm;
   }
 }
         </style>
@@ -9032,7 +9018,6 @@ function openMonthlySalahPrintPreviewPage(){
 
   previewWindow.document.close();
 }
-
   
   
 // =========================
