@@ -8877,29 +8877,29 @@ function openMonthlySalahPrintPreviewPage(){
   }
 
   .page{
-  width:100%;
-  max-width:186mm;
-  min-height:auto;
-  margin:0 auto;
-  padding:3mm 3mm 0mm 3mm;
-  box-sizing:border-box;
-  overflow:visible;
-  border-radius:16px;
-}
+    width:100%;
+    max-width:186mm;
+    min-height:auto;
+    margin:0 auto;
+    padding:3mm 3mm 4mm 3mm;
+    box-sizing:border-box;
+    overflow:visible;
+    border-radius:16px;
+  }
 
- .page #monthlySalahPrintCity{
-  font-size:20px !important;
-  font-weight:800 !important;
-  margin-bottom:1px !important;
-  line-height:1 !important;
-}
+  .page #monthlySalahPrintCity{
+    font-size:22px !important;
+    font-weight:800 !important;
+    margin-bottom:2px !important;
+    line-height:1.04 !important;
+  }
 
   .page #monthlySalahPrintMonth{
-  font-size:16px !important;
-  font-weight:700 !important;
-  line-height:1 !important;
-  margin-bottom:2px !important;
-}
+    font-size:15px !important;
+    font-weight:700 !important;
+    line-height:1.05 !important;
+    margin-bottom:4px !important;
+  }
 
   .page #monthlySalahPrintTable{
     width:100% !important;
@@ -8922,7 +8922,7 @@ function openMonthlySalahPrintPreviewPage(){
 }
   .page #monthlySalahPrintTable td{
   border:1px solid #999 !important;
-  padding:2px 1px !important;
+  padding:3px 1px !important;
   text-align:center !important;
   font-size:10px !important;
   font-weight:700 !important;
@@ -8947,7 +8947,7 @@ function openMonthlySalahPrintPreviewPage(){
     display:none !important;
   }
 
-.page{
+ .page{
   width:186mm;
   max-width:186mm;
   min-height:auto;
@@ -8955,30 +8955,29 @@ function openMonthlySalahPrintPreviewPage(){
   box-shadow:none;
   border-radius:0;
   background:white;
-  padding:3mm 3mm 0mm 3mm;
+  padding:3mm 3mm 4mm 3mm;
   box-sizing:border-box;
   overflow:visible;
-}
-
- @page{
-  size:A4 portrait;
-  margin:0mm;
-}
-}
-
-@media print and (max-width: 768px){
- .page{
-  width:194mm;
-  max-width:194mm;
-  padding:3mm 3mm 0mm 3mm;
-  margin:0 auto;
-};
   }
 
   @page{
-  size:A4 portrait;
-  margin:0mm;
+    size:A4 portrait;
+    margin:8mm;
+  }
 }
+
+@media print and (max-width: 768px){
+  .page{
+    width:194mm;
+    max-width:194mm;
+    padding:3mm 3mm 4mm 3mm;
+    margin:0 auto;
+  }
+
+  @page{
+    size:A4 portrait;
+    margin:4mm;
+  }
 }
         </style>
       </head>
