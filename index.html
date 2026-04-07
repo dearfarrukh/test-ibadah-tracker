@@ -9398,6 +9398,174 @@ openTasbihPage();
 
 }
 
+<!-- =========================
+     SALAH WEATHER BACKGROUND
+========================= -->
+<script>
+/* =========================
+   SALAH WEATHER BACKGROUND
+========================= */
+
+let salahWeatherLastCity = "";
+let salahWeatherRefreshTimer = null;
+
+/* =========================
+   APPLY SALAH WEATHER BACKGROUND IMAGE
+========================= */
+function applySalahWeatherBackground(bgType){
+  const salahPage = document.getElementById("salahPage");
+  if(!salahPage) return;
+
+  let imagePath = "Images/weather-cloudy.jpg";
+
+  if(bgType === "sunny"){
+    imagePath = "Images/weather-sunny.jpg";
+  }else if(bgType === "rain"){
+    imagePath = "Images/weather-rain.jpg";
+  }else if(bgType === "night"){
+    imagePath = "Images/weather-night.jpg";
+  }
+
+  salahPage.style.backgroundImage =
+    "linear-gradient(rgba(8,12,20,0.18), rgba(8,12,20,0.18)), url('" + imagePath + "')";
+  salahPage.style.backgroundSize = "cover";
+  salahPage.style.backgroundPosition = "center";
+  salahPage.style.backgroundRepeat = "no-repeat";
+  salahPage.style.backgroundColor = "#0f172a";
+}
+
+/* =========================
+   CONVERT WEATHER CODE TO SIMPLE BACKGROUND TYPE
+========================= */
+function getSalahWeatherBackgroundType(weatherCode, isDay){
+  if(String(isDay) === "0"){
+    return "night";
+  }
+
+  const rainyCodes = [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99];
+  const cloudyCodes = [1,2,3,45,48,71,73,75,77,85,86];
+
+  if(weatherCode === 0){
+    return "sunny";
+  }
+
+  if(rainyCodes.includes(Number(weatherCode))){
+    return "rain";
+  }
+
+  if(cloudyCodes.includes(Number(weatherCode))){
+    return "cloudy";
+  }
+
+  return "cloudy";
+}
+
+/* =========================
+   GET WEATHER FOR LATITUDE / LONGITUDE
+========================= */
+async function updateSalahWeatherFromCoords(lat, lon){
+  try{
+    const weatherUrl =
+      "https://api.open-meteo.com/v1/forecast?latitude=" + encodeURIComponent(lat) +
+      "&longitude=" + encodeURIComponent(lon) +
+      "&current=weather_code,is_day";
+
+    const response = await fetch(weatherUrl);
+    const data = await response.json();
+
+    if(!data || !data.current){
+      return;
+    }
+
+    const weatherCode = Number(data.current.weather_code);
+    const isDay = Number(data.current.is_day);
+    const bgType = getSalahWeatherBackgroundType(weatherCode, isDay);
+
+    applySalahWeatherBackground(bgType);
+  }catch(error){
+    console.log("Salah weather background error:", error);
+  }
+}
+
+/* =========================
+   GET LAT / LON FROM CITY NAME
+========================= */
+async function updateSalahWeatherFromCityName(cityName){
+  try{
+    if(!cityName) return;
+
+    const cleanCity = String(cityName)
+      .replace("📍", "")
+      .replace("Tap to update location", "")
+      .trim();
+
+    if(!cleanCity) return;
+
+    const geoUrl =
+      "https://geocoding-api.open-meteo.com/v1/search?name=" +
+      encodeURIComponent(cleanCity) +
+      "&count=1&language=en&format=json";
+
+    const response = await fetch(geoUrl);
+    const data = await response.json();
+
+    if(!data || !data.results || !data.results.length){
+      return;
+    }
+
+    const result = data.results[0];
+    await updateSalahWeatherFromCoords(result.latitude, result.longitude);
+  }catch(error){
+    console.log("Salah city geocoding error:", error);
+  }
+}
+
+/* =========================
+   REFRESH WHEN SALAH CITY CHANGES
+========================= */
+async function refreshSalahWeatherBackground(){
+  const salahPage = document.getElementById("salahPage");
+  const cityEl = document.getElementById("salahCityName");
+
+  if(!salahPage || !cityEl) return;
+
+  const pageVisible = salahPage.style.display !== "none";
+  if(!pageVisible) return;
+
+  const currentCity = cityEl.innerText.trim();
+  if(!currentCity) return;
+
+  if(currentCity === salahWeatherLastCity){
+    return;
+  }
+
+  salahWeatherLastCity = currentCity;
+  await updateSalahWeatherFromCityName(currentCity);
+}
+
+/* =========================
+   START SALAH WEATHER WATCHER
+========================= */
+function startSalahWeatherBackgroundWatcher(){
+  if(salahWeatherRefreshTimer){
+    clearInterval(salahWeatherRefreshTimer);
+  }
+
+  salahWeatherRefreshTimer = setInterval(function(){
+    refreshSalahWeatherBackground();
+  }, 1500);
+
+  setTimeout(function(){
+    refreshSalahWeatherBackground();
+  }, 600);
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  startSalahWeatherBackgroundWatcher();
+});
+</script>
+
+  
 
   
 
