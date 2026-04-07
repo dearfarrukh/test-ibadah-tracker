@@ -8910,26 +8910,25 @@ function openMonthlySalahPrintPreviewPage(){
     font-weight:700 !important;
   }
 
-  .page #monthlySalahPrintTable th{
-    background:#222 !important;
-    color:white !important;
-    border:1px solid #666 !important;
-    padding:4px 1px !important;
-    font-size:10px !important;
-    font-weight:900 !important;
-    white-space:nowrap !important;
-    line-height:1.05 !important;
-  }
-
+ .page #monthlySalahPrintTable th{
+  background:#222 !important;
+  color:white !important;
+  border:1px solid #666 !important;
+  padding:4px 1px !important;
+  font-size:10px !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+  line-height:1.05 !important;
+}
   .page #monthlySalahPrintTable td{
-    border:1px solid #999 !important;
-    padding:3px 1px !important;
-    text-align:center !important;
-    font-size:10px !important;
-    font-weight:700 !important;
-    white-space:nowrap !important;
-    line-height:1.05 !important;
-  }
+  border:1px solid #999 !important;
+  padding:3px 1px !important;
+  text-align:center !important;
+  font-size:10px !important;
+  font-weight:700 !important;
+  white-space:nowrap !important;
+  line-height:1.05 !important;
+}
 }
 
 @media print{
@@ -8948,25 +8947,36 @@ function openMonthlySalahPrintPreviewPage(){
     display:none !important;
   }
 
-  .page{
-    width:186mm;
-    max-width:186mm;
-    min-height:auto;
-    margin:0 auto;
-    box-shadow:none;
-    border-radius:0;
-    background:white;
-    padding:3mm 3mm 4mm 3mm;
-    box-sizing:border-box;
-    overflow:visible;
-    page-break-inside:avoid;
-    break-inside:avoid;
-    transform-origin:top center;
+ .page{
+  width:186mm;
+  max-width:186mm;
+  min-height:auto;
+  margin:0 auto;
+  box-shadow:none;
+  border-radius:0;
+  background:white;
+  padding:3mm 3mm 4mm 3mm;
+  box-sizing:border-box;
+  overflow:visible;
   }
 
   @page{
     size:A4 portrait;
     margin:8mm;
+  }
+}
+
+@media print and (max-width: 768px){
+  .page{
+    width:194mm;
+    max-width:194mm;
+    padding:3mm 3mm 4mm 3mm;
+    margin:0 auto;
+  }
+
+  @page{
+    size:A4 portrait;
+    margin:4mm;
   }
 }
         </style>
@@ -8980,59 +8990,20 @@ function openMonthlySalahPrintPreviewPage(){
           <div class="topTitle">Monthly Salah Timetable</div>
 
           <div class="rightBtns">
-            <button class="actionBtn" onclick="fitMonthlySalahPrintForMobile(); setTimeout(function(){ window.print(); }, 120);">Print</button>
+            <button class="actionBtn" onclick="window.print()">Print</button>
           </div>
         </div>
 
-        <div class="page" id="monthlyPrintPage">
+        <div class="page">
           ${printArea.innerHTML}
         </div>
-
-              <scr` + `ipt>
-          function fitMonthlySalahPrintForMobile(){
-            try{
-              var isMobile = window.innerWidth <= 768;
-              if(!isMobile) return;
-
-              var page = document.getElementById("monthlyPrintPage");
-              if(!page) return;
-
-              page.style.transform = "none";
-              page.style.marginBottom = "0";
-              page.style.width = "186mm";
-              page.style.maxWidth = "186mm";
-
-              var fullHeight = page.scrollHeight;
-              var safeHeight = 1040;
-
-              if(fullHeight > safeHeight){
-                var scale = safeHeight / fullHeight;
-
-                if(scale < 0.92) scale = 0.92;
-                if(scale > 1) scale = 1;
-
-                page.style.transform = "scale(" + scale + ")";
-                page.style.marginBottom = "-" + Math.round(fullHeight * (1 - scale)) + "px";
-              }
-            }catch(err){
-              console.log("Monthly mobile print fit skipped", err);
-            }
-          }
-
-          window.addEventListener("load", function(){
-            setTimeout(fitMonthlySalahPrintForMobile, 150);
-          });
-
-          window.addEventListener("beforeprint", function(){
-            fitMonthlySalahPrintForMobile();
-          });
-        </scr` + `ipt>
       </body>
     </html>
   `);
 
   previewWindow.document.close();
 }
+
   
   
 // =========================
