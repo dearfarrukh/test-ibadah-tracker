@@ -9405,7 +9405,7 @@ openTasbihPage();
 ========================= */
 
 let salahWeatherLastCity = "";
-let salahWeatherRefreshTimer = null;
+let salahWeatherObserver = null;
 
 /* =========================
    APPLY SALAH WEATHER BACKGROUND IMAGE
@@ -9426,11 +9426,8 @@ function applySalahWeatherBackground(bgType){
 
   console.log("Applying Salah weather background:", bgType, imagePath);
 
-  salahPage.style.backgroundImage =
-    "linear-gradient(rgba(8,12,20,0.18), rgba(8,12,20,0.18)), url('" + imagePath + "')";
-  salahPage.style.backgroundSize = "cover";
-  salahPage.style.backgroundPosition = "center";
-  salahPage.style.backgroundRepeat = "no-repeat";
+  salahPage.style.background =
+    "linear-gradient(rgba(8,12,20,0.18), rgba(8,12,20,0.18)), url('" + imagePath + "') center center / cover no-repeat";
   salahPage.style.backgroundColor = "#0f172a";
 }
 
@@ -9438,7 +9435,10 @@ function applySalahWeatherBackground(bgType){
    CONVERT WEATHER CODE TO SIMPLE BACKGROUND TYPE
 ========================= */
 function getSalahWeatherBackgroundType(weatherCode, isDay){
-  if(String(isDay) === "0"){
+  weatherCode = Number(weatherCode);
+  isDay = Number(isDay);
+
+  if(isDay === 0){
     return "night";
   }
 
@@ -9449,11 +9449,11 @@ function getSalahWeatherBackgroundType(weatherCode, isDay){
     return "sunny";
   }
 
-  if(rainyCodes.includes(Number(weatherCode))){
+  if(rainyCodes.includes(weatherCode)){
     return "rain";
   }
 
-  if(cloudyCodes.includes(Number(weatherCode))){
+  if(cloudyCodes.includes(weatherCode)){
     return "cloudy";
   }
 
@@ -9465,6 +9465,8 @@ function getSalahWeatherBackgroundType(weatherCode, isDay){
 ========================= */
 async function updateSalahWeatherFromCoords(lat, lon){
   try{
+    console.log("Fetching Salah weather for coords:", lat, lon);
+
     const weatherUrl =
       "https://api.open-meteo.com/v1/forecast?latitude=" + encodeURIComponent(lat) +
       "&longitude=" + encodeURIComponent(lon) +
@@ -9472,6 +9474,8 @@ async function updateSalahWeatherFromCoords(lat, lon){
 
     const response = await fetch(weatherUrl);
     const data = await response.json();
+
+    console.log("Salah weather API data:", data);
 
     if(!data || !data.current){
       return;
@@ -9497,9 +9501,12 @@ async function updateSalahWeatherFromCityName(cityName){
     const cleanCity = String(cityName)
       .replace("📍", "")
       .replace("Tap to update location", "")
+      .replace("Loading...", "")
       .trim();
 
     if(!cleanCity) return;
+
+    console.log("Geocoding Salah city:", cleanCity);
 
     const geoUrl =
       "https://geocoding-api.open-meteo.com/v1/search?name=" +
@@ -9508,6 +9515,8 @@ async function updateSalahWeatherFromCityName(cityName){
 
     const response = await fetch(geoUrl);
     const data = await response.json();
+
+    console.log("Salah geocoding data:", data);
 
     if(!data || !data.results || !data.results.length){
       return;
@@ -9525,14 +9534,14 @@ async function updateSalahWeatherFromCityName(cityName){
 ========================= */
 async function refreshSalahWeatherBackground(){
   const cityEl = document.getElementById("salahCityName");
-
   if(!cityEl) return;
 
   const currentCity = cityEl.innerText.trim();
-  if(!currentCity) return;
+
+  console.log("refreshSalahWeatherBackground city:", currentCity);
 
   if(
-    currentCity === salahWeatherLastCity ||
+    !currentCity ||
     currentCity === "Loading..." ||
     currentCity === "Tap to update location" ||
     currentCity === "📍 Tap to update location"
@@ -9540,30 +9549,64 @@ async function refreshSalahWeatherBackground(){
     return;
   }
 
+  if(currentCity === salahWeatherLastCity){
+    return;
+  }
+
   salahWeatherLastCity = currentCity;
-  console.log("Weather city detected:", currentCity);
   await updateSalahWeatherFromCityName(currentCity);
 }
 
 /* =========================
-   START SALAH WEATHER WATCHER
+   WATCH SALAH CITY NAME
 ========================= */
-function startSalahWeatherBackgroundWatcher(){
-  if(salahWeatherRefreshTimer){
-    clearInterval(salahWeatherRefreshTimer);
+function watchSalahCityForWeather(){
+  const cityEl = document.getElementById("salahCityName");
+  if(!cityEl) return;
+
+  if(salahWeatherObserver){
+    salahWeatherObserver.disconnect();
   }
 
-  salahWeatherRefreshTimer = setInterval(function(){
+  salahWeatherObserver = new MutationObserver(function(){
+    console.log("salahCityName changed");
     refreshSalahWeatherBackground();
-  }, 2000);
+  });
+
+  salahWeatherObserver.observe(cityEl, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+  refreshSalahWeatherBackground();
+}
+
+/* =========================
+   START SALAH WEATHER BACKGROUND WATCHER
+========================= */
+function startSalahWeatherBackgroundWatcher(){
+  console.log("Starting Salah weather watcher");
 
   setTimeout(function(){
-    refreshSalahWeatherBackground();
-  }, 1000);
+    watchSalahCityForWeather();
+  }, 500);
 
   setTimeout(function(){
-    refreshSalahWeatherBackground();
+    watchSalahCityForWeather();
+  }, 1500);
+
+  setTimeout(function(){
+    watchSalahCityForWeather();
   }, 3000);
+}
+
+/* =========================
+   MANUAL WEATHER TEST
+========================= */
+function testSalahWeatherNow(){
+  console.log("Manual Salah weather test started");
+  refreshSalahWeatherBackground();
 }
 
   
