@@ -4170,6 +4170,7 @@ let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
+let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
@@ -4182,6 +4183,7 @@ if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
+if(quranPage) quranPage.style.display = "none";
 
 // OPEN TRACKER
 if(trackerPage) trackerPage.style.display = "block";
@@ -4244,6 +4246,7 @@ let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let appSettingsPage = document.getElementById("appSettingsPage");
+let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(trackerPage) trackerPage.style.display = "none";
@@ -4255,6 +4258,7 @@ if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 if(appSettingsPage) appSettingsPage.style.display = "none";
+if(quranPage) quranPage.style.display = "none";
 
 if(homePage) homePage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
@@ -4422,6 +4426,7 @@ let salahPage = document.getElementById("salahPage");
 let tasbihPage = document.getElementById("tasbihPage");
 let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
+let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
@@ -4444,6 +4449,7 @@ if(salahPage) salahPage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
 if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
+if(quranPage) quranPage.style.display = "none";
 
 if(morePage) morePage.style.display = "block";
 
@@ -4602,6 +4608,7 @@ let zikrPage = document.getElementById("zikrPage");
 let tasbihPage = document.getElementById("tasbihPage");
 let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
+let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
@@ -4611,6 +4618,7 @@ if(morePage) morePage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "none";
 if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
+if(quranPage) quranPage.style.display = "none";
 
 if(zikrPage) zikrPage.style.display = "block";
 
@@ -4789,6 +4797,87 @@ openTasbihPage();
 }
   
   
+
+// =========================
+// OPEN QURAN FROM MORE
+// =========================
+function openMoreQuranPage(){
+
+lastMainTab = "more";
+openQuranPage();
+
+}
+
+// =========================
+// OPEN QURAN PAGE
+// =========================
+function openQuranPage(){
+
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let morePage = document.getElementById("morePage");
+let tasbihPage = document.getElementById("tasbihPage");
+let duaPage = document.getElementById("duaPage");
+let zikrPage = document.getElementById("zikrPage");
+let zikrDetailPage = document.getElementById("zikrDetailPage");
+let qiblaPage = document.getElementById("qiblaPage");
+let quranPage = document.getElementById("quranPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let bottomNav = document.getElementById("bottomNav");
+
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+if(tasbihPage) tasbihPage.style.display = "none";
+if(duaPage) duaPage.style.display = "none";
+if(zikrPage) zikrPage.style.display = "none";
+if(zikrDetailPage) zikrDetailPage.style.display = "none";
+if(qiblaPage) qiblaPage.style.display = "none";
+
+if(quranPage) quranPage.style.display = "block";
+
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// CLOSE QURAN PAGE
+// =========================
+function closeQuranPage(){
+
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let morePage = document.getElementById("morePage");
+let quranPage = document.getElementById("quranPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+let bottomNav = document.getElementById("bottomNav");
+
+if(quranPage) quranPage.style.display = "none";
+
+if(lastMainTab === "home"){
+if(homePage) homePage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+}
+else if(lastMainTab === "more"){
+if(morePage) morePage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+}
+else{
+if(trackerPage) trackerPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+}
+
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
+
 // =========================
 // OPEN TASBIH PAGE 
 // =========================
@@ -4802,6 +4891,7 @@ let duaPage = document.getElementById("duaPage");
 let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
 let qiblaPage = document.getElementById("qiblaPage");
+let quranPage = document.getElementById("quranPage");
 let tasbihPage = document.getElementById("tasbihPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
@@ -4815,6 +4905,7 @@ if(duaPage) duaPage.style.display = "none";
 if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
+if(quranPage) quranPage.style.display = "none";
 
 // OPEN TASBIH
 if(tasbihPage) tasbihPage.style.display = "block";
@@ -6573,6 +6664,7 @@ let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
+let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 updateSalahTopButton();
@@ -6583,6 +6675,7 @@ if(duaPage) duaPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
+if(quranPage) quranPage.style.display = "none";
 
 if(salahPage) salahPage.style.display = "block";
 
@@ -10353,6 +10446,19 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 <div style="font-size:15px;font-weight:700;color:#111;">Daily Dhikr</div>
 </div>
 
+<!-- Open Quran Page Card -->
+<div onclick="openMoreQuranPage()" style="
+background:white;
+border-radius:22px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+">
+<div style="font-size:28px;margin-bottom:8px;">📖</div>
+<div style="font-size:15px;font-weight:700;color:#111;">Quran</div>
+</div>
+
 <!-- Open Qibla Page Card -->
 <div onclick="document.getElementById('morePage').style.display='none'; openQiblaPage();" style="
 background:white;
@@ -10375,6 +10481,113 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 
 
   
+
+
+<!-- =========================
+     QURAN PAGE
+========================= -->
+<div id="quranPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5000;
+background:url('wallpaper.jpg') center/cover no-repeat;
+overflow:auto;
+padding:15px;
+">
+
+<div style="padding:10px;">
+<!-- Close Quran Page Button -->
+<button onclick="closeQuranPage()" style="
+width:36px;
+height:36px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+←
+</button>
+</div>
+
+<div class="card" style="
+text-align:center;
+padding:28px 20px;
+margin-top:10px;
+background:rgba(255,255,255,0.78);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+">
+<div style="font-size:42px;margin-bottom:10px;">📖</div>
+<div style="font-size:28px;font-weight:800;color:#111;">
+Quran
+</div>
+<div style="font-size:15px;color:#666;margin-top:8px;line-height:1.5;">
+Simple Quran reader
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:14px;margin-top:14px;">
+
+<!-- Quran Resume Card -->
+<div onclick="alert('Resume coming in next step')" class="card" style="
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 18px;
+background:white;
+">
+<div>
+<div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px;">Resume</div>
+<div style="font-size:14px;color:#666;">Continue from your last reading place</div>
+</div>
+<div style="font-size:24px;opacity:0.45;">›</div>
+</div>
+
+<!-- Quran Surah Index Card -->
+<div onclick="alert('Surah Index coming in next step')" class="card" style="
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 18px;
+background:white;
+">
+<div>
+<div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px;">Surah Index</div>
+<div style="font-size:14px;color:#666;">Browse all surahs</div>
+</div>
+<div style="font-size:24px;opacity:0.45;">›</div>
+</div>
+
+<!-- Quran Bookmarks Card -->
+<div onclick="alert('Bookmarks coming in next step')" class="card" style="
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 18px;
+background:white;
+">
+<div>
+<div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px;">Bookmarks</div>
+<div style="font-size:14px;color:#666;">Your saved places</div>
+</div>
+<div style="font-size:24px;opacity:0.45;">›</div>
+</div>
+
+</div>
+
+</div>
+
 <!-- =========================
      DUA PAGE
 ========================= -->
