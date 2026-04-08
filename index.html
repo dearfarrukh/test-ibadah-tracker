@@ -2197,9 +2197,9 @@ function loadMushafPage(page){
   currentMushafPage = page;
 
   let img = document.getElementById("mushafPageImage");
+  if(!img) return;
 
-  // Example source (we will improve later)
-  img.src = "https://quran-pages.s3.amazonaws.com/page-" + page + ".png";
+  img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Surat_al-Fatiha.png/800px-Surat_al-Fatiha.png";
 
 }
 
