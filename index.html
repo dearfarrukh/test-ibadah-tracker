@@ -2197,10 +2197,27 @@ function loadMushafPage(page){
   currentMushafPage = page;
 
   let img = document.getElementById("mushafPageImage");
+  let debug = document.getElementById("mushafDebugText");
+
   if(!img) return;
 
-  img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Surat_al-Fatiha.png/800px-Surat_al-Fatiha.png";
+  if(debug){
+    debug.innerText = "Trying to load test Mushaf image...";
+  }
 
+  img.onload = function(){
+    if(debug){
+      debug.innerText = "Test Mushaf image loaded successfully.";
+    }
+  };
+
+  img.onerror = function(){
+    if(debug){
+      debug.innerText = "Image failed to load.";
+    }
+  };
+
+  img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Surat_al-Fatiha.png/800px-Surat_al-Fatiha.png";
 }
 
 // Next
@@ -11429,34 +11446,84 @@ font-family:'Amiri','Noto Naskh Arabic',serif;
 ">
 </div>
 
+   </div>
+
+  <!-- =========================
+       MUSHAF PAGE VIEW
+  ========================= -->
+  <div id="mushafPageView" style="
+  display:none;
+  padding:16px;
+  ">
+
+    <!-- Page Image -->
+    <div style="
+    background:white;
+    border-radius:20px;
+    padding:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    ">
+
+      <img id="mushafPageImage" src="" style="
+      width:100%;
+      border-radius:14px;
+      display:block;
+      background:#f8f8f8;
+      min-height:300px;
+      object-fit:contain;
+      ">
+
+      <div id="mushafDebugText" style="
+      margin-top:12px;
+      text-align:center;
+      font-size:14px;
+      color:#666;
+      font-weight:600;
+      ">
+      Mushaf page loading...
+      </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div style="
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+    ">
+
+      <button onclick="prevMushafPage()" style="
+      flex:1;
+      margin-right:6px;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      background:#e9e9ee;
+      font-size:16px;
+      font-weight:600;
+      ">
+      ◀ Prev
+      </button>
+
+      <button onclick="nextMushafPage()" style="
+      flex:1;
+      margin-left:6px;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      background:#111;
+      color:white;
+      font-size:16px;
+      font-weight:600;
+      ">
+      Next ▶
+      </button>
+
+    </div>
+
   </div>
 
 </div>
-
-
-<!-- =========================
-     MUSHAF PAGE VIEW
-========================= -->
-<div id="mushafPageView" style="
-display:none;
-padding:16px;
-">
-
-  <!-- Page Image -->
-  <div style="
-  background:white;
-  border-radius:20px;
-  padding:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-  ">
-
-    <img id="mushafPageImage" src="" style="
-    width:100%;
-    border-radius:14px;
-    display:block;
-    ">
-  
-  </div>
 
   <!-- Controls -->
   <div style="
