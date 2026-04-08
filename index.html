@@ -2203,42 +2203,42 @@ function loadMushafPage(page){
 
   let surahNumber = currentQuranSurahNumber || 1;
 
+  let localPath = "";
+
+  if(page === 1){
+    localPath = "QuranPages/juz1/1-01.png";
+  }
+  else if(page === 2){
+    localPath = "QuranPages/juz1/1-02.png";
+  }
+  else if(page === 3){
+    localPath = "QuranPages/juz1/1-03.png";
+  }
+  else{
+    img.removeAttribute("src");
+    if(debug){
+      debug.innerText = "Test mode: only pages 1, 2, 3 are uploaded right now.";
+    }
+    return;
+  }
+
   if(debug){
     debug.innerText = "Opening Mushaf page " + page + " for Surah " + surahNumber;
   }
 
   img.onload = function(){
     if(debug){
-      debug.innerText = "Mushaf page " + page + " opened for Surah " + surahNumber;
+      debug.innerText = "Loaded real Mushaf page: " + localPath;
     }
   };
 
   img.onerror = function(){
     if(debug){
-      debug.innerText = "Mushaf page failed to load.";
+      debug.innerText = "Could not load: " + localPath;
     }
   };
 
-  img.src = "data:image/svg+xml;utf8," + encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200">
-      <rect width="800" height="1200" fill="#f8f4ea"/>
-      <rect x="35" y="35" width="730" height="1130" rx="28" ry="28" fill="#fffdf8" stroke="#c9b89a" stroke-width="3"/>
-
-      <text x="400" y="105" text-anchor="middle" font-size="42" font-family="Georgia, serif" fill="#5b4b34">Mushaf Mode</text>
-      <text x="400" y="165" text-anchor="middle" font-size="26" font-family="Georgia, serif" fill="#7a6a53">Surah ${surahNumber}</text>
-      <text x="400" y="210" text-anchor="middle" font-size="26" font-family="Georgia, serif" fill="#7a6a53">Starting Page ${page}</text>
-
-      <line x1="90" y1="255" x2="710" y2="255" stroke="#d9cdbb" stroke-width="2"/>
-
-      <text x="690" y="340" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">بِسْمِ ٱللّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ</text>
-      <text x="690" y="415" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">هذا اختبار لوضع المصحف داخل التطبيق</text>
-      <text x="690" y="490" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">وسيتم لاحقًا وضع الصفحات الحقيقية هنا</text>
-      <text x="690" y="565" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">مع فتح الصفحة الصحيحة لكل سورة</text>
-
-      <circle cx="400" cy="1040" r="26" fill="none" stroke="#b9a583" stroke-width="2"/>
-      <text x="400" y="1050" text-anchor="middle" font-size="20" font-family="Georgia, serif" fill="#7a6a53">${page}</text>
-    </svg>
-  `);
+  img.src = localPath;
 }
      // Next
 function nextMushafPage(){
