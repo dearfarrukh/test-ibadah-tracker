@@ -5123,6 +5123,104 @@ if(bottomNav) bottomNav.style.display = "flex";
 window.scrollTo(0,0);
 
 }
+
+
+
+
+// =========================
+// OPEN 15 LINE SURAH PAGE
+// =========================
+function openQuran15SurahPage(){
+
+let quran15Page = document.getElementById("quran15Page");
+let quran15SurahPage = document.getElementById("quran15SurahPage");
+
+if(quran15Page) quran15Page.style.display = "none";
+if(quran15SurahPage) quran15SurahPage.style.display = "block";
+
+loadQuran15SurahList();
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// CLOSE 15 LINE SURAH PAGE
+// =========================
+function closeQuran15SurahPage(){
+
+let quran15Page = document.getElementById("quran15Page");
+let quran15SurahPage = document.getElementById("quran15SurahPage");
+
+if(quran15SurahPage) quran15SurahPage.style.display = "none";
+if(quran15Page) quran15Page.style.display = "block";
+
+window.scrollTo(0,0);
+
+}
+
+
+
+// =========================
+// LOAD 15 LINE SURAH LIST
+// =========================
+function loadQuran15SurahList(){
+
+let container = document.getElementById("quran15SurahList");
+
+if(!container) return;
+
+container.innerHTML = "";
+
+// TEMP TEST DATA (we expand later)
+let surahs = [
+  {num:1, name:"Al-Fatiha", page:1},
+  {num:2, name:"Al-Baqarah", page:2},
+  {num:3, name:"Aal Imran", page:50},
+  {num:4, name:"An-Nisa", page:77},
+  {num:5, name:"Al-Ma'idah", page:106}
+];
+
+surahs.forEach(surah => {
+
+let div = document.createElement("div");
+
+div.style = `
+background:white;
+border-radius:22px;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
+cursor:pointer;
+`;
+
+div.innerHTML = `
+<div>
+  <div style="font-size:18px;font-weight:800;color:#111;">
+    ${surah.num}. ${surah.name}
+  </div>
+  <div style="font-size:13px;color:#666;">
+    Page ${surah.page}
+  </div>
+</div>
+
+<div style="font-size:20px;color:#bbb;">›</div>
+`;
+
+div.onclick = function(){
+  alert("Will open page " + surah.page + " in next step");
+};
+
+container.appendChild(div);
+
+});
+
+}
+     
+
+     
      
 // =========================
 // CLOSE SURAH INDEX PAGE
@@ -11784,8 +11882,8 @@ box-sizing:border-box;
       </div>
     </div>
 
-    <!-- Surah List Card -->
-    <div onclick="alert('15 Line Surah List coming next step')" style="
+   <!-- Surah List Card -->
+<div onclick="openQuran15SurahPage()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -12016,7 +12114,73 @@ box-sizing:border-box;
 
 </div>
 
+<!-- =========================
+     15 LINE SURAH LIST PAGE
+========================= -->
+<div id="quran15SurahPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5002;
+background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
 
+  <!-- =========================
+       TOP BAR
+  ========================= -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  ">
+
+    <button onclick="closeQuran15SurahPage()" style="
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.08);
+    background:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    ">
+      Surah List
+    </div>
+
+    <div style="width:42px;"></div>
+  </div>
+
+  <!-- =========================
+       SURAH LIST CONTAINER
+  ========================= -->
+  <div id="quran15SurahList" style="
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  ">
+  </div>
+
+</div>
+     
 
 
      
