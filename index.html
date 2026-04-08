@@ -4809,6 +4809,180 @@ openQuranPage();
 }
 
 // =========================
+// LOAD SURAH INDEX LIST
+// =========================
+async function loadSurahIndexList(){
+
+let loadingCard = document.getElementById("surahIndexLoadingCard");
+let list = document.getElementById("surahIndexList");
+
+if(loadingCard){
+loadingCard.style.display = "block";
+loadingCard.innerText = "Loading surahs...";
+}
+
+if(list){
+list.innerHTML = "";
+}
+
+try{
+
+let response = await fetch("https://api.alquran.cloud/v1/surah");
+let data = await response.json();
+
+if(!data || !data.data || !Array.isArray(data.data)){
+throw new Error("Surah list not loaded");
+}
+
+renderSurahIndexList(data.data);
+
+if(loadingCard){
+loadingCard.style.display = "none";
+}
+
+}catch(error){
+
+if(loadingCard){
+loadingCard.style.display = "block";
+loadingCard.innerText = "Could not load Surah list. Please check internet and try again.";
+}
+
+}
+
+}
+
+// =========================
+// RENDER SURAH INDEX LIST
+// =========================
+function renderSurahIndexList(surahList){
+
+let list = document.getElementById("surahIndexList");
+if(!list) return;
+
+list.innerHTML = "";
+
+surahList.forEach(function(surah){
+
+let row = document.createElement("div");
+
+row.style.background = "white";
+row.style.borderRadius = "24px";
+row.style.padding = "18px 16px";
+row.style.boxShadow = "0 8px 20px rgba(0,0,0,0.06)";
+row.style.display = "flex";
+row.style.alignItems = "center";
+row.style.justifyContent = "space-between";
+row.style.gap = "12px";
+row.style.cursor = "pointer";
+
+row.innerHTML = `
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  flex:1;
+  ">
+
+    <div style="
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    background:#f2f2f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    font-weight:800;
+    color:#111;
+    flex-shrink:0;
+    ">
+      ${surah.number}
+    </div>
+
+    <div style="
+    min-width:0;
+    flex:1;
+    ">
+      <div style="
+      font-size:17px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:3px;
+      letter-spacing:-0.2px;
+      ">
+        ${surah.englishName}
+      </div>
+
+      <div style="
+      font-size:13px;
+      color:#666;
+      line-height:1.4;
+      ">
+        ${surah.englishNameTranslation}
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+  font-size:24px;
+  font-weight:700;
+  color:#111;
+  direction:rtl;
+  text-align:right;
+  flex-shrink:0;
+  max-width:42%;
+  line-height:1.4;
+  ">
+    ${surah.name}
+  </div>
+`;
+
+list.appendChild(row);
+
+});
+
+}
+
+// =========================
+// OPEN SURAH INDEX PAGE
+// =========================
+function openSurahIndexPage(){
+
+let quranPage = document.getElementById("quranPage");
+let surahIndexPage = document.getElementById("surahIndexPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(quranPage) quranPage.style.display = "none";
+if(surahIndexPage) surahIndexPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+loadSurahIndexList();
+
+}
+
+// =========================
+// CLOSE SURAH INDEX PAGE
+// =========================
+function closeSurahIndexPage(){
+
+let quranPage = document.getElementById("quranPage");
+let surahIndexPage = document.getElementById("surahIndexPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(surahIndexPage) surahIndexPage.style.display = "none";
+if(quranPage) quranPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
+
+
+  
+// =========================
 // OPEN QURAN PAGE
 // =========================
 function openQuranPage(){
@@ -10653,7 +10827,7 @@ box-sizing:border-box;
     </div>
 
     <!-- Quran Surah Index Card -->
-    <div onclick="alert('Surah Index coming in next step')" style="
+    <div onclick="openSurahIndexPage()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -10708,17 +10882,7 @@ box-sizing:border-box;
 
       </div>
 
-      <div style="
-      font-size:24px;
-      color:#b0b0b8;
-      margin-left:14px;
-      flex-shrink:0;
-      ">
-        ›
-      </div>
-
     </div>
-
     <!-- Quran Bookmarks Card -->
     <div onclick="alert('Bookmarks coming in next step')" style="
     background:white;
@@ -10790,7 +10954,125 @@ box-sizing:border-box;
 
 </div>
   
+<!-- =========================
+     SURAH INDEX PAGE
+========================= -->
+<div id="surahIndexPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5001;
+background:#e9e9ee;
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
 
+  <!-- =========================
+       SURAH INDEX TOP BAR
+  ========================= -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  ">
+
+    <!-- Close Surah Index Page Button -->
+    <button onclick="closeSurahIndexPage()" style="
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.08);
+    background:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
+
+    <div style="
+    font-size:22px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    ">
+      Surah Index
+    </div>
+
+    <div style="width:42px;height:42px;"></div>
+  </div>
+
+  <!-- =========================
+       SURAH INDEX HEADER CARD
+  ========================= -->
+  <div style="
+  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
+  border-radius:28px;
+  padding:20px 18px;
+  text-align:center;
+  box-shadow:0 10px 24px rgba(0,0,0,0.07);
+  border:1px solid rgba(255,255,255,0.75);
+  margin-bottom:16px;
+  ">
+
+    <div style="
+    font-size:26px;
+    font-weight:800;
+    color:#111;
+    margin-bottom:6px;
+    letter-spacing:-0.4px;
+    ">
+      Holy Quran
+    </div>
+
+    <div style="
+    font-size:14px;
+    line-height:1.5;
+    color:#666;
+    ">
+      All surahs in a clean and simple list
+    </div>
+
+  </div>
+
+  <!-- =========================
+       SURAH INDEX LOADING CARD
+  ========================= -->
+  <div id="surahIndexLoadingCard" style="
+  display:block;
+  background:white;
+  border-radius:24px;
+  padding:20px 18px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  color:#666;
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:14px;
+  ">
+    Loading surahs...
+  </div>
+
+  <!-- =========================
+       SURAH INDEX LIST
+  ========================= -->
+  <div id="surahIndexList" style="
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  ">
+  </div>
+
+</div>
 
 
 <!-- =========================
