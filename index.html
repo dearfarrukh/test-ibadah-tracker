@@ -2202,24 +2202,43 @@ function loadMushafPage(page){
   if(!img) return;
 
   if(debug){
-    debug.innerText = "Trying to load test Mushaf image...";
+    debug.innerText = "Loading built-in test page...";
   }
 
   img.onload = function(){
     if(debug){
-      debug.innerText = "Test Mushaf image loaded successfully.";
+      debug.innerText = "Built-in test page loaded successfully.";
     }
   };
 
   img.onerror = function(){
     if(debug){
-      debug.innerText = "Image failed to load.";
+      debug.innerText = "Built-in test page failed to load.";
     }
   };
 
-  img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Surat_al-Fatiha.png/800px-Surat_al-Fatiha.png";
-}
+  img.src = "data:image/svg+xml;utf8," + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200">
+      <rect width="800" height="1200" fill="#f8f4ea"/>
+      <rect x="35" y="35" width="730" height="1130" rx="28" ry="28" fill="#fffdf8" stroke="#c9b89a" stroke-width="3"/>
+      <text x="400" y="120" text-anchor="middle" font-size="42" font-family="Georgia, serif" fill="#5b4b34">Mushaf Test Page</text>
+      <text x="400" y="180" text-anchor="middle" font-size="26" font-family="Georgia, serif" fill="#7a6a53">Your container is working</text>
+      <line x1="90" y1="240" x2="710" y2="240" stroke="#d9cdbb" stroke-width="2"/>
 
+      <text x="690" y="320" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">بِسْمِ ٱللّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ</text>
+      <text x="690" y="390" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">ٱلْحَمْدُ لِلّٰهِ رَبِّ ٱلْعَٰلَمِينَ</text>
+      <text x="690" y="460" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">ٱلرَّحْمٰنِ ٱلرَّحِيمِ</text>
+      <text x="690" y="530" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">مَٰلِكِ يَوْمِ ٱلدِّينِ</text>
+      <text x="690" y="600" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ</text>
+      <text x="690" y="670" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ</text>
+      <text x="690" y="740" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ</text>
+      <text x="690" y="810" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّالِّينَ</text>
+
+      <circle cx="400" cy="1040" r="26" fill="none" stroke="#b9a583" stroke-width="2"/>
+      <text x="400" y="1050" text-anchor="middle" font-size="20" font-family="Georgia, serif" fill="#7a6a53">1</text>
+    </svg>
+  `);
+}
 // Next
 function nextMushafPage(){
   loadMushafPage(currentMushafPage + 1);
