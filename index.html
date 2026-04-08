@@ -5054,7 +5054,7 @@ let surah = data.data;
 let ayahs = surah.ayahs || [];
 
 let fullText = ayahs.map(function(ayah){
-return ayah.text + " <span style='display:inline-block;font-size:16px;color:#7b6f5d;margin:0 4px;vertical-align:middle;'>۝" + ayah.numberInSurah + "</span>";
+return ayah.text + " <span style='display:inline-block;font-size:18px;color:#6f624d;margin:0 2px;vertical-align:middle;line-height:1;'>۝" + ayah.numberInSurah + "</span>";
 }).join(" ");
 
 if(textBox){
@@ -11333,19 +11333,19 @@ font-family:'Amiri','Noto Naskh Arabic',serif;
   display:none;
   background:linear-gradient(180deg, #fdfcf8 0%, #f8f4ea 100%);
   border-radius:34px;
-  padding:28px 22px 34px 22px;
+  padding:22px 18px 24px 18px;
   box-shadow:0 12px 28px rgba(0,0,0,0.06);
   border:1px solid rgba(140,120,90,0.10);
   ">
 
-  <div id="quranReadingText" style="
-font-size:34px;
-line-height:2.05;
-color:#1f1a14;
+<div id="quranReadingText" style="
+font-size:36px;
+line-height:1.82;
+color:#1b1712;
 direction:rtl;
 text-align:justify;
 font-weight:600;
-word-spacing:0px;
+word-spacing:-1px;
 letter-spacing:0px;
 font-family:'Amiri','Noto Naskh Arabic',serif;
 ">
