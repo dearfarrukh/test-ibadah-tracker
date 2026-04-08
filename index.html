@@ -2181,6 +2181,55 @@ box-sizing:border-box;
 <script>
 
 
+     // =========================
+// MUSHAF PAGE SYSTEM
+// =========================
+
+let currentMushafPage = 1;
+let totalMushafPages = 604;
+
+// Load page
+function loadMushafPage(page){
+
+  if(page < 1) page = 1;
+  if(page > totalMushafPages) page = totalMushafPages;
+
+  currentMushafPage = page;
+
+  let img = document.getElementById("mushafPageImage");
+
+  // Example source (we will improve later)
+  img.src = "https://quran-pages.s3.amazonaws.com/page-" + page + ".png";
+
+}
+
+// Next
+function nextMushafPage(){
+  loadMushafPage(currentMushafPage + 1);
+}
+
+// Prev
+function prevMushafPage(){
+  loadMushafPage(currentMushafPage - 1);
+}
+
+// Open Mushaf Mode
+function openMushafMode(){
+
+  document.getElementById("quranReadingTextCard").style.display = "none";
+  document.getElementById("mushafPageView").style.display = "block";
+
+  loadMushafPage(1);
+
+}
+
+// Back to text mode
+function closeMushafMode(){
+
+  document.getElementById("quranReadingTextCard").style.display = "block";
+  document.getElementById("mushafPageView").style.display = "none";
+
+}
 
 
 
@@ -11308,6 +11357,35 @@ font-family:'Amiri','Noto Naskh Arabic',serif;
 
   </div>
 
+
+
+<!-- =========================
+     MUSHAF MODE BUTTON
+========================= -->
+<div style="
+display:flex;
+justify-content:flex-end;
+margin-bottom:10px;
+">
+
+  <button onclick="openMushafMode()" style="
+  padding:10px 14px;
+  border:none;
+  border-radius:12px;
+  background:#111;
+  color:white;
+  font-size:14px;
+  font-weight:600;
+  ">
+  📖 Mushaf
+  </button>
+
+</div>
+
+
+
+     
+
   <!-- =========================
        QURAN READING LOADING CARD
   ========================= -->
@@ -11355,6 +11433,69 @@ font-family:'Amiri','Noto Naskh Arabic',serif;
 
 </div>
 
+
+<!-- =========================
+     MUSHAF PAGE VIEW
+========================= -->
+<div id="mushafPageView" style="
+display:none;
+padding:16px;
+">
+
+  <!-- Page Image -->
+  <div style="
+  background:white;
+  border-radius:20px;
+  padding:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  ">
+
+    <img id="mushafPageImage" src="" style="
+    width:100%;
+    border-radius:14px;
+    display:block;
+    ">
+  
+  </div>
+
+  <!-- Controls -->
+  <div style="
+  display:flex;
+  justify-content:space-between;
+  margin-top:14px;
+  ">
+
+    <button onclick="prevMushafPage()" style="
+    flex:1;
+    margin-right:6px;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:#e9e9ee;
+    font-size:16px;
+    font-weight:600;
+    ">
+    ◀ Prev
+    </button>
+
+    <button onclick="nextMushafPage()" style="
+    flex:1;
+    margin-left:6px;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:#111;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    ">
+    Next ▶
+    </button>
+
+  </div>
+
+</div>
+     
   
 
 <!-- =========================
