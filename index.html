@@ -4865,6 +4865,10 @@ surahList.forEach(function(surah){
 
 let row = document.createElement("div");
 
+row.onclick = function(){
+openQuranReadingPage(surah.number, surah.englishName, surah.name);
+};
+
 row.style.background = "white";
 row.style.borderRadius = "24px";
 row.style.padding = "18px 16px";
@@ -4980,6 +4984,119 @@ window.scrollTo(0,0);
 
 }
 
+let currentQuranSurahNumber = null;
+
+// =========================
+// OPEN QURAN READING PAGE
+// =========================
+function openQuranReadingPage(surahNumber, englishName, arabicName){
+
+currentQuranSurahNumber = surahNumber;
+
+let surahIndexPage = document.getElementById("surahIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
+let loadingCard = document.getElementById("quranReadingLoadingCard");
+let textCard = document.getElementById("quranReadingTextCard");
+let textBox = document.getElementById("quranReadingText");
+let englishNameEl = document.getElementById("quranReadingEnglishName");
+let arabicNameEl = document.getElementById("quranReadingArabicName");
+let metaEl = document.getElementById("quranReadingMeta");
+
+if(surahIndexPage) surahIndexPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "block";
+
+if(englishNameEl) englishNameEl.innerText = englishName || "Surah";
+if(arabicNameEl) arabicNameEl.innerText = arabicName || "";
+if(metaEl) metaEl.innerText = "Arabic text";
+if(textBox) textBox.innerHTML = "";
+
+if(loadingCard){
+loadingCard.style.display = "block";
+loadingCard.innerText = "Loading surah...";
+}
+
+if(textCard){
+textCard.style.display = "none";
+}
+
+window.scrollTo(0,0);
+
+loadQuranSurahText(surahNumber);
+
+}
+
+// =========================
+// LOAD QURAN SURAH TEXT
+// =========================
+async function loadQuranSurahText(surahNumber){
+
+let loadingCard = document.getElementById("quranReadingLoadingCard");
+let textCard = document.getElementById("quranReadingTextCard");
+let textBox = document.getElementById("quranReadingText");
+let metaEl = document.getElementById("quranReadingMeta");
+
+try{
+
+let response = await fetch("https://api.alquran.cloud/v1/surah/" + surahNumber);
+let data = await response.json();
+
+if(!data || !data.data || !data.data.ayahs){
+throw new Error("Surah not loaded");
+}
+
+let surah = data.data;
+let ayahs = surah.ayahs || [];
+
+let fullText = ayahs.map(function(ayah){
+return ayah.text + " <span style='font-size:20px;color:#666;'>۝" + ayah.numberInSurah + "</span>";
+}).join(" ");
+
+if(textBox){
+textBox.innerHTML = fullText;
+}
+
+if(metaEl){
+metaEl.innerText = ayahs.length + " ayahs";
+}
+
+if(loadingCard){
+loadingCard.style.display = "none";
+}
+
+if(textCard){
+textCard.style.display = "block";
+}
+
+}catch(error){
+
+if(loadingCard){
+loadingCard.style.display = "block";
+loadingCard.innerText = "Could not load surah. Please check internet and try again.";
+}
+
+if(textCard){
+textCard.style.display = "none";
+}
+
+}
+
+}
+
+// =========================
+// CLOSE QURAN READING PAGE
+// =========================
+function closeQuranReadingPage(){
+
+let surahIndexPage = document.getElementById("surahIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
+
+if(quranReadingPage) quranReadingPage.style.display = "none";
+if(surahIndexPage) surahIndexPage.style.display = "block";
+
+window.scrollTo(0,0);
+
+}
+  
 
   
 // =========================
@@ -4997,6 +5114,8 @@ let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let quranPage = document.getElementById("quranPage");
+let surahIndexPage = document.getElementById("surahIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
@@ -5009,6 +5128,8 @@ if(duaPage) duaPage.style.display = "none";
 if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
+if(surahIndexPage) surahIndexPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "none";
 
 if(quranPage) quranPage.style.display = "block";
 
@@ -5030,8 +5151,12 @@ let morePage = document.getElementById("morePage");
 let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
+let surahIndexPage = document.getElementById("surahIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
 
 if(quranPage) quranPage.style.display = "none";
+if(surahIndexPage) surahIndexPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "none";
 
 if(lastMainTab === "home"){
 if(homePage) homePage.style.display = "block";
@@ -11074,6 +11199,154 @@ box-sizing:border-box;
 
 </div>
 
+
+  <!-- =========================
+     QURAN READING PAGE
+========================= -->
+<div id="quranReadingPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5002;
+background:#e9e9ee;
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
+
+  <!-- =========================
+       QURAN READING TOP BAR
+  ========================= -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  ">
+
+    <!-- Close Quran Reading Page Button -->
+    <button onclick="closeQuranReadingPage()" style="
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.08);
+    background:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    ">
+      Reading
+    </div>
+
+    <div style="width:42px;height:42px;"></div>
+  </div>
+
+  <!-- =========================
+       QURAN READING HEADER CARD
+  ========================= -->
+  <div style="
+  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
+  border-radius:28px;
+  padding:20px 18px;
+  text-align:center;
+  box-shadow:0 10px 24px rgba(0,0,0,0.07);
+  border:1px solid rgba(255,255,255,0.75);
+  margin-bottom:16px;
+  ">
+
+    <div id="quranReadingEnglishName" style="
+    font-size:24px;
+    font-weight:800;
+    color:#111;
+    margin-bottom:6px;
+    letter-spacing:-0.4px;
+    ">
+      Surah Name
+    </div>
+
+    <div id="quranReadingArabicName" style="
+    font-size:28px;
+    font-weight:700;
+    color:#111;
+    direction:rtl;
+    line-height:1.5;
+    margin-bottom:8px;
+    ">
+      سورة
+    </div>
+
+    <div id="quranReadingMeta" style="
+    font-size:14px;
+    line-height:1.5;
+    color:#666;
+    ">
+      Arabic text
+    </div>
+
+  </div>
+
+  <!-- =========================
+       QURAN READING LOADING CARD
+  ========================= -->
+  <div id="quranReadingLoadingCard" style="
+  display:block;
+  background:white;
+  border-radius:24px;
+  padding:20px 18px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  color:#666;
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:14px;
+  ">
+    Loading surah...
+  </div>
+
+  <!-- =========================
+       QURAN READING TEXT CARD
+  ========================= -->
+  <div id="quranReadingTextCard" style="
+  display:none;
+  background:white;
+  border-radius:30px;
+  padding:24px 20px 28px 20px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  ">
+
+    <div id="quranReadingText" style="
+    font-size:34px;
+    line-height:2.15;
+    color:#111;
+    direction:rtl;
+    text-align:right;
+    font-weight:500;
+    word-spacing:2px;
+    ">
+    </div>
+
+  </div>
+
+</div>
+
+  
 
 <!-- =========================
      DUA PAGE
