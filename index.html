@@ -2201,19 +2201,21 @@ function loadMushafPage(page){
 
   if(!img) return;
 
+  let surahNumber = currentQuranSurahNumber || 1;
+
   if(debug){
-    debug.innerText = "Loading built-in test page...";
+    debug.innerText = "Opening Mushaf page " + page + " for Surah " + surahNumber;
   }
 
   img.onload = function(){
     if(debug){
-      debug.innerText = "Built-in test page loaded successfully.";
+      debug.innerText = "Mushaf page " + page + " opened for Surah " + surahNumber;
     }
   };
 
   img.onerror = function(){
     if(debug){
-      debug.innerText = "Built-in test page failed to load.";
+      debug.innerText = "Mushaf page failed to load.";
     }
   };
 
@@ -2221,25 +2223,24 @@ function loadMushafPage(page){
     <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200">
       <rect width="800" height="1200" fill="#f8f4ea"/>
       <rect x="35" y="35" width="730" height="1130" rx="28" ry="28" fill="#fffdf8" stroke="#c9b89a" stroke-width="3"/>
-      <text x="400" y="120" text-anchor="middle" font-size="42" font-family="Georgia, serif" fill="#5b4b34">Mushaf Test Page</text>
-      <text x="400" y="180" text-anchor="middle" font-size="26" font-family="Georgia, serif" fill="#7a6a53">Your container is working</text>
-      <line x1="90" y1="240" x2="710" y2="240" stroke="#d9cdbb" stroke-width="2"/>
 
-      <text x="690" y="320" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">بِسْمِ ٱللّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ</text>
-      <text x="690" y="390" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">ٱلْحَمْدُ لِلّٰهِ رَبِّ ٱلْعَٰلَمِينَ</text>
-      <text x="690" y="460" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">ٱلرَّحْمٰنِ ٱلرَّحِيمِ</text>
-      <text x="690" y="530" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">مَٰلِكِ يَوْمِ ٱلدِّينِ</text>
-      <text x="690" y="600" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ</text>
-      <text x="690" y="670" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ</text>
-      <text x="690" y="740" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ</text>
-      <text x="690" y="810" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّالِّينَ</text>
+      <text x="400" y="105" text-anchor="middle" font-size="42" font-family="Georgia, serif" fill="#5b4b34">Mushaf Mode</text>
+      <text x="400" y="165" text-anchor="middle" font-size="26" font-family="Georgia, serif" fill="#7a6a53">Surah ${surahNumber}</text>
+      <text x="400" y="210" text-anchor="middle" font-size="26" font-family="Georgia, serif" fill="#7a6a53">Starting Page ${page}</text>
+
+      <line x1="90" y1="255" x2="710" y2="255" stroke="#d9cdbb" stroke-width="2"/>
+
+      <text x="690" y="340" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">بِسْمِ ٱللّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ</text>
+      <text x="690" y="415" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">هذا اختبار لوضع المصحف داخل التطبيق</text>
+      <text x="690" y="490" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">وسيتم لاحقًا وضع الصفحات الحقيقية هنا</text>
+      <text x="690" y="565" text-anchor="end" font-size="34" font-family="Amiri, serif" fill="#1b1712">مع فتح الصفحة الصحيحة لكل سورة</text>
 
       <circle cx="400" cy="1040" r="26" fill="none" stroke="#b9a583" stroke-width="2"/>
-      <text x="400" y="1050" text-anchor="middle" font-size="20" font-family="Georgia, serif" fill="#7a6a53">1</text>
+      <text x="400" y="1050" text-anchor="middle" font-size="20" font-family="Georgia, serif" fill="#7a6a53">${page}</text>
     </svg>
   `);
 }
-// Next
+     // Next
 function nextMushafPage(){
   loadMushafPage(currentMushafPage + 1);
 }
@@ -2252,13 +2253,16 @@ function prevMushafPage(){
 // Open Mushaf Mode
 function openMushafMode(){
 
-  document.getElementById("quranReadingTextCard").style.display = "none";
-  document.getElementById("mushafPageView").style.display = "block";
+  let textCard = document.getElementById("quranReadingTextCard");
+  let mushafView = document.getElementById("mushafPageView");
 
-  loadMushafPage(1);
+  if(textCard) textCard.style.display = "none";
+  if(mushafView) mushafView.style.display = "block";
+
+  let startPage = getMushafStartPageForSurah(currentQuranSurahNumber);
+  loadMushafPage(startPage);
 
 }
-
 // Back to text mode
 function closeMushafMode(){
 
@@ -5076,6 +5080,136 @@ window.scrollTo(0,0);
 }
 
 let currentQuranSurahNumber = null;
+
+
+// =========================
+// QURAN SURAH TO MUSHAF PAGE MAP
+// =========================
+const surahToMushafPageMap = {
+  1: 1,
+  2: 2,
+  3: 50,
+  4: 77,
+  5: 106,
+  6: 128,
+  7: 151,
+  8: 177,
+  9: 187,
+  10: 208,
+  11: 221,
+  12: 235,
+  13: 249,
+  14: 255,
+  15: 262,
+  16: 267,
+  17: 282,
+  18: 293,
+  19: 305,
+  20: 312,
+  21: 322,
+  22: 332,
+  23: 342,
+  24: 350,
+  25: 359,
+  26: 367,
+  27: 377,
+  28: 385,
+  29: 396,
+  30: 404,
+  31: 411,
+  32: 415,
+  33: 418,
+  34: 428,
+  35: 434,
+  36: 440,
+  37: 446,
+  38: 453,
+  39: 458,
+  40: 467,
+  41: 477,
+  42: 483,
+  43: 489,
+  44: 496,
+  45: 499,
+  46: 502,
+  47: 507,
+  48: 511,
+  49: 515,
+  50: 518,
+  51: 520,
+  52: 523,
+  53: 526,
+  54: 528,
+  55: 531,
+  56: 534,
+  57: 537,
+  58: 542,
+  59: 545,
+  60: 549,
+  61: 551,
+  62: 553,
+  63: 554,
+  64: 556,
+  65: 558,
+  66: 560,
+  67: 562,
+  68: 564,
+  69: 566,
+  70: 568,
+  71: 570,
+  72: 572,
+  73: 574,
+  74: 575,
+  75: 577,
+  76: 578,
+  77: 580,
+  78: 582,
+  79: 583,
+  80: 585,
+  81: 586,
+  82: 587,
+  83: 587,
+  84: 589,
+  85: 590,
+  86: 591,
+  87: 591,
+  88: 592,
+  89: 593,
+  90: 594,
+  91: 595,
+  92: 595,
+  93: 596,
+  94: 596,
+  95: 597,
+  96: 597,
+  97: 598,
+  98: 598,
+  99: 599,
+  100: 599,
+  101: 600,
+  102: 600,
+  103: 601,
+  104: 601,
+  105: 601,
+  106: 602,
+  107: 602,
+  108: 602,
+  109: 603,
+  110: 603,
+  111: 603,
+  112: 604,
+  113: 604,
+  114: 604
+};
+
+// =========================
+// GET MUSHAF START PAGE FOR SURAH
+// =========================
+function getMushafStartPageForSurah(surahNumber){
+  return surahToMushafPageMap[surahNumber] || 1;
+}
+     
+     
 
 // =========================
 // OPEN QURAN READING PAGE
