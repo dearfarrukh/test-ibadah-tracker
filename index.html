@@ -2188,37 +2188,88 @@ box-sizing:border-box;
 let currentMushafPage = 1;
 let totalMushafPages = 604;
 
-// =========================
-// GET JUZ NUMBER FROM GLOBAL MUSHAF PAGE
-// =========================
-function getJuzNumberFromMushafPage(page){
-  return Math.ceil(page / 20);
-}
 
 // =========================
-// GET PAGE NUMBER INSIDE JUZ
+// REAL JUZ PAGE COUNTS
 // =========================
-function getPageNumberInsideJuz(page){
-  let pageInsideJuz = page % 20;
+const juzPageCounts = {
+  1:27,
+  2:28,
+  3:28,
+  4:28,
+  5:28,
+  6:28,
+  7:28,
+  8:28,
+  9:28,
+  10:28,
+  11:28,
+  12:28,
+  13:28,
+  14:28,
+  15:28,
+  16:28,
+  17:28,
+  18:28,
+  19:28,
+  20:26,
+  21:28,
+  22:26,
+  23:28,
+  24:26,
+  25:30,
+  26:30,
+  27:30,
+  28:30,
+  29:32,
+  30:30
+};
 
-  if(pageInsideJuz === 0){
-    pageInsideJuz = 20;
+// =========================
+// GET REAL JUZ INFO FROM GLOBAL PAGE
+// =========================
+function getRealJuzInfoFromMushafPage(page){
+
+  let runningTotal = 0;
+
+  for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
+
+    let juzCount = juzPageCounts[juzNumber];
+    let juzStart = runningTotal + 1;
+    let juzEnd = runningTotal + juzCount;
+
+    if(page >= juzStart && page <= juzEnd){
+      return {
+        juzNumber: juzNumber,
+        pageInsideJuz: page - runningTotal,
+        juzStart: juzStart,
+        juzEnd: juzEnd
+      };
+    }
+
+    runningTotal += juzCount;
   }
 
-  return pageInsideJuz;
+  return {
+    juzNumber: 1,
+    pageInsideJuz: 1,
+    juzStart: 1,
+    juzEnd: 27
+  };
 }
 
 // =========================
 // BUILD MUSHAF IMAGE PATH
 // =========================
 function buildMushafImagePath(page){
-  let juzNumber = getJuzNumberFromMushafPage(page);
-  let pageInsideJuz = getPageNumberInsideJuz(page);
 
-  let paddedPage = String(pageInsideJuz).padStart(2, "0");
+  let info = getRealJuzInfoFromMushafPage(page);
+  let paddedPage = String(info.pageInsideJuz).padStart(2, "0");
 
-  return "QuranPages/juz" + juzNumber + "/" + juzNumber + "-" + paddedPage + ".png";
+  return "QuranPages/juz" + info.juzNumber + "/" + info.juzNumber + "-" + paddedPage + ".png";
 }
+
+     
 
 // =========================
 // LOAD MUSHAF PAGE
@@ -2235,10 +2286,11 @@ function loadMushafPage(page){
 
   if(!img) return;
 
-  let surahNumber = currentQuranSurahNumber || 1;
-  let juzNumber = getJuzNumberFromMushafPage(page);
-  let pageInsideJuz = getPageNumberInsideJuz(page);
-  let localPath = buildMushafImagePath(page);
+ let surahNumber = currentQuranSurahNumber || 1;
+let info = getRealJuzInfoFromMushafPage(page);
+let juzNumber = info.juzNumber;
+let pageInsideJuz = info.pageInsideJuz;
+let localPath = buildMushafImagePath(page);
 
   if(debug){
     debug.innerText =
