@@ -2181,14 +2181,48 @@ box-sizing:border-box;
 <script>
 
 
-     // =========================
+  // =========================
 // MUSHAF PAGE SYSTEM
 // =========================
 
 let currentMushafPage = 1;
 let totalMushafPages = 604;
 
-// Load page
+// =========================
+// GET JUZ NUMBER FROM GLOBAL MUSHAF PAGE
+// =========================
+function getJuzNumberFromMushafPage(page){
+  return Math.ceil(page / 20);
+}
+
+// =========================
+// GET PAGE NUMBER INSIDE JUZ
+// =========================
+function getPageNumberInsideJuz(page){
+  let pageInsideJuz = page % 20;
+
+  if(pageInsideJuz === 0){
+    pageInsideJuz = 20;
+  }
+
+  return pageInsideJuz;
+}
+
+// =========================
+// BUILD MUSHAF IMAGE PATH
+// =========================
+function buildMushafImagePath(page){
+  let juzNumber = getJuzNumberFromMushafPage(page);
+  let pageInsideJuz = getPageNumberInsideJuz(page);
+
+  let paddedPage = String(pageInsideJuz).padStart(2, "0");
+
+  return "QuranPages/juz" + juzNumber + "/" + juzNumber + "-" + paddedPage + ".png";
+}
+
+// =========================
+// LOAD MUSHAF PAGE
+// =========================
 function loadMushafPage(page){
 
   if(page < 1) page = 1;
@@ -2202,33 +2236,21 @@ function loadMushafPage(page){
   if(!img) return;
 
   let surahNumber = currentQuranSurahNumber || 1;
-
-  let localPath = "";
-
-  if(page === 1){
-    localPath = "QuranPages/juz1/1-01.png";
-  }
-  else if(page === 2){
-    localPath = "QuranPages/juz1/1-02.png";
-  }
-  else if(page === 3){
-    localPath = "QuranPages/juz1/1-03.png";
-  }
-  else{
-    img.removeAttribute("src");
-    if(debug){
-      debug.innerText = "Test mode: only pages 1, 2, 3 are uploaded right now.";
-    }
-    return;
-  }
+  let juzNumber = getJuzNumberFromMushafPage(page);
+  let pageInsideJuz = getPageNumberInsideJuz(page);
+  let localPath = buildMushafImagePath(page);
 
   if(debug){
-    debug.innerText = "Opening Mushaf page " + page + " for Surah " + surahNumber;
+    debug.innerText =
+      "Opening Mushaf page " + page +
+      " • Juz " + juzNumber +
+      " • Page " + pageInsideJuz +
+      " • Surah " + surahNumber;
   }
 
   img.onload = function(){
     if(debug){
-      debug.innerText = "Loaded real Mushaf page: " + localPath;
+      debug.innerText = "Loaded Mushaf: " + localPath;
     }
   };
 
