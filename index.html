@@ -5369,20 +5369,38 @@ cursor:pointer;
 `;
 
 div.innerHTML = `
-<div>
-  <div style="font-size:18px;font-weight:800;color:#111;">
-    ${surah.num}. ${surah.name}
+<div style="
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+">
+  <div style="min-width:0;flex:1;">
+    <div style="font-size:18px;font-weight:800;color:#111;">
+      ${surah.num}. ${surah.name}
+    </div>
+    <div style="font-size:13px;color:#666;">
+      Page ${surahToMushafPageMap[surah.num]}
+    </div>
   </div>
-  <div style="font-size:13px;color:#666;">
-    Page ${surahToMushafPageMap[surah.num]}
+
+  <div style="
+  font-size:22px;
+  font-weight:700;
+  color:#111;
+  direction:rtl;
+  text-align:right;
+  font-family:'Amiri','Noto Naskh Arabic',serif;
+  flex-shrink:0;
+  ">
+    ${surah.nameAr}
   </div>
 </div>
-
-<div style="font-size:20px;color:#bbb;">›</div>
 `;
 
 div.onclick = function(){
-  openQuran15PageFromSurah(surah.num, surah.name);
+  openQuran15PageFromSurah(surah.num, surah.name, surah.nameAr);
 };
 
 container.appendChild(div);
@@ -5551,7 +5569,7 @@ function getMushafStartPageForSurah(surahNumber){
 // =========================
 // OPEN 15 LINE QURAN FROM SURAH
 // =========================
-function openQuran15PageFromSurah(surahNumber, surahName){
+function openQuran15PageFromSurah(surahNumber, surahName, surahArabicName){
 
 quranReadingSource = "quran15";
 currentQuranSurahNumber = surahNumber;
@@ -5571,7 +5589,7 @@ if(quran15SurahPage) quran15SurahPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "block";
 
 if(quranReadingEnglishName) quranReadingEnglishName.innerText = surahName || "Surah";
-if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+if(quranReadingArabicName) quranReadingArabicName.innerText = surahArabicName || "";
 if(quranReadingMeta) quranReadingMeta.innerText = "15 Line Quran";
 
 if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
