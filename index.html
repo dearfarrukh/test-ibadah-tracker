@@ -6756,6 +6756,101 @@ document.getElementById("ishaTime").innerText = "--:--";
 }
 
 // =========================
+// HIGHLIGHT NEXT SALAH ROW
+// =========================
+function highlightNextSalahRow(data){
+
+let rowIds = ["fajrRow","dhuhrRow","asrRow","maghribRow","ishaRow"];
+
+// CLEAR OLD HIGHLIGHT
+rowIds.forEach(function(id){
+let row = document.getElementById(id);
+if(!row) return;
+
+row.style.background = "transparent";
+row.style.border = "none";
+row.style.borderRadius = "0";
+row.style.paddingLeft = "0";
+row.style.paddingRight = "0";
+row.style.boxShadow = "none";
+row.style.transform = "scale(1)";
+});
+
+// no data = stop
+if(!data) return;
+
+// ONLY highlight on TODAY
+let selectedDate = getSelectedSalahDate();
+let today = new Date();
+
+selectedDate.setHours(0,0,0,0);
+today.setHours(0,0,0,0);
+
+if(selectedDate.getTime() !== today.getTime()){
+return;
+}
+
+// helper: convert "5:15 AM" to Date
+function timeTextToDate(timeText){
+if(!timeText) return null;
+
+let parts = String(timeText).trim().split(" ");
+if(parts.length < 2) return null;
+
+let hm = parts[0].split(":");
+if(hm.length < 2) return null;
+
+let hour = parseInt(hm[0], 10);
+let minute = parseInt(hm[1], 10);
+let ampm = parts[1].toUpperCase();
+
+if(ampm === "PM" && hour !== 12) hour += 12;
+if(ampm === "AM" && hour === 12) hour = 0;
+
+let d = new Date();
+d.setHours(hour, minute, 0, 0);
+return d;
+}
+
+let salahList = [
+{id:"fajrRow", time:data.fajr},
+{id:"dhuhrRow", time:data.dhuhr},
+{id:"asrRow", time:data.asr},
+{id:"maghribRow", time:data.maghrib},
+{id:"ishaRow", time:data.isha}
+];
+
+let now = new Date();
+let nextRowId = null;
+
+for(let i = 0; i < salahList.length; i++){
+let salahDate = timeTextToDate(salahList[i].time);
+if(salahDate && salahDate > now){
+nextRowId = salahList[i].id;
+break;
+}
+}
+
+// if all salah passed, highlight Fajr for next cycle
+if(!nextRowId){
+nextRowId = "fajrRow";
+}
+
+let activeRow = document.getElementById(nextRowId);
+if(!activeRow) return;
+
+activeRow.style.background = "rgba(233,233,238,0.58)";
+activeRow.style.border = "1px solid rgba(255,255,255,0.35)";
+activeRow.style.borderRadius = "18px";
+activeRow.style.paddingLeft = "12px";
+activeRow.style.paddingRight = "12px";
+activeRow.style.boxShadow = "0 6px 16px rgba(0,0,0,0.08)";
+activeRow.style.transform = "scale(1.01)";
+
+}
+
+     
+// =========================
 // APPLY SALAH DATA TO SCREEN
 // =========================
 function applySalahDataToScreen(data){
@@ -6775,6 +6870,8 @@ document.getElementById("asrTime").innerText = data.asr;
 document.getElementById("maghribTime").innerText = data.maghrib;
 document.getElementById("sunsetTime").innerText = data.maghrib;
 document.getElementById("ishaTime").innerText = data.isha;
+
+highlightNextSalahRow(data);
 }
 
 async function refreshLocationSalahData(){
@@ -14068,12 +14165,13 @@ Salah Times
 </div>
 
 <!-- FAJR -->
-<div style="
+<div id="fajrRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
+transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
    <div style="
@@ -14120,12 +14218,13 @@ justify-content:center;
 </div>
 
 <!-- DHUHR -->
-<div style="
+<div id="dhuhrRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
+transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
    <div style="
@@ -14146,12 +14245,13 @@ justify-content:center;
 </div>
 
 <!-- ASR -->
-<div style="
+<div id="asrRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
+transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
    <div style="
@@ -14171,12 +14271,13 @@ justify-content:center;
 </div>
 
 <!-- MAGHRIB -->
-<div style="
+<div id="maghribRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:8px 0;
 border-bottom:1px solid rgba(0,0,0,0.06);
+transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="
@@ -14197,11 +14298,12 @@ justify-content:center;
 </div>
 
 <!-- ISHA -->
-<div style="
+<div id="ishaRow" style="
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:8px 0;
+transition:all 0.25s ease;
 ">
   <div style="display:flex;align-items:center;gap:10px;">
    <div style="
