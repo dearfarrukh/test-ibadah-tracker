@@ -4982,11 +4982,9 @@ openQuranPage();
 // =========================
 function openArabicQuranPage(){
 
-let quranPage = document.getElementById("quranPage");
 let arabicQuranPage = document.getElementById("arabicQuranPage");
 let bottomNav = document.getElementById("bottomNav");
 
-if(quranPage) quranPage.style.display = "none";
 if(arabicQuranPage) arabicQuranPage.style.display = "block";
 if(bottomNav) bottomNav.style.display = "flex";
 
@@ -4999,12 +4997,10 @@ window.scrollTo(0,0);
 // =========================
 function closeArabicQuranPage(){
 
-let quranPage = document.getElementById("quranPage");
 let arabicQuranPage = document.getElementById("arabicQuranPage");
 let bottomNav = document.getElementById("bottomNav");
 
 if(arabicQuranPage) arabicQuranPage.style.display = "none";
-if(quranPage) quranPage.style.display = "block";
 if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
