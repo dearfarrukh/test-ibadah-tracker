@@ -5377,10 +5377,17 @@ list.appendChild(row);
 function openSurahIndexPage(){
 
 let quranPage = document.getElementById("quranPage");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
 let surahIndexPage = document.getElementById("surahIndexPage");
+let quran15Page = document.getElementById("quran15Page");
+let quranReadingPage = document.getElementById("quranReadingPage");
 let bottomNav = document.getElementById("bottomNav");
 
 if(quranPage) quranPage.style.display = "none";
+if(arabicQuranPage) arabicQuranPage.style.display = "none";
+if(quran15Page) quran15Page.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "none";
+
 if(surahIndexPage) surahIndexPage.style.display = "block";
 if(bottomNav) bottomNav.style.display = "flex";
 
@@ -5658,21 +5665,17 @@ container.appendChild(div);
 // =========================
 function closeSurahIndexPage(){
 
-let quranPage = document.getElementById("quranPage");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let bottomNav = document.getElementById("bottomNav");
 
 if(surahIndexPage) surahIndexPage.style.display = "none";
-if(quranPage) quranPage.style.display = "block";
+if(arabicQuranPage) arabicQuranPage.style.display = "block";
 if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 
 }
-
-let currentQuranSurahNumber = null;
-let quranReadingSource = "arabic";
-
 
 // =========================
 // QURAN SURAH TO MUSHAF PAGE MAP
