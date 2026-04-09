@@ -3421,6 +3421,96 @@ updateStreak();
 }
 
 // =========================
+// QURAN 15 SWIPE VARIABLES
+// =========================
+let quranSwipeStartX = 0;
+let quranSwipeEndX = 0;
+let quranSwipeStartY = 0;
+let quranSwipeEndY = 0;
+
+// =========================
+// HANDLE QURAN SWIPE START
+// =========================
+function handleQuranSwipeStart(event){
+
+if(quranReadingSource !== "quran15") return;
+
+let touch = event.touches[0];
+if(!touch) return;
+
+quranSwipeStartX = touch.clientX;
+quranSwipeStartY = touch.clientY;
+quranSwipeEndX = touch.clientX;
+quranSwipeEndY = touch.clientY;
+
+}
+
+// =========================
+// HANDLE QURAN SWIPE MOVE
+// =========================
+function handleQuranSwipeMove(event){
+
+if(quranReadingSource !== "quran15") return;
+
+let touch = event.touches[0];
+if(!touch) return;
+
+quranSwipeEndX = touch.clientX;
+quranSwipeEndY = touch.clientY;
+
+}
+
+// =========================
+// HANDLE QURAN SWIPE END
+// =========================
+function handleQuranSwipeEnd(){
+
+if(quranReadingSource !== "quran15") return;
+
+let diffX = quranSwipeEndX - quranSwipeStartX;
+let diffY = quranSwipeEndY - quranSwipeStartY;
+
+let absX = Math.abs(diffX);
+let absY = Math.abs(diffY);
+
+// ignore tiny swipe
+if(absX < 40) return;
+
+// ignore mostly vertical movement
+if(absY > absX) return;
+
+// swipe left = next page
+if(diffX < -40){
+nextMushafPage();
+}
+
+// swipe right = previous page
+if(diffX > 40){
+prevMushafPage();
+}
+
+}
+
+// =========================
+// SETUP QURAN 15 SWIPE
+// =========================
+function setupQuran15Swipe(){
+
+let img = document.getElementById("mushafPageImage");
+if(!img) return;
+
+if(img.dataset.swipeReady === "yes") return;
+
+img.addEventListener("touchstart", handleQuranSwipeStart, {passive:true});
+img.addEventListener("touchmove", handleQuranSwipeMove, {passive:true});
+img.addEventListener("touchend", handleQuranSwipeEnd);
+
+img.dataset.swipeReady = "yes";
+
+}
+
+     
+// =========================
 // PREV DAY
 // =========================
 function prevDay(){
@@ -5940,10 +6030,13 @@ if(mushafPageView) mushafPageView.style.display = "block";
 let startPage = getMushafStartPageForSurah(surahNumber);
 loadMushafPage(startPage);
 
+setTimeout(function(){
+setupQuran15Swipe();
+}, 100);
+
 window.scrollTo(0,0);
 
 }
-
 
 
 
@@ -5966,9 +6059,11 @@ let textBox = document.getElementById("quranReadingText");
 let englishNameEl = document.getElementById("quranReadingEnglishName");
 let arabicNameEl = document.getElementById("quranReadingArabicName");
 let metaEl = document.getElementById("quranReadingMeta");
+let mushafPageView = document.getElementById("mushafPageView");
 
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "block";
+if(mushafPageView) mushafPageView.style.display = "none";
 
 if(englishNameEl) englishNameEl.innerText = englishName || "Surah";
 if(arabicNameEl) arabicNameEl.innerText = arabicName || "";
@@ -12766,19 +12861,26 @@ padding:18px 16px 120px 16px;
 box-sizing:border-box;
 ">
   <!-- =========================
-       QURAN READING TOP BAR
+       QURAN READING MINI TOP BAR
   ========================= -->
-  <div style="
+  <div id="quranReadingMiniTopBar" style="
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
+  gap:12px;
+  margin-bottom:10px;
+  padding:8px 10px;
+  background:rgba(255,255,255,0.72);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-radius:22px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  border:1px solid rgba(255,255,255,0.6);
   ">
 
     <!-- Close Quran Reading Page Button -->
     <button onclick="closeQuranReadingPage()" style="
-    width:42px;
-    height:42px;
+    width:40px;
+    height:40px;
     border-radius:50%;
     border:1px solid rgba(0,0,0,0.08);
     background:white;
@@ -12789,68 +12891,58 @@ box-sizing:border-box;
     justify-content:center;
     color:#111;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    flex-shrink:0;
     ">
       ←
     </button>
 
     <div style="
-    font-size:20px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.3px;
+    flex:1;
+    min-width:0;
+    text-align:center;
+    padding-right:40px;
     ">
-      Reading
-    </div>
 
-    <div style="width:42px;height:42px;"></div>
-  </div>
+      <div id="quranReadingEnglishName" style="
+      font-size:15px;
+      font-weight:800;
+      color:#111;
+      letter-spacing:-0.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      ">
+        Surah Name
+      </div>
 
-  <!-- =========================
-       QURAN READING HEADER CARD
-  ========================= -->
-  <div style="
-  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
-  border-radius:28px;
-  padding:20px 18px;
-  text-align:center;
-  box-shadow:0 10px 24px rgba(0,0,0,0.07);
-  border:1px solid rgba(255,255,255,0.75);
-  margin-bottom:16px;
-  ">
+      <div id="quranReadingArabicName" style="
+      font-size:20px;
+      font-weight:700;
+      color:#2c2418;
+      direction:rtl;
+      line-height:1.25;
+      margin-top:2px;
+      font-family:'Amiri','Noto Naskh Arabic',serif;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      ">
+        سورة
+      </div>
 
-    <div id="quranReadingEnglishName" style="
-    font-size:24px;
-    font-weight:800;
-    color:#111;
-    margin-bottom:6px;
-    letter-spacing:-0.4px;
-    ">
-      Surah Name
-    </div>
+      <div id="quranReadingMeta" style="
+      display:none;
+      font-size:12px;
+      line-height:1.4;
+      color:#666;
+      margin-top:2px;
+      ">
+        Arabic text
+      </div>
 
-     <div id="quranReadingArabicName" style="
-font-size:40px;
-font-weight:700;
-color:#2c2418;
-direction:rtl;
-line-height:1.5;
-margin-bottom:10px;
-letter-spacing:0px;
-font-family:'Amiri','Noto Naskh Arabic',serif;
-">
-سورة
-</div>
-
-    <div id="quranReadingMeta" style="
-    font-size:14px;
-    line-height:1.5;
-    color:#666;
-    ">
-      Arabic text
     </div>
 
   </div>
-
 
 
 <!-- =========================
