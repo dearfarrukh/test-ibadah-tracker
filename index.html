@@ -11840,7 +11840,7 @@ box-sizing:border-box;
 
   </div>
 
-  <!-- =========================
+    <!-- =========================
        QURAN MAIN ACTION CARDS
   ========================= -->
   <div style="
@@ -11849,8 +11849,8 @@ box-sizing:border-box;
   gap:16px;
   ">
 
-    <!-- Quran Resume Card -->
-    <div onclick="alert('Resume coming in next step')" style="
+    <!-- Arabic Quran Card -->
+    <div onclick="openArabicQuranPage()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -11880,7 +11880,7 @@ box-sizing:border-box;
         font-size:24px;
         flex-shrink:0;
         ">
-          ▶️
+          🕋
         </div>
 
         <div>
@@ -11891,7 +11891,7 @@ box-sizing:border-box;
           margin-bottom:4px;
           letter-spacing:-0.2px;
           ">
-            Resume
+            Arabic Quran
           </div>
 
           <div style="
@@ -11899,7 +11899,7 @@ box-sizing:border-box;
           color:#666;
           line-height:1.5;
           ">
-            Continue from your last reading place
+            Open Arabic Quran tools
           </div>
         </div>
 
@@ -11916,8 +11916,8 @@ box-sizing:border-box;
 
     </div>
 
-    <!-- Quran Surah Index Card -->
-    <div onclick="openSurahIndexPage()" style="
+    <!-- 15 LINE QURAN CARD -->
+    <div onclick="openQuran15Page()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -11947,7 +11947,7 @@ box-sizing:border-box;
         font-size:24px;
         flex-shrink:0;
         ">
-          📚
+          📖
         </div>
 
         <div>
@@ -11956,216 +11956,15 @@ box-sizing:border-box;
           font-weight:800;
           color:#111;
           margin-bottom:4px;
-          letter-spacing:-0.2px;
           ">
-            Surah Index
+            15 Line Quran
           </div>
 
           <div style="
           font-size:14px;
           color:#666;
-          line-height:1.5;
           ">
-            Browse all surahs in a simple list
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-<!-- Arabic Quran Card -->
-<div onclick="openArabicQuranPage()" style="
-background:white;
-border-radius:26px;
-padding:22px 20px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:space-between;
-box-shadow:0 8px 22px rgba(0,0,0,0.07);
-border:1px solid rgba(0,0,0,0.03);
-margin-bottom:14px;
-">
-
-  <div style="
-  display:flex;
-  align-items:center;
-  gap:14px;
-  min-width:0;
-  ">
-
-    <div style="
-    width:52px;
-    height:52px;
-    border-radius:18px;
-    background:#f2f2f7;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    flex-shrink:0;
-    ">
-      🕋
-    </div>
-
-    <div>
-      <div style="
-      font-size:20px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:4px;
-      letter-spacing:-0.2px;
-      ">
-        Arabic Quran
-      </div>
-
-      <div style="
-      font-size:14px;
-      color:#666;
-      line-height:1.5;
-      ">
-        Open Arabic Quran tools
-      </div>
-    </div>
-
-  </div>
-
-  <div style="
-  font-size:24px;
-  color:#b0b0b8;
-  margin-left:14px;
-  flex-shrink:0;
-  ">
-    ›
-  </div>
-
-</div>
-
-
-       
-
-       <!-- =========================
-   15 LINE QURAN CARD
-========================= -->
-<div onclick="openQuran15Page()" style="
-background:white;
-border-radius:26px;
-padding:22px 20px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:space-between;
-box-shadow:0 8px 22px rgba(0,0,0,0.07);
-border:1px solid rgba(0,0,0,0.03);
-">
-
-  <div style="
-  display:flex;
-  align-items:center;
-  gap:14px;
-  min-width:0;
-  ">
-
-    <div style="
-    width:52px;
-    height:52px;
-    border-radius:18px;
-    background:#f2f2f7;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    flex-shrink:0;
-    ">
-      📖
-    </div>
-
-    <div>
-      <div style="
-      font-size:20px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:4px;
-      ">
-        15 Line Quran
-      </div>
-
-      <div style="
-      font-size:14px;
-      color:#666;
-      ">
-        Read by pages (Mushaf style)
-      </div>
-    </div>
-
-  </div>
-
-  <div style="
-  font-size:24px;
-  color:#b0b0b8;
-  margin-left:14px;
-  ">
-    ›
-  </div>
-
-</div>
-
-
-       
-    <!-- Quran Bookmarks Card -->
-    <div onclick="alert('Bookmarks coming in next step')" style="
-    background:white;
-    border-radius:26px;
-    padding:22px 20px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
-    ">
-
-      <div style="
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
-      ">
-
-        <div style="
-        width:52px;
-        height:52px;
-        border-radius:18px;
-        background:#f2f2f7;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:24px;
-        flex-shrink:0;
-        ">
-          🔖
-        </div>
-
-        <div>
-          <div style="
-          font-size:20px;
-          font-weight:800;
-          color:#111;
-          margin-bottom:4px;
-          letter-spacing:-0.2px;
-          ">
-            Bookmarks
-          </div>
-
-          <div style="
-          font-size:14px;
-          color:#666;
-          line-height:1.5;
-          ">
-            Open your saved reading places
+            Read by pages (Mushaf style)
           </div>
         </div>
 
@@ -12175,7 +11974,6 @@ border:1px solid rgba(0,0,0,0.03);
       font-size:24px;
       color:#b0b0b8;
       margin-left:14px;
-      flex-shrink:0;
       ">
         ›
       </div>
