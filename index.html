@@ -5376,18 +5376,31 @@ list.appendChild(row);
 // =========================
 function openSurahIndexPage(){
 
+let homePage = document.getElementById("homePage");
+let salahPage = document.getElementById("salahPage");
+let trackerPage = document.getElementById("trackerPage");
+let morePage = document.getElementById("morePage");
+
 let quranPage = document.getElementById("quranPage");
 let arabicQuranPage = document.getElementById("arabicQuranPage");
-let surahIndexPage = document.getElementById("surahIndexPage");
 let quran15Page = document.getElementById("quran15Page");
 let quranReadingPage = document.getElementById("quranReadingPage");
+
+let surahIndexPage = document.getElementById("surahIndexPage");
 let bottomNav = document.getElementById("bottomNav");
+
+// 🔴 HIDE EVERYTHING FIRST
+if(homePage) homePage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
 
 if(quranPage) quranPage.style.display = "none";
 if(arabicQuranPage) arabicQuranPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
 
+// ✅ SHOW ONLY SURAH INDEX
 if(surahIndexPage) surahIndexPage.style.display = "block";
 if(bottomNav) bottomNav.style.display = "flex";
 
