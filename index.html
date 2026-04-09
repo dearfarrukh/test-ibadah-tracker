@@ -13006,8 +13006,9 @@ border:1px solid rgba(140,120,90,0.10);
 ========================= -->
 <div id="mushafPageView" style="
 display:none;
-margin-top:0;
-height:calc(100vh - 155px);
+margin:0;
+height:calc(100vh - 120px);
+overflow:hidden;
 ">
 
   <!-- Full Quran Page Wrapper -->
@@ -13021,12 +13022,12 @@ height:calc(100vh - 155px);
 
     <!-- Quran Page Card -->
     <div style="
-    width:100%;
-    height:98%;
+    width:96%;
+    height:96%;
     background:white;
-    border-radius:16px;
-    padding:0.8%;
-    box-shadow:0 6px 16px rgba(0,0,0,0.07);
+    border-radius:14px;
+    padding:0.5%;
+    box-shadow:0 4px 12px rgba(0,0,0,0.06);
     border:1px solid rgba(0,0,0,0.04);
     box-sizing:border-box;
     overflow:hidden;
@@ -13036,20 +13037,16 @@ height:calc(100vh - 155px);
     ">
 
       <!-- Mushaf Page Image -->
-     <img id="mushafPageImage" src="" style="
-width:100%;
-height:auto;
-display:block;
-border-radius:10px;
-background:#f8f8f8;
-object-fit:cover;
-max-height:100%;
-">
+      <img id="mushafPageImage" src="" style="
+      width:100%;
+      height:100%;
+      display:block;
+      border-radius:10px;
+      object-fit:contain;
+      ">
 
       <!-- Hidden Debug Text -->
-      <div id="mushafDebugText" style="
-      display:none;
-      ">
+      <div id="mushafDebugText" style="display:none;">
       Mushaf page loading...
       </div>
 
