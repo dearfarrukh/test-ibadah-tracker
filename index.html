@@ -4425,7 +4425,7 @@ if(tasbihPage) tasbihPage.style.display = "none";
 if(duaPage) duaPage.style.display = "none";
 if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
-if(qiblaPage) qiblaPage.style.display = "none";
+
 if(appSettingsPage) appSettingsPage.style.display = "none";
 if(quranPage) quranPage.style.display = "none";
 
@@ -5731,29 +5731,7 @@ else{
 window.scrollTo(0,0);
 
 }
-// =========================
 // OPEN ARABIC QURAN PAGE
-// =========================
-function openArabicQuranPage(){
-
-let quranPage = document.getElementById("quranPage");
-let arabicQuranPage = document.getElementById("arabicQuranPage");
-let quran15Page = document.getElementById("quran15Page");
-let surahIndexPage = document.getElementById("surahIndexPage");
-let quranReadingPage = document.getElementById("quranReadingPage");
-let bottomNav = document.getElementById("bottomNav");
-
-if(quranPage) quranPage.style.display = "none";
-if(quran15Page) quran15Page.style.display = "none";
-if(surahIndexPage) surahIndexPage.style.display = "none";
-if(quranReadingPage) quranReadingPage.style.display = "none";
-
-if(arabicQuranPage) arabicQuranPage.style.display = "block";
-if(bottomNav) bottomNav.style.display = "flex";
-
-window.scrollTo(0,0);
-
-}
 
 // =========================
 // CLOSE ARABIC QURAN PAGE
@@ -5788,6 +5766,7 @@ let zikrPage = document.getElementById("zikrPage");
 let zikrDetailPage = document.getElementById("zikrDetailPage");
 let qiblaPage = document.getElementById("qiblaPage");
 let quranPage = document.getElementById("quranPage");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
 let quran15Page = document.getElementById("quran15Page");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let quranReadingPage = document.getElementById("quranReadingPage");
@@ -5803,6 +5782,7 @@ if(duaPage) duaPage.style.display = "none";
 if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
+if(arabicQuranPage) arabicQuranPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "none";
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
@@ -5827,11 +5807,13 @@ let morePage = document.getElementById("morePage");
 let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
 let quran15Page = document.getElementById("quran15Page");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let quranReadingPage = document.getElementById("quranReadingPage");
-
+     
 if(quranPage) quranPage.style.display = "none";
+if(arabicQuranPage) arabicQuranPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "none";
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
