@@ -13006,12 +13006,14 @@ border:1px solid rgba(140,120,90,0.10);
 ========================= -->
 <div id="mushafPageView" style="
 display:none;
-margin-top:8px;
+margin-top:0;
+height:calc(100vh - 140px);
 ">
 
   <!-- Full Quran Page Wrapper -->
   <div style="
   width:100%;
+  height:100%;
   display:flex;
   justify-content:center;
   align-items:flex-start;
@@ -13020,23 +13022,22 @@ margin-top:8px;
     <!-- Quran Page Card -->
     <div style="
     width:100%;
-    max-width:700px;
+    height:100%;
     background:white;
-    border-radius:24px;
-    padding:8px;
-    box-shadow:0 10px 28px rgba(0,0,0,0.10);
+    border-radius:18px;
+    padding:1.5%;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
     border:1px solid rgba(0,0,0,0.04);
+    box-sizing:border-box;
     ">
 
       <!-- Mushaf Page Image -->
       <img id="mushafPageImage" src="" style="
       width:100%;
-      height:auto;
+      height:100%;
       display:block;
-      border-radius:18px;
+      border-radius:12px;
       background:#f8f8f8;
-      min-height:65vh;
-      max-height:76vh;
       object-fit:contain;
       ">
 
@@ -13052,9 +13053,6 @@ margin-top:8px;
   </div>
 
 </div>
-
-  </div>
-
 </div>
 
   <!-- Controls -->
