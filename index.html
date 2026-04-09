@@ -5731,7 +5731,46 @@ else{
 window.scrollTo(0,0);
 
 }
-  
+// =========================
+// OPEN ARABIC QURAN PAGE
+// =========================
+function openArabicQuranPage(){
+
+let quranPage = document.getElementById("quranPage");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
+let quran15Page = document.getElementById("quran15Page");
+let surahIndexPage = document.getElementById("surahIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(quranPage) quranPage.style.display = "none";
+if(quran15Page) quran15Page.style.display = "none";
+if(surahIndexPage) surahIndexPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "none";
+
+if(arabicQuranPage) arabicQuranPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// CLOSE ARABIC QURAN PAGE
+// =========================
+function closeArabicQuranPage(){
+
+let quranPage = document.getElementById("quranPage");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(arabicQuranPage) arabicQuranPage.style.display = "none";
+if(quranPage) quranPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}  
 
   
 // =========================
@@ -11648,9 +11687,75 @@ box-sizing:border-box;
 
     </div>
 
+<!-- =========================
+     ARABIC QURAN CARD
+========================= -->
+<div onclick="openArabicQuranPage()" style="
+background:white;
+border-radius:26px;
+padding:22px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+margin-bottom:16px;
+">
 
-       <!-- =========================
-   15 LINE QURAN CARD
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  ">
+
+    <div style="
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:#f2f2f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    flex-shrink:0;
+    ">
+      🕋
+    </div>
+
+    <div>
+      <div style="
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:4px;
+      ">
+        Arabic Quran
+      </div>
+
+      <div style="
+      font-size:14px;
+      color:#666;
+      ">
+        Surah index, resume and bookmarks
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+  font-size:24px;
+  color:#b0b0b8;
+  margin-left:14px;
+  ">
+    ›
+  </div>
+
+</div>
+
+<!-- =========================
+     15 LINE QURAN CARD
 ========================= -->
 <div onclick="openQuran15Page()" style="
 background:white;
@@ -11716,77 +11821,269 @@ border:1px solid rgba(0,0,0,0.03);
 </div>
 
 
-       
-    <!-- Quran Bookmarks Card -->
-    <div onclick="alert('Bookmarks coming in next step')" style="
+<!-- =========================
+     ARABIC QURAN PAGE
+========================= -->
+<div id="arabicQuranPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5001;
+background:#e9e9ee;
+overflow:auto;
+padding:18px 16px 24px 16px;
+box-sizing:border-box;
+">
+
+  <!-- ARABIC QURAN TOP BAR -->
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+  ">
+
+    <!-- Close Arabic Quran Page Button -->
+    <button onclick="closeArabicQuranPage()" style="
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
     background:white;
-    border-radius:26px;
-    padding:22px 20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    font-size:22px;
+    font-weight:700;
+    color:#111;
     cursor:pointer;
+    flex-shrink:0;
+    ">
+      ←
+    </button>
+
+    <div>
+      <div style="
+      font-size:28px;
+      font-weight:800;
+      color:#111;
+      letter-spacing:-0.4px;
+      ">
+        Arabic Quran
+      </div>
+
+      <div style="
+      font-size:14px;
+      color:#666;
+      margin-top:3px;
+      ">
+        Resume, Surah index and bookmarks
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESUME CARD -->
+  <div onclick="alert('Resume coming in next step')" style="
+  background:white;
+  border-radius:26px;
+  padding:22px 20px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  margin-bottom:16px;
+  ">
+
+    <div style="
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
+    gap:14px;
+    min-width:0;
     ">
 
       <div style="
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:#f2f2f7;
       display:flex;
       align-items:center;
-      gap:14px;
-      min-width:0;
-      ">
-
-        <div style="
-        width:52px;
-        height:52px;
-        border-radius:18px;
-        background:#f2f2f7;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:24px;
-        flex-shrink:0;
-        ">
-          🔖
-        </div>
-
-        <div>
-          <div style="
-          font-size:20px;
-          font-weight:800;
-          color:#111;
-          margin-bottom:4px;
-          letter-spacing:-0.2px;
-          ">
-            Bookmarks
-          </div>
-
-          <div style="
-          font-size:14px;
-          color:#666;
-          line-height:1.5;
-          ">
-            Open your saved reading places
-          </div>
-        </div>
-
-      </div>
-
-      <div style="
+      justify-content:center;
       font-size:24px;
-      color:#b0b0b8;
-      margin-left:14px;
       flex-shrink:0;
       ">
-        ›
+        ▶️
       </div>
 
+      <div>
+        <div style="
+        font-size:20px;
+        font-weight:800;
+        color:#111;
+        margin-bottom:4px;
+        ">
+          Resume
+        </div>
+
+        <div style="
+        font-size:14px;
+        color:#666;
+        ">
+          Continue your last reading place
+        </div>
+      </div>
+
+    </div>
+
+    <div style="
+    font-size:24px;
+    color:#b0b0b8;
+    margin-left:14px;
+    ">
+      ›
+    </div>
+
+  </div>
+
+  <!-- SURAH INDEX CARD -->
+  <div onclick="openSurahIndexPageFromArabicQuran()" style="
+  background:white;
+  border-radius:26px;
+  padding:22px 20px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  margin-bottom:16px;
+  ">
+
+    <div style="
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+    ">
+
+      <div style="
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:#f2f2f7;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      flex-shrink:0;
+      ">
+        📚
+      </div>
+
+      <div>
+        <div style="
+        font-size:20px;
+        font-weight:800;
+        color:#111;
+        margin-bottom:4px;
+        ">
+          Surah Index
+        </div>
+
+        <div style="
+        font-size:14px;
+        color:#666;
+        ">
+          Open all surahs
+        </div>
+      </div>
+
+    </div>
+
+    <div style="
+    font-size:24px;
+    color:#b0b0b8;
+    margin-left:14px;
+    ">
+      ›
+    </div>
+
+  </div>
+
+  <!-- BOOKMARKS CARD -->
+  <div onclick="alert('Bookmarks coming in next step')" style="
+  background:white;
+  border-radius:26px;
+  padding:22px 20px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  ">
+
+    <div style="
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+    ">
+
+      <div style="
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:#f2f2f7;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      flex-shrink:0;
+      ">
+        🔖
+      </div>
+
+      <div>
+        <div style="
+        font-size:20px;
+        font-weight:800;
+        color:#111;
+        margin-bottom:4px;
+        letter-spacing:-0.2px;
+        ">
+          Bookmarks
+        </div>
+
+        <div style="
+        font-size:14px;
+        color:#666;
+        line-height:1.5;
+        ">
+          Open your saved reading places
+        </div>
+      </div>
+
+    </div>
+
+    <div style="
+    font-size:24px;
+    color:#b0b0b8;
+    margin-left:14px;
+    flex-shrink:0;
+    ">
+      ›
     </div>
 
   </div>
 
 </div>
+
+       
   
 <!-- =========================
      SURAH INDEX PAGE
