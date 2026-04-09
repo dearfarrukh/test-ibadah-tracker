@@ -3467,27 +3467,38 @@ function handleQuranSwipeEnd(){
 
 if(quranReadingSource !== "quran15") return;
 
+// stop repeated fast swipes
+if(window.quranSwipeLocked) return;
+
 let diffX = quranSwipeEndX - quranSwipeStartX;
 let diffY = quranSwipeEndY - quranSwipeStartY;
 
 let absX = Math.abs(diffX);
 let absY = Math.abs(diffY);
 
-// ignore tiny swipe
-if(absX < 40) return;
+// require a stronger swipe so it does not change too easily
+if(absX < 80) return;
 
 // ignore mostly vertical movement
 if(absY > absX) return;
 
-// swipe left = next page
-if(diffX < -40){
+// lock one swipe for a moment
+window.quranSwipeLocked = true;
+
+// swipe left = previous page
+if(diffX < -80){
+prevMushafPage();
+}
+
+// swipe right = next page
+else if(diffX > 80){
 nextMushafPage();
 }
 
-// swipe right = previous page
-if(diffX > 40){
-prevMushafPage();
-}
+// unlock after a short delay
+setTimeout(function(){
+window.quranSwipeLocked = false;
+}, 350);
 
 }
 
