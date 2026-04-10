@@ -3867,14 +3867,14 @@ if(absY > absX) return;
 // lock one swipe for a moment
 window.quranSwipeLocked = true;
 
-// swipe left = previous page
+// swipe left = next page
 if(diffX < -80){
-prevMushafPage();
+nextMushafPage();
 }
 
-// swipe right = next page
+// swipe right = previous page
 else if(diffX > 80){
-nextMushafPage();
+prevMushafPage();
 }
 
 // unlock after a short delay
