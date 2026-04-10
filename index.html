@@ -13410,20 +13410,56 @@ display:flex;
 align-items:center;
 justify-content:center;
 ">
-      <!-- Mushaf Page Image -->
-<img id="mushafPageImage" src="" style="
+   <!-- =========================
+     QURAN FLIP STAGE
+========================= -->
+<div class="quranFlipStage" id="quranFlipStage" style="
 width:100%;
 height:100%;
-display:block;
-border-radius:10px;
-object-fit:cover;
-object-position:center top;
 ">
-      <!-- Hidden Debug Text -->
-      <div id="mushafDebugText" style="display:none;">
-      Mushaf page loading...
-      </div>
 
+  <div class="quranFlipTrack" style="
+  width:100%;
+  height:100%;
+  ">
+
+    <!-- UNDER PAGE -->
+    <div class="quranFlipUnderPage" id="quranFlipUnderPage">
+      <img id="quranUnderImage" src="" style="
+      width:100%;
+      height:100%;
+      display:block;
+      border-radius:10px;
+      object-fit:cover;
+      object-position:center top;
+      ">
+    </div>
+
+    <!-- CURRENT PAGE -->
+    <div class="quranFlipSheet" id="quranFlipSheet">
+
+      <!-- Mushaf Page Image -->
+      <img id="mushafPageImage" src="" style="
+      width:100%;
+      height:100%;
+      display:block;
+      border-radius:10px;
+      object-fit:cover;
+      object-position:center top;
+      ">
+
+      <div class="quranFlipShadow"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Hidden Debug Text -->
+<div id="mushafDebugText" style="display:none;">
+Mushaf page loading...
+</div>
     </div>
 
   </div>
