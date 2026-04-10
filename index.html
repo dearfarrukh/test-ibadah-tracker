@@ -314,7 +314,7 @@ left:0;
 width:100%;
 height:100%;
 transform:translateX(0%);
-transition:transform 0.26s ease;
+transition:transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
 will-change:transform;
 }
 
@@ -336,7 +336,7 @@ width:18%;
 right:0;
 opacity:0;
 pointer-events:none;
-background:linear-gradient(to left, rgba(0,0,0,0.18), rgba(0,0,0,0));
+background:linear-gradient(to left, rgba(0,0,0,0.28), rgba(0,0,0,0));
 transition:opacity 0.18s ease;
 }
 
@@ -2535,8 +2535,8 @@ startX: 0,
 currentX: 0,
 deltaX: 0,
 dragging: false,
-threshold: 22,
-maxDragPercent: 100,
+threshold: 15,
+maxDragPercent: 70,
 onNext: null,
 onPrev: null,
 getNextImageSrc: null,
