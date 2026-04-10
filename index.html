@@ -311,43 +311,54 @@ height:100%;
 .quranFlipSheet{
 position:absolute;
 top:0;
-left:0;
-width:100%;
+left:50%;
+width:48%;
 height:100%;
-transform:translateX(0%) rotateY(0deg);
+transform:translateX(-50%) rotateY(0deg) scaleX(1);
 transform-origin:center center;
 transition:transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
 will-change:transform;
 backface-visibility:hidden;
 box-shadow:
-0 6px 18px rgba(0,0,0,0.10),
-0 18px 40px rgba(0,0,0,0.10);
+0 8px 22px rgba(0,0,0,0.14),
+0 22px 48px rgba(0,0,0,0.12);
+overflow:hidden;
+border-radius:14px;
 }
 
 .quranFlipSheet img{
 width:100%;
 height:100%;
-object-fit:contain;
+object-fit:cover;
 display:block;
 user-select:none;
 -webkit-user-drag:none;
 pointer-events:none;
-border-radius:10px;
-box-shadow:inset -1px 0 0 rgba(255,255,255,0.55);
+border-radius:14px;
+box-shadow:
+inset -2px 0 0 rgba(255,255,255,0.65),
+inset 10px 0 18px rgba(0,0,0,0.08),
+inset -10px 0 18px rgba(255,255,255,0.18);
+filter:brightness(1.02);
 }
 
 .quranFlipShadow{
 position:absolute;
 top:0;
 bottom:0;
-width:24%;
+left:0;
 right:0;
 opacity:0;
 pointer-events:none;
-background:linear-gradient(to left, rgba(0,0,0,0.34), rgba(0,0,0,0.08), rgba(0,0,0,0));
+background:
+linear-gradient(to right,
+rgba(255,255,255,0.42) 0%,
+rgba(255,255,255,0.10) 12%,
+rgba(0,0,0,0.08) 38%,
+rgba(0,0,0,0.28) 65%,
+rgba(0,0,0,0.42) 100%);
 transition:opacity 0.18s ease;
-border-top-right-radius:10px;
-border-bottom-right-radius:10px;
+border-radius:14px;
 }
 
 .quranFlipSheet.dragging{
@@ -366,7 +377,7 @@ height:100%;
 opacity:0;
 transition:opacity 0.18s ease;
 pointer-events:none;
-transform:scale(0.985);
+transform:scale(1);
 filter:brightness(0.98);
 }
 
@@ -2673,7 +2684,7 @@ if(rotateAmount > 8) rotateAmount = 8;
 if(rotateAmount < -8) rotateAmount = -8;
 
 quranFlipState.sheet.style.transform =
-"translateX(" + dragPercent + "%) rotateY(" + (-rotateAmount) + "deg)";
+"translateX(calc(-50% + " + dragPercent + "%)) rotateY(" + (-rotateAmount) + "deg) scaleX(0.92)";
 }
 
 }
@@ -2741,7 +2752,7 @@ function animateQuranFlipNext(){
 
 if(!quranFlipState.sheet) return;
 
-quranFlipState.sheet.style.transform = "translateX(-100%) rotateY(10deg)";
+quranFlipState.sheet.style.transform = "translateX(calc(-50% - 110%)) rotateY(18deg) scaleX(0.86)";
 
 setTimeout(function(){
 
@@ -2751,7 +2762,7 @@ quranFlipState.onNext();
 
 if(quranFlipState.sheet){
 quranFlipState.sheet.style.transition = "none";
-quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg)";
+quranFlipState.sheet.style.transform = "translateX(-50%) rotateY(0deg) scaleX(1)";
 }
 
 if(quranFlipState.underPage){
@@ -2775,7 +2786,7 @@ function animateQuranFlipPrev(){
 
 if(!quranFlipState.sheet) return;
 
-quranFlipState.sheet.style.transform = "translateX(100%) rotateY(-10deg)";
+quranFlipState.sheet.style.transform = "translateX(calc(-50% + 110%)) rotateY(-18deg) scaleX(0.86)";
 
 setTimeout(function(){
 
@@ -2785,7 +2796,7 @@ quranFlipState.onPrev();
 
 if(quranFlipState.sheet){
 quranFlipState.sheet.style.transition = "none";
-quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg)";
+quranFlipState.sheet.style.transform = "translateX(-50%) rotateY(0deg) scaleX(1)";
 }
 
 if(quranFlipState.underPage){
@@ -2808,7 +2819,7 @@ quranFlipState.sheet.style.transition = "transform 0.26s ease";
 function resetQuranFlipPosition(){
 
 if(quranFlipState.sheet){
-quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg)";
+quranFlipState.sheet.style.transform = "translateX(-50%) rotateY(0deg) scaleX(1)";
 }
 
 if(quranFlipState.underPage){
