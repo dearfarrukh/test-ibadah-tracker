@@ -327,6 +327,20 @@ border-radius:14px;
 }
 
 .quranFlipSheet img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+user-select:none;
+-webkit-user-drag:none;
+pointer-events:none;
+border-radius:14px;
+box-shadow:
+inset -3px 0 0 rgba(255,255,255,0.78),
+inset 18px 0 24px rgba(0,0,0,0.10),
+inset -18px 0 24px rgba(255,255,255,0.20);
+filter:brightness(1.02);
+}
 
 .quranFlipShadow{
 position:absolute;
@@ -2743,7 +2757,7 @@ function animateQuranFlipNext(){
 
 if(!quranFlipState.sheet) return;
 
-quranFlipState.sheet.style.transform = "translateX(-100%) rotateY(16deg) scaleX(0.90)";
+quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg) scaleX(1)";
 
 setTimeout(function(){
 
@@ -2753,7 +2767,7 @@ quranFlipState.onNext();
 
 if(quranFlipState.sheet){
 quranFlipState.sheet.style.transition = "none";
-quranFlipState.sheet.style.transform = "translateX(-100%) rotateY(16deg) scaleX(0.90)";
+quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg) scaleX(1)";
 }
 
 if(quranFlipState.underPage){
@@ -2777,7 +2791,7 @@ function animateQuranFlipPrev(){
 
 if(!quranFlipState.sheet) return;
 
-quranFlipState.sheet.style.transform = "translateX(-100%) rotateY(16deg) scaleX(0.90)";
+quranFlipState.sheet.style.transform = "translateX(100%) rotateY(-16deg) scaleX(0.90)";
 
 setTimeout(function(){
 
@@ -2787,7 +2801,7 @@ quranFlipState.onPrev();
 
 if(quranFlipState.sheet){
 quranFlipState.sheet.style.transition = "none";
-quranFlipState.sheet.style.transform = "translateX(-100%) rotateY(16deg) scaleX(0.90)";
+quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg) scaleX(1)";
 }
 
 if(quranFlipState.underPage){
@@ -2810,9 +2824,8 @@ quranFlipState.sheet.style.transition = "transform 0.26s ease";
 function resetQuranFlipPosition(){
 
 if(quranFlipState.sheet){
-quranFlipState.sheet.style.transform = "translateX(-100%) rotateY(16deg) scaleX(0.90)";
+quranFlipState.sheet.style.transform = "translateX(0%) rotateY(0deg) scaleX(1)";
 }
-
 if(quranFlipState.underPage){
 setTimeout(function(){
 if(quranFlipState.underPage){
