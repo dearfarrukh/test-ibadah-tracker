@@ -326,6 +326,8 @@ display:block;
 user-select:none;
 -webkit-user-drag:none;
 pointer-events:none;
+transform:scaleY(1.08);
+transition:transform 0.28s ease;
 }
 
 .quranFlipShadow{
@@ -370,6 +372,8 @@ display:block;
 user-select:none;
 -webkit-user-drag:none;
 pointer-events:none;
+transform:scaleY(1.08);
+transition:transform 0.28s ease;
 }
 
   
@@ -6446,6 +6450,9 @@ return getPrevMushafImageSrc();
 }
 });
 
+enableQuranReaderTapToggle();
+setQuranBarsVisible(false);
+
 }, 100);
 
 window.scrollTo(0,0);
@@ -6453,6 +6460,94 @@ window.scrollTo(0,0);
 }
 
 
+
+// =========================
+// QURAN IMMERSIVE MODE
+// =========================
+let quranBarsVisible = false;
+
+function setQuranBarsVisible(showBars){
+
+let quranTopBar = document.getElementById("quranReadingTopBar");
+let bottomNav = document.getElementById("bottomNav");
+let mushafPageView = document.getElementById("mushafPageView");
+let mushafPageCard = document.getElementById("mushafPageCard");
+
+quranBarsVisible = showBars;
+
+if(quranTopBar){
+  quranTopBar.style.transition = "transform 0.28s ease, opacity 0.28s ease";
+}
+if(bottomNav){
+  bottomNav.style.transition = "transform 0.28s ease, opacity 0.28s ease";
+}
+
+if(showBars){
+
+  if(quranTopBar){
+    quranTopBar.style.opacity = "1";
+    quranTopBar.style.transform = "translateY(0)";
+    quranTopBar.style.pointerEvents = "auto";
+  }
+
+  if(bottomNav){
+    bottomNav.style.display = "flex";
+    bottomNav.style.opacity = "1";
+    bottomNav.style.transform = "translateY(0)";
+    bottomNav.style.pointerEvents = "auto";
+  }
+
+  if(mushafPageView){
+    mushafPageView.style.top = "60px";
+    mushafPageView.style.bottom = "92px";
+  }
+
+  if(mushafPageCard){
+    mushafPageCard.style.height = "calc(100vh - 152px)";
+    mushafPageCard.style.borderRadius = "12px";
+  }
+
+}else{
+
+  if(quranTopBar){
+    quranTopBar.style.opacity = "0";
+    quranTopBar.style.transform = "translateY(-100%)";
+    quranTopBar.style.pointerEvents = "none";
+  }
+
+  if(bottomNav){
+    bottomNav.style.opacity = "0";
+    bottomNav.style.transform = "translateY(100%)";
+    bottomNav.style.pointerEvents = "none";
+  }
+
+  if(mushafPageView){
+    mushafPageView.style.top = "0";
+    mushafPageView.style.bottom = "0";
+  }
+
+  if(mushafPageCard){
+    mushafPageCard.style.height = "100vh";
+    mushafPageCard.style.borderRadius = "0";
+  }
+}
+
+}
+
+function toggleQuranReaderBars(){
+setQuranBarsVisible(!quranBarsVisible);
+}
+
+function enableQuranReaderTapToggle(){
+
+let stage = document.getElementById("quranFlipStage");
+if(!stage) return;
+
+stage.onclick = function(e){
+  toggleQuranReaderBars();
+};
+
+}
 
 
      
@@ -6568,7 +6663,8 @@ let quranReadingTextCard = document.getElementById("quranReadingTextCard");
 let mushafPageView = document.getElementById("mushafPageView");
 
 if(quranReadingPage) quranReadingPage.style.display = "none";
-
+setQuranBarsVisible(true);
+     
 if(quranReadingSource === "quran15"){
   if(quran15SurahPage) quran15SurahPage.style.display = "block";
   if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
@@ -13422,11 +13518,13 @@ border:1px solid rgba(140,120,90,0.10);
 <div id="mushafPageView" style="
 display:none;
 position:absolute;
-top:60px;
+top:0;
 left:0;
 right:0;
 bottom:0;
 overflow:hidden;
+transition:all 0.28s ease;
+background:transparent;
 ">
 
   <!-- Full Quran Page Wrapper -->
@@ -13439,11 +13537,11 @@ overflow:hidden;
   ">
 
     <!-- Quran Page Card -->
-<div style="
+<div id="mushafPageCard" style="
 width:100%;
-height:calc(100vh - 160px);
+height:100vh;
 background:white;
-border-radius:12px;
+border-radius:0;
 padding:0;
 box-shadow:none;
 border:none;
@@ -13452,6 +13550,7 @@ overflow:hidden;
 display:flex;
 align-items:center;
 justify-content:center;
+transition:all 0.28s ease;
 ">
    <!-- =========================
      QURAN FLIP STAGE
