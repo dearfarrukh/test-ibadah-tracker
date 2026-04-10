@@ -2887,6 +2887,28 @@ function buildMushafImagePath(page){
   return "QuranPages/juz" + info.juzNumber + "/" + info.juzNumber + "-" + paddedPage + ".png";
 }
 
+// =========================
+// GET NEXT MUSHAF IMAGE SRC
+// =========================
+function getNextMushafImageSrc(){
+
+  let nextPage = currentMushafPage + 1;
+  if(nextPage > totalMushafPages) nextPage = totalMushafPages;
+
+  return buildMushafImagePath(nextPage);
+}
+
+// =========================
+// GET PREV MUSHAF IMAGE SRC
+// =========================
+function getPrevMushafImageSrc(){
+
+  let prevPage = currentMushafPage - 1;
+  if(prevPage < 1) prevPage = 1;
+
+  return buildMushafImagePath(prevPage);
+}
+
      
 
 // =========================
@@ -6402,7 +6424,28 @@ let startPage = getMushafStartPageForSurah(surahNumber);
 loadMushafPage(startPage);
 
 setTimeout(function(){
-setupQuran15Swipe();
+
+setupInteractiveQuranFlip({
+stage: document.getElementById("quranFlipStage"),
+sheet: document.getElementById("quranFlipSheet"),
+underPage: document.getElementById("quranFlipUnderPage"),
+frontImage: document.getElementById("mushafPageImage"),
+underImage: document.getElementById("quranUnderImage"),
+shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+onNext: function(){
+nextMushafPage();
+},
+onPrev: function(){
+prevMushafPage();
+},
+getNextImageSrc: function(){
+return getNextMushafImageSrc();
+},
+getPrevImageSrc: function(){
+return getPrevMushafImageSrc();
+}
+});
+
 }, 100);
 
 window.scrollTo(0,0);
