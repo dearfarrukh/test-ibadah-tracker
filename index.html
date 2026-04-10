@@ -6432,16 +6432,16 @@ frontImage: document.getElementById("mushafPageImage"),
 underImage: document.getElementById("quranUnderImage"),
 shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
 onNext: function(){
-nextMushafPage();
-},
-onPrev: function(){
 prevMushafPage();
 },
+onPrev: function(){
+nextMushafPage();
+},
 getNextImageSrc: function(){
-return getNextMushafImageSrc();
+return getPrevMushafImageSrc();
 },
 getPrevImageSrc: function(){
-return getPrevMushafImageSrc();
+return getNextMushafImageSrc();
 }
 });
 
