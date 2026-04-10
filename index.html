@@ -326,7 +326,8 @@ display:block;
 user-select:none;
 -webkit-user-drag:none;
 pointer-events:none;
-transform:scaleY(1.08);
+transform:scaleY(1.06);
+transform-origin:center center;
 transition:transform 0.28s ease;
 }
 
@@ -372,7 +373,8 @@ display:block;
 user-select:none;
 -webkit-user-drag:none;
 pointer-events:none;
-transform:scaleY(1.08);
+transform:scaleY(1.06);
+transform-origin:center center;
 transition:transform 0.28s ease;
 }
 
@@ -6498,20 +6500,15 @@ if(showBars){
   }
 
   if(mushafPageView){
-    mushafPageView.style.top = "60px";
+    mushafPageView.style.top = "74px";
     mushafPageView.style.bottom = "92px";
-  }
-
-  if(mushafPageCard){
-    mushafPageCard.style.height = "calc(100vh - 152px)";
-    mushafPageCard.style.borderRadius = "12px";
   }
 
 }else{
 
   if(quranTopBar){
     quranTopBar.style.opacity = "0";
-    quranTopBar.style.transform = "translateY(-100%)";
+    quranTopBar.style.transform = "translateY(-110%)";
     quranTopBar.style.pointerEvents = "none";
   }
 
@@ -6526,10 +6523,6 @@ if(showBars){
     mushafPageView.style.bottom = "0";
   }
 
-  if(mushafPageCard){
-    mushafPageCard.style.height = "100vh";
-    mushafPageCard.style.borderRadius = "0";
-  }
 }
 
 }
