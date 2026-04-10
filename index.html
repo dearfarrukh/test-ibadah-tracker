@@ -2520,6 +2520,284 @@ box-sizing:border-box;
 ========================= -->
 <script>
 
+// =========================
+// INTERACTIVE QURAN PAGE FLIP SYSTEM
+// =========================
+let quranFlipState = {
+enabled: false,
+stage: null,
+sheet: null,
+underPage: null,
+frontImage: null,
+underImage: null,
+shadow: null,
+startX: 0,
+currentX: 0,
+deltaX: 0,
+dragging: false,
+threshold: 22,
+maxDragPercent: 100,
+onNext: null,
+onPrev: null,
+getNextImageSrc: null,
+getPrevImageSrc: null
+};
+
+// =========================
+// SETUP INTERACTIVE QURAN FLIP
+// =========================
+function setupInteractiveQuranFlip(config){
+
+quranFlipState.stage = config.stage;
+quranFlipState.sheet = config.sheet;
+quranFlipState.underPage = config.underPage;
+quranFlipState.frontImage = config.frontImage;
+quranFlipState.underImage = config.underImage;
+quranFlipState.shadow = config.shadow;
+quranFlipState.onNext = config.onNext;
+quranFlipState.onPrev = config.onPrev;
+quranFlipState.getNextImageSrc = config.getNextImageSrc;
+quranFlipState.getPrevImageSrc = config.getPrevImageSrc;
+quranFlipState.enabled = true;
+
+if(!quranFlipState.stage) return;
+
+if(quranFlipState.stage.dataset.flipReady === "yes") return;
+
+quranFlipState.stage.addEventListener("touchstart", handleQuranFlipStart, {passive:true});
+quranFlipState.stage.addEventListener("touchmove", handleQuranFlipMove, {passive:false});
+quranFlipState.stage.addEventListener("touchend", handleQuranFlipEnd, {passive:true});
+
+quranFlipState.stage.addEventListener("mousedown", handleQuranFlipMouseStart);
+window.addEventListener("mousemove", handleQuranFlipMouseMove);
+window.addEventListener("mouseup", handleQuranFlipMouseEnd);
+
+quranFlipState.stage.dataset.flipReady = "yes";
+
+}
+
+// =========================
+// HANDLE QURAN FLIP START
+// =========================
+function handleQuranFlipStart(e){
+
+if(!quranFlipState.enabled) return;
+
+let point = e.touches ? e.touches[0] : e;
+
+quranFlipState.startX = point.clientX;
+quranFlipState.currentX = point.clientX;
+quranFlipState.deltaX = 0;
+quranFlipState.dragging = true;
+
+if(quranFlipState.sheet){
+quranFlipState.sheet.classList.add("dragging");
+}
+
+if(quranFlipState.underPage){
+quranFlipState.underPage.classList.remove("show");
+}
+
+}
+
+// =========================
+// HANDLE QURAN FLIP MOVE
+// =========================
+function handleQuranFlipMove(e){
+
+if(!quranFlipState.enabled) return;
+if(!quranFlipState.dragging) return;
+
+let point = e.touches ? e.touches[0] : e;
+quranFlipState.currentX = point.clientX;
+quranFlipState.deltaX = quranFlipState.currentX - quranFlipState.startX;
+
+let stageWidth = quranFlipState.stage ? quranFlipState.stage.offsetWidth : 1;
+if(stageWidth < 1) stageWidth = 1;
+
+let dragPercent = (quranFlipState.deltaX / stageWidth) * 100;
+
+if(dragPercent > quranFlipState.maxDragPercent){
+dragPercent = quranFlipState.maxDragPercent;
+}
+
+if(dragPercent < -quranFlipState.maxDragPercent){
+dragPercent = -quranFlipState.maxDragPercent;
+}
+
+if(Math.abs(quranFlipState.deltaX) > 6){
+e.preventDefault();
+}
+
+if(quranFlipState.deltaX < 0){
+let nextSrc = quranFlipState.getNextImageSrc ? quranFlipState.getNextImageSrc() : "";
+if(nextSrc && quranFlipState.underImage){
+quranFlipState.underImage.src = nextSrc;
+if(quranFlipState.underPage){
+quranFlipState.underPage.classList.add("show");
+}
+}
+}
+
+if(quranFlipState.deltaX > 0){
+let prevSrc = quranFlipState.getPrevImageSrc ? quranFlipState.getPrevImageSrc() : "";
+if(prevSrc && quranFlipState.underImage){
+quranFlipState.underImage.src = prevSrc;
+if(quranFlipState.underPage){
+quranFlipState.underPage.classList.add("show");
+}
+}
+}
+
+if(quranFlipState.sheet){
+quranFlipState.sheet.style.transform = "translateX(" + dragPercent + "%)";
+}
+
+}
+
+// =========================
+// HANDLE QURAN FLIP END
+// =========================
+function handleQuranFlipEnd(){
+
+if(!quranFlipState.enabled) return;
+if(!quranFlipState.dragging) return;
+
+quranFlipState.dragging = false;
+
+let stageWidth = quranFlipState.stage ? quranFlipState.stage.offsetWidth : 1;
+if(stageWidth < 1) stageWidth = 1;
+
+let dragPercent = (quranFlipState.deltaX / stageWidth) * 100;
+
+if(quranFlipState.sheet){
+quranFlipState.sheet.classList.remove("dragging");
+}
+
+if(dragPercent <= -quranFlipState.threshold){
+animateQuranFlipNext();
+return;
+}
+
+if(dragPercent >= quranFlipState.threshold){
+animateQuranFlipPrev();
+return;
+}
+
+resetQuranFlipPosition();
+
+}
+
+// =========================
+// HANDLE QURAN FLIP MOUSE START
+// =========================
+function handleQuranFlipMouseStart(e){
+handleQuranFlipStart(e);
+}
+
+// =========================
+// HANDLE QURAN FLIP MOUSE MOVE
+// =========================
+function handleQuranFlipMouseMove(e){
+if(!quranFlipState.dragging) return;
+handleQuranFlipMove(e);
+}
+
+// =========================
+// HANDLE QURAN FLIP MOUSE END
+// =========================
+function handleQuranFlipMouseEnd(){
+if(!quranFlipState.dragging) return;
+handleQuranFlipEnd();
+}
+
+// =========================
+// ANIMATE QURAN FLIP NEXT
+// =========================
+function animateQuranFlipNext(){
+
+if(!quranFlipState.sheet) return;
+
+quranFlipState.sheet.style.transform = "translateX(-100%)";
+
+setTimeout(function(){
+
+if(quranFlipState.onNext){
+quranFlipState.onNext();
+}
+
+if(quranFlipState.sheet){
+quranFlipState.sheet.style.transition = "none";
+quranFlipState.sheet.style.transform = "translateX(0%)";
+}
+
+if(quranFlipState.underPage){
+quranFlipState.underPage.classList.remove("show");
+}
+
+setTimeout(function(){
+if(quranFlipState.sheet){
+quranFlipState.sheet.style.transition = "transform 0.26s ease";
+}
+}, 30);
+
+}, 260);
+
+}
+
+// =========================
+// ANIMATE QURAN FLIP PREV
+// =========================
+function animateQuranFlipPrev(){
+
+if(!quranFlipState.sheet) return;
+
+quranFlipState.sheet.style.transform = "translateX(100%)";
+
+setTimeout(function(){
+
+if(quranFlipState.onPrev){
+quranFlipState.onPrev();
+}
+
+if(quranFlipState.sheet){
+quranFlipState.sheet.style.transition = "none";
+quranFlipState.sheet.style.transform = "translateX(0%)";
+}
+
+if(quranFlipState.underPage){
+quranFlipState.underPage.classList.remove("show");
+}
+
+setTimeout(function(){
+if(quranFlipState.sheet){
+quranFlipState.sheet.style.transition = "transform 0.26s ease";
+}
+}, 30);
+
+}, 260);
+
+}
+
+// =========================
+// RESET QURAN FLIP POSITION
+// =========================
+function resetQuranFlipPosition(){
+
+if(quranFlipState.sheet){
+quranFlipState.sheet.style.transform = "translateX(0%)";
+}
+
+if(quranFlipState.underPage){
+setTimeout(function(){
+if(quranFlipState.underPage){
+quranFlipState.underPage.classList.remove("show");
+}
+}, 180);
+}
+
+}
+
 
   // =========================
 // MUSHAF PAGE SYSTEM
