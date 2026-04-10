@@ -290,6 +290,88 @@ max-width:100%;
 height:auto;
 }
 
+/* =========================
+   INTERACTIVE QURAN PAGE DRAG CSS
+   ========================= */
+.quranFlipStage{
+position:relative;
+width:100%;
+height:100%;
+overflow:hidden;
+touch-action:pan-y;
+}
+
+.quranFlipTrack{
+position:relative;
+width:100%;
+height:100%;
+}
+
+.quranFlipSheet{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+transform:translateX(0%);
+transition:transform 0.26s ease;
+will-change:transform;
+}
+
+.quranFlipSheet img{
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
+user-select:none;
+-webkit-user-drag:none;
+pointer-events:none;
+}
+
+.quranFlipShadow{
+position:absolute;
+top:0;
+bottom:0;
+width:18%;
+right:0;
+opacity:0;
+pointer-events:none;
+background:linear-gradient(to left, rgba(0,0,0,0.18), rgba(0,0,0,0));
+transition:opacity 0.18s ease;
+}
+
+.quranFlipSheet.dragging{
+transition:none;
+}
+
+.quranFlipSheet.dragging .quranFlipShadow{
+opacity:1;
+}
+
+.quranFlipUnderPage{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+opacity:0;
+transition:opacity 0.18s ease;
+pointer-events:none;
+}
+
+.quranFlipUnderPage.show{
+opacity:1;
+}
+
+.quranFlipUnderPage img{
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
+user-select:none;
+-webkit-user-drag:none;
+pointer-events:none;
+}
+
   
 
   
