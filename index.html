@@ -6063,6 +6063,59 @@ if(!container) return;
 
 container.innerHTML = "";
 
+surahs.forEach(surah => {
+
+let div = document.createElement("div");
+
+div.style = `
+background:white;
+border-radius:22px;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
+cursor:pointer;
+`;
+
+div.innerHTML = `
+<div style="
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+">
+  <div style="min-width:0;flex:1;">
+    <div style="font-size:18px;font-weight:800;color:#111;">
+      ${surah.num}. ${surah.name}
+    </div>
+  </div>
+
+  <div style="
+  font-size:22px;
+  font-weight:700;
+  color:#111;
+  direction:rtl;
+  text-align:right;
+  font-family:'Amiri','Noto Naskh Arabic',serif;
+  flex-shrink:0;
+  ">
+    ${surah.nameAr}
+  </div>
+</div>
+`;
+
+div.onclick = function(){
+  openQuran15PageFromSurah(surah.num, surah.name, surah.nameAr);
+};
+
+container.appendChild(div);
+
+});
+
+}
+
 // =========================
 // OPEN JUZ INDEX PAGE
 // =========================
@@ -6095,8 +6148,7 @@ window.scrollTo(0,0);
 
 }
 
-
-     // =========================
+// =========================
 // LOAD JUZ INDEX LIST
 // =========================
 function loadJuzIndexList(){
@@ -6181,10 +6233,7 @@ container.appendChild(div);
 
 }
 
-
-
-
-     // =========================
+// =========================
 // OPEN JUZ FROM INDEX
 // =========================
 function openJuzFromIndex(juzNumber){
