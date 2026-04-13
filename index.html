@@ -6783,7 +6783,12 @@ window.scrollTo(0,0);
 }
 
 
-
+// =========================
+// OPEN BOOKMARK POPUP
+// =========================
+function openBookmarkPopup(){
+  alert("Bookmark popup coming in next step");
+}
 
      
 
@@ -13710,6 +13715,32 @@ box-shadow:none;
         Arabic text
       </div>
 
+            <!-- =========================
+     QURAN BOOKMARK BUTTON
+========================= -->
+<button onclick="openBookmarkPopup()" style="
+position:absolute;
+right:16px;
+top:50%;
+transform:translateY(-50%);
+width:38px;
+height:38px;
+border-radius:50%;
+border:none;
+background:rgba(255,255,255,0.92);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+font-size:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+padding:0;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+color:#111;
+">
+🔖
+</button>
     </div>
 
   </div>
