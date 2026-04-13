@@ -6063,23 +6063,16 @@ if(!container) return;
 
 container.innerHTML = "";
 
-
 // =========================
 // OPEN JUZ INDEX PAGE
 // =========================
 function openJuzIndexPage(){
 
 let quran15Page = document.getElementById("quran15Page");
-let quran15SurahPage = document.getElementById("quran15SurahPage");
-let quranReadingPage = document.getElementById("quranReadingPage");
 let juzIndexPage = document.getElementById("juzIndexPage");
-let bottomNav = document.getElementById("bottomNav");
 
 if(quran15Page) quran15Page.style.display = "none";
-if(quran15SurahPage) quran15SurahPage.style.display = "none";
-if(quranReadingPage) quranReadingPage.style.display = "none";
 if(juzIndexPage) juzIndexPage.style.display = "block";
-if(bottomNav) bottomNav.style.display = "flex";
 
 loadJuzIndexList();
 
@@ -6094,17 +6087,16 @@ function closeJuzIndexPage(){
 
 let quran15Page = document.getElementById("quran15Page");
 let juzIndexPage = document.getElementById("juzIndexPage");
-let bottomNav = document.getElementById("bottomNav");
 
 if(juzIndexPage) juzIndexPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "block";
-if(bottomNav) bottomNav.style.display = "flex";
 
 window.scrollTo(0,0);
 
 }
 
-// =========================
+
+     // =========================
 // LOAD JUZ INDEX LIST
 // =========================
 function loadJuzIndexList(){
@@ -6189,7 +6181,10 @@ container.appendChild(div);
 
 }
 
-// =========================
+
+
+
+     // =========================
 // OPEN JUZ FROM INDEX
 // =========================
 function openJuzFromIndex(juzNumber){
@@ -6208,14 +6203,12 @@ let quranReadingMeta = document.getElementById("quranReadingMeta");
 let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
 let quranReadingTextCard = document.getElementById("quranReadingTextCard");
 let mushafPageView = document.getElementById("mushafPageView");
-let bottomNav = document.getElementById("bottomNav");
 
 quranReadingSource = "quran15";
 currentQuranSurahNumber = 1;
 
 if(juzIndexPage) juzIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "block";
-if(bottomNav) bottomNav.style.display = "flex";
 
 if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Juz " + juzNumber;
 if(quranReadingArabicName) quranReadingArabicName.innerText = "";
@@ -6255,6 +6248,7 @@ return getPrevMushafImageSrc();
 window.scrollTo(0,0);
 
 }
+
 
 
 
@@ -13273,122 +13267,6 @@ box-sizing:border-box;
   </div>
 
 </div>
-
-
-
-
-
-<!-- =========================
-     JUZ INDEX PAGE
-========================= -->
-<div id="juzIndexPage" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:92px;
-z-index:5003;
-background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
-overflow:auto;
-padding:18px 16px 120px 16px;
-box-sizing:border-box;
-">
-
-  <!-- =========================
-       JUZ INDEX TOP BAR
-  ========================= -->
-  <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-  ">
-
-    <button onclick="closeJuzIndexPage()" style="
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:1px solid rgba(0,0,0,0.08);
-    background:white;
-    font-size:22px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#111;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    ">
-      ←
-    </button>
-
-    <div style="
-    font-size:20px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.3px;
-    ">
-      Juz List
-    </div>
-
-    <div style="width:42px;height:42px;"></div>
-  </div>
-
-  <!-- =========================
-       JUZ HERO CARD
-  ========================= -->
-  <div style="
-  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
-  border-radius:30px;
-  padding:28px 22px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-  border:1px solid rgba(255,255,255,0.7);
-  margin-bottom:18px;
-  ">
-
-    <div style="
-    font-size:34px;
-    margin-bottom:12px;
-    ">
-      🕌
-    </div>
-
-    <div style="
-    font-size:28px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.5px;
-    line-height:1.1;
-    margin-bottom:8px;
-    ">
-      Juz List
-    </div>
-
-    <div style="
-    font-size:15px;
-    line-height:1.6;
-    color:#666;
-    max-width:280px;
-    margin:0 auto;
-    ">
-      Open any Juz from its first page.
-    </div>
-
-  </div>
-
-  <!-- =========================
-       JUZ INDEX LIST
-  ========================= -->
-  <div id="juzIndexList" style="
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  ">
-  </div>
-
-</div>
-     
 
 <!-- =========================
      15 LINE SURAH LIST PAGE
