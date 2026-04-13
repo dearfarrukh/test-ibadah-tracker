@@ -6807,14 +6807,16 @@ function openBookmarkPopup(){
   if(input) input.value = surah ? "Surah " + surah : "";
 
   if(popup){
-    popup.style.display = "flex";
-    popup.style.zIndex = "20000";
+    setTimeout(function(){
+      popup.style.display = "flex";
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    }, 10);
   }
-
-  document.body.style.overflow = "hidden";
-  document.documentElement.style.overflow = "hidden";
 }
 
+
+     
 // =========================
 // CLOSE BOOKMARK POPUP
 // =========================
@@ -13770,7 +13772,7 @@ box-shadow:none;
             <!-- =========================
      QURAN BOOKMARK BUTTON
 ========================= -->
-<button onclick="document.getElementById('bookmarkPopup').style.display='flex'" style="
+<button onclick="openBookmarkPopup()" style="
 position:absolute;
 right:16px;
 top:50%;
