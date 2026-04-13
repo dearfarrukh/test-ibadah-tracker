@@ -2921,12 +2921,16 @@ function loadMushafPage(page){
   currentMushafPage = page;
 
   // =========================
-  // SAVE LAST READING (15 LINE QURAN)
+  // SAVE LAST READING
   // =========================
   localStorage.setItem("lastMushafPage", page);
 
   if(typeof currentQuranSurahNumber !== "undefined"){
     localStorage.setItem("lastSurahNumber", currentQuranSurahNumber);
+  }
+
+  if(typeof quranReadingSource !== "undefined" && quranReadingSource){
+    localStorage.setItem("lastQuranReadingSource", quranReadingSource);
   }
 
   let img = document.getElementById("mushafPageImage");
@@ -3011,6 +3015,7 @@ function resumeQuran15Reading(){
 
   let lastPage = parseInt(localStorage.getItem("lastMushafPage") || "0");
   let lastSurahNumber = parseInt(localStorage.getItem("lastSurahNumber") || "1");
+  let lastSource = localStorage.getItem("lastQuranReadingSource") || "quran15";
 
   if(!lastPage || lastPage < 1){
     alert("No previous reading found");
@@ -3018,6 +3023,8 @@ function resumeQuran15Reading(){
   }
 
   let quran15Page = document.getElementById("quran15Page");
+  let quran15SurahPage = document.getElementById("quran15SurahPage");
+  let juzIndexPage = document.getElementById("juzIndexPage");
   let quranReadingPage = document.getElementById("quranReadingPage");
   let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
   let quranReadingArabicName = document.getElementById("quranReadingArabicName");
@@ -3027,16 +3034,24 @@ function resumeQuran15Reading(){
   let mushafPageView = document.getElementById("mushafPageView");
   let bottomNav = document.getElementById("bottomNav");
 
-  quranReadingSource = "quran15";
+  quranReadingSource = lastSource;
   currentQuranSurahNumber = lastSurahNumber;
 
   if(quran15Page) quran15Page.style.display = "none";
+  if(quran15SurahPage) quran15SurahPage.style.display = "none";
+  if(juzIndexPage) juzIndexPage.style.display = "none";
   if(quranReadingPage) quranReadingPage.style.display = "block";
   if(bottomNav) bottomNav.style.display = "flex";
 
-  if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Continue Reading";
-  if(quranReadingArabicName) quranReadingArabicName.innerText = "";
-  if(quranReadingMeta) quranReadingMeta.innerText = "15 Line Quran";
+  if(lastSource === "juz"){
+    if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Continue Reading";
+    if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+    if(quranReadingMeta) quranReadingMeta.innerText = "Juz Reading";
+  }else{
+    if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Continue Reading";
+    if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+    if(quranReadingMeta) quranReadingMeta.innerText = "15 Line Quran";
+  }
 
   if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
   if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
@@ -3046,26 +3061,49 @@ function resumeQuran15Reading(){
 
   setTimeout(function(){
 
-    setupInteractiveQuranFlip({
-      stage: document.getElementById("quranFlipStage"),
-      sheet: document.getElementById("quranFlipSheet"),
-      underPage: document.getElementById("quranFlipUnderPage"),
-      frontImage: document.getElementById("mushafPageImage"),
-      underImage: document.getElementById("quranUnderImage"),
-      shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
-      onNext: function(){
-        prevMushafPage();
-      },
-      onPrev: function(){
-        nextMushafPage();
-      },
-      getNextImageSrc: function(){
-        return getPrevMushafImageSrc();
-      },
-      getPrevImageSrc: function(){
-        return getNextMushafImageSrc();
-      }
-    });
+    if(lastSource === "juz"){
+      setupInteractiveQuranFlip({
+        stage: document.getElementById("quranFlipStage"),
+        sheet: document.getElementById("quranFlipSheet"),
+        underPage: document.getElementById("quranFlipUnderPage"),
+        frontImage: document.getElementById("mushafPageImage"),
+        underImage: document.getElementById("quranUnderImage"),
+        shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+        onNext: function(){
+          prevMushafPage();
+        },
+        onPrev: function(){
+          nextMushafPage();
+        },
+        getNextImageSrc: function(){
+          return getPrevMushafImageSrc();
+        },
+        getPrevImageSrc: function(){
+          return getNextMushafImageSrc();
+        }
+      });
+    }else{
+      setupInteractiveQuranFlip({
+        stage: document.getElementById("quranFlipStage"),
+        sheet: document.getElementById("quranFlipSheet"),
+        underPage: document.getElementById("quranFlipUnderPage"),
+        frontImage: document.getElementById("mushafPageImage"),
+        underImage: document.getElementById("quranUnderImage"),
+        shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+        onNext: function(){
+          prevMushafPage();
+        },
+        onPrev: function(){
+          nextMushafPage();
+        },
+        getNextImageSrc: function(){
+          return getPrevMushafImageSrc();
+        },
+        getPrevImageSrc: function(){
+          return getNextMushafImageSrc();
+        }
+      });
+    }
 
   }, 100);
 
