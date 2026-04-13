@@ -5208,8 +5208,10 @@ if(quranReadingPage) quranReadingPage.style.display = "none";
 // =========================
 function openTrackerPage(){
 
-lastMainTab = "tracker";
+closeBookmarkPopup();
 
+lastMainTab = "tracker";
+     
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
 let salahPage = document.getElementById("salahPage");
@@ -5284,6 +5286,8 @@ openTrackerPage();
 // OPEN HOME PAGE
 // =========================
 function openHomePage(){
+
+closeBookmarkPopup();
 
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
@@ -5468,6 +5472,8 @@ countdownEl.innerText = "00:00:00";
 // OPEN MORE PAGE
 // =========================
 function openMorePage(){
+
+closeBookmarkPopup();
 
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
@@ -6815,6 +6821,9 @@ function openBookmarkPopup(){
 function closeBookmarkPopup(){
   let popup = document.getElementById("bookmarkPopup");
   if(popup) popup.style.display = "none";
+
+  let input = document.getElementById("bookmarkInput");
+  if(input) input.blur();
 }
 
 
@@ -7005,6 +7014,8 @@ window.scrollTo(0,0);
 // =========================
 function openQuranPage(){
 
+closeBookmarkPopup();
+
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
 let salahPage = document.getElementById("salahPage");
@@ -7086,6 +7097,8 @@ window.scrollTo(0,0);
 // OPEN TASBIH PAGE 
 // =========================
 function openTasbihPage(){
+
+closeBookmarkPopup();
 
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
@@ -8955,6 +8968,8 @@ changeSalahDay(-1);  // swipe right = previous day
 // OPEN SALAH PAGE
 // =========================
 function openSalahPage(){
+
+closeBookmarkPopup();
 
 lastMainTab = "salah";
 
@@ -16276,7 +16291,7 @@ text-align:center;
      QURAN BOOKMARK POPUP
 ========================= -->
 
-<div id="bookmarkPopup" style="
+<div id="bookmarkPopup" onclick="closeBookmarkPopup()" style="
 display:none;
 position:fixed;
 top:0;
