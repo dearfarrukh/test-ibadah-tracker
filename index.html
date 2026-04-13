@@ -6390,7 +6390,7 @@ let quranReadingTextCard = document.getElementById("quranReadingTextCard");
 let mushafPageView = document.getElementById("mushafPageView");
 let bottomNav = document.getElementById("bottomNav");
 
-quranReadingSource = "quran15";
+quranReadingSource = "juz";
 currentQuranSurahNumber = 1;
 
 if(juzIndexPage) juzIndexPage.style.display = "none";
@@ -7151,8 +7151,15 @@ let mushafPageView = document.getElementById("mushafPageView");
 
 if(quranReadingPage) quranReadingPage.style.display = "none";
 
+let juzIndexPage = document.getElementById("juzIndexPage");
+
 if(quranReadingSource === "quran15"){
   if(quran15SurahPage) quran15SurahPage.style.display = "block";
+  if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
+  if(mushafPageView) mushafPageView.style.display = "none";
+}
+else if(quranReadingSource === "juz"){
+  if(juzIndexPage) juzIndexPage.style.display = "block";
   if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
   if(mushafPageView) mushafPageView.style.display = "none";
 }
