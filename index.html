@@ -6793,46 +6793,6 @@ window.scrollTo(0,0);
 // OPEN BOOKMARK POPUP
 // =========================
 function openBookmarkPopup(){
-
-  let popup = document.getElementById("bookmarkPopup");
-  if(popup) popup.style.display = "flex";
-
-  // Set Surah Name
-  let surah = document.getElementById("quranReadingEnglishName")?.innerText || "";
-  let juz = getCurrentJuzName ? getCurrentJuzName() : "Juz";
-
-  let surahBox = document.getElementById("bookmarkSurahName");
-  let juzBox = document.getElementById("bookmarkJuzName");
-  let input = document.getElementById("bookmarkInput");
-
-  if(surahBox) surahBox.innerText = surah;
-  if(juzBox) juzBox.innerText = juz;
-
-  // Auto fill input
-  if(input) input.value = "Surah " + surah;
-
-}
-
-
-
-     // =========================
-// CLOSE BOOKMARK POPUP
-// =========================
-function closeBookmarkPopup(){
-  let popup = document.getElementById("bookmarkPopup");
-  if(popup) popup.style.display = "none";
-
-  let input = document.getElementById("bookmarkInput");
-  if(input) input.blur();
-}
-
-
-
-
-// =========================
-// OPEN BOOKMARK POPUP
-// =========================
-function openBookmarkPopup(){
   let popup = document.getElementById("bookmarkPopup");
   let surahBox = document.getElementById("bookmarkSurahName");
   let juzBox = document.getElementById("bookmarkJuzName");
@@ -6855,6 +6815,9 @@ function openBookmarkPopup(){
 function closeBookmarkPopup(){
   let popup = document.getElementById("bookmarkPopup");
   if(popup) popup.style.display = "none";
+
+  let input = document.getElementById("bookmarkInput");
+  if(input) input.blur();
 }
 
 // =========================
@@ -6863,7 +6826,6 @@ function closeBookmarkPopup(){
 function saveBookmark(){
   alert("Save bookmark coming in next step");
 }
-
 
 
 
