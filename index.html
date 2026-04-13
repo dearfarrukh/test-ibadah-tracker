@@ -2920,16 +2920,25 @@ function loadMushafPage(page){
 
   currentMushafPage = page;
 
+  // =========================
+  // SAVE LAST READING (15 LINE QURAN)
+  // =========================
+  localStorage.setItem("lastMushafPage", page);
+
+  if(typeof currentQuranSurahNumber !== "undefined"){
+    localStorage.setItem("lastSurahNumber", currentQuranSurahNumber);
+  }
+
   let img = document.getElementById("mushafPageImage");
   let debug = document.getElementById("mushafDebugText");
 
   if(!img) return;
 
- let surahNumber = currentQuranSurahNumber || 1;
-let info = getRealJuzInfoFromMushafPage(page);
-let juzNumber = info.juzNumber;
-let pageInsideJuz = info.pageInsideJuz;
-let localPath = buildMushafImagePath(page);
+  let surahNumber = currentQuranSurahNumber || 1;
+  let info = getRealJuzInfoFromMushafPage(page);
+  let juzNumber = info.juzNumber;
+  let pageInsideJuz = info.pageInsideJuz;
+  let localPath = buildMushafImagePath(page);
 
   if(debug){
     debug.innerText =
@@ -2953,17 +2962,24 @@ let localPath = buildMushafImagePath(page);
 
   img.src = localPath;
 }
-     // Next
+
+// =========================
+// NEXT PAGE
+// =========================
 function nextMushafPage(){
   loadMushafPage(currentMushafPage + 1);
 }
 
-// Prev
+// =========================
+// PREVIOUS PAGE
+// =========================
 function prevMushafPage(){
   loadMushafPage(currentMushafPage - 1);
 }
 
-// Open Mushaf Mode
+// =========================
+// OPEN MUSHAF MODE
+// =========================
 function openMushafMode(){
 
   let textCard = document.getElementById("quranReadingTextCard");
@@ -2976,7 +2992,10 @@ function openMushafMode(){
   loadMushafPage(startPage);
 
 }
-// Back to text mode
+
+// =========================
+// CLOSE MUSHAF MODE
+// =========================
 function closeMushafMode(){
 
   document.getElementById("quranReadingTextCard").style.display = "block";
@@ -2985,7 +3004,74 @@ function closeMushafMode(){
 }
 
 
+// =========================
+// RESUME 15 LINE QURAN READING
+// =========================
+function resumeQuran15Reading(){
 
+  let lastPage = parseInt(localStorage.getItem("lastMushafPage") || "0");
+  let lastSurahNumber = parseInt(localStorage.getItem("lastSurahNumber") || "1");
+
+  if(!lastPage || lastPage < 1){
+    alert("No previous reading found");
+    return;
+  }
+
+  let quran15Page = document.getElementById("quran15Page");
+  let quranReadingPage = document.getElementById("quranReadingPage");
+  let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
+  let quranReadingArabicName = document.getElementById("quranReadingArabicName");
+  let quranReadingMeta = document.getElementById("quranReadingMeta");
+  let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
+  let quranReadingTextCard = document.getElementById("quranReadingTextCard");
+  let mushafPageView = document.getElementById("mushafPageView");
+  let bottomNav = document.getElementById("bottomNav");
+
+  quranReadingSource = "quran15";
+  currentQuranSurahNumber = lastSurahNumber;
+
+  if(quran15Page) quran15Page.style.display = "none";
+  if(quranReadingPage) quranReadingPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Continue Reading";
+  if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+  if(quranReadingMeta) quranReadingMeta.innerText = "15 Line Quran";
+
+  if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
+  if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
+  if(mushafPageView) mushafPageView.style.display = "block";
+
+  loadMushafPage(lastPage);
+
+  setTimeout(function(){
+
+    setupInteractiveQuranFlip({
+      stage: document.getElementById("quranFlipStage"),
+      sheet: document.getElementById("quranFlipSheet"),
+      underPage: document.getElementById("quranFlipUnderPage"),
+      frontImage: document.getElementById("mushafPageImage"),
+      underImage: document.getElementById("quranUnderImage"),
+      shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+      onNext: function(){
+        prevMushafPage();
+      },
+      onPrev: function(){
+        nextMushafPage();
+      },
+      getNextImageSrc: function(){
+        return getPrevMushafImageSrc();
+      },
+      getPrevImageSrc: function(){
+        return getNextMushafImageSrc();
+      }
+    });
+
+  }, 100);
+
+  window.scrollTo(0,0);
+
+}
 
 
 
@@ -13177,63 +13263,62 @@ box-sizing:border-box;
   gap:16px;
   ">
 
-    <!-- Continue Reading Card -->
-    <div onclick="alert('Continue Reading coming next step')" style="
-    background:white;
-    border-radius:26px;
-    padding:22px 20px;
-    cursor:pointer;
+   <!-- Continue Reading Card -->
+<div onclick="resumeQuran15Reading()" style="
+background:white;
+border-radius:26px;
+padding:22px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+">
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  ">
+    <div style="
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:#f2f2f7;
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
+    justify-content:center;
+    font-size:24px;
+    flex-shrink:0;
     ">
+      ▶️
+    </div>
+    <div>
       <div style="
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:4px;
       ">
-        <div style="
-        width:52px;
-        height:52px;
-        border-radius:18px;
-        background:#f2f2f7;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:24px;
-        flex-shrink:0;
-        ">
-          ▶️
-        </div>
-        <div>
-          <div style="
-          font-size:20px;
-          font-weight:800;
-          color:#111;
-          margin-bottom:4px;
-          ">
-            Continue Reading
-          </div>
-          <div style="
-          font-size:14px;
-          color:#666;
-          ">
-            Open your last saved page
-          </div>
-        </div>
+        Continue Reading
       </div>
       <div style="
-      font-size:24px;
-      color:#b0b0b8;
-      margin-left:14px;
+      font-size:14px;
+      color:#666;
       ">
-        ›
+        Open your last saved page
       </div>
     </div>
-
+  </div>
+  <div style="
+  font-size:24px;
+  color:#b0b0b8;
+  margin-left:14px;
+  ">
+    ›
+  </div>
+</div>
    
    <!-- Surah List Card -->
 <div onclick="openQuran15SurahPage()" style="
