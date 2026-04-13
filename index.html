@@ -6435,6 +6435,199 @@ return getPrevMushafImageSrc();
 window.scrollTo(0,0);
 
 }
+
+// =========================
+// OPEN JUZ INDEX PAGE
+// =========================
+function openJuzIndexPage(){
+
+let quran15Page = document.getElementById("quran15Page");
+let quran15SurahPage = document.getElementById("quran15SurahPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
+let juzIndexPage = document.getElementById("juzIndexPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(quran15Page) quran15Page.style.display = "none";
+if(quran15SurahPage) quran15SurahPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "none";
+if(juzIndexPage) juzIndexPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+loadJuzIndexList();
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// CLOSE JUZ INDEX PAGE
+// =========================
+function closeJuzIndexPage(){
+
+let quran15Page = document.getElementById("quran15Page");
+let juzIndexPage = document.getElementById("juzIndexPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(juzIndexPage) juzIndexPage.style.display = "none";
+if(quran15Page) quran15Page.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// LOAD JUZ INDEX LIST
+// =========================
+function loadJuzIndexList(){
+
+let container = document.getElementById("juzIndexList");
+if(!container) return;
+
+container.innerHTML = "";
+
+for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
+
+let div = document.createElement("div");
+
+div.onclick = function(){
+openJuzFromIndex(juzNumber);
+};
+
+div.style.background = "white";
+div.style.borderRadius = "22px";
+div.style.padding = "18px";
+div.style.display = "flex";
+div.style.alignItems = "center";
+div.style.justifyContent = "space-between";
+div.style.boxShadow = "0 6px 16px rgba(0,0,0,0.06)";
+div.style.cursor = "pointer";
+
+div.innerHTML = `
+<div style="
+display:flex;
+align-items:center;
+gap:14px;
+min-width:0;
+">
+  <div style="
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:#f2f2f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  font-weight:800;
+  color:#111;
+  flex-shrink:0;
+  ">
+    ${juzNumber}
+  </div>
+
+  <div>
+    <div style="
+    font-size:18px;
+    font-weight:800;
+    color:#111;
+    margin-bottom:3px;
+    ">
+      Juz ${juzNumber}
+    </div>
+
+    <div style="
+    font-size:13px;
+    color:#666;
+    ">
+      Open from first page
+    </div>
+  </div>
+</div>
+
+<div style="
+font-size:24px;
+color:#b0b0b8;
+margin-left:14px;
+flex-shrink:0;
+">
+  ›
+</div>
+`;
+
+container.appendChild(div);
+
+}
+
+}
+
+// =========================
+// OPEN JUZ FROM INDEX
+// =========================
+function openJuzFromIndex(juzNumber){
+
+let startPage = 1;
+
+for(let i = 1; i < juzNumber; i++){
+startPage += juzPageCounts[i] || 0;
+}
+
+let juzIndexPage = document.getElementById("juzIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
+let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
+let quranReadingArabicName = document.getElementById("quranReadingArabicName");
+let quranReadingMeta = document.getElementById("quranReadingMeta");
+let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
+let quranReadingTextCard = document.getElementById("quranReadingTextCard");
+let mushafPageView = document.getElementById("mushafPageView");
+let bottomNav = document.getElementById("bottomNav");
+
+quranReadingSource = "quran15";
+currentQuranSurahNumber = 1;
+
+if(juzIndexPage) juzIndexPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Juz " + juzNumber;
+if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+if(quranReadingMeta) quranReadingMeta.innerText = "15 Line Quran";
+
+if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
+if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
+if(mushafPageView) mushafPageView.style.display = "block";
+
+loadMushafPage(startPage);
+
+setTimeout(function(){
+
+setupInteractiveQuranFlip({
+stage: document.getElementById("quranFlipStage"),
+sheet: document.getElementById("quranFlipSheet"),
+underPage: document.getElementById("quranFlipUnderPage"),
+frontImage: document.getElementById("mushafPageImage"),
+underImage: document.getElementById("quranUnderImage"),
+shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+onNext: function(){
+nextMushafPage();
+},
+onPrev: function(){
+prevMushafPage();
+},
+getNextImageSrc: function(){
+return getNextMushafImageSrc();
+},
+getPrevImageSrc: function(){
+return getPrevMushafImageSrc();
+}
+});
+
+}, 100);
+
+window.scrollTo(0,0);
+
+}
+     
      
      
 // =========================
