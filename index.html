@@ -6807,12 +6807,12 @@ function openBookmarkPopup(){
   if(input) input.value = surah ? "Surah " + surah : "";
 
   if(popup){
-    setTimeout(function(){
-      popup.style.display = "flex";
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-    }, 10);
+    popup.style.display = "flex";
+    popup.style.zIndex = "20000";
   }
+
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
 }
 
 
@@ -16263,7 +16263,7 @@ text-align:center;
 <!-- =========================
      QURAN BOOKMARK POPUP
 ========================= -->
-<div id="bookmarkPopup" onclick="closeBookmarkPopup()" style="
+<div id="bookmarkPopup" style="
 display:none;
 position:fixed;
 top:0;
