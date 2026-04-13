@@ -6817,7 +6817,46 @@ function closeBookmarkPopup(){
   if(popup) popup.style.display = "none";
 }
 
-     
+
+
+
+// =========================
+// OPEN BOOKMARK POPUP
+// =========================
+function openBookmarkPopup(){
+  let popup = document.getElementById("bookmarkPopup");
+  let surahBox = document.getElementById("bookmarkSurahName");
+  let juzBox = document.getElementById("bookmarkJuzName");
+  let input = document.getElementById("bookmarkInput");
+
+  let surah = "";
+  let surahEl = document.getElementById("quranReadingEnglishName");
+  if(surahEl) surah = surahEl.innerText || "";
+
+  if(juzBox) juzBox.innerText = "Juz";
+  if(surahBox) surahBox.innerText = surah;
+  if(input) input.value = surah ? "Surah " + surah : "";
+
+  if(popup) popup.style.display = "flex";
+}
+
+// =========================
+// CLOSE BOOKMARK POPUP
+// =========================
+function closeBookmarkPopup(){
+  let popup = document.getElementById("bookmarkPopup");
+  if(popup) popup.style.display = "none";
+}
+
+// =========================
+// SAVE BOOKMARK
+// =========================
+function saveBookmark(){
+  alert("Save bookmark coming in next step");
+}
+
+
+
 
 // =========================
 // OPEN QURAN READING PAGE
@@ -16338,7 +16377,107 @@ justify-content:center;
 
 </div>
 
+<!-- =========================
+     QURAN BOOKMARK POPUP
+========================= -->
+<div id="bookmarkPopup" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:6000;
+background:rgba(0,0,0,0.40);
+align-items:center;
+justify-content:center;
+padding:20px;
+box-sizing:border-box;
+">
 
+  <div onclick="event.stopPropagation()" style="
+  width:100%;
+  max-width:360px;
+  background:white;
+  border-radius:26px;
+  padding:22px 18px;
+  box-shadow:0 16px 40px rgba(0,0,0,0.18);
+  text-align:center;
+  ">
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    margin-bottom:12px;
+    ">
+      Add Bookmark
+    </div>
+
+    <div id="bookmarkJuzName" style="
+    font-size:14px;
+    color:#666;
+    margin-bottom:6px;
+    ">
+      Juz
+    </div>
+
+    <div id="bookmarkSurahName" style="
+    font-size:17px;
+    font-weight:700;
+    color:#111;
+    margin-bottom:14px;
+    ">
+      Surah Name
+    </div>
+
+    <input id="bookmarkInput" type="text" placeholder="Bookmark name" style="
+    width:100%;
+    height:48px;
+    border-radius:16px;
+    border:1px solid #ddd;
+    padding:0 14px;
+    font-size:16px;
+    box-sizing:border-box;
+    margin-bottom:14px;
+    outline:none;
+    ">
+
+    <div style="
+    display:flex;
+    gap:10px;
+    ">
+      <button onclick="closeBookmarkPopup()" style="
+      flex:1;
+      height:46px;
+      border:none;
+      border-radius:16px;
+      background:#f2f2f7;
+      color:#111;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button onclick="saveBookmark()" style="
+      flex:1;
+      height:46px;
+      border:none;
+      border-radius:16px;
+      background:#111;
+      color:white;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      ">
+        Save
+      </button>
+    </div>
+
+  </div>
+</div>
 
      
 </body>
