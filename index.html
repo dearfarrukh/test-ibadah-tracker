@@ -2670,10 +2670,6 @@ function openSavedQuran15Bookmark(bookmarkId){
 
   quranReadingSource = "continue15";
 
-  let quran15Page = document.getElementById("quran15Page");
-  let quran15SurahPage = document.getElementById("quran15SurahPage");
-  let juzIndexPage = document.getElementById("juzIndexPage");
-  let bookmarkPage = document.getElementById("quran15BookmarkPage");
   let quranReadingPage = document.getElementById("quranReadingPage");
   let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
   let quranReadingArabicName = document.getElementById("quranReadingArabicName");
@@ -2683,10 +2679,9 @@ function openSavedQuran15Bookmark(bookmarkId){
   let mushafPageView = document.getElementById("mushafPageView");
   let bottomNav = document.getElementById("bottomNav");
 
-  if(quran15Page) quran15Page.style.display = "none";
-  if(quran15SurahPage) quran15SurahPage.style.display = "none";
-  if(juzIndexPage) juzIndexPage.style.display = "none";
-  if(bookmarkPage) bookmarkPage.style.display = "none";
+  // reset all Quran layers first
+  hideAllQuranLayers();
+
   if(quranReadingPage) quranReadingPage.style.display = "block";
   if(bottomNav) bottomNav.style.display = "flex";
 
