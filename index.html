@@ -2600,9 +2600,6 @@ box-sizing:border-box;
 
 
 
-// =========================
-// OPEN 15 LINE BOOKMARK PAGE
-// =========================
 function openQuran15BookmarkPage(){
 
   let quran15Page = document.getElementById("quran15Page");
@@ -2616,13 +2613,18 @@ function openQuran15BookmarkPage(){
   if(quran15SurahPage) quran15SurahPage.style.display = "none";
   if(juzIndexPage) juzIndexPage.style.display = "none";
   if(quranReadingPage) quranReadingPage.style.display = "none";
-  if(bookmarkPage) bookmarkPage.style.display = "block";
-  if(bottomNav) bottomNav.style.display = "flex";
 
   loadQuran15BookmarkList();
 
+  if(bookmarkPage) bookmarkPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
   window.scrollTo(0,0);
 }
+
+
+
+     
 // =========================
 // CLOSE 15 LINE BOOKMARK PAGE
 // =========================
