@@ -6427,11 +6427,19 @@ openQuranPage();
 // =========================
 function openArabicQuranPage(){
 
+let morePage = document.getElementById("morePage");
 let quranPage = document.getElementById("quranPage");
 let arabicQuranPage = document.getElementById("arabicQuranPage");
+let quran15Page = document.getElementById("quran15Page");
+let surahIndexPage = document.getElementById("surahIndexPage");
+let quranReadingPage = document.getElementById("quranReadingPage");
 let bottomNav = document.getElementById("bottomNav");
 
+if(morePage) morePage.style.display = "none";
 if(quranPage) quranPage.style.display = "none";
+if(quran15Page) quran15Page.style.display = "none";
+if(surahIndexPage) surahIndexPage.style.display = "none";
+if(quranReadingPage) quranReadingPage.style.display = "none";
 if(arabicQuranPage) arabicQuranPage.style.display = "block";
 if(bottomNav) bottomNav.style.display = "flex";
 
@@ -6654,13 +6662,17 @@ loadSurahIndexList();
 // =========================
 function openQuran15Page(){
 
+let morePage = document.getElementById("morePage");
 let quranPage = document.getElementById("quranPage");
+let arabicQuranPage = document.getElementById("arabicQuranPage");
 let quran15Page = document.getElementById("quran15Page");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let quranReadingPage = document.getElementById("quranReadingPage");
 let bottomNav = document.getElementById("bottomNav");
 
+if(morePage) morePage.style.display = "none";
 if(quranPage) quranPage.style.display = "none";
+if(arabicQuranPage) arabicQuranPage.style.display = "none";
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "block";
