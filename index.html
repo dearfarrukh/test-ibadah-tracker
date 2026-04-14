@@ -2638,9 +2638,10 @@ function closeQuran15BookmarkPage(){
   if(quran15Page) quran15Page.style.display = "block";
   if(bottomNav) bottomNav.style.display = "flex";
 
+  loadQuran15BookmarkList();
+
   window.scrollTo(0,0);
 }
-
 
 // =========================
 // OPEN SAVED 15 LINE BOOKMARK
@@ -6471,11 +6472,17 @@ function openQuran15Page(){
 
 let quranPage = document.getElementById("quranPage");
 let quran15Page = document.getElementById("quran15Page");
+let quran15SurahPage = document.getElementById("quran15SurahPage");
+let juzIndexPage = document.getElementById("juzIndexPage");
+let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let quranReadingPage = document.getElementById("quranReadingPage");
 let bottomNav = document.getElementById("bottomNav");
 
 if(quranPage) quranPage.style.display = "none";
+if(quran15SurahPage) quran15SurahPage.style.display = "none";
+if(juzIndexPage) juzIndexPage.style.display = "none";
+if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "block";
@@ -6484,7 +6491,6 @@ if(bottomNav) bottomNav.style.display = "flex";
 window.scrollTo(0,0);
 
 }
-
 // =========================
 // CLOSE 15 LINE QURAN PAGE
 // =========================
@@ -7462,9 +7468,17 @@ if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "none";
+
+let quran15SurahPage = document.getElementById("quran15SurahPage");
+let juzIndexPage = document.getElementById("juzIndexPage");
+let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
+
+if(quran15SurahPage) quran15SurahPage.style.display = "none";
+if(juzIndexPage) juzIndexPage.style.display = "none";
+if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
+
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
-
 if(quranPage) quranPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
