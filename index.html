@@ -6858,7 +6858,44 @@ function closeBookmarkPopup(){
 // SAVE BOOKMARK
 // =========================
 function saveBookmark(){
-  alert("Save bookmark coming in next step");
+
+  let input = document.getElementById("bookmarkInput");
+  let surahBox = document.getElementById("bookmarkSurahName");
+  let juzBox = document.getElementById("bookmarkJuzName");
+
+  let customName = "";
+  let surahName = "";
+  let juzName = "";
+
+  if(input) customName = input.value.trim();
+  if(surahBox) surahName = surahBox.innerText.trim();
+  if(juzBox) juzName = juzBox.innerText.trim();
+
+  if(!customName){
+    alert("Please enter bookmark name");
+    return;
+  }
+
+  let savedBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+  let now = new Date();
+
+  let bookmarkItem = {
+    id: Date.now(),
+    name: customName,
+    surah: surahName,
+    juz: juzName,
+    createdAt: now.toISOString(),
+    createdAtText: now.toLocaleString()
+  };
+
+  savedBookmarks.unshift(bookmarkItem);
+
+  localStorage.setItem("quranBookmarks", JSON.stringify(savedBookmarks));
+
+  closeBookmarkPopup();
+
+  alert("Bookmark saved");
 }
 
 
