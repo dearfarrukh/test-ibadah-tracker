@@ -2765,21 +2765,46 @@ function loadQuran15BookmarkList(){
     return;
   }
 
-  bookmarks.forEach(function(bookmark){
+   bookmarks.forEach(function(bookmark){
+
+    let swipeWrap = document.createElement("div");
+    swipeWrap.style.position = "relative";
+    swipeWrap.style.width = "100%";
+    swipeWrap.style.borderRadius = "24px";
+    swipeWrap.style.overflow = "hidden";
+    swipeWrap.style.marginBottom = "12px";
+
+    let deleteBack = document.createElement("div");
+    deleteBack.style.position = "absolute";
+    deleteBack.style.top = "0";
+    deleteBack.style.right = "0";
+    deleteBack.style.bottom = "0";
+    deleteBack.style.width = "92px";
+    deleteBack.style.background = "#ff3b30";
+    deleteBack.style.display = "flex";
+    deleteBack.style.alignItems = "center";
+    deleteBack.style.justifyContent = "center";
+    deleteBack.style.color = "white";
+    deleteBack.style.fontSize = "16px";
+    deleteBack.style.fontWeight = "800";
+    deleteBack.style.letterSpacing = "-0.2px";
+    deleteBack.style.borderRadius = "24px";
+    deleteBack.innerText = "Delete";
 
     let card = document.createElement("div");
-
+    card.style.position = "relative";
     card.style.background = "white";
     card.style.borderRadius = "24px";
     card.style.padding = "18px 16px";
-    card.style.marginBottom = "12px";
     card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
     card.style.border = "1px solid rgba(0,0,0,0.03)";
-       card.style.cursor = "pointer";
+    card.style.cursor = "pointer";
+    card.style.transform = "translateX(0px)";
+    card.style.transition = "transform 0.22s ease";
 
-       card.onclick = function(){
-  openSavedQuran15Bookmark(bookmark.id);
-};
+    card.onclick = function(){
+      openSavedQuran15Bookmark(bookmark.id);
+    };
 
     card.innerHTML = `
       <div style="
@@ -2832,9 +2857,10 @@ function loadQuran15BookmarkList(){
       </div>
     `;
 
-    container.appendChild(card);
-  });
-}
+    swipeWrap.appendChild(deleteBack);
+    swipeWrap.appendChild(card);
+    container.appendChild(swipeWrap);
+  });}
 
 
 
