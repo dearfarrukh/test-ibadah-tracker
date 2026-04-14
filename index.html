@@ -2443,7 +2443,7 @@ box-sizing:border-box;
   </div>
 
   <!-- Bookmarks Card -->
-  <div onclick="alert('Bookmarks coming in next step')" style="
+  <div onclick="openQuran15BookmarkPage()" style="
   background:white;
   border-radius:26px;
   padding:22px 20px;
@@ -2519,6 +2519,141 @@ box-sizing:border-box;
 ========================= -->
 <script>
 
+
+
+// =========================
+// OPEN 15 LINE BOOKMARK PAGE
+// =========================
+function openQuran15BookmarkPage(){
+
+  let readingPage = document.getElementById("quranReadingPage");
+  let bookmarkPage = document.getElementById("quran15BookmarkPage");
+
+  if(readingPage) readingPage.style.display = "none";
+  if(bookmarkPage) bookmarkPage.style.display = "block";
+
+  loadQuran15BookmarkList();
+
+  window.scrollTo(0,0);
+}
+
+// =========================
+// CLOSE 15 LINE BOOKMARK PAGE
+// =========================
+function closeQuran15BookmarkPage(){
+
+  let readingPage = document.getElementById("quranReadingPage");
+  let bookmarkPage = document.getElementById("quran15BookmarkPage");
+
+  if(bookmarkPage) bookmarkPage.style.display = "none";
+  if(readingPage) readingPage.style.display = "block";
+
+  window.scrollTo(0,0);
+}
+
+// =========================
+// LOAD 15 LINE BOOKMARK LIST
+// =========================
+function loadQuran15BookmarkList(){
+
+  let container = document.getElementById("quran15BookmarkList");
+  if(!container) return;
+
+  let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+  let bookmarks = allBookmarks.filter(function(item){
+    return item.type === "15line";
+  });
+
+  container.innerHTML = "";
+
+  if(!bookmarks.length){
+    container.innerHTML = `
+      <div style="
+      background:white;
+      border-radius:24px;
+      padding:22px 18px;
+      text-align:center;
+      box-shadow:0 8px 22px rgba(0,0,0,0.07);
+      color:#666;
+      font-size:15px;
+      font-weight:600;
+      ">
+        No 15 line bookmarks saved yet
+      </div>
+    `;
+    return;
+  }
+
+  bookmarks.forEach(function(bookmark){
+
+    let card = document.createElement("div");
+
+    card.style.background = "white";
+    card.style.borderRadius = "24px";
+    card.style.padding = "18px 16px";
+    card.style.marginBottom = "12px";
+    card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
+    card.style.border = "1px solid rgba(0,0,0,0.03)";
+
+    card.innerHTML = `
+      <div style="
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      ">
+        <div style="min-width:0;flex:1;">
+          <div style="
+          font-size:18px;
+          font-weight:800;
+          color:#111;
+          margin-bottom:4px;
+          ">
+            ${bookmark.name || "Bookmark"}
+          </div>
+
+          <div style="
+          font-size:14px;
+          color:#444;
+          margin-bottom:4px;
+          ">
+            ${bookmark.surah || ""}
+          </div>
+
+          <div style="
+          font-size:13px;
+          color:#666;
+          margin-bottom:4px;
+          ">
+            ${bookmark.juz || ""}
+          </div>
+
+          <div style="
+          font-size:12px;
+          color:#999;
+          ">
+            ${bookmark.createdAtText || ""}
+          </div>
+        </div>
+
+        <div style="
+        font-size:22px;
+        color:#b0b0b8;
+        flex-shrink:0;
+        ">
+          🔖
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+
+
+
+     
 // =========================
 // INTERACTIVE QURAN PAGE FLIP SYSTEM
 // =========================
@@ -13599,18 +13734,19 @@ border:1px solid rgba(0,0,0,0.03);
       </div>
     </div>
    
-    <!-- Bookmarks Card -->
-    <div onclick="alert('Bookmarks coming next step')" style="
-    background:white;
-    border-radius:26px;
-    padding:22px 20px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
-    ">
+    <!-- Bookmarks Card 15 Line-->
+  
+<div onclick="openQuran15BookmarkPage()" style="
+background:white;
+border-radius:26px;
+padding:22px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+">
       <div style="
       display:flex;
       align-items:center;
