@@ -2765,7 +2765,9 @@ function loadQuran15BookmarkList(){
     return;
   }
 
-   bookmarks.forEach(function(bookmark){
+  let openSwipeCard = null;
+
+  bookmarks.forEach(function(bookmark){
 
     let swipeWrap = document.createElement("div");
     swipeWrap.style.position = "relative";
@@ -2773,6 +2775,7 @@ function loadQuran15BookmarkList(){
     swipeWrap.style.borderRadius = "24px";
     swipeWrap.style.overflow = "hidden";
     swipeWrap.style.marginBottom = "12px";
+    swipeWrap.style.touchAction = "pan-y";
 
     let deleteBack = document.createElement("div");
     deleteBack.style.position = "absolute";
@@ -2801,10 +2804,6 @@ function loadQuran15BookmarkList(){
     card.style.cursor = "pointer";
     card.style.transform = "translateX(0px)";
     card.style.transition = "transform 0.22s ease";
-
-    card.onclick = function(){
-      openSavedQuran15Bookmark(bookmark.id);
-    };
 
     card.innerHTML = `
       <div style="
@@ -2857,11 +2856,130 @@ function loadQuran15BookmarkList(){
       </div>
     `;
 
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let deltaX = 0;
+    let isDragging = false;
+    let isHorizontalSwipe = false;
+    let isOpen = false;
+    let didMove = false;
+
+    function closeThisCard(){
+      card.style.transition = "transform 0.22s ease";
+      card.style.transform = "translateX(0px)";
+      isOpen = false;
+      if(openSwipeCard === card){
+        openSwipeCard = null;
+      }
+    }
+
+    function openThisCard(){
+      if(openSwipeCard && openSwipeCard !== card){
+        openSwipeCard.style.transition = "transform 0.22s ease";
+        openSwipeCard.style.transform = "translateX(0px)";
+      }
+
+      card.style.transition = "transform 0.22s ease";
+      card.style.transform = "translateX(-92px)";
+      isOpen = true;
+      openSwipeCard = card;
+    }
+
+    card.onclick = function(e){
+      if(didMove){
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+
+      if(isOpen){
+        closeThisCard();
+        return;
+      }
+
+      openSavedQuran15Bookmark(bookmark.id);
+    };
+
+    swipeWrap.addEventListener("touchstart", function(e){
+      let touch = e.touches[0];
+      if(!touch) return;
+
+      startX = touch.clientX;
+      startY = touch.clientY;
+      currentX = touch.clientX;
+      deltaX = 0;
+      isDragging = true;
+      isHorizontalSwipe = false;
+      didMove = false;
+      card.style.transition = "none";
+
+      if(openSwipeCard && openSwipeCard !== card){
+        openSwipeCard.style.transition = "transform 0.22s ease";
+        openSwipeCard.style.transform = "translateX(0px)";
+      }
+    }, {passive:true});
+
+    swipeWrap.addEventListener("touchmove", function(e){
+      if(!isDragging) return;
+
+      let touch = e.touches[0];
+      if(!touch) return;
+
+      currentX = touch.clientX;
+      let currentY = touch.clientY;
+
+      let moveX = currentX - startX;
+      let moveY = currentY - startY;
+
+      if(!isHorizontalSwipe){
+        if(Math.abs(moveX) > 8 && Math.abs(moveX) > Math.abs(moveY)){
+          isHorizontalSwipe = true;
+        }else{
+          return;
+        }
+      }
+
+      e.preventDefault();
+
+      didMove = true;
+
+      let baseX = isOpen ? -92 : 0;
+      deltaX = baseX + moveX;
+
+      if(deltaX > 0) deltaX = 0;
+      if(deltaX < -120) deltaX = -120;
+
+      card.style.transform = "translateX(" + deltaX + "px)";
+    }, {passive:false});
+
+    swipeWrap.addEventListener("touchend", function(){
+      if(!isDragging) return;
+
+      isDragging = false;
+      card.style.transition = "transform 0.22s ease";
+
+      if(!isHorizontalSwipe){
+        didMove = false;
+        return;
+      }
+
+      if(deltaX <= -46){
+        openThisCard();
+      }else{
+        closeThisCard();
+      }
+
+      setTimeout(function(){
+        didMove = false;
+      }, 60);
+    });
+
     swipeWrap.appendChild(deleteBack);
     swipeWrap.appendChild(card);
     container.appendChild(swipeWrap);
-  });}
-
+  });
+}
 
 
 
