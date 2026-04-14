@@ -6866,10 +6866,19 @@ function saveBookmark(){
   let customName = "";
   let surahName = "";
   let juzName = "";
+  let bookmarkType = "arabic";
 
   if(input) customName = input.value.trim();
   if(surahBox) surahName = surahBox.innerText.trim();
   if(juzBox) juzName = juzBox.innerText.trim();
+
+  if(typeof quranReadingSource !== "undefined"){
+    if(quranReadingSource === "quran15" || quranReadingSource === "continue15" || quranReadingSource === "juz"){
+      bookmarkType = "15line";
+    }else{
+      bookmarkType = "arabic";
+    }
+  }
 
   if(!customName){
     alert("Please enter bookmark name");
@@ -6882,6 +6891,7 @@ function saveBookmark(){
 
   let bookmarkItem = {
     id: Date.now(),
+    type: bookmarkType,
     name: customName,
     surah: surahName,
     juz: juzName,
@@ -6897,7 +6907,6 @@ function saveBookmark(){
 
   alert("Bookmark saved");
 }
-
 
 
 // =========================
