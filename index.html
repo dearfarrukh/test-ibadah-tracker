@@ -2745,10 +2745,24 @@ function loadQuran15BookmarkList(){
   if(!container) return;
 
   let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
-  let bookmarks = allBookmarks.filter(function(item){
-    return item.type === "15line";
-  });
 
+let bookmarks = allBookmarks.filter(function(item){
+
+  if(!item) return false;
+
+  if(item.type === "15line") return true;
+
+  if(item.type === "quran15") return true;
+  if(item.type === "continue15") return true;
+  if(item.type === "juz") return true;
+
+  if(item.page && Number(item.page) > 0) return true;
+
+  return false;
+});
+
+alert("15 line bookmarks shown: " + bookmarks.length);
+     
   container.innerHTML = "";
 
   if(!bookmarks.length){
