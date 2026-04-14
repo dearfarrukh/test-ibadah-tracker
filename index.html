@@ -6808,7 +6808,15 @@ function openBookmarkPopup(){
   let surahEl = document.getElementById("quranReadingEnglishName");
   if(surahEl) surah = surahEl.innerText || "";
 
-  if(juzBox) juzBox.innerText = "Juz";
+  let juzText = "Juz";
+  if(typeof currentMushafPage !== "undefined" && typeof getRealJuzInfoFromMushafPage === "function"){
+    let info = getRealJuzInfoFromMushafPage(currentMushafPage || 1);
+    if(info && info.juzNumber){
+      juzText = "Juz " + info.juzNumber;
+    }
+  }
+
+  if(juzBox) juzBox.innerText = juzText;
   if(surahBox) surahBox.innerText = surah;
   if(input) input.value = surah ? "Surah " + surah : "";
 
@@ -6838,7 +6846,6 @@ function openBookmarkPopup(){
     if(input) input.focus();
   }, 100);
 }
-
      
 // =========================
 // CLOSE BOOKMARK POPUP
