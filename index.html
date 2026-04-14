@@ -13292,173 +13292,133 @@ padding:18px 16px 120px 16px;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
-       MORE PAGE TOP BAR
-  ========================= -->
-  <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-  ">
+<div style="padding:10px;">
+<!-- Close More Page Button -->
+<button onclick="closeMorePage()" style="
+width:36px;
+height:36px;
+border-radius:50%;
+border:1px solid #ccc;
+background:white;
+font-size:20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+←
+</button>
+</div>
 
-    <!-- Close More Page Button -->
-    <button onclick="closeMorePage()" style="
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:1px solid rgba(0,0,0,0.08);
-    background:white;
-    font-size:22px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#111;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    ">
-      ←
-    </button>
+<div class="card" style="
+text-align:center;
+padding:24px 20px;
+margin-top:10px;
+">
+<div style="font-size:28px;font-weight:800;color:#111;">
+Ibadah Tracker
+</div>
+<div style="font-size:15px;color:#666;margin-top:8px;">
+Your daily Islamic companion
+</div>
+</div>
 
-    <div style="
-    font-size:20px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.3px;
-    ">
-      Ibadah App
-    </div>
+<div class="card" style="
+padding:18px;
+margin-top:14px;
+">
 
-    <div style="width:42px;height:42px;"></div>
-  </div>
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+">
 
-  <!-- =========================
-       MORE PAGE HERO CARD
-  ========================= -->
-  <div style="
-  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
-  border-radius:30px;
-  padding:28px 22px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-  border:1px solid rgba(255,255,255,0.7);
-  margin-bottom:18px;
-  ">
+<!-- Open Tasbih Page Card -->
+<div onclick="openMoreTasbihPage()" style="
+background:white;
+border-radius:22px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+">
+<div style="font-size:28px;margin-bottom:8px;">📿</div>
+<div style="font-size:15px;font-weight:700;color:#111;">Tasbih</div>
+</div>
 
-    <div style="
-    font-size:34px;
-    margin-bottom:12px;
-    ">
-      🌙
-    </div>
+<!-- Open Dua Page Card -->
+<div onclick="openDuaPage()" style="
+background:white;
+border-radius:22px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+">
+<div style="font-size:28px;margin-bottom:8px;">🤲</div>
+<div style="font-size:15px;font-weight:700;color:#111;">Dua</div>
+</div>
 
-    <div style="
-    font-size:28px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.5px;
-    line-height:1.1;
-    margin-bottom:8px;
-    ">
-      Ibadah App
-    </div>
+<!-- Open Zikr Page Card -->
+<div onclick="openMoreZikrPage()" style="
+background:white;
+border-radius:22px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+">
+<div style="font-size:28px;margin-bottom:8px;">🌿</div>
+<div style="font-size:15px;font-weight:700;color:#111;">Daily Dhikr</div>
+</div>
 
-    <div style="
-    font-size:15px;
-    line-height:1.6;
-    color:#8e8e93;
-    max-width:280px;
-    margin:0 auto;
-    ">
-      Your daily Islamic companion
-    </div>
+<!-- Open Quran Page Card -->
+<div onclick="openMoreQuranPage()" style="
+background:white;
+border-radius:22px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+">
+<div style="font-size:28px;margin-bottom:8px;">📖</div>
+<div style="font-size:15px;font-weight:700;color:#111;">Quran</div>
+</div>
 
-  </div>
+<!-- Open Qibla Page Card -->
+<div onclick="document.getElementById('morePage').style.display='none'; openQiblaPage();" style="
+background:white;
+border-radius:22px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+">
+<div style="font-size:28px;margin-bottom:8px;">🧭</div>
+<div style="font-size:15px;font-weight:700;color:#111;">Qibla</div>
 
-  <!-- =========================
-       MORE PAGE SHORTCUT GRID CARD
-  ========================= -->
-  <div class="card" style="
-  padding:18px;
-  margin-top:0;
-  ">
 
-    <div style="
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-    ">
-
-      <!-- Open Tasbih Page Card -->
-      <div onclick="openMoreTasbihPage()" style="
-      background:white;
-      border-radius:22px;
-      padding:20px 10px;
-      text-align:center;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,0.08);
-      ">
-        <div style="font-size:28px;margin-bottom:8px;">📿</div>
-        <div style="font-size:15px;font-weight:700;color:#111;">Tasbih</div>
-      </div>
-
-      <!-- Open Dua Page Card -->
-      <div onclick="openDuaPage()" style="
-      background:white;
-      border-radius:22px;
-      padding:20px 10px;
-      text-align:center;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,0.08);
-      ">
-        <div style="font-size:28px;margin-bottom:8px;">🤲</div>
-        <div style="font-size:15px;font-weight:700;color:#111;">Dua</div>
-      </div>
-
-      <!-- Open Zikr Page Card -->
-      <div onclick="openMoreZikrPage()" style="
-      background:white;
-      border-radius:22px;
-      padding:20px 10px;
-      text-align:center;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,0.08);
-      ">
-        <div style="font-size:28px;margin-bottom:8px;">🌿</div>
-        <div style="font-size:15px;font-weight:700;color:#111;">Daily Dhikr</div>
-      </div>
-
-      <!-- Open Quran Page Card -->
-      <div onclick="openMoreQuranPage()" style="
-      background:white;
-      border-radius:22px;
-      padding:20px 10px;
-      text-align:center;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,0.08);
-      ">
-        <div style="font-size:28px;margin-bottom:8px;">📖</div>
-        <div style="font-size:15px;font-weight:700;color:#111;">Quran</div>
-      </div>
-
-      <!-- Open Qibla Page Card -->
-      <div onclick="document.getElementById('morePage').style.display='none'; openQiblaPage();" style="
-      background:white;
-      border-radius:22px;
-      padding:20px 10px;
-      text-align:center;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,0.08);
-      ">
-        <div style="font-size:28px;margin-bottom:8px;">🧭</div>
-        <div style="font-size:15px;font-weight:700;color:#111;">Qibla</div>
-      </div>
-
-    </div>
-
-  </div>
 
 </div>
+
+</div>
+</div>
+</div>
+
+<div id="quranPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5000;
+background:#e9e9ee;
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
 
   <!-- =========================
        QURAN PAGE TOP BAR
