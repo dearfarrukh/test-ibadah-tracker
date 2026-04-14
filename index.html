@@ -7131,12 +7131,21 @@ function openBookmarkPopup(){
   }
 
   let surah = "";
-  let surahEl = document.getElementById("quranReadingEnglishName");
-  if(surahEl) surah = surahEl.innerText || "";
+let surahEl = document.getElementById("quranReadingEnglishName");
+if(surahEl) surah = surahEl.innerText || "";
 
-  if(juzBox) juzBox.innerText = "Juz";
-  if(surahBox) surahBox.innerText = surah;
-  if(input) input.value = surah ? "Surah " + surah : "";
+let juzText = "";
+
+if(typeof currentMushafPage !== "undefined" && currentMushafPage){
+  let juzInfo = getRealJuzInfoFromMushafPage(currentMushafPage);
+  if(juzInfo && juzInfo.juzNumber){
+    juzText = "Juz " + juzInfo.juzNumber;
+  }
+}
+
+if(juzBox) juzBox.innerText = juzText;
+if(surahBox) surahBox.innerText = surah;
+if(input) input.value = surah ? "Surah " + surah : "Bookmark";
 
   // force popup to top level
   document.body.appendChild(popup);
