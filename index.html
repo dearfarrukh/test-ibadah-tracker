@@ -2443,7 +2443,7 @@ box-sizing:border-box;
   </div>
 
   <!-- Bookmarks Card -->
-  <div onclick="alert('Bookmarks coming in next step')" style="
+  onclick="openQuran15BookmarkPage()"
   background:white;
   border-radius:26px;
   padding:22px 20px;
@@ -12085,7 +12085,33 @@ function testSalahWeatherNow(){
   refreshSalahWeatherBackground();
 }
 
-  
+  // =========================
+// OPEN 15 LINE BOOKMARK PAGE
+// =========================
+function openQuran15BookmarkPage(){
+
+  let readingPage = document.getElementById("quranReadingPage");
+  let bookmarkPage = document.getElementById("quran15BookmarkPage");
+
+  if(readingPage) readingPage.style.display = "none";
+  if(bookmarkPage) bookmarkPage.style.display = "block";
+
+  window.scrollTo(0,0);
+}
+
+// =========================
+// CLOSE 15 LINE BOOKMARK PAGE
+// =========================
+function closeQuran15BookmarkPage(){
+
+  let readingPage = document.getElementById("quranReadingPage");
+  let bookmarkPage = document.getElementById("quran15BookmarkPage");
+
+  if(bookmarkPage) bookmarkPage.style.display = "none";
+  if(readingPage) readingPage.style.display = "block";
+
+  window.scrollTo(0,0);
+}
 
   
 
@@ -16003,6 +16029,78 @@ box-sizing:border-box;
   </div>
 
 </div>
+
+
+
+
+
+
+
+<!-- =========================
+     15 LINE QURAN BOOKMARK PAGE
+========================= -->
+<div id="quran15BookmarkPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5002;
+background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
+
+  <!-- Top Back Button -->
+  <div style="padding:10px;">
+    <button onclick="closeQuran15BookmarkPage()" style="
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:none;
+    background:white;
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
+  </div>
+
+  <!-- Title Card -->
+  <div style="
+  background:white;
+  border-radius:26px;
+  padding:22px;
+  margin-top:10px;
+  text-align:center;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  ">
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    ">
+      Bookmarks
+    </div>
+
+    <div style="
+    font-size:14px;
+    color:#666;
+    margin-top:6px;
+    ">
+      Your saved 15 line Quran bookmarks
+    </div>
+  </div>
+
+  <!-- Bookmark List -->
+  <div id="quran15BookmarkList" style="margin-top:12px;"></div>
+
+</div>
+     
 
 <!-- =========================
      JAVASCRIPT LOGIC
