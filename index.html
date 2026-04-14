@@ -2767,73 +2767,108 @@ function loadQuran15BookmarkList(){
 
   bookmarks.forEach(function(bookmark){
 
-    let card = document.createElement("div");
+   let card = document.createElement("div");
 
-    card.style.background = "white";
-    card.style.borderRadius = "24px";
-    card.style.padding = "18px 16px";
-    card.style.marginBottom = "12px";
-    card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
-    card.style.border = "1px solid rgba(0,0,0,0.03)";
-       card.style.cursor = "pointer";
+card.style.position = "relative";
+card.style.width = "100%";
+card.style.height = "112px";
+card.style.borderRadius = "24px";
+card.style.overflow = "hidden";
+card.style.marginBottom = "12px";
 
-       card.onclick = function(){
-  openSavedQuran15Bookmark(bookmark.id);
-};
+card.innerHTML = `
+  <!-- =========================
+       BOOKMARK DELETE BACK LAYER
+  ========================= -->
+  <div style="
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:96px;
+  background:#ff3b30;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  ">
+    <div style="
+    color:white;
+    font-size:16px;
+    font-weight:800;
+    letter-spacing:-0.2px;
+    ">
+      Delete
+    </div>
+  </div>
 
-    card.innerHTML = `
+  <!-- =========================
+       BOOKMARK FRONT CARD
+  ========================= -->
+  <div class="bookmarkSwipeFront" style="
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:white;
+  border-radius:24px;
+  padding:18px 16px;
+  box-sizing:border-box;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  cursor:pointer;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  transition:transform 0.22s ease;
+  " onclick="openSavedQuran15Bookmark('${bookmark.id}')">
+
+    <div style="min-width:0;flex:1;">
       <div style="
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
+      font-size:18px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:4px;
       ">
-        <div style="min-width:0;flex:1;">
-          <div style="
-          font-size:18px;
-          font-weight:800;
-          color:#111;
-          margin-bottom:4px;
-          ">
-            ${bookmark.name || "Bookmark"}
-          </div>
-
-          <div style="
-          font-size:14px;
-          color:#444;
-          margin-bottom:4px;
-          ">
-            ${bookmark.surah || ""}
-          </div>
-
-          <div style="
-          font-size:13px;
-          color:#666;
-          margin-bottom:4px;
-          ">
-            ${bookmark.juz || ""}
-          </div>
-
-          <div style="
-          font-size:12px;
-          color:#999;
-          ">
-            ${bookmark.createdAtText || ""}
-          </div>
-        </div>
-
-        <div style="
-        font-size:22px;
-        color:#b0b0b8;
-        flex-shrink:0;
-        ">
-          🔖
-        </div>
+        ${bookmark.name || "Bookmark"}
       </div>
-    `;
 
-    container.appendChild(card);
-  });
+      <div style="
+      font-size:14px;
+      color:#444;
+      margin-bottom:4px;
+      ">
+        ${bookmark.surah || ""}
+      </div>
+
+      <div style="
+      font-size:13px;
+      color:#666;
+      margin-bottom:4px;
+      ">
+        ${bookmark.juz || ""}
+      </div>
+
+      <div style="
+      font-size:12px;
+      color:#999;
+      ">
+        ${bookmark.createdAtText || ""}
+      </div>
+    </div>
+
+    <div style="
+    font-size:22px;
+    color:#b0b0b8;
+    flex-shrink:0;
+    ">
+      🔖
+    </div>
+  </div>
+`;
+
+container.appendChild(card);  });
 }
 
 
