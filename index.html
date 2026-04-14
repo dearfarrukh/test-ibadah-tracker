@@ -2792,6 +2792,7 @@ function loadQuran15BookmarkList(){
     deleteBack.style.fontWeight = "800";
     deleteBack.style.letterSpacing = "-0.2px";
     deleteBack.style.borderRadius = "24px";
+    deleteBack.style.userSelect = "none";
     deleteBack.innerText = "Delete";
 
     let card = document.createElement("div");
@@ -2864,6 +2865,27 @@ function loadQuran15BookmarkList(){
     let isHorizontalSwipe = false;
     let isOpen = false;
     let didMove = false;
+    let fullSwipeTriggered = false;
+
+    function deleteThisBookmark(){
+      let savedBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+      savedBookmarks = savedBookmarks.filter(function(item){
+        return String(item.id) !== String(bookmark.id);
+      });
+
+      localStorage.setItem("quranBookmarks", JSON.stringify(savedBookmarks));
+      loadQuran15BookmarkList();
+    }
+
+    function askDeleteBookmark(){
+      let ok = confirm('Delete bookmark "' + (bookmark.name || "Bookmark") + '"?');
+      if(ok){
+        deleteThisBookmark();
+      }else{
+        closeThisCard();
+      }
+    }
 
     function closeThisCard(){
       card.style.transition = "transform 0.22s ease";
@@ -2886,8 +2908,14 @@ function loadQuran15BookmarkList(){
       openSwipeCard = card;
     }
 
+    deleteBack.onclick = function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      askDeleteBookmark();
+    };
+
     card.onclick = function(e){
-      if(didMove){
+      if(didMove || fullSwipeTriggered){
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -2912,6 +2940,7 @@ function loadQuran15BookmarkList(){
       isDragging = true;
       isHorizontalSwipe = false;
       didMove = false;
+      fullSwipeTriggered = false;
       card.style.transition = "none";
 
       if(openSwipeCard && openSwipeCard !== card){
@@ -2948,7 +2977,7 @@ function loadQuran15BookmarkList(){
       deltaX = baseX + moveX;
 
       if(deltaX > 0) deltaX = 0;
-      if(deltaX < -120) deltaX = -120;
+      if(deltaX < -132) deltaX = -132;
 
       card.style.transform = "translateX(" + deltaX + "px)";
     }, {passive:false});
@@ -2961,6 +2990,20 @@ function loadQuran15BookmarkList(){
 
       if(!isHorizontalSwipe){
         didMove = false;
+        return;
+      }
+
+      if(deltaX <= -110){
+        fullSwipeTriggered = true;
+        card.style.transform = "translateX(-92px)";
+
+        setTimeout(function(){
+          askDeleteBookmark();
+          setTimeout(function(){
+            fullSwipeTriggered = false;
+          }, 120);
+        }, 120);
+
         return;
       }
 
@@ -2981,6 +3024,7 @@ function loadQuran15BookmarkList(){
   });
 }
 
+     
 
 
      
