@@ -2600,6 +2600,9 @@ box-sizing:border-box;
 
 
 
+// =========================
+// OPEN 15 LINE BOOKMARK PAGE
+// =========================
 function openQuran15BookmarkPage(){
 
   let quran15Page = document.getElementById("quran15Page");
@@ -2613,18 +2616,13 @@ function openQuran15BookmarkPage(){
   if(quran15SurahPage) quran15SurahPage.style.display = "none";
   if(juzIndexPage) juzIndexPage.style.display = "none";
   if(quranReadingPage) quranReadingPage.style.display = "none";
-
-  loadQuran15BookmarkList();
-
   if(bookmarkPage) bookmarkPage.style.display = "block";
   if(bottomNav) bottomNav.style.display = "flex";
 
+  loadQuran15BookmarkList();
+
   window.scrollTo(0,0);
 }
-
-
-
-     
 // =========================
 // CLOSE 15 LINE BOOKMARK PAGE
 // =========================
@@ -2638,10 +2636,9 @@ function closeQuran15BookmarkPage(){
   if(quran15Page) quran15Page.style.display = "block";
   if(bottomNav) bottomNav.style.display = "flex";
 
-  loadQuran15BookmarkList();
-
   window.scrollTo(0,0);
 }
+
 
 // =========================
 // OPEN SAVED 15 LINE BOOKMARK
@@ -2649,7 +2646,6 @@ function closeQuran15BookmarkPage(){
 function openSavedQuran15Bookmark(bookmarkId){
 
   let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
-alert("Bookmarks found: " + allBookmarks.length);
 
   let bookmark = allBookmarks.find(function(item){
     return String(item.id) === String(bookmarkId);
@@ -2745,24 +2741,10 @@ function loadQuran15BookmarkList(){
   if(!container) return;
 
   let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+  let bookmarks = allBookmarks.filter(function(item){
+    return item.type === "15line";
+  });
 
-let bookmarks = allBookmarks.filter(function(item){
-
-  if(!item) return false;
-
-  if(item.type === "15line") return true;
-
-  if(item.type === "quran15") return true;
-  if(item.type === "continue15") return true;
-  if(item.type === "juz") return true;
-
-  if(item.page && Number(item.page) > 0) return true;
-
-  return false;
-});
-
-alert("15 line bookmarks shown: " + bookmarks.length);
-     
   container.innerHTML = "";
 
   if(!bookmarks.length){
@@ -2785,108 +2767,73 @@ alert("15 line bookmarks shown: " + bookmarks.length);
 
   bookmarks.forEach(function(bookmark){
 
-   let card = document.createElement("div");
+    let card = document.createElement("div");
 
-card.style.position = "relative";
-card.style.width = "100%";
-card.style.height = "112px";
-card.style.borderRadius = "24px";
-card.style.overflow = "hidden";
-card.style.marginBottom = "12px";
+    card.style.background = "white";
+    card.style.borderRadius = "24px";
+    card.style.padding = "18px 16px";
+    card.style.marginBottom = "12px";
+    card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
+    card.style.border = "1px solid rgba(0,0,0,0.03)";
+       card.style.cursor = "pointer";
 
-card.innerHTML = `
-  <!-- =========================
-       BOOKMARK DELETE BACK LAYER
-  ========================= -->
-  <div style="
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  width:96px;
-  background:#ff3b30;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  ">
-    <div style="
-    color:white;
-    font-size:16px;
-    font-weight:800;
-    letter-spacing:-0.2px;
-    ">
-      Delete
-    </div>
-  </div>
+       card.onclick = function(){
+  openSavedQuran15Bookmark(bookmark.id);
+};
 
-  <!-- =========================
-       BOOKMARK FRONT CARD
-  ========================= -->
-  <div class="bookmarkSwipeFront" style="
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:white;
-  border-radius:24px;
-  padding:18px 16px;
-  box-sizing:border-box;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
-  border:1px solid rgba(0,0,0,0.03);
-  cursor:pointer;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  transition:transform 0.22s ease;
-  " onclick="openSavedQuran15Bookmark('${bookmark.id}')">
-
-    <div style="min-width:0;flex:1;">
+    card.innerHTML = `
       <div style="
-      font-size:18px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:4px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
       ">
-        ${bookmark.name || "Bookmark"}
+        <div style="min-width:0;flex:1;">
+          <div style="
+          font-size:18px;
+          font-weight:800;
+          color:#111;
+          margin-bottom:4px;
+          ">
+            ${bookmark.name || "Bookmark"}
+          </div>
+
+          <div style="
+          font-size:14px;
+          color:#444;
+          margin-bottom:4px;
+          ">
+            ${bookmark.surah || ""}
+          </div>
+
+          <div style="
+          font-size:13px;
+          color:#666;
+          margin-bottom:4px;
+          ">
+            ${bookmark.juz || ""}
+          </div>
+
+          <div style="
+          font-size:12px;
+          color:#999;
+          ">
+            ${bookmark.createdAtText || ""}
+          </div>
+        </div>
+
+        <div style="
+        font-size:22px;
+        color:#b0b0b8;
+        flex-shrink:0;
+        ">
+          🔖
+        </div>
       </div>
+    `;
 
-      <div style="
-      font-size:14px;
-      color:#444;
-      margin-bottom:4px;
-      ">
-        ${bookmark.surah || ""}
-      </div>
-
-      <div style="
-      font-size:13px;
-      color:#666;
-      margin-bottom:4px;
-      ">
-        ${bookmark.juz || ""}
-      </div>
-
-      <div style="
-      font-size:12px;
-      color:#999;
-      ">
-        ${bookmark.createdAtText || ""}
-      </div>
-    </div>
-
-    <div style="
-    font-size:22px;
-    color:#b0b0b8;
-    flex-shrink:0;
-    ">
-      🔖
-    </div>
-  </div>
-`;
-
-container.appendChild(card);  });
+    container.appendChild(card);
+  });
 }
 
 
@@ -6487,17 +6434,11 @@ function openQuran15Page(){
 
 let quranPage = document.getElementById("quranPage");
 let quran15Page = document.getElementById("quran15Page");
-let quran15SurahPage = document.getElementById("quran15SurahPage");
-let juzIndexPage = document.getElementById("juzIndexPage");
-let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let quranReadingPage = document.getElementById("quranReadingPage");
 let bottomNav = document.getElementById("bottomNav");
 
 if(quranPage) quranPage.style.display = "none";
-if(quran15SurahPage) quran15SurahPage.style.display = "none";
-if(juzIndexPage) juzIndexPage.style.display = "none";
-if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "block";
@@ -6506,6 +6447,7 @@ if(bottomNav) bottomNav.style.display = "flex";
 window.scrollTo(0,0);
 
 }
+
 // =========================
 // CLOSE 15 LINE QURAN PAGE
 // =========================
@@ -7483,17 +7425,9 @@ if(zikrPage) zikrPage.style.display = "none";
 if(zikrDetailPage) zikrDetailPage.style.display = "none";
 if(qiblaPage) qiblaPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "none";
-
-let quran15SurahPage = document.getElementById("quran15SurahPage");
-let juzIndexPage = document.getElementById("juzIndexPage");
-let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
-
-if(quran15SurahPage) quran15SurahPage.style.display = "none";
-if(juzIndexPage) juzIndexPage.style.display = "none";
-if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
-
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
+
 if(quranPage) quranPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
