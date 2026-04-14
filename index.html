@@ -6793,10 +6793,16 @@ window.scrollTo(0,0);
 // OPEN BOOKMARK POPUP
 // =========================
 function openBookmarkPopup(){
+
   let popup = document.getElementById("bookmarkPopup");
   let surahBox = document.getElementById("bookmarkSurahName");
   let juzBox = document.getElementById("bookmarkJuzName");
   let input = document.getElementById("bookmarkInput");
+
+  if(!popup){
+    alert("bookmarkPopup not found");
+    return;
+  }
 
   let surah = "";
   let surahEl = document.getElementById("quranReadingEnglishName");
@@ -6806,15 +6812,32 @@ function openBookmarkPopup(){
   if(surahBox) surahBox.innerText = surah;
   if(input) input.value = surah ? "Surah " + surah : "";
 
-  if(popup){
-    popup.style.display = "flex";
-    popup.style.zIndex = "20000";
-  }
+  // force popup to top level
+  document.body.appendChild(popup);
+
+  // force visible styles
+  popup.style.display = "flex";
+  popup.style.position = "fixed";
+  popup.style.top = "0";
+  popup.style.left = "0";
+  popup.style.right = "0";
+  popup.style.bottom = "0";
+  popup.style.width = "100%";
+  popup.style.height = "100%";
+  popup.style.visibility = "visible";
+  popup.style.opacity = "1";
+  popup.style.alignItems = "center";
+  popup.style.justifyContent = "center";
+  popup.style.background = "rgba(0,0,0,0.40)";
+  popup.style.zIndex = "999999";
 
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
-}
 
+  setTimeout(function(){
+    if(input) input.focus();
+  }, 100);
+}
 
      
 // =========================
