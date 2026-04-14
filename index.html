@@ -2639,6 +2639,99 @@ function closeQuran15BookmarkPage(){
   window.scrollTo(0,0);
 }
 
+
+// =========================
+// OPEN SAVED 15 LINE BOOKMARK
+// =========================
+function openSavedQuran15Bookmark(bookmarkId){
+
+  let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+  let bookmark = allBookmarks.find(function(item){
+    return String(item.id) === String(bookmarkId);
+  });
+
+  if(!bookmark){
+    alert("Bookmark not found");
+    return;
+  }
+
+  if(bookmark.type !== "15line"){
+    alert("This is not a 15 line bookmark");
+    return;
+  }
+
+  let page = parseInt(bookmark.page || 0);
+
+  if(!page || page < 1){
+    alert("Saved page not found in this bookmark");
+    return;
+  }
+
+  quranReadingSource = "continue15";
+
+  let quran15Page = document.getElementById("quran15Page");
+  let quran15SurahPage = document.getElementById("quran15SurahPage");
+  let juzIndexPage = document.getElementById("juzIndexPage");
+  let bookmarkPage = document.getElementById("quran15BookmarkPage");
+  let quranReadingPage = document.getElementById("quranReadingPage");
+  let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
+  let quranReadingArabicName = document.getElementById("quranReadingArabicName");
+  let quranReadingMeta = document.getElementById("quranReadingMeta");
+  let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
+  let quranReadingTextCard = document.getElementById("quranReadingTextCard");
+  let mushafPageView = document.getElementById("mushafPageView");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quran15Page) quran15Page.style.display = "none";
+  if(quran15SurahPage) quran15SurahPage.style.display = "none";
+  if(juzIndexPage) juzIndexPage.style.display = "none";
+  if(bookmarkPage) bookmarkPage.style.display = "none";
+  if(quranReadingPage) quranReadingPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  if(quranReadingEnglishName) quranReadingEnglishName.innerText = bookmark.surah || "Bookmark";
+  if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+  if(quranReadingMeta) quranReadingMeta.innerText = "15 Line Quran Bookmark";
+
+  if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
+  if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
+  if(mushafPageView) mushafPageView.style.display = "block";
+
+  loadMushafPage(page);
+
+  setTimeout(function(){
+    setupInteractiveQuranFlip({
+      stage: document.getElementById("quranFlipStage"),
+      sheet: document.getElementById("quranFlipSheet"),
+      underPage: document.getElementById("quranFlipUnderPage"),
+      frontImage: document.getElementById("mushafPageImage"),
+      underImage: document.getElementById("quranUnderImage"),
+      shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+      onNext: function(){
+        prevMushafPage();
+      },
+      onPrev: function(){
+        nextMushafPage();
+      },
+      getNextImageSrc: function(){
+        return getPrevMushafImageSrc();
+      },
+      getPrevImageSrc: function(){
+        return getNextMushafImageSrc();
+      }
+    });
+  }, 100);
+
+  window.scrollTo(0,0);
+}
+
+
+
+
+
+     
+
 // =========================
 // LOAD 15 LINE BOOKMARK LIST
 // =========================
@@ -2682,6 +2775,11 @@ function loadQuran15BookmarkList(){
     card.style.marginBottom = "12px";
     card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
     card.style.border = "1px solid rgba(0,0,0,0.03)";
+       card.style.cursor = "pointer";
+
+       card.onclick = function(){
+  openSavedQuran15Bookmark(bookmark.id);
+};
 
     card.innerHTML = `
       <div style="
@@ -7090,6 +7188,7 @@ function saveBookmark(){
   let surahName = "";
   let juzName = "";
   let bookmarkType = "arabic";
+  let bookmarkPage = null;
 
   if(input) customName = input.value.trim();
   if(surahBox) surahName = surahBox.innerText.trim();
@@ -7101,6 +7200,10 @@ function saveBookmark(){
     }else{
       bookmarkType = "arabic";
     }
+  }
+
+  if(bookmarkType === "15line" && typeof currentMushafPage !== "undefined"){
+    bookmarkPage = currentMushafPage || 1;
   }
 
   if(!customName){
@@ -7118,6 +7221,7 @@ function saveBookmark(){
     name: customName,
     surah: surahName,
     juz: juzName,
+    page: bookmarkPage,
     createdAt: now.toISOString(),
     createdAtText: now.toLocaleString()
   };
