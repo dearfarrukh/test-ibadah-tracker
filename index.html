@@ -2649,6 +2649,7 @@ function closeQuran15BookmarkPage(){
 function openSavedQuran15Bookmark(bookmarkId){
 
   let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+alert("Bookmarks found: " + allBookmarks.length);
 
   let bookmark = allBookmarks.find(function(item){
     return String(item.id) === String(bookmarkId);
