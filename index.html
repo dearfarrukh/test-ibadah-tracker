@@ -2970,7 +2970,7 @@ box-sizing:border-box;
   <!-- PRAYER TAB -->
   <div id="qazaPrayerTab" style="display:block;">
 
-      <!-- FAJR CARD -->
+    <!-- FAJR CARD -->
     <div style="
     background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
     border-radius:28px;
@@ -2988,28 +2988,15 @@ box-sizing:border-box;
       gap:14px;
       margin-bottom:18px;
       ">
-
         <div>
-          <div style="
-          font-size:22px;
-          font-weight:800;
-          color:#111;
-          line-height:1.1;
-          margin-bottom:5px;
-          ">
+          <div style="font-size:22px;font-weight:800;color:#111;line-height:1.1;margin-bottom:5px;">
             Fajr
           </div>
-
-          <div style="
-          font-size:14px;
-          color:#666;
-          line-height:1.5;
-          ">
+          <div style="font-size:14px;color:#666;line-height:1.5;">
             Track your missed Fajr prayers
           </div>
         </div>
 
-        <!-- FAJR PROGRESS RING -->
         <div id="fajrRing" style="
         width:78px;
         height:78px;
@@ -3029,28 +3016,15 @@ box-sizing:border-box;
           display:flex;
           align-items:center;
           justify-content:center;
-          flex-direction:column;
           ">
-            <div id="fajrPercentText" style="
-            font-size:16px;
-            font-weight:800;
-            color:#111;
-            line-height:1;
-            ">
+            <div id="fajrPercentText" style="font-size:16px;font-weight:800;color:#111;line-height:1;">
               0%
             </div>
           </div>
         </div>
-
       </div>
 
-      <!-- TOTAL SALAH -->
-      <div style="
-      font-size:13px;
-      font-weight:700;
-      color:#666;
-      margin-bottom:7px;
-      ">
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">
         Total Qaza Salah
       </div>
 
@@ -3069,136 +3043,326 @@ box-sizing:border-box;
       outline:none;
       ">
 
-      <!-- SALAH PERFORMED -->
-      <div style="
-      font-size:13px;
-      font-weight:700;
-      color:#666;
-      margin-bottom:7px;
-      ">
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">
         Salah Performed
       </div>
 
-      <div style="
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:16px;
-      ">
-
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
         <button onclick="decreaseFajr()" style="
-        width:48px;
-        height:48px;
-        border-radius:16px;
-        border:none;
-        background:#f3f3f6;
-        color:#111;
-        font-size:28px;
-        font-weight:700;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        flex-shrink:0;
-        ">
-          −
-        </button>
+        width:48px;height:48px;border-radius:16px;border:none;background:#f3f3f6;color:#111;
+        font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        ">−</button>
 
         <div id="fajrPerformed" style="
-        flex:1;
-        height:48px;
-        border-radius:16px;
-        background:#f3f3f6;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:18px;
-        font-weight:800;
-        color:#111;
-        ">
-          0
-        </div>
+        flex:1;height:48px;border-radius:16px;background:#f3f3f6;display:flex;align-items:center;justify-content:center;
+        font-size:18px;font-weight:800;color:#111;
+        ">0</div>
 
         <button onclick="increaseFajr()" style="
-        width:48px;
-        height:48px;
-        border-radius:16px;
-        border:none;
-        background:#111;
-        color:white;
-        font-size:24px;
-        font-weight:800;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        flex-shrink:0;
+        width:48px;height:48px;border-radius:16px;border:none;background:#111;color:white;
+        font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         box-shadow:0 8px 18px rgba(0,0,0,0.12);
-        ">
-          +
-        </button>
-
+        ">+</button>
       </div>
 
-      <!-- BOTTOM STATS -->
-      <div style="
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      ">
-
-        <div style="
-        background:#f7f7fa;
-        border-radius:18px;
-        padding:14px 12px;
-        text-align:center;
-        ">
-          <div style="
-          font-size:12px;
-          font-weight:700;
-          color:#888;
-          margin-bottom:4px;
-          ">
-            Remaining
-          </div>
-
-          <div id="fajrRemaining" style="
-          font-size:18px;
-          font-weight:800;
-          color:#111;
-          ">
-            0
-          </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Remaining</div>
+          <div id="fajrRemaining" style="font-size:18px;font-weight:800;color:#111;">0</div>
         </div>
 
-        <div style="
-        background:#f7f7fa;
-        border-radius:18px;
-        padding:14px 12px;
-        text-align:center;
-        ">
-          <div style="
-          font-size:12px;
-          font-weight:700;
-          color:#888;
-          margin-bottom:4px;
-          ">
-            Last Updated
-          </div>
-
-          <div id="fajrLastUpdated" style="
-          font-size:12px;
-          font-weight:700;
-          color:#666;
-          line-height:1.4;
-          ">
-            —
-          </div>
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Last Updated</div>
+          <div id="fajrLastUpdated" style="font-size:12px;font-weight:700;color:#666;line-height:1.4;">—</div>
         </div>
-
       </div>
 
     </div>
+
+    <!-- DHUHR CARD -->
+    <div style="
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:28px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
+    ">
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;">
+        <div>
+          <div style="font-size:22px;font-weight:800;color:#111;line-height:1.1;margin-bottom:5px;">
+            Dhuhr
+          </div>
+          <div style="font-size:14px;color:#666;line-height:1.5;">
+            Track your missed Dhuhr prayers
+          </div>
+        </div>
+
+        <div id="dhuhrRing" style="
+        width:78px;height:78px;border-radius:50%;flex-shrink:0;
+        background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+        display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
+        ">
+          <div style="width:58px;height:58px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;">
+            <div id="dhuhrPercentText" style="font-size:16px;font-weight:800;color:#111;line-height:1;">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Total Qaza Salah</div>
+      <input id="dhuhrTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      width:100%;height:48px;border-radius:16px;border:none;background:#f3f3f6;padding:0 14px;margin-bottom:16px;
+      box-sizing:border-box;font-size:17px;font-weight:700;color:#111;outline:none;
+      ">
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Salah Performed</div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <button onclick="decreaseDhuhr()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#f3f3f6;color:#111;
+        font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        ">−</button>
+
+        <div id="dhuhrPerformed" style="
+        flex:1;height:48px;border-radius:16px;background:#f3f3f6;display:flex;align-items:center;justify-content:center;
+        font-size:18px;font-weight:800;color:#111;
+        ">0</div>
+
+        <button onclick="increaseDhuhr()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#111;color:white;
+        font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        box-shadow:0 8px 18px rgba(0,0,0,0.12);
+        ">+</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Remaining</div>
+          <div id="dhuhrRemaining" style="font-size:18px;font-weight:800;color:#111;">0</div>
+        </div>
+
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Last Updated</div>
+          <div id="dhuhrLastUpdated" style="font-size:12px;font-weight:700;color:#666;line-height:1.4;">—</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ASR CARD -->
+    <div style="
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:28px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
+    ">
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;">
+        <div>
+          <div style="font-size:22px;font-weight:800;color:#111;line-height:1.1;margin-bottom:5px;">
+            Asr
+          </div>
+          <div style="font-size:14px;color:#666;line-height:1.5;">
+            Track your missed Asr prayers
+          </div>
+        </div>
+
+        <div id="asrRing" style="
+        width:78px;height:78px;border-radius:50%;flex-shrink:0;
+        background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+        display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
+        ">
+          <div style="width:58px;height:58px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;">
+            <div id="asrPercentText" style="font-size:16px;font-weight:800;color:#111;line-height:1;">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Total Qaza Salah</div>
+      <input id="asrTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      width:100%;height:48px;border-radius:16px;border:none;background:#f3f3f6;padding:0 14px;margin-bottom:16px;
+      box-sizing:border-box;font-size:17px;font-weight:700;color:#111;outline:none;
+      ">
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Salah Performed</div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <button onclick="decreaseAsr()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#f3f3f6;color:#111;
+        font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        ">−</button>
+
+        <div id="asrPerformed" style="
+        flex:1;height:48px;border-radius:16px;background:#f3f3f6;display:flex;align-items:center;justify-content:center;
+        font-size:18px;font-weight:800;color:#111;
+        ">0</div>
+
+        <button onclick="increaseAsr()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#111;color:white;
+        font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        box-shadow:0 8px 18px rgba(0,0,0,0.12);
+        ">+</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Remaining</div>
+          <div id="asrRemaining" style="font-size:18px;font-weight:800;color:#111;">0</div>
+        </div>
+
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Last Updated</div>
+          <div id="asrLastUpdated" style="font-size:12px;font-weight:700;color:#666;line-height:1.4;">—</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MAGHRIB CARD -->
+    <div style="
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:28px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
+    ">
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;">
+        <div>
+          <div style="font-size:22px;font-weight:800;color:#111;line-height:1.1;margin-bottom:5px;">
+            Maghrib
+          </div>
+          <div style="font-size:14px;color:#666;line-height:1.5;">
+            Track your missed Maghrib prayers
+          </div>
+        </div>
+
+        <div id="maghribRing" style="
+        width:78px;height:78px;border-radius:50%;flex-shrink:0;
+        background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+        display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
+        ">
+          <div style="width:58px;height:58px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;">
+            <div id="maghribPercentText" style="font-size:16px;font-weight:800;color:#111;line-height:1;">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Total Qaza Salah</div>
+      <input id="maghribTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      width:100%;height:48px;border-radius:16px;border:none;background:#f3f3f6;padding:0 14px;margin-bottom:16px;
+      box-sizing:border-box;font-size:17px;font-weight:700;color:#111;outline:none;
+      ">
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Salah Performed</div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <button onclick="decreaseMaghrib()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#f3f3f6;color:#111;
+        font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        ">−</button>
+
+        <div id="maghribPerformed" style="
+        flex:1;height:48px;border-radius:16px;background:#f3f3f6;display:flex;align-items:center;justify-content:center;
+        font-size:18px;font-weight:800;color:#111;
+        ">0</div>
+
+        <button onclick="increaseMaghrib()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#111;color:white;
+        font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        box-shadow:0 8px 18px rgba(0,0,0,0.12);
+        ">+</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Remaining</div>
+          <div id="maghribRemaining" style="font-size:18px;font-weight:800;color:#111;">0</div>
+        </div>
+
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Last Updated</div>
+          <div id="maghribLastUpdated" style="font-size:12px;font-weight:700;color:#666;line-height:1.4;">—</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ISHA CARD -->
+    <div style="
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:28px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
+    ">
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;">
+        <div>
+          <div style="font-size:22px;font-weight:800;color:#111;line-height:1.1;margin-bottom:5px;">
+            Isha
+          </div>
+          <div style="font-size:14px;color:#666;line-height:1.5;">
+            Track your missed Isha prayers
+          </div>
+        </div>
+
+        <div id="ishaRing" style="
+        width:78px;height:78px;border-radius:50%;flex-shrink:0;
+        background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+        display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
+        ">
+          <div style="width:58px;height:58px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;">
+            <div id="ishaPercentText" style="font-size:16px;font-weight:800;color:#111;line-height:1;">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Total Qaza Salah</div>
+      <input id="ishaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      width:100%;height:48px;border-radius:16px;border:none;background:#f3f3f6;padding:0 14px;margin-bottom:16px;
+      box-sizing:border-box;font-size:17px;font-weight:700;color:#111;outline:none;
+      ">
+
+      <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:7px;">Salah Performed</div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <button onclick="decreaseIsha()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#f3f3f6;color:#111;
+        font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        ">−</button>
+
+        <div id="ishaPerformed" style="
+        flex:1;height:48px;border-radius:16px;background:#f3f3f6;display:flex;align-items:center;justify-content:center;
+        font-size:18px;font-weight:800;color:#111;
+        ">0</div>
+
+        <button onclick="increaseIsha()" style="
+        width:48px;height:48px;border-radius:16px;border:none;background:#111;color:white;
+        font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        box-shadow:0 8px 18px rgba(0,0,0,0.12);
+        ">+</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Remaining</div>
+          <div id="ishaRemaining" style="font-size:18px;font-weight:800;color:#111;">0</div>
+        </div>
+
+        <div style="background:#f7f7fa;border-radius:18px;padding:14px 12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#888;margin-bottom:4px;">Last Updated</div>
+          <div id="ishaLastUpdated" style="font-size:12px;font-weight:700;color:#666;line-height:1.4;">—</div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- PROGRESS TAB -->
@@ -15224,75 +15388,92 @@ function testSalahWeatherNow(){
 }
 
 // =========================
-// FAJR QAZA SYSTEM
+// QAZA TRACKER SYSTEM
 // =========================
 
-let fajrTotal = 0;
-let fajrDone = 0;
+let qazaPrayerNames = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
+let qazaData = {
+  fajr: { total: 0, done: 0 },
+  dhuhr: { total: 0, done: 0 },
+  asr: { total: 0, done: 0 },
+  maghrib: { total: 0, done: 0 },
+  isha: { total: 0, done: 0 }
+};
 
-// LOAD FAJR DATA
-function loadFajrData(){
+// LOAD ALL QAZA DATA
+function loadAllQazaData(){
 
-  fajrTotal = parseInt(localStorage.getItem("fajrTotal")) || 0;
-  fajrDone = parseInt(localStorage.getItem("fajrDone")) || 0;
+  qazaPrayerNames.forEach(function(prayer){
 
-  if(fajrDone > fajrTotal){
-    fajrDone = fajrTotal;
-    localStorage.setItem("fajrDone", fajrDone);
-  }
+    let total = parseInt(localStorage.getItem(prayer + "Total")) || 0;
+    let done = parseInt(localStorage.getItem(prayer + "Done")) || 0;
 
-  let totalInput = document.getElementById("fajrTotalInput");
-  let performedBox = document.getElementById("fajrPerformed");
-  let lastUpdatedBox = document.getElementById("fajrLastUpdated");
+    if(done > total){
+      done = total;
+      localStorage.setItem(prayer + "Done", done);
+    }
 
-  if(totalInput){
-    totalInput.value = fajrTotal > 0 ? fajrTotal : "";
-  }
+    qazaData[prayer].total = total;
+    qazaData[prayer].done = done;
 
-  if(performedBox){
-    performedBox.innerText = fajrDone;
-  }
+    let totalInput = document.getElementById(prayer + "TotalInput");
+    let performedBox = document.getElementById(prayer + "Performed");
+    let lastUpdatedBox = document.getElementById(prayer + "LastUpdated");
 
-  let last = localStorage.getItem("fajrLastUpdated");
-  if(lastUpdatedBox){
-    lastUpdatedBox.innerText = last ? last : "—";
-  }
+    if(totalInput){
+      totalInput.value = total > 0 ? total : "";
+    }
 
-  updateFajrUI();
+    if(performedBox){
+      performedBox.innerText = done;
+    }
+
+    let last = localStorage.getItem(prayer + "LastUpdated");
+    if(lastUpdatedBox){
+      lastUpdatedBox.innerText = last ? last : "—";
+    }
+
+    updateSingleQazaUI(prayer);
+  });
 }
 
-// SAVE FAJR DATA
-function saveFajrData(){
+// KEEP OLD OPEN FUNCTION WORKING
+function loadFajrData(){
+  loadAllQazaData();
+}
 
-  localStorage.setItem("fajrTotal", fajrTotal);
-  localStorage.setItem("fajrDone", fajrDone);
+// SAVE ONE PRAYER QAZA DATA
+function saveQazaPrayerData(prayer){
+
+  localStorage.setItem(prayer + "Total", qazaData[prayer].total);
+  localStorage.setItem(prayer + "Done", qazaData[prayer].done);
 
   let now = new Date().toLocaleString();
-  localStorage.setItem("fajrLastUpdated", now);
+  localStorage.setItem(prayer + "LastUpdated", now);
 
-  let lastUpdatedBox = document.getElementById("fajrLastUpdated");
+  let lastUpdatedBox = document.getElementById(prayer + "LastUpdated");
   if(lastUpdatedBox){
     lastUpdatedBox.innerText = now;
   }
 }
 
-// GET FAJR REMAINING
-function getFajrRemaining(){
-  let remaining = fajrTotal - fajrDone;
+// GET QAZA REMAINING
+function getQazaRemaining(prayer){
+  let remaining = qazaData[prayer].total - qazaData[prayer].done;
   if(remaining < 0) remaining = 0;
   return remaining;
 }
 
-// UPDATE FAJR RING
-function updateFajrRing(){
+// UPDATE ONE QAZA RING
+function updateSingleQazaRing(prayer){
 
-  let ring = document.getElementById("fajrRing");
-  let percentText = document.getElementById("fajrPercentText");
+  let ring = document.getElementById(prayer + "Ring");
+  let percentText = document.getElementById(prayer + "PercentText");
 
   let percent = 0;
 
-  if(fajrTotal > 0){
-    percent = Math.round((fajrDone / fajrTotal) * 100);
+  if(qazaData[prayer].total > 0){
+    percent = Math.round((qazaData[prayer].done / qazaData[prayer].total) * 100);
   }
 
   if(percent < 0) percent = 0;
@@ -15309,62 +15490,89 @@ function updateFajrRing(){
   }
 }
 
-// UPDATE FAJR UI
-function updateFajrUI(){
+// UPDATE ONE QAZA UI
+function updateSingleQazaUI(prayer){
 
-  let performedBox = document.getElementById("fajrPerformed");
-  let remainingBox = document.getElementById("fajrRemaining");
+  let performedBox = document.getElementById(prayer + "Performed");
+  let remainingBox = document.getElementById(prayer + "Remaining");
 
   if(performedBox){
-    performedBox.innerText = fajrDone;
+    performedBox.innerText = qazaData[prayer].done;
   }
 
   if(remainingBox){
-    remainingBox.innerText = getFajrRemaining();
+    remainingBox.innerText = getQazaRemaining(prayer);
   }
 
-  updateFajrRing();
+  updateSingleQazaRing(prayer);
 }
 
-// INCREASE FAJR
-function increaseFajr(){
+// INCREASE ONE QAZA PRAYER
+function increaseQazaPrayer(prayer){
 
-  if(fajrTotal <= 0) return;
-  if(fajrDone >= fajrTotal) return;
+  if(qazaData[prayer].total <= 0) return;
+  if(qazaData[prayer].done >= qazaData[prayer].total) return;
 
-  fajrDone++;
-  saveFajrData();
-  updateFajrUI();
+  qazaData[prayer].done++;
+  saveQazaPrayerData(prayer);
+  updateSingleQazaUI(prayer);
 }
 
-// DECREASE FAJR
-function decreaseFajr(){
+// DECREASE ONE QAZA PRAYER
+function decreaseQazaPrayer(prayer){
 
-  if(fajrDone <= 0) return;
+  if(qazaData[prayer].done <= 0) return;
 
-  fajrDone--;
-  saveFajrData();
-  updateFajrUI();
+  qazaData[prayer].done--;
+  saveQazaPrayerData(prayer);
+  updateSingleQazaUI(prayer);
 }
 
-// FAJR TOTAL INPUT CHANGE
+// FAJR BUTTONS
+function increaseFajr(){ increaseQazaPrayer("fajr"); }
+function decreaseFajr(){ decreaseQazaPrayer("fajr"); }
+
+// DHUHR BUTTONS
+function increaseDhuhr(){ increaseQazaPrayer("dhuhr"); }
+function decreaseDhuhr(){ decreaseQazaPrayer("dhuhr"); }
+
+// ASR BUTTONS
+function increaseAsr(){ increaseQazaPrayer("asr"); }
+function decreaseAsr(){ decreaseQazaPrayer("asr"); }
+
+// MAGHRIB BUTTONS
+function increaseMaghrib(){ increaseQazaPrayer("maghrib"); }
+function decreaseMaghrib(){ decreaseQazaPrayer("maghrib"); }
+
+// ISHA BUTTONS
+function increaseIsha(){ increaseQazaPrayer("isha"); }
+function decreaseIsha(){ decreaseQazaPrayer("isha"); }
+
+// QAZA TOTAL INPUT CHANGE
 document.addEventListener("input", function(e){
 
-  if(e.target && e.target.id === "fajrTotalInput"){
+  if(!e.target || !e.target.id) return;
 
-    fajrTotal = parseInt(e.target.value) || 0;
+  qazaPrayerNames.forEach(function(prayer){
 
-    if(fajrTotal < 0){
-      fajrTotal = 0;
+    if(e.target.id === prayer + "TotalInput"){
+
+      let total = parseInt(e.target.value) || 0;
+
+      if(total < 0){
+        total = 0;
+      }
+
+      qazaData[prayer].total = total;
+
+      if(qazaData[prayer].done > total){
+        qazaData[prayer].done = total;
+      }
+
+      saveQazaPrayerData(prayer);
+      updateSingleQazaUI(prayer);
     }
-
-    if(fajrDone > fajrTotal){
-      fajrDone = fajrTotal;
-    }
-
-    saveFajrData();
-    updateFajrUI();
-  }
+  });
 });
   
 
