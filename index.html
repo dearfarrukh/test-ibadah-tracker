@@ -2899,9 +2899,7 @@ padding:18px 16px 120px 16px;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
-       QAZA PAGE TOP BAR
-  ========================= -->
+  <!-- TOP BAR -->
   <div style="
   display:flex;
   align-items:center;
@@ -2909,7 +2907,6 @@ box-sizing:border-box;
   margin-bottom:18px;
   ">
 
-    <!-- Close Qaza Page Button -->
     <button onclick="closeQazaPage()" style="
     width:42px;
     height:42px;
@@ -2917,12 +2914,9 @@ box-sizing:border-box;
     border:1px solid rgba(0,0,0,0.08);
     background:white;
     font-size:22px;
-    cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:#111;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
     ">
       ←
     </button>
@@ -2931,17 +2925,14 @@ box-sizing:border-box;
     font-size:20px;
     font-weight:800;
     color:#111;
-    letter-spacing:-0.3px;
     ">
       Qaza Tracker
     </div>
 
-    <div style="width:42px;height:42px;"></div>
+    <div style="width:42px;"></div>
   </div>
 
-  <!-- =========================
-       QAZA SEGMENT CONTROL
-  ========================= -->
+  <!-- SEGMENT -->
   <div style="
   background:#f2f2f7;
   border-radius:999px;
@@ -2949,26 +2940,19 @@ box-sizing:border-box;
   display:flex;
   gap:4px;
   margin-bottom:18px;
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
   ">
 
-    <!-- Qaza Prayer Tab Button -->
     <button id="qazaPrayerTabBtn" onclick="showQazaPrayerTab()" style="
     flex:1;
     height:44px;
     border:none;
     border-radius:999px;
     background:white;
-    color:#111;
-    font-size:17px;
     font-weight:800;
-    cursor:pointer;
-    box-shadow:0 3px 8px rgba(0,0,0,0.06);
     ">
       Prayer
     </button>
 
-    <!-- Qaza Progress Tab Button -->
     <button id="qazaProgressTabBtn" onclick="showQazaProgressTab()" style="
     flex:1;
     height:44px;
@@ -2976,195 +2960,126 @@ box-sizing:border-box;
     border-radius:999px;
     background:transparent;
     color:#666;
-    font-size:17px;
     font-weight:700;
-    cursor:pointer;
     ">
       Progress
     </button>
 
   </div>
 
-<!-- =========================
-     FAJR QAZA CARD
-========================= -->
-<div style="
-background:white;
-border-radius:24px;
-padding:18px;
-margin-bottom:16px;
-box-shadow:0 8px 20px rgba(0,0,0,0.06);
-">
-
-  <!-- TITLE -->
-  <div style="
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-  ">
-    <div style="font-size:20px;font-weight:800;color:#111;">
-      Fajr
-    </div>
-
-    <div id="fajrLastUpdated" style="
-    font-size:12px;
-    color:#888;
-    ">
-      Last updated: —
-    </div>
-  </div>
-
-  <!-- TOTAL INPUT -->
-  <div style="font-size:13px;color:#666;margin-bottom:6px;">
-    Total Salah
-  </div>
-
-  <input id="fajrTotalInput" type="number" placeholder="Enter total" style="
-  width:100%;
-  height:44px;
-  border-radius:14px;
-  border:none;
-  background:#f3f3f6;
-  padding:0 12px;
-  font-size:16px;
-  margin-bottom:14px;
-  ">
-
-  <!-- PERFORMED -->
-  <div style="font-size:13px;color:#666;margin-bottom:6px;">
-    Salah Performed
-  </div>
-
-  <div style="
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-  ">
-
-    <button onclick="decreaseFajr()" style="
-    width:44px;
-    height:44px;
-    border-radius:12px;
-    border:none;
-    font-size:20px;
-    background:#f3f3f6;
-    ">−</button>
-
-    <div id="fajrPerformed" style="
-    flex:1;
-    height:44px;
-    border-radius:12px;
-    background:#f3f3f6;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:18px;
-    font-weight:700;
-    ">
-      0
-    </div>
-
-    <button onclick="increaseFajr()" style="
-    width:44px;
-    height:44px;
-    border-radius:12px;
-    border:none;
-    font-size:20px;
-    background:#f3f3f6;
-    ">+</button>
-
-  </div>
-
-  <!-- REMAINING -->
-  <div id="fajrRemaining" style="
-  font-size:14px;
-  color:#444;
-  font-weight:600;
-  ">
-    Remaining Salah: 0
-  </div>
-
-</div>
-
-
-
-     
-
-  <!-- =========================
-       QAZA PRAYER TAB
-  ========================= -->
+  <!-- PRAYER TAB -->
   <div id="qazaPrayerTab" style="display:block;">
 
+    <!-- FAJR CARD -->
     <div style="
     background:white;
-    border-radius:26px;
-    padding:22px 18px;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
-    text-align:center;
+    border-radius:24px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
     ">
+
+      <!-- TITLE -->
       <div style="
-      font-size:20px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:6px;
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
       ">
-        Prayer Tab
+        <div style="font-size:20px;font-weight:800;">
+          Fajr
+        </div>
+
+        <div id="fajrLastUpdated" style="
+        font-size:12px;
+        color:#888;
+        ">
+          —
+        </div>
+      </div>
+
+      <!-- TOTAL -->
+      <div style="font-size:13px;color:#666;margin-bottom:6px;">
+        Total Salah
+      </div>
+
+      <input id="fajrTotalInput" type="number" style="
+      width:100%;
+      height:44px;
+      border-radius:14px;
+      border:none;
+      background:#f3f3f6;
+      padding:0 12px;
+      margin-bottom:14px;
+      box-sizing:border-box;
+      ">
+
+      <!-- PERFORMED -->
+      <div style="font-size:13px;color:#666;margin-bottom:6px;">
+        Salah Performed
       </div>
 
       <div style="
-      font-size:14px;
-      line-height:1.6;
-      color:#666;
+      display:flex;
+      gap:10px;
+      margin-bottom:10px;
       ">
-        Fajr card will come in the next step.
+
+        <button onclick="decreaseFajr()" style="
+        width:44px;
+        height:44px;
+        border-radius:12px;
+        border:none;
+        background:#f3f3f6;
+        ">−</button>
+
+        <div id="fajrPerformed" style="
+        flex:1;
+        height:44px;
+        border-radius:12px;
+        background:#f3f3f6;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-weight:700;
+        ">
+          0
+        </div>
+
+        <button onclick="increaseFajr()" style="
+        width:44px;
+        height:44px;
+        border-radius:12px;
+        border:none;
+        background:#f3f3f6;
+        ">+</button>
+
       </div>
+
+      <!-- REMAINING -->
+      <div id="fajrRemaining" style="
+      font-size:14px;
+      font-weight:600;
+      ">
+        Remaining Salah: 0
+      </div>
+
     </div>
 
   </div>
 
-
-
-     
-
-  <!-- =========================
-       QAZA PROGRESS TAB
-  ========================= -->
+  <!-- PROGRESS TAB -->
   <div id="qazaProgressTab" style="display:none;">
-
     <div style="
     background:white;
-    border-radius:26px;
-    padding:22px 18px;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
+    border-radius:24px;
+    padding:20px;
     text-align:center;
     ">
-      <div style="
-      font-size:20px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:6px;
-      ">
-        Progress Tab
-      </div>
-
-      <div style="
-      font-size:14px;
-      line-height:1.6;
-      color:#666;
-      ">
-        Progress cards will come after prayer logic is ready.
-      </div>
+      Progress coming next step
     </div>
-
   </div>
 
 </div>
-
-
 
 
 
