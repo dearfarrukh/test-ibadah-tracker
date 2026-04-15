@@ -5820,6 +5820,7 @@ updateRoyalTasbihUI();
 
 let zikrCount = 0;
 let zikrTarget = 100;
+let zikrContinuePastTarget = false;
 
 // =========================
 // UPDATE ZIKR DISPLAY
@@ -5834,8 +5835,8 @@ let btnInf = document.getElementById("zikrInfBtn");
 if(countTextEl){
   countTextEl.innerText = zikrCount + " / " + zikrTarget;
 
-  if(zikrCount >= zikrTarget){
-    countTextEl.style.color = "#34c759";
+  if(zikrTarget !== "inf" && zikrCount >= zikrTarget){
+    countTextEl.style.color = "#f5b301";
   }else{
     countTextEl.style.color = "#5f946b";
   }
@@ -5902,11 +5903,18 @@ updateSingleZikrCardUI(currentZikr);
 // =========================
 function increaseZikrTasbih(){
 
-if(zikrCount < zikrTarget){
+if(zikrTarget === "inf"){
   zikrCount++;
-     if(zikrTarget !== "inf" && zikrCount === zikrTarget){
-  showZikrTargetReached();
 }
+else if(zikrCount < zikrTarget){
+  zikrCount++;
+
+  if(zikrCount === zikrTarget){
+    showZikrTargetReached();
+  }
+}
+else if(zikrContinuePastTarget){
+  zikrCount++;
 }
 
 if(currentZikr){
@@ -5963,6 +5971,9 @@ function showZikrTargetReached(){
 // CONTINUE AFTER TARGET
 // =========================
 function continueAfterTarget(){
+
+  zikrContinuePastTarget = true;
+
   let popup = document.getElementById("zikrTargetReachedPopup");
   if(popup){
     popup.style.display = "none";
@@ -5975,6 +5986,7 @@ function continueAfterTarget(){
 function resetAfterTarget(){
 
   zikrCount = 0;
+  zikrContinuePastTarget = false;
 
   localStorage.setItem(getZikrCardCountKey(currentZikr), "0");
 
@@ -5991,8 +6003,7 @@ function resetAfterTarget(){
   }
 
   updateAllZikrCardUI();
-}  
-
+}
 
      
 // =========================
@@ -8093,6 +8104,7 @@ window.scrollTo(0,0);
 function openZikrDetail(name){
 
 currentZikr = name;
+zikrContinuePastTarget = false;
 
 zikrCount = getZikrCardCount(name);
 zikrTarget = parseInt(getZikrCardTarget(name), 10);
