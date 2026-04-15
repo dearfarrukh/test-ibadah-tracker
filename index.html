@@ -2256,18 +2256,24 @@ letter-spacing:-0.2px;
 <!-- =========================
      TARGET REACHED POPUP
 ========================= -->
-<div id="zikrTargetReachedPopup" style="
+<div id="zikrTargetReachedPopup" onclick="event.stopPropagation()" style="
 display:none;
 position:fixed;
+top:0;
 left:0;
 right:0;
 bottom:0;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
 z-index:99999;
+align-items:flex-end;
+justify-content:center;
 padding:20px;
 box-sizing:border-box;
 ">
 
-  <div style="
+  <div onclick="event.stopPropagation()" style="
   width:100%;
   max-width:420px;
   margin:0 auto;
@@ -5957,7 +5963,7 @@ function showZikrTargetReached(){
   }
 
   if(popup){
-    popup.style.display = "block";
+    popup.style.display = "flex";
   }
 
   // make counter yellow
