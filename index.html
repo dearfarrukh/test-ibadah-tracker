@@ -7237,6 +7237,35 @@ function renderCustomZikrCards(){
   });
 }
 
+
+// =========================
+// GET ZIKR DISPLAY TITLE
+// =========================
+function getZikrDisplayTitle(name){
+
+  if(name === "subhanallah"){
+    return "SubhanAllahi wa bihamdihi";
+  }
+
+  if(name === "hawqala"){
+    return "La hawla wa la quwwata illa billah";
+  }
+
+  if(name === "alhamdulillah"){
+    return "Alhamdulillah";
+  }
+
+  let customItem = getCustomZikrById(name);
+
+  if(customItem){
+    return customItem.englishName || "Custom Zikr";
+  }
+
+  return name;
+}
+
+
+
      
 const zikrData = {
 subhanallah: {
@@ -7311,16 +7340,8 @@ function openZikrTargetPopup(name){
   let input = document.getElementById("zikrCustomTargetInput");
 
   if(title){
-  if(name === "subhanallah"){
-    title.innerText = "SubhanAllahi wa bihamdihi";
-  }else if(name === "hawqala"){
-    title.innerText = "La hawla wa la quwwata illa billah";
-  }else if(name === "alhamdulillah"){
-    title.innerText = "Alhamdulillah";
-  }else{
-    title.innerText = "Select target";
+    title.innerText = getZikrDisplayTitle(name);
   }
-}
 
   if(input){
     input.value = "";
@@ -7434,6 +7455,12 @@ function updateAllZikrCardUI(){
   updateSingleZikrCardUI("subhanallah");
   updateSingleZikrCardUI("hawqala");
   updateSingleZikrCardUI("alhamdulillah");
+
+  let customList = getCustomZikrList();
+
+  customList.forEach(function(item){
+    updateSingleZikrCardUI(item.id);
+  });
 }
 
 
@@ -7489,6 +7516,7 @@ if(zikrPage) zikrPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
 
+renderCustomZikrCards();
 updateAllZikrCardUI();
 
 window.scrollTo(0,0);
@@ -7545,22 +7573,31 @@ if(!zikrTarget || zikrTarget < 1){
 
 updateZikrDisplay();
 
-let data = zikrData[name];
+let data = null;
+
+if(isCustomZikr(name)){
+
+  let customItem = getCustomZikrById(name);
+
+  if(!customItem){
+    alert("Custom zikr not found");
+    return;
+  }
+
+  data = {
+    hadith: "Your custom zikr",
+    arabic: escapeHtml(customItem.arabicText),
+    meaning: escapeHtml(customItem.englishName),
+    ref: "Added by you"
+  };
+
+}else{
+  data = zikrData[name];
+}
+
 if(!data) return;
 
-let englishTitle = "";
-if(name === "subhanallah"){
-  englishTitle = "SubhanAllahi wa bihamdihi";
-}
-else if(name === "hawqala"){
-  englishTitle = "La hawla wa la quwwata illa billah";
-}
-else if(name === "alhamdulillah"){
-  englishTitle = "Alhamdulillah";
-}
-else{
-  englishTitle = name;
-}
+let englishTitle = getZikrDisplayTitle(name);
 
 let titleEl = document.getElementById("zikrEnglishTitle");
 if(titleEl){
@@ -7572,17 +7609,16 @@ if(badgeEl){
   badgeEl.innerText = "Target " + zikrTarget;
 }
 
-document.getElementById("zikrHadithText").innerHTML = data.hadith;
-document.getElementById("zikrArabicText").innerHTML = data.arabic;
-document.getElementById("zikrMeaningText").innerHTML = data.meaning;
-document.getElementById("zikrRefText").innerHTML = data.ref;
+document.getElementById("zikrHadithText").innerHTML = data.hadith || "";
+document.getElementById("zikrArabicText").innerHTML = data.arabic || "";
+document.getElementById("zikrMeaningText").innerHTML = data.meaning || "";
+document.getElementById("zikrRefText").innerHTML = data.ref || "";
 
 document.getElementById("zikrPage").style.display = "none";
 document.getElementById("zikrDetailPage").style.display = "block";
 
 window.scrollTo(0,0);
 }
-
      
 // =========================
 // CLOSE ZIKR DETAIL
