@@ -2662,7 +2662,7 @@ Reset
 
 </div>
 
-
+</div>
 
 
 <!-- =========================
@@ -5820,7 +5820,6 @@ updateRoyalTasbihUI();
 
 let zikrCount = 0;
 let zikrTarget = 100;
-let zikrContinuePastTarget = false;
 
 // =========================
 // UPDATE ZIKR DISPLAY
@@ -5831,11 +5830,12 @@ let countTextEl = document.getElementById("zikrCountText");
 let btn33 = document.getElementById("zikr33Btn");
 let btn100 = document.getElementById("zikr100Btn");
 let btnInf = document.getElementById("zikrInfBtn");
+
 if(countTextEl){
   countTextEl.innerText = zikrCount + " / " + zikrTarget;
 
-  if(zikrTarget !== "inf" && zikrCount >= zikrTarget){
-    countTextEl.style.color = "#f5b301";
+  if(zikrCount >= zikrTarget){
+    countTextEl.style.color = "#34c759";
   }else{
     countTextEl.style.color = "#5f946b";
   }
@@ -5902,6 +5902,31 @@ updateSingleZikrCardUI(currentZikr);
 // =========================
 function increaseZikrTasbih(){
 
+if(zikrCount < zikrTarget){
+  zikrCount++;
+     if(zikrTarget !== "inf" && zikrCount === zikrTarget){
+  showZikrTargetReached();
+}
+}
+
+if(currentZikr){
+  localStorage.setItem(getZikrCardCountKey(currentZikr), String(zikrCount));
+}
+
+updateZikrDisplay();
+updateSingleZikrCardUI(currentZikr);
+
+if(isVibrationEnabled()){
+clickSound.currentTime = 0;
+clickSound.play().catch(()=>{});
+}
+
+if(navigator.vibrate){
+navigator.vibrate(30);
+}
+
+}
+
 
 
 
@@ -5938,9 +5963,6 @@ function showZikrTargetReached(){
 // CONTINUE AFTER TARGET
 // =========================
 function continueAfterTarget(){
-
-  zikrContinuePastTarget = true;
-
   let popup = document.getElementById("zikrTargetReachedPopup");
   if(popup){
     popup.style.display = "none";
@@ -5953,7 +5975,6 @@ function continueAfterTarget(){
 function resetAfterTarget(){
 
   zikrCount = 0;
-  zikrContinuePastTarget = false;
 
   localStorage.setItem(getZikrCardCountKey(currentZikr), "0");
 
@@ -5970,7 +5991,7 @@ function resetAfterTarget(){
   }
 
   updateAllZikrCardUI();
-}
+}  
 
 
      
@@ -8072,8 +8093,7 @@ window.scrollTo(0,0);
 function openZikrDetail(name){
 
 currentZikr = name;
-zikrContinuePastTarget = false;
-     
+
 zikrCount = getZikrCardCount(name);
 zikrTarget = parseInt(getZikrCardTarget(name), 10);
 
