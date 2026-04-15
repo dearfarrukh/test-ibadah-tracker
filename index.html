@@ -14478,6 +14478,76 @@ function getQazaTotal(prayerName) {
 }
 
 // =========================
+// QAZA PERFORMED BUTTON LOGIC
+// =========================
+function getQazaTotal(prayerName) {
+  let value = parseInt(localStorage.getItem("qaza_total_" + prayerName) || "0", 10);
+  if (isNaN(value) || value < 0) value = 0;
+  return value;
+}
+
+function setQazaTotal(prayerName, value) {
+  value = parseInt(value, 10);
+  if (isNaN(value) || value < 0) value = 0;
+  localStorage.setItem("qaza_total_" + prayerName, String(value));
+}
+
+function getQazaPerformed(prayerName) {
+  let value = parseInt(localStorage.getItem("qaza_performed_" + prayerName) || "0", 10);
+  if (isNaN(value) || value < 0) value = 0;
+  return value;
+}
+
+function setQazaPerformed(prayerName, value) {
+  value = parseInt(value, 10);
+  if (isNaN(value) || value < 0) value = 0;
+  localStorage.setItem("qaza_performed_" + prayerName, String(value));
+}
+
+function getQazaRemaining(prayerName) {
+  let total = getQazaTotal(prayerName);
+  let performed = getQazaPerformed(prayerName);
+  let remaining = total - performed;
+  if (remaining < 0) remaining = 0;
+  return remaining;
+}
+
+function saveQazaTotalFromInput(prayerName) {
+  let inputId = "qaza" + prayerName.charAt(0).toUpperCase() + prayerName.slice(1) + "TotalInput";
+  let inputEl = document.getElementById(inputId);
+  if (!inputEl) return;
+
+  let total = parseInt(inputEl.value || "0", 10);
+  if (isNaN(total) || total < 0) total = 0;
+
+  setQazaTotal(prayerName, total);
+
+  let performed = getQazaPerformed(prayerName);
+  if (performed > total) {
+    setQazaPerformed(prayerName, total);
+  }
+
+  setQazaUpdatedTime(prayerName);
+  loadQazaTrackerData();
+}
+
+function changeQazaPerformed(prayerName, changeAmount) {
+  let total = getQazaTotal(prayerName);
+  let performed = getQazaPerformed(prayerName);
+
+  performed = performed + changeAmount;
+
+  if (performed < 0) performed = 0;
+  if (performed > total) performed = total;
+
+  setQazaPerformed(prayerName, performed);
+  setQazaUpdatedTime(prayerName);
+  loadQazaTrackerData();
+}
+
+
+     
+// =========================
 // SET QAZA TOTAL
 // =========================
 function setQazaTotal(prayerName, value) {
@@ -14983,7 +15053,7 @@ function changeQazaCount(prayerName, changeAmount) {
 // LOAD QAZA TRACKER DATA
 // =========================
 function loadQazaTrackerData() {
-  updateSingleQazaPrayerUI("fajr", "qazaFajrCount", "qazaFajrUpdated");
+  updateSingleQazaPrayerUI("fajr", "qazaFajrTotalInput", "qazaFajrPerformedText", "qazaFajrRemainingText", "qazaFajrUpdated");
   updateSingleQazaPrayerUI("dhuhr", "qazaDhuhrCount", "qazaDhuhrUpdated");
   updateSingleQazaPrayerUI("asr", "qazaAsrCount", "qazaAsrUpdated");
   updateSingleQazaPrayerUI("maghrib", "qazaMaghribCount", "qazaMaghribUpdated");
