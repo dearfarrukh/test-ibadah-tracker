@@ -2144,6 +2144,114 @@ box-sizing:border-box;
 
   </div>
 </div>
+     <!-- =========================
+     EDIT CUSTOM ZIKR POPUP
+========================= -->
+<div id="editCustomZikrPopup" onclick="closeEditCustomZikrPopup()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(6px);
+z-index:6001;
+align-items:center;
+justify-content:center;
+padding:20px;
+">
+
+  <div onclick="event.stopPropagation()" style="
+  width:100%;
+  max-width:340px;
+  background:white;
+  border-radius:28px;
+  padding:20px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.2);
+  ">
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:12px;
+    ">
+      Edit Zikr
+    </div>
+
+    <!-- English -->
+    <input id="editCustomZikrEnglishInput" placeholder="English name" style="
+width:100%;
+box-sizing:border-box;
+padding:14px;
+border-radius:16px;
+border:none;
+background:#f2f2f7;
+margin-bottom:10px;
+font-size:16px;
+">
+
+    <!-- Arabic -->
+    <textarea id="editCustomZikrArabicInput" placeholder="Arabic (optional)" style="
+width:100%;
+box-sizing:border-box;
+padding:14px;
+border-radius:16px;
+border:none;
+background:#f2f2f7;
+margin-bottom:10px;
+font-size:18px;
+direction:auto;
+text-align:left;
+min-height:80px;
+"></textarea>
+
+    <!-- Target -->
+    <input id="editCustomZikrTargetInput" type="number" placeholder="Target (33)" style="
+width:100%;
+box-sizing:border-box;
+padding:14px;
+border-radius:16px;
+border:none;
+background:#f2f2f7;
+margin-bottom:14px;
+font-size:16px;
+">
+
+    <!-- Update -->
+    <button onclick="updateCustomZikr()" style="
+width:100%;
+padding:16px;
+border-radius:18px;
+border:none;
+background:#111;
+color:white;
+font-size:18px;
+font-weight:900;
+margin-bottom:10px;
+letter-spacing:-0.2px;
+">
+      Update
+    </button>
+
+    <!-- Cancel -->
+    <button onclick="closeEditCustomZikrPopup()" style="
+width:100%;
+padding:16px;
+border-radius:18px;
+border:none;
+background:#f2f2f7;
+color:#444;
+font-size:17px;
+font-weight:800;
+letter-spacing:-0.2px;
+">
+      Cancel
+    </button>
+
+  </div>
+</div>
 
 <!-- =========================
      ADD CUSTOM ZIKR POPUP
@@ -7255,6 +7363,104 @@ function closeAddCustomZikrPopup(){
 }
 
 
+
+     // =========================
+// EDITING CUSTOM ZIKR ID
+// =========================
+let editingCustomZikrId = "";
+
+// =========================
+// OPEN EDIT CUSTOM ZIKR POPUP
+// =========================
+function openEditCustomZikrPopup(id){
+
+  editingCustomZikrId = id;
+
+  let item = getCustomZikrById(id);
+  if(!item) return;
+
+  let popup = document.getElementById("editCustomZikrPopup");
+  let englishInput = document.getElementById("editCustomZikrEnglishInput");
+  let arabicInput = document.getElementById("editCustomZikrArabicInput");
+  let targetInput = document.getElementById("editCustomZikrTargetInput");
+
+  if(englishInput) englishInput.value = item.englishName || "";
+  if(arabicInput) arabicInput.value = item.arabicText || "";
+  if(targetInput) targetInput.value = item.target || 33;
+
+  if(popup){
+    popup.style.display = "flex";
+  }
+}
+
+// =========================
+// CLOSE EDIT CUSTOM ZIKR POPUP
+// =========================
+function closeEditCustomZikrPopup(){
+  let popup = document.getElementById("editCustomZikrPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+}
+
+// =========================
+// UPDATE CUSTOM ZIKR
+// =========================
+function updateCustomZikr(){
+
+  if(!editingCustomZikrId) return;
+
+  let englishInput = document.getElementById("editCustomZikrEnglishInput");
+  let arabicInput = document.getElementById("editCustomZikrArabicInput");
+  let targetInput = document.getElementById("editCustomZikrTargetInput");
+
+  if(!englishInput || !arabicInput || !targetInput) return;
+
+  let englishName = englishInput.value.trim();
+  let arabicText = arabicInput.value.trim();
+  let target = parseInt(targetInput.value, 10);
+
+  if(!englishName){
+    alert("Please enter English name");
+    return;
+  }
+
+  if(!arabicText){
+    arabicText = "";
+  }
+
+  if(!target || target < 1){
+    alert("Please enter a valid target");
+    return;
+  }
+
+  let customList = getCustomZikrList();
+
+  customList = customList.map(function(item){
+    if(item.id === editingCustomZikrId){
+      return {
+        id: item.id,
+        englishName: englishName,
+        arabicText: arabicText,
+        target: target
+      };
+    }
+    return item;
+  });
+
+  saveCustomZikrList(customList);
+
+  localStorage.setItem(getZikrCardTargetKey(editingCustomZikrId), String(target));
+
+  closeEditCustomZikrPopup();
+  renderCustomZikrCards();
+  updateAllZikrCardUI();
+
+  if(currentZikr === editingCustomZikrId){
+    openZikrDetail(editingCustomZikrId);
+  }
+}
+
 // =========================
 // OPEN RESET ALL ZIKR POPUP
 // =========================
@@ -7879,6 +8085,11 @@ function getZikrCardTarget(name){
 // OPEN ZIKR TARGET POPUP
 // =========================
 function openZikrTargetPopup(name){
+
+  if(isCustomZikr(name)){
+    openEditCustomZikrPopup(name);
+    return;
+  }
 
   currentZikrTargetEdit = name;
 
