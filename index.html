@@ -1967,6 +1967,25 @@ padding:15px;
 ">
 
 <div style="padding:10px;">
+<!-- Close Zikr Detail Button -->
+<button onclick="closeZikrDetail()" style="
+width:42px;
+height:42px;
+border-radius:50%;
+border:1px solid rgba(0,0,0,0.08);
+background:white;
+font-size:22px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#111;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+">
+←
+</button>
+</div>
+
 <!-- =========================
      ZIKR DETAIL FULL CARD (FIXED)
 ========================= -->
@@ -2117,6 +2136,7 @@ cursor:pointer;
 
 <!-- Zikr Inf Button -->
 <button id="zikrInfBtn" onclick="setZikrMode('inf')" style="
+display:none;
 flex:1;
 border:none;
 background:transparent;
@@ -5337,31 +5357,50 @@ let zikrTarget = 100;
 // =========================
 function updateZikrDisplay(){
 
-let targetText = zikrTarget === "inf" ? "∞" : zikrTarget;
-document.getElementById("zikrCountText").innerText = zikrCount + " / " + targetText;
+let countTextEl = document.getElementById("zikrCountText");
+let btn33 = document.getElementById("zikr33Btn");
+let btn100 = document.getElementById("zikr100Btn");
+let btnInf = document.getElementById("zikrInfBtn");
 
-document.getElementById("zikr33Btn").style.background = "transparent";
-document.getElementById("zikr33Btn").style.color = "black";
+if(countTextEl){
+  countTextEl.innerText = zikrCount + " / " + zikrTarget;
 
-document.getElementById("zikr100Btn").style.background = "transparent";
-document.getElementById("zikr100Btn").style.color = "black";
-
-document.getElementById("zikrInfBtn").style.background = "transparent";
-document.getElementById("zikrInfBtn").style.color = "black";
-
-if(zikrTarget === 33){
-document.getElementById("zikr33Btn").style.background = "#34c759";
-document.getElementById("zikr33Btn").style.color = "white";
+  if(zikrCount >= zikrTarget){
+    countTextEl.style.color = "#34c759";
+  }else{
+    countTextEl.style.color = "#5f946b";
+  }
 }
 
-if(zikrTarget === 100){
-document.getElementById("zikr100Btn").style.background = "#34c759";
-document.getElementById("zikr100Btn").style.color = "white";
+if(btn33){
+  btn33.style.background = "transparent";
+  btn33.style.color = "black";
 }
 
-if(zikrTarget === "inf"){
-document.getElementById("zikrInfBtn").style.background = "#34c759";
-document.getElementById("zikrInfBtn").style.color = "white";
+if(btn100){
+  btn100.style.background = "transparent";
+  btn100.style.color = "black";
+}
+
+if(btnInf){
+  btnInf.style.display = "none";
+  btnInf.style.background = "transparent";
+  btnInf.style.color = "black";
+}
+
+if(zikrTarget === 33 && btn33){
+  btn33.style.background = "#34c759";
+  btn33.style.color = "white";
+}
+
+if(zikrTarget === 100 && btn100){
+  btn100.style.background = "#34c759";
+  btn100.style.color = "white";
+}
+
+let badgeEl = document.getElementById("zikrTargetBadge");
+if(badgeEl){
+  badgeEl.innerText = "Target " + zikrTarget;
 }
 
 }
@@ -5377,6 +5416,11 @@ zikrCount = 0;
 if(currentZikr){
   localStorage.setItem(getZikrCardTargetKey(currentZikr), String(mode));
   localStorage.setItem(getZikrCardCountKey(currentZikr), "0");
+}
+
+let badgeEl = document.getElementById("zikrTargetBadge");
+if(badgeEl){
+  badgeEl.innerText = "Target " + mode;
 }
 
 updateZikrDisplay();
@@ -6926,6 +6970,27 @@ updateZikrDisplay();
 let data = zikrData[name];
 if(!data) return;
 
+let englishTitle = "";
+if(name === "subhanallah"){
+  englishTitle = "SubhanAllahi wa bihamdihi";
+}
+else if(name === "hawqala"){
+  englishTitle = "La hawla wa la quwwata illa billah";
+}
+else{
+  englishTitle = name;
+}
+
+let titleEl = document.getElementById("zikrEnglishTitle");
+if(titleEl){
+  titleEl.innerText = englishTitle;
+}
+
+let badgeEl = document.getElementById("zikrTargetBadge");
+if(badgeEl){
+  badgeEl.innerText = "Target " + zikrTarget;
+}
+
 document.getElementById("zikrHadithText").innerHTML = data.hadith;
 document.getElementById("zikrArabicText").innerHTML = data.arabic;
 document.getElementById("zikrMeaningText").innerHTML = data.meaning;
@@ -6936,6 +7001,8 @@ document.getElementById("zikrDetailPage").style.display = "block";
 
 window.scrollTo(0,0);
 }
+
+     
 // =========================
 // CLOSE ZIKR DETAIL
 // =========================
