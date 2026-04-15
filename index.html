@@ -8106,13 +8106,18 @@ window.scrollTo(0,0);
 function openZikrDetail(name){
 
 currentZikr = name;
-zikrContinuePastTarget = false;
 
 zikrCount = getZikrCardCount(name);
 zikrTarget = parseInt(getZikrCardTarget(name), 10);
 
 if(!zikrTarget || zikrTarget < 1){
   zikrTarget = 33;
+}
+
+if(zikrTarget !== "inf" && zikrCount > zikrTarget){
+  zikrContinuePastTarget = true;
+}else{
+  zikrContinuePastTarget = false;
 }
 
 updateZikrDisplay();
