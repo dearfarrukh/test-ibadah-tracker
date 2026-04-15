@@ -1569,32 +1569,32 @@ box-shadow:0 8px 22px rgba(0,0,0,0.07);
 border:1px solid rgba(0,0,0,0.03);
 ">
 
-  <!-- Left Progress Ring -->
-  <div style="
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  flex-shrink:0;
-  position:relative;
-  background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  ">
-    <div style="
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-    font-weight:800;
-    color:#666;
-    ">
-      0
-    </div>
+ <!-- Left Progress Ring -->
+<div id="zikrCardRing-hawqala" style="
+width:52px;
+height:52px;
+border-radius:50%;
+flex-shrink:0;
+position:relative;
+background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+display:flex;
+align-items:center;
+justify-content:center;
+">
+   <div id="zikrCardRingText-hawqala" style="
+width:38px;
+height:38px;
+border-radius:50%;
+background:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:14px;
+font-weight:800;
+color:#666;
+">
+  0
+</div>
   </div>
 
   <!-- Center Text -->
@@ -1624,13 +1624,13 @@ border:1px solid rgba(0,0,0,0.03);
       سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
     </div>
 
-    <div style="
-    font-size:13px;
-    font-weight:700;
-    color:#8a8a8a;
-    ">
-      0 / 33
-    </div>
+   <div id="zikrCardProgressText-hawqala" style="
+font-size:13px;
+font-weight:700;
+color:#8a8a8a;
+">
+  0 / 33
+</div>
 
   </div>
 
@@ -1646,7 +1646,7 @@ border:1px solid rgba(0,0,0,0.03);
   ">
 
     <!-- Zikr Menu Button -->
-    <button onclick="event.stopPropagation();alert('Edit target coming next step')" style="
+<button onclick="event.stopPropagation();openZikrTargetPopup('subhanallah')" style="
     width:34px;
     height:34px;
     border:none;
@@ -1701,32 +1701,32 @@ box-shadow:0 8px 22px rgba(0,0,0,0.07);
 border:1px solid rgba(0,0,0,0.03);
 ">
 
-  <!-- Left Progress Ring -->
-  <div style="
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  flex-shrink:0;
-  position:relative;
-  background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  ">
-    <div style="
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-    font-weight:800;
-    color:#666;
-    ">
-      0
-    </div>
+ <!-- Left Progress Ring -->
+<div id="zikrCardRing-subhanallah" style="
+width:52px;
+height:52px;
+border-radius:50%;
+flex-shrink:0;
+position:relative;
+background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+display:flex;
+align-items:center;
+justify-content:center;
+">
+   <div id="zikrCardRingText-subhanallah" style="
+width:38px;
+height:38px;
+border-radius:50%;
+background:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:14px;
+font-weight:800;
+color:#666;
+">
+  0
+</div>
   </div>
 
   <!-- Center Text -->
@@ -1756,13 +1756,13 @@ border:1px solid rgba(0,0,0,0.03);
       لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ
     </div>
 
-    <div style="
-    font-size:13px;
-    font-weight:700;
-    color:#8a8a8a;
-    ">
-      0 / 33
-    </div>
+    <div id="zikrCardProgressText-subhanallah" style="
+font-size:13px;
+font-weight:700;
+color:#8a8a8a;
+">
+  0 / 33
+</div>
 
   </div>
 
@@ -1777,8 +1777,8 @@ border:1px solid rgba(0,0,0,0.03);
   flex-shrink:0;
   ">
 
-    <!-- Zikr Menu Button -->
-    <button onclick="event.stopPropagation();alert('Edit target coming next step')" style="
+   <!-- Zikr Menu Button -->
+<button onclick="event.stopPropagation();openZikrTargetPopup('hawqala')" style="
     width:34px;
     height:34px;
     border:none;
@@ -1821,6 +1821,135 @@ border:1px solid rgba(0,0,0,0.03);
 
 </div>
 
+
+<!-- =========================
+     ZIKR TARGET POPUP
+========================= -->
+<div id="zikrTargetPopup" onclick="closeZikrTargetPopup()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
+z-index:6500;
+align-items:center;
+justify-content:center;
+padding:20px;
+box-sizing:border-box;
+">
+
+  <div onclick="event.stopPropagation()" style="
+  width:100%;
+  max-width:320px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%);
+  border-radius:30px;
+  padding:22px 18px 18px 18px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.18);
+  border:1px solid rgba(255,255,255,0.7);
+  ">
+
+    <div style="
+    font-size:22px;
+    font-weight:800;
+    color:#111;
+    text-align:center;
+    margin-bottom:8px;
+    ">
+      Edit Target
+    </div>
+
+    <div id="zikrTargetPopupTitle" style="
+    font-size:14px;
+    color:#666;
+    text-align:center;
+    margin-bottom:18px;
+    line-height:1.5;
+    ">
+      Select target
+    </div>
+
+    <button onclick="saveZikrCardTarget(33)" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:#111;
+    color:white;
+    font-size:20px;
+    font-weight:800;
+    cursor:pointer;
+    ">
+      33
+    </button>
+
+    <button onclick="saveZikrCardTarget(100)" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:#e9e9ee;
+    color:#111;
+    font-size:20px;
+    font-weight:800;
+    cursor:pointer;
+    ">
+      100
+    </button>
+
+    <!-- Custom Target Input -->
+    <input id="zikrCustomTargetInput" type="number" min="1" placeholder="Enter custom target" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:#f2f2f7;
+    color:#111;
+    font-size:18px;
+    font-weight:700;
+    box-sizing:border-box;
+    outline:none;
+    ">
+
+    <button onclick="saveCustomZikrCardTarget()" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:#e9e9ee;
+    color:#111;
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    ">
+      Save Custom Target
+    </button>
+
+    <button onclick="closeZikrTargetPopup()" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:14px;
+    background:#f5f5f7;
+    color:#666;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    ">
+      Cancel
+    </button>
+
+  </div>
+</div>
+
+     
 <!-- =========================
      ZIKR DETAIL PAGE
 ========================= -->
@@ -6469,6 +6598,132 @@ ref: `صحیح البخاری، الادب المفرد، باب قول: لا ح
 }
 };
 
+     // =========================
+// ZIKR CARD TARGET POPUP STATE
+// =========================
+let currentZikrTargetEdit = "";
+
+// =========================
+// GET ZIKR CARD TARGET KEY
+// =========================
+function getZikrCardTargetKey(name){
+  return "zikr-card-target-" + name;
+}
+
+// =========================
+// GET ZIKR CARD TARGET
+// =========================
+function getZikrCardTarget(name){
+  return localStorage.getItem(getZikrCardTargetKey(name)) || "33";
+}
+
+// =========================
+// OPEN ZIKR TARGET POPUP
+// =========================
+function openZikrTargetPopup(name){
+
+  currentZikrTargetEdit = name;
+
+  let popup = document.getElementById("zikrTargetPopup");
+  let title = document.getElementById("zikrTargetPopupTitle");
+  let input = document.getElementById("zikrCustomTargetInput");
+
+  if(title){
+    if(name === "subhanallah"){
+      title.innerText = "SubhanAllahi wa bihamdihi";
+    }else if(name === "hawqala"){
+      title.innerText = "La hawla wa la quwwata illa billah";
+    }else{
+      title.innerText = "Select target";
+    }
+  }
+
+  if(input){
+    input.value = "";
+  }
+
+  if(popup){
+    popup.style.display = "flex";
+  }
+}
+
+// =========================
+// CLOSE ZIKR TARGET POPUP
+// =========================
+function closeZikrTargetPopup(){
+  let popup = document.getElementById("zikrTargetPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+}
+
+// =========================
+// SAVE ZIKR CARD TARGET
+// =========================
+function saveZikrCardTarget(value){
+
+  if(!currentZikrTargetEdit) return;
+
+  localStorage.setItem(getZikrCardTargetKey(currentZikrTargetEdit), String(value));
+
+  updateSingleZikrCardUI(currentZikrTargetEdit);
+  closeZikrTargetPopup();
+}
+
+// =========================
+// SAVE CUSTOM ZIKR CARD TARGET
+// =========================
+function saveCustomZikrCardTarget(){
+
+  if(!currentZikrTargetEdit) return;
+
+  let input = document.getElementById("zikrCustomTargetInput");
+  if(!input) return;
+
+  let value = parseInt(input.value, 10);
+
+  if(!value || value < 1){
+    alert("Please enter a valid target number");
+    return;
+  }
+
+  localStorage.setItem(getZikrCardTargetKey(currentZikrTargetEdit), String(value));
+
+  updateSingleZikrCardUI(currentZikrTargetEdit);
+  closeZikrTargetPopup();
+}
+
+// =========================
+// UPDATE SINGLE ZIKR CARD UI
+// =========================
+function updateSingleZikrCardUI(name){
+
+  let target = getZikrCardTarget(name);
+  let progressText = document.getElementById("zikrCardProgressText-" + name);
+  let ringText = document.getElementById("zikrCardRingText-" + name);
+  let ring = document.getElementById("zikrCardRing-" + name);
+
+  if(progressText){
+    progressText.innerText = "0 / " + target;
+  }
+
+  if(ringText){
+    ringText.innerText = "0";
+  }
+
+  if(ring){
+    ring.style.background = "conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg)";
+  }
+}
+
+// =========================
+// UPDATE ALL ZIKR CARD UI
+// =========================
+function updateAllZikrCardUI(){
+  updateSingleZikrCardUI("subhanallah");
+  updateSingleZikrCardUI("hawqala");
+}
+
 
   // =========================
 // OPEN ZIKR PAGE FROM HOME
@@ -6521,6 +6776,8 @@ if(zikrPage) zikrPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
+
+updateAllZikrCardUI();
 
 window.scrollTo(0,0);
 
