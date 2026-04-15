@@ -7955,15 +7955,17 @@ function updateSingleZikrCardUI(name){
     target = 33;
   }
 
-  if(count < 0){
-    count = 0;
-  }
+ if(count < 0){
+  count = 0;
+}
 
-  if(count > target){
-    count = target;
-  }
+let progressCount = count;
 
-  let progressDeg = (count / target) * 360;
+if(progressCount > target){
+  progressCount = target;
+}
+
+let progressDeg = (progressCount / target) * 360;
 
   if(progressText){
     progressText.innerText = count + " / " + target;
