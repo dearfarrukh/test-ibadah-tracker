@@ -1442,12 +1442,7 @@ Reset
 
 </div>
 
-<!-- =========================
-     ZIKR PAGE
-========================= -->
-  
-  
-  
+
 
 
 
@@ -1460,83 +1455,239 @@ position:fixed;
 top:0;
 left:0;
 right:0;
-bottom:0;
+bottom:92px;
 z-index:5000;
-background:url('wallpaper.jpg') center/cover no-repeat;
+background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
 overflow:auto;
-padding:15px;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
 ">
 
-<div style="padding:10px;">
-<!-- Close Zikr Page Button -->
-<button onclick="closeZikrPage()" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-">
-←
-</button>
-</div>
+  <!-- =========================
+       ZIKR PAGE TOP BAR
+  ========================= -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  ">
 
-<div class="card" style="
-text-align:center;
-padding:28px 20px;
-margin-top:10px;
-">
-<div style="font-size:42px;margin-bottom:10px;">🌿</div>
-<div style="font-size:28px;font-weight:700;">
-Daily Dhikr
-</div>
-<div style="font-size:15px;color:#666;margin-top:8px;">
-Choose a dhikr
-</div>
-</div>
+    <!-- Close Zikr Page Button -->
+    <button onclick="closeZikrPage()" style="
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.08);
+    background:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
 
-<!-- Open Zikr Detail Card -->
-<div class="card" onclick="openZikrDetail('subhanallah')" style="
-cursor:pointer;
-display:flex;
-justify-content:space-between;
-align-items:center;
-">
-<div>
-<div style="font-size:17px;font-weight:700;margin-bottom:4px;">
-SubhanAllahi wa bihamdihi
-</div>
-<div style="font-size:14px;color:#666;">
-سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
-</div>
-</div>
-<div style="font-size:24px;opacity:0.5;">›</div>
-</div>
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    ">
+      Daily Dhikr
+    </div>
 
-<!-- Open Zikr Detail Card -->
-<div class="card" onclick="openZikrDetail('hawqala')" style="
-cursor:pointer;
-display:flex;
-justify-content:space-between;
-align-items:center;
-">
-<div>
-<div style="font-size:17px;font-weight:700;margin-bottom:4px;">
-La hawla wa la quwwata illa billah
-</div>
-<div style="font-size:14px;color:#666;">
-لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ
-</div>
-</div>
-<div style="font-size:24px;opacity:0.5;">›</div>
-</div>
+    <div style="width:42px;height:42px;"></div>
+  </div>
+
+  <!-- =========================
+       ZIKR HERO CARD
+  ========================= -->
+  <div style="
+  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
+  border-radius:30px;
+  padding:28px 22px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  border:1px solid rgba(255,255,255,0.7);
+  margin-bottom:18px;
+  ">
+
+    <div style="
+    font-size:34px;
+    margin-bottom:12px;
+    ">
+      🌿
+    </div>
+
+    <div style="
+    font-size:28px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.5px;
+    line-height:1.1;
+    margin-bottom:8px;
+    ">
+      Daily Dhikr
+    </div>
+
+    <div style="
+    font-size:15px;
+    line-height:1.6;
+    color:#666;
+    max-width:280px;
+    margin:0 auto;
+    ">
+      Choose your dhikr and continue with a calm, clean iOS-style experience.
+    </div>
+
+  </div>
+
+  <!-- =========================
+       ZIKR OPTION CARDS
+  ========================= -->
+  <div style="
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  ">
+
+    <!-- SubhanAllah Zikr Card -->
+    <div onclick="openZikrDetail('subhanallah')" style="
+    background:white;
+    border-radius:26px;
+    padding:22px 20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 8px 22px rgba(0,0,0,0.07);
+    border:1px solid rgba(0,0,0,0.03);
+    ">
+      <div style="
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+      ">
+        <div style="
+        width:52px;
+        height:52px;
+        border-radius:18px;
+        background:#f2f2f7;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:24px;
+        flex-shrink:0;
+        ">
+          ✨
+        </div>
+
+        <div style="min-width:0;">
+          <div style="
+          font-size:20px;
+          font-weight:800;
+          color:#111;
+          margin-bottom:4px;
+          line-height:1.2;
+          ">
+            SubhanAllahi wa bihamdihi
+          </div>
+
+          <div style="
+          font-size:15px;
+          color:#666;
+          font-family:'Amiri','Noto Naskh Arabic',serif;
+          direction:rtl;
+          line-height:1.5;
+          ">
+            سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
+          </div>
+        </div>
+      </div>
+
+      <div style="
+      font-size:24px;
+      color:#b0b0b8;
+      margin-left:14px;
+      flex-shrink:0;
+      ">
+        ›
+      </div>
+    </div>
+
+    <!-- Hawqala Zikr Card -->
+    <div onclick="openZikrDetail('hawqala')" style="
+    background:white;
+    border-radius:26px;
+    padding:22px 20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 8px 22px rgba(0,0,0,0.07);
+    border:1px solid rgba(0,0,0,0.03);
+    ">
+      <div style="
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+      ">
+        <div style="
+        width:52px;
+        height:52px;
+        border-radius:18px;
+        background:#f2f2f7;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:24px;
+        flex-shrink:0;
+        ">
+          📿
+        </div>
+
+        <div style="min-width:0;">
+          <div style="
+          font-size:20px;
+          font-weight:800;
+          color:#111;
+          margin-bottom:4px;
+          line-height:1.2;
+          ">
+            La hawla wa la quwwata illa billah
+          </div>
+
+          <div style="
+          font-size:15px;
+          color:#666;
+          font-family:'Amiri','Noto Naskh Arabic',serif;
+          direction:rtl;
+          line-height:1.5;
+          ">
+            لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ
+          </div>
+        </div>
+      </div>
+
+      <div style="
+      font-size:24px;
+      color:#b0b0b8;
+      margin-left:14px;
+      flex-shrink:0;
+      ">
+        ›
+      </div>
+    </div>
+
+  </div>
 
 </div>
-
 
 <!-- =========================
      ZIKR DETAIL PAGE
