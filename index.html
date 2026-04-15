@@ -3437,14 +3437,386 @@ box-sizing:border-box;
 
   <!-- PROGRESS TAB -->
   <div id="qazaProgressTab" style="display:none;">
+
+    <!-- OVERALL PROGRESS CARD -->
     <div style="
-    background:white;
-    border-radius:24px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:30px;
     padding:20px;
-    text-align:center;
+    margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
     ">
-      Progress coming next step
+
+      <div style="
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:16px;
+      ">
+        Overall Progress
+      </div>
+
+      <div style="
+      display:flex;
+      align-items:center;
+      gap:16px;
+      ">
+
+        <!-- OVERALL BIG RING -->
+        <div id="qazaOverallRing" style="
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        flex-shrink:0;
+        background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
+        ">
+          <div style="
+          width:88px;
+          height:88px;
+          border-radius:50%;
+          background:white;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex-direction:column;
+          ">
+            <div id="qazaOverallPercentText" style="
+            font-size:24px;
+            font-weight:800;
+            color:#111;
+            line-height:1;
+            ">
+              0%
+            </div>
+          </div>
+        </div>
+
+        <!-- OVERALL STATS -->
+        <div style="flex:1;min-width:0;">
+
+          <div style="
+          font-size:13px;
+          font-weight:700;
+          color:#888;
+          margin-bottom:4px;
+          ">
+            Completed
+          </div>
+
+          <div id="qazaOverallDoneText" style="
+          font-size:30px;
+          font-weight:800;
+          color:#111;
+          line-height:1.1;
+          margin-bottom:14px;
+          ">
+            0
+          </div>
+
+          <div style="
+          font-size:13px;
+          font-weight:700;
+          color:#888;
+          margin-bottom:4px;
+          ">
+            Total Qaza
+          </div>
+
+          <div id="qazaOverallTotalText" style="
+          font-size:22px;
+          font-weight:800;
+          color:#111;
+          line-height:1.1;
+          margin-bottom:14px;
+          ">
+            0
+          </div>
+
+          <div style="
+          font-size:13px;
+          font-weight:700;
+          color:#888;
+          margin-bottom:4px;
+          ">
+            Remaining
+          </div>
+
+          <div id="qazaOverallRemainingText" style="
+          font-size:22px;
+          font-weight:800;
+          color:#34c759;
+          line-height:1.1;
+          ">
+            0
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
+
+    <!-- PRAYER RINGS GRID CARD -->
+    <div style="
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:30px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
+    ">
+
+      <div style="
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:18px;
+      ">
+        Salah Progress
+      </div>
+
+      <div style="
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px 12px;
+      ">
+
+        <!-- FAJR -->
+        <div style="text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Fajr</div>
+          <div id="qazaMiniRing-fajr" style="
+          width:76px;height:76px;border-radius:50%;margin:0 auto 8px auto;
+          background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+          display:flex;align-items:center;justify-content:center;
+          ">
+            <div style="
+            width:54px;height:54px;border-radius:50%;background:white;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;font-weight:800;color:#111;
+            ">
+              <span id="qazaMiniPercent-fajr">0%</span>
+            </div>
+          </div>
+          <div id="qazaMiniText-fajr" style="font-size:12px;font-weight:700;color:#777;">0 / 0</div>
+        </div>
+
+        <!-- DHUHR -->
+        <div style="text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Dhuhr</div>
+          <div id="qazaMiniRing-dhuhr" style="
+          width:76px;height:76px;border-radius:50%;margin:0 auto 8px auto;
+          background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+          display:flex;align-items:center;justify-content:center;
+          ">
+            <div style="
+            width:54px;height:54px;border-radius:50%;background:white;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;font-weight:800;color:#111;
+            ">
+              <span id="qazaMiniPercent-dhuhr">0%</span>
+            </div>
+          </div>
+          <div id="qazaMiniText-dhuhr" style="font-size:12px;font-weight:700;color:#777;">0 / 0</div>
+        </div>
+
+        <!-- ASR -->
+        <div style="text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Asr</div>
+          <div id="qazaMiniRing-asr" style="
+          width:76px;height:76px;border-radius:50%;margin:0 auto 8px auto;
+          background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+          display:flex;align-items:center;justify-content:center;
+          ">
+            <div style="
+            width:54px;height:54px;border-radius:50%;background:white;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;font-weight:800;color:#111;
+            ">
+              <span id="qazaMiniPercent-asr">0%</span>
+            </div>
+          </div>
+          <div id="qazaMiniText-asr" style="font-size:12px;font-weight:700;color:#777;">0 / 0</div>
+        </div>
+
+        <!-- MAGHRIB -->
+        <div style="text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Maghrib</div>
+          <div id="qazaMiniRing-maghrib" style="
+          width:76px;height:76px;border-radius:50%;margin:0 auto 8px auto;
+          background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+          display:flex;align-items:center;justify-content:center;
+          ">
+            <div style="
+            width:54px;height:54px;border-radius:50%;background:white;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;font-weight:800;color:#111;
+            ">
+              <span id="qazaMiniPercent-maghrib">0%</span>
+            </div>
+          </div>
+          <div id="qazaMiniText-maghrib" style="font-size:12px;font-weight:700;color:#777;">0 / 0</div>
+        </div>
+
+        <!-- ISHA -->
+        <div style="text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Isha</div>
+          <div id="qazaMiniRing-isha" style="
+          width:76px;height:76px;border-radius:50%;margin:0 auto 8px auto;
+          background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+          display:flex;align-items:center;justify-content:center;
+          ">
+            <div style="
+            width:54px;height:54px;border-radius:50%;background:white;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;font-weight:800;color:#111;
+            ">
+              <span id="qazaMiniPercent-isha">0%</span>
+            </div>
+          </div>
+          <div id="qazaMiniText-isha" style="font-size:12px;font-weight:700;color:#777;">0 / 0</div>
+        </div>
+
+        <!-- WITR -->
+        <div style="text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Witr</div>
+          <div id="qazaMiniRing-witr" style="
+          width:76px;height:76px;border-radius:50%;margin:0 auto 8px auto;
+          background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+          display:flex;align-items:center;justify-content:center;
+          ">
+            <div style="
+            width:54px;height:54px;border-radius:50%;background:white;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;font-weight:800;color:#111;
+            ">
+              <span id="qazaMiniPercent-witr">0%</span>
+            </div>
+          </div>
+          <div id="qazaMiniText-witr" style="font-size:12px;font-weight:700;color:#777;">0 / 0</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DAILY GOAL CARD -->
+    <div style="
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
+    border-radius:30px;
+    padding:20px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.06);
+    border:1px solid rgba(255,255,255,0.75);
+    ">
+
+      <div style="
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:16px;
+      ">
+        Daily Goal
+      </div>
+
+      <div style="
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:16px;
+      ">
+
+        <div style="
+        min-width:60px;
+        text-align:center;
+        ">
+          <div id="qazaGoalPerDayText" style="
+          font-size:40px;
+          font-weight:800;
+          color:#111;
+          line-height:1;
+          ">
+            1
+          </div>
+          <div style="
+          font-size:12px;
+          font-weight:700;
+          color:#777;
+          margin-top:6px;
+          ">
+            per day
+          </div>
+        </div>
+
+        <div style="
+        flex:1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        background:#f3f3f6;
+        border-radius:22px;
+        padding:12px;
+        ">
+
+          <button onclick="decreaseQazaGoalPerDay()" style="
+          width:42px;
+          height:42px;
+          border:none;
+          border-radius:14px;
+          background:white;
+          color:#111;
+          font-size:28px;
+          font-weight:700;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          cursor:pointer;
+          ">
+            −
+          </button>
+
+          <div style="
+          width:1px;
+          align-self:stretch;
+          background:rgba(0,0,0,0.08);
+          "></div>
+
+          <button onclick="increaseQazaGoalPerDay()" style="
+          width:42px;
+          height:42px;
+          border:none;
+          border-radius:14px;
+          background:#111;
+          color:white;
+          font-size:24px;
+          font-weight:800;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          cursor:pointer;
+          ">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+      <div id="qazaGoalEstimateText" style="
+      font-size:22px;
+      font-weight:800;
+      line-height:1.4;
+      color:#34c759;
+      ">
+        All qaza prayers will be completed in 0 days
+      </div>
+
+    </div>
+
   </div>
 
 </div>
@@ -7898,8 +8270,9 @@ function openQazaPage(){
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
   if(bottomNav) bottomNav.style.display = "flex";
 
-  showQazaPrayerTab();
-loadFajrData();
+   showQazaPrayerTab();
+  loadFajrData();
+  updateQazaProgressTabUI();
   window.scrollTo(0,0);
 }
 
@@ -15587,6 +15960,7 @@ function increaseQazaPrayer(prayer){
   qazaData[prayer].done++;
   saveQazaPrayerData(prayer);
   updateSingleQazaUI(prayer);
+  updateQazaProgressTabUI();
 }
 
 // DECREASE ONE QAZA PRAYER
@@ -15597,6 +15971,7 @@ function decreaseQazaPrayer(prayer){
   qazaData[prayer].done--;
   saveQazaPrayerData(prayer);
   updateSingleQazaUI(prayer);
+  updateQazaProgressTabUI();
 }
 
 // FAJR BUTTONS
@@ -15646,9 +16021,198 @@ document.addEventListener("input", function(e){
 
       saveQazaPrayerData(prayer);
       updateSingleQazaUI(prayer);
+      updateQazaProgressTabUI();
     }
   });
 });
+
+// =========================
+// GET QAZA GOAL PER DAY
+// =========================
+function getQazaGoalPerDay(){
+  let goal = parseInt(localStorage.getItem("qazaGoalPerDay")) || 1;
+  if(goal < 1) goal = 1;
+  return goal;
+}
+
+// =========================
+// SAVE QAZA GOAL PER DAY
+// =========================
+function saveQazaGoalPerDay(value){
+  if(value < 1) value = 1;
+  localStorage.setItem("qazaGoalPerDay", value);
+}
+
+// =========================
+// INCREASE QAZA GOAL PER DAY
+// =========================
+function increaseQazaGoalPerDay(){
+  let goal = getQazaGoalPerDay();
+  goal++;
+  saveQazaGoalPerDay(goal);
+  updateQazaProgressTabUI();
+}
+
+// =========================
+// DECREASE QAZA GOAL PER DAY
+// =========================
+function decreaseQazaGoalPerDay(){
+  let goal = getQazaGoalPerDay();
+  if(goal > 1){
+    goal--;
+  }
+  saveQazaGoalPerDay(goal);
+  updateQazaProgressTabUI();
+}
+
+// =========================
+// GET QAZA PRAYER PERCENT
+// =========================
+function getQazaPrayerPercent(prayer){
+  let total = qazaData[prayer].total;
+  let done = qazaData[prayer].done;
+
+  if(total <= 0) return 0;
+
+  let percent = Math.round((done / total) * 100);
+
+  if(percent < 0) percent = 0;
+  if(percent > 100) percent = 100;
+
+  return percent;
+}
+
+// =========================
+// UPDATE QAZA MINI RING
+// =========================
+function updateQazaMiniRing(prayer){
+
+  let ring = document.getElementById("qazaMiniRing-" + prayer);
+  let percentText = document.getElementById("qazaMiniPercent-" + prayer);
+  let text = document.getElementById("qazaMiniText-" + prayer);
+
+  let percent = getQazaPrayerPercent(prayer);
+  let degrees = Math.round((percent / 100) * 360);
+
+  if(ring){
+    ring.style.background = "conic-gradient(#34c759 0deg, #34c759 " + degrees + "deg, #e9e9ee " + degrees + "deg, #e9e9ee 360deg)";
+  }
+
+  if(percentText){
+    percentText.innerText = percent + "%";
+  }
+
+  if(text){
+    text.innerText = qazaData[prayer].done + " / " + qazaData[prayer].total;
+  }
+}
+
+// =========================
+// UPDATE QAZA OVERALL RING
+// =========================
+function updateQazaOverallRing(){
+
+  let totalAll = 0;
+  let doneAll = 0;
+
+  qazaPrayerNames.forEach(function(prayer){
+    totalAll += qazaData[prayer].total;
+    doneAll += qazaData[prayer].done;
+  });
+
+  let remainingAll = totalAll - doneAll;
+  if(remainingAll < 0) remainingAll = 0;
+
+  let percent = 0;
+  if(totalAll > 0){
+    percent = Math.round((doneAll / totalAll) * 100);
+  }
+
+  if(percent < 0) percent = 0;
+  if(percent > 100) percent = 100;
+
+  let degrees = Math.round((percent / 100) * 360);
+
+  let ring = document.getElementById("qazaOverallRing");
+  let percentText = document.getElementById("qazaOverallPercentText");
+  let doneText = document.getElementById("qazaOverallDoneText");
+  let totalText = document.getElementById("qazaOverallTotalText");
+  let remainingText = document.getElementById("qazaOverallRemainingText");
+
+  if(ring){
+    ring.style.background = "conic-gradient(#34c759 0deg, #34c759 " + degrees + "deg, #e9e9ee " + degrees + "deg, #e9e9ee 360deg)";
+  }
+
+  if(percentText){
+    percentText.innerText = percent + "%";
+  }
+
+  if(doneText){
+    doneText.innerText = doneAll;
+  }
+
+  if(totalText){
+    totalText.innerText = totalAll;
+  }
+
+  if(remainingText){
+    remainingText.innerText = remainingAll;
+  }
+}
+
+// =========================
+// UPDATE QAZA GOAL CARD
+// =========================
+function updateQazaGoalCard(){
+
+  let goal = getQazaGoalPerDay();
+
+  let totalAll = 0;
+  let doneAll = 0;
+
+  qazaPrayerNames.forEach(function(prayer){
+    totalAll += qazaData[prayer].total;
+    doneAll += qazaData[prayer].done;
+  });
+
+  let remainingAll = totalAll - doneAll;
+  if(remainingAll < 0) remainingAll = 0;
+
+  let daysNeeded = 0;
+  if(goal > 0){
+    daysNeeded = Math.ceil(remainingAll / goal);
+  }
+
+  let goalText = document.getElementById("qazaGoalPerDayText");
+  let estimateText = document.getElementById("qazaGoalEstimateText");
+
+  if(goalText){
+    goalText.innerText = goal;
+  }
+
+  if(estimateText){
+    if(remainingAll === 0){
+      estimateText.innerText = "All qaza prayers are completed";
+    }else if(daysNeeded === 1){
+      estimateText.innerText = "All qaza prayers will be completed in 1 day";
+    }else{
+      estimateText.innerText = "All qaza prayers will be completed in " + daysNeeded + " days";
+    }
+  }
+}
+
+// =========================
+// UPDATE QAZA PROGRESS TAB UI
+// =========================
+function updateQazaProgressTabUI(){
+
+  qazaPrayerNames.forEach(function(prayer){
+    updateQazaMiniRing(prayer);
+  });
+
+  updateQazaOverallRing();
+  updateQazaGoalCard();
+}
   
 
   
