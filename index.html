@@ -2175,17 +2175,17 @@ padding:20px;
     ">
 
     <!-- Arabic -->
-    <textarea id="customZikrArabicInput" placeholder="Arabic text" style="
-    width:100%;
-    padding:14px;
-    border-radius:16px;
-    border:none;
-    background:#f2f2f7;
-    margin-bottom:10px;
-    font-size:18px;
-    direction:rtl;
-    min-height:80px;
-    "></textarea>
+   <textarea id="customZikrArabicInput" placeholder="Arabic (optional)" style="
+width:100%;
+padding:14px;
+border-radius:16px;
+border:none;
+background:#f2f2f7;
+margin-bottom:10px;
+font-size:18px;
+direction:rtl;
+min-height:80px;
+"></textarea>
 
     <!-- Target -->
     <input id="customZikrTargetInput" type="number" placeholder="Target (33)" style="
@@ -7242,10 +7242,10 @@ function saveNewCustomZikr(){
     return;
   }
 
-  if(!arabicText){
-    alert("Please enter Arabic text");
-    return;
-  }
+ // Arabic is optional
+if(!arabicText){
+  arabicText = "";
+}
 
   if(!target || target < 1){
     alert("Please enter a valid target");
@@ -7380,16 +7380,18 @@ function renderCustomZikrCards(){
           ${escapeHtml(item.englishName)}
         </div>
 
-        <div style="
-        font-size:15px;
-        color:#666;
-        font-family:'Amiri','Noto Naskh Arabic',serif;
-        direction:rtl;
-        line-height:1.5;
-        margin-bottom:6px;
-        ">
-          ${escapeHtml(item.arabicText)}
-        </div>
+       ${item.arabicText ? `
+<div style="
+font-size:15px;
+color:#666;
+font-family:'Amiri','Noto Naskh Arabic',serif;
+direction:rtl;
+line-height:1.5;
+margin-bottom:6px;
+">
+  ${escapeHtml(item.arabicText)}
+</div>
+` : ``}
 
         <div id="zikrCardProgressText-${item.id}" style="
         font-size:13px;
@@ -8006,7 +8008,16 @@ if(badgeEl){
 }
 
 document.getElementById("zikrHadithText").innerHTML = data.hadith || "";
-document.getElementById("zikrArabicText").innerHTML = data.arabic || "";
+let arabicEl = document.getElementById("zikrArabicText");
+
+if(arabicEl){
+  if(data.arabic){
+    arabicEl.style.display = "block";
+    arabicEl.innerHTML = data.arabic;
+  }else{
+    arabicEl.style.display = "none";
+  }
+}
 document.getElementById("zikrMeaningText").innerHTML = data.meaning || "";
 document.getElementById("zikrRefText").innerHTML = data.ref || "";
 
