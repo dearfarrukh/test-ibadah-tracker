@@ -14467,6 +14467,96 @@ function showQazaTab(tabName) {
   updateQazaProgressUI();
 }
 
+
+// =========================
+// GET QAZA TOTAL
+// =========================
+function getQazaTotal(prayerName) {
+  let value = parseInt(localStorage.getItem("qaza_total_" + prayerName) || "0", 10);
+  if (isNaN(value) || value < 0) value = 0;
+  return value;
+}
+
+// =========================
+// SET QAZA TOTAL
+// =========================
+function setQazaTotal(prayerName, value) {
+  value = parseInt(value, 10);
+  if (isNaN(value) || value < 0) value = 0;
+  localStorage.setItem("qaza_total_" + prayerName, String(value));
+}
+
+// =========================
+// GET QAZA PERFORMED
+// =========================
+function getQazaPerformed(prayerName) {
+  let value = parseInt(localStorage.getItem("qaza_performed_" + prayerName) || "0", 10);
+  if (isNaN(value) || value < 0) value = 0;
+  return value;
+}
+
+// =========================
+// SET QAZA PERFORMED
+// =========================
+function setQazaPerformed(prayerName, value) {
+  value = parseInt(value, 10);
+  if (isNaN(value) || value < 0) value = 0;
+  localStorage.setItem("qaza_performed_" + prayerName, String(value));
+}
+
+// =========================
+// GET QAZA REMAINING
+// =========================
+function getQazaRemaining(prayerName) {
+  let total = getQazaTotal(prayerName);
+  let performed = getQazaPerformed(prayerName);
+  let remaining = total - performed;
+  if (remaining < 0) remaining = 0;
+  return remaining;
+}
+
+// =========================
+// SAVE QAZA TOTAL FROM INPUT
+// =========================
+function saveQazaTotalFromInput(prayerName) {
+  let inputId = "qaza" + prayerName.charAt(0).toUpperCase() + prayerName.slice(1) + "TotalInput";
+  let inputEl = document.getElementById(inputId);
+  if (!inputEl) return;
+
+  let total = parseInt(inputEl.value || "0", 10);
+  if (isNaN(total) || total < 0) total = 0;
+
+  setQazaTotal(prayerName, total);
+
+  let performed = getQazaPerformed(prayerName);
+  if (performed > total) {
+    performed = total;
+    setQazaPerformed(prayerName, performed);
+  }
+
+  setQazaUpdatedTime(prayerName);
+  loadQazaTrackerData();
+}
+
+// =========================
+// CHANGE QAZA PERFORMED
+// =========================
+function changeQazaPerformed(prayerName, changeAmount) {
+  let total = getQazaTotal(prayerName);
+  let performed = getQazaPerformed(prayerName);
+
+  performed = performed + changeAmount;
+
+  if (performed < 0) performed = 0;
+  if (performed > total) performed = total;
+
+  setQazaPerformed(prayerName, performed);
+  setQazaUpdatedTime(prayerName);
+  loadQazaTrackerData();
+}
+
+     
+
 // =========================
 // GET QAZA VALUE
 // =========================
@@ -14563,7 +14653,7 @@ function handleQazaManualInput(prayerName, inputValue) {
 // LOAD QAZA TRACKER DATA
 // =========================
 function loadQazaTrackerData() {
-  updateSingleQazaPrayerUI("fajr", "qazaFajrCount", "qazaFajrUpdated");
+  updateSingleQazaPrayerUI("fajr", "qazaFajrTotalInput", "qazaFajrPerformedText", "qazaFajrRemainingText", "qazaFajrUpdated");
   updateSingleQazaPrayerUI("dhuhr", "qazaDhuhrCount", "qazaDhuhrUpdated");
   updateSingleQazaPrayerUI("asr", "qazaAsrCount", "qazaAsrUpdated");
   updateSingleQazaPrayerUI("maghrib", "qazaMaghribCount", "qazaMaghribUpdated");
@@ -14576,16 +14666,20 @@ function loadQazaTrackerData() {
 // =========================
 // UPDATE SINGLE QAZA PRAYER UI
 // =========================
-function updateSingleQazaPrayerUI(prayerName, countId, updatedId) {
-  let countEl = document.getElementById(countId);
+function updateSingleQazaPrayerUI(prayerName, totalInputId, performedId, remainingId, updatedId) {
+  let totalInputEl = document.getElementById(totalInputId);
+  let performedEl = document.getElementById(performedId);
+  let remainingEl = document.getElementById(remainingId);
   let updatedEl = document.getElementById(updatedId);
 
-  let value = getQazaValue(prayerName);
+  let total = getQazaTotal(prayerName);
+  let performed = getQazaPerformed(prayerName);
+  let remaining = getQazaRemaining(prayerName);
   let updatedText = getQazaUpdatedTime(prayerName);
 
-  if (countEl) {
-    countEl.value = value;
-  }
+  if (totalInputEl) totalInputEl.value = total;
+  if (performedEl) performedEl.innerText = performed;
+  if (remainingEl) remainingEl.innerText = "Remaining Salah: " + remaining;
 
   if (updatedEl) {
     if (updatedText) {
@@ -14595,7 +14689,6 @@ function updateSingleQazaPrayerUI(prayerName, countId, updatedId) {
     }
   }
 }
-
 // =========================
 // UPDATE QAZA PROGRESS UI
 // =========================
@@ -16177,68 +16270,113 @@ box-sizing:border-box;
     ========================= -->
     <div id="qazaPrayerTab" style="display:block;">
 
-      <!-- FAJR CARD -->
-      <div style="
-      background:white;
-      border-radius:24px;
-      padding:14px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+     <!-- FAJR CARD -->
+<div style="
+background:white;
+border-radius:24px;
+padding:16px 14px;
+margin-bottom:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.05);
+">
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+  ">
+    <div style="font-size:22px;font-weight:800;color:#111;">Fajr</div>
+    <div id="qazaFajrUpdated" style="font-size:12px;color:#7a7a7a;font-weight:700;text-align:right;">Last updated: —</div>
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Salah</div>
+    <input
+      id="qazaFajrTotalInput"
+      type="number"
+      min="0"
+      inputmode="numeric"
+      oninput="saveQazaTotalFromInput('fajr')"
+      style="
+      width:100%;
+      height:52px;
+      border:none;
+      border-radius:16px;
+      background:#f3f3f7;
+      padding:0 14px;
+      font-size:24px;
+      font-weight:800;
+      color:#111;
+      box-sizing:border-box;
+      outline:none;
+      "
+    >
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
+
+    <div style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    ">
+      <button onclick="changeQazaPerformed('fajr', -1)" style="
+      width:52px;
+      height:52px;
+      border:none;
+      border-radius:16px;
+      background:#f3f3f7;
+      color:#111;
+      font-size:30px;
+      font-weight:700;
+      cursor:pointer;
+      flex-shrink:0;
       ">
-        <div style="
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap:10px;
-        margin-bottom:12px;
-        ">
-          <div style="font-size:20px;font-weight:800;color:#111;">Fajr</div>
-          <div id="qazaFajrUpdated" style="font-size:12px;color:#777;font-weight:600;">Last updated: —</div>
-        </div>
+        −
+      </button>
 
-        <div style="
-        display:flex;
-        align-items:center;
-        gap:10px;
-        ">
-          <input id="qazaFajrCount" type="number" inputmode="numeric" value="0" oninput="handleQazaManualInput('fajr', this.value)" style="
-          flex:1;
-          background:#f3f3f7;
-          border-radius:18px;
-          min-height:58px;
-          height:58px;
-          display:block;
-          padding:0 16px;
-          font-size:28px;
-          font-weight:800;
-          color:#111;
-          box-sizing:border-box;
-          border:none;
-          outline:none;
-          width:100%;
-          -webkit-appearance:none;
-          appearance:none;
-          ">
-
-          <div style="
-          width:28%;
-          min-width:98px;
-          background:#f7f7f8;
-          border-radius:18px;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          padding:0 4px;
-          min-height:58px;
-          box-sizing:border-box;
-          ">
-            <button onclick="changeQazaCount('fajr', -1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">−</button>
-            <div style="width:1px;height:30px;background:rgba(0,0,0,0.14);"></div>
-            <button onclick="changeQazaCount('fajr', 1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">+</button>
-          </div>
-        </div>
+      <div id="qazaFajrPerformedText" style="
+      flex:1;
+      height:52px;
+      border-radius:16px;
+      background:#f8f8fa;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      font-weight:800;
+      color:#111;
+      ">
+        0
       </div>
 
+      <button onclick="changeQazaPerformed('fajr', 1)" style="
+      width:52px;
+      height:52px;
+      border:none;
+      border-radius:16px;
+      background:#f3f3f7;
+      color:#111;
+      font-size:30px;
+      font-weight:700;
+      cursor:pointer;
+      flex-shrink:0;
+      ">
+        +
+      </button>
+    </div>
+  </div>
+
+  <div id="qazaFajrRemainingText" style="
+  font-size:14px;
+  font-weight:700;
+  color:#666;
+  ">
+    Remaining Salah: 0
+  </div>
+</div>
       <!-- DHUHR CARD -->
       <div style="
       background:white;
