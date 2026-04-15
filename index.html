@@ -6969,6 +6969,275 @@ function closeAddCustomZikrPopup(){
   }
 }
 
+     // =========================
+// GET CUSTOM ZIKR STORAGE KEY
+// =========================
+function getCustomZikrStorageKey(){
+  return "custom-zikr-list";
+}
+
+// =========================
+// GET CUSTOM ZIKR LIST
+// =========================
+function getCustomZikrList(){
+
+  let saved = localStorage.getItem(getCustomZikrStorageKey());
+
+  if(!saved) return [];
+
+  try{
+    let parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(error){
+    return [];
+  }
+}
+
+// =========================
+// SAVE CUSTOM ZIKR LIST
+// =========================
+function saveCustomZikrList(list){
+  localStorage.setItem(getCustomZikrStorageKey(), JSON.stringify(list));
+}
+
+// =========================
+// CREATE CUSTOM ZIKR ID
+// =========================
+function createCustomZikrId(){
+  return "custom_" + Date.now();
+}
+
+// =========================
+// IS CUSTOM ZIKR
+// =========================
+function isCustomZikr(name){
+  return String(name).indexOf("custom_") === 0;
+}
+
+// =========================
+// ESCAPE HTML
+// =========================
+function escapeHtml(text){
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// =========================
+// GET CUSTOM ZIKR BY ID
+// =========================
+function getCustomZikrById(id){
+
+  let list = getCustomZikrList();
+
+  return list.find(function(item){
+    return item.id === id;
+  }) || null;
+}
+
+// =========================
+// SAVE NEW CUSTOM ZIKR
+// =========================
+function saveNewCustomZikr(){
+
+  let englishInput = document.getElementById("customZikrEnglishInput");
+  let arabicInput = document.getElementById("customZikrArabicInput");
+  let targetInput = document.getElementById("customZikrTargetInput");
+
+  if(!englishInput || !arabicInput || !targetInput) return;
+
+  let englishName = englishInput.value.trim();
+  let arabicText = arabicInput.value.trim();
+  let target = parseInt(targetInput.value, 10);
+
+  if(!englishName){
+    alert("Please enter English name");
+    return;
+  }
+
+  if(!arabicText){
+    alert("Please enter Arabic text");
+    return;
+  }
+
+  if(!target || target < 1){
+    alert("Please enter a valid target");
+    return;
+  }
+
+  let customList = getCustomZikrList();
+
+  let newItem = {
+    id: createCustomZikrId(),
+    englishName: englishName,
+    arabicText: arabicText,
+    target: target
+  };
+
+  customList.push(newItem);
+  saveCustomZikrList(customList);
+
+  localStorage.setItem(getZikrCardTargetKey(newItem.id), String(target));
+  localStorage.setItem(getZikrCardCountKey(newItem.id), "0");
+
+  closeAddCustomZikrPopup();
+  renderCustomZikrCards();
+  updateAllZikrCardUI();
+}
+
+// =========================
+// RENDER CUSTOM ZIKR CARDS
+// =========================
+function renderCustomZikrCards(){
+
+  let container = document.getElementById("customZikrList");
+  if(!container) return;
+
+  let customList = getCustomZikrList();
+
+  container.innerHTML = "";
+
+  if(!customList.length){
+    return;
+  }
+
+  customList.forEach(function(item){
+
+    let card = document.createElement("div");
+
+    card.setAttribute("onclick", "openZikrDetail('" + item.id + "')");
+
+    card.style.background = "white";
+    card.style.borderRadius = "26px";
+    card.style.padding = "18px 16px";
+    card.style.cursor = "pointer";
+    card.style.display = "flex";
+    card.style.alignItems = "center";
+    card.style.justifyContent = "space-between";
+    card.style.gap = "12px";
+    card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
+    card.style.border = "1px solid rgba(0,0,0,0.03)";
+
+    card.innerHTML = `
+      <div id="zikrCardRing-${item.id}" style="
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      flex-shrink:0;
+      position:relative;
+      background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      ">
+        <div id="zikrCardRingText-${item.id}" style="
+        width:38px;
+        height:38px;
+        border-radius:50%;
+        background:white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:14px;
+        font-weight:800;
+        color:#666;
+        ">
+          0
+        </div>
+      </div>
+
+      <div style="
+      flex:1;
+      min-width:0;
+      ">
+
+        <div style="
+        font-size:19px;
+        font-weight:800;
+        color:#111;
+        line-height:1.2;
+        margin-bottom:4px;
+        ">
+          ${escapeHtml(item.englishName)}
+        </div>
+
+        <div style="
+        font-size:15px;
+        color:#666;
+        font-family:'Amiri','Noto Naskh Arabic',serif;
+        direction:rtl;
+        line-height:1.5;
+        margin-bottom:6px;
+        ">
+          ${escapeHtml(item.arabicText)}
+        </div>
+
+        <div id="zikrCardProgressText-${item.id}" style="
+        font-size:13px;
+        font-weight:700;
+        color:#8a8a8a;
+        ">
+          0 / ${item.target}
+        </div>
+
+      </div>
+
+      <div style="
+      width:50px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-shrink:0;
+      ">
+
+        <button onclick="event.stopPropagation();openZikrTargetPopup('${item.id}')" style="
+        width:34px;
+        height:34px;
+        border:none;
+        border-radius:50%;
+        background:#f2f2f7;
+        color:#666;
+        font-size:18px;
+        font-weight:700;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        ">
+          ⋮
+        </button>
+
+        <button onclick="event.stopPropagation();openZikrDetail('${item.id}')" style="
+        width:38px;
+        height:38px;
+        border:none;
+        border-radius:50%;
+        background:#111;
+        color:white;
+        font-size:16px;
+        font-weight:800;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 6px 14px rgba(0,0,0,0.16);
+        ">
+          ▶
+        </button>
+
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+     
 const zikrData = {
 subhanallah: {
 hadith: `نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:
