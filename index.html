@@ -7193,12 +7193,14 @@ countdownEl.innerText = "00:00:00";
 // =========================
 function openQazaPage(){
 
-hideAllPages();
+alert("Qaza button clicked");
 
+let morePage = document.getElementById("morePage");
 let qazaPage = document.getElementById("qazaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let bottomNav = document.getElementById("bottomNav");
 
+if(morePage) morePage.style.display = "none";
 if(qazaPage) qazaPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
@@ -7206,7 +7208,6 @@ if(bottomNav) bottomNav.style.display = "flex";
 window.scrollTo(0,0);
 
 }
-
 // =========================
 // HIDE ALL PAGES
 // =========================
