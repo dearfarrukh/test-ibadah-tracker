@@ -14354,529 +14354,19 @@ window.scrollTo(0,0);
 
 
 
+
 // =========================
 // QAZA TRACKER DATA
 // =========================
 const qazaPrayerNames = ["fajr", "dhuhr", "asr", "maghrib", "isha", "witr"];
-
-// =========================
-// HIDE ALL APP PAGES
-// =========================
-function hideAllAppPages() {
-  let pageIds = [
-    "homePage",
-    "salahPage",
-    "trackerPage",
-    "morePage",
-    "tasbihPage",
-    "duaPage",
-    "qiblaPage",
-    "zikrPage",
-    "zikrDetailPage",
-    "qazaPage",
-    "quran15Page",
-    "quranReadingPage",
-    "quran15BookmarkPage",
-    "juzIndexPage",
-    "appSettingsPage",
-    "arabicQuranPage",
-    "quranPage",
-    "quran15SurahPage",
-    "surahIndexPage"
-  ];
-
-  pageIds.forEach(function(id) {
-    let el = document.getElementById(id);
-    if (el) el.style.display = "none";
-  });
-}
-
-// =========================
-// OPEN QAZA PAGE
-// =========================
-function openQazaPage() {
-  hideAllAppPages();
-
-  let qazaPage = document.getElementById("qazaPage");
-  let bottomNav = document.getElementById("bottomNav");
-  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-  if (qazaPage) qazaPage.style.display = "block";
-  if (bottomNav) bottomNav.style.display = "flex";
-  if (floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-  showQazaTab("prayer");
-  loadQazaTrackerData();
-  window.scrollTo(0, 0);
-}
-
-// =========================
-// CLOSE QAZA PAGE
-// =========================
-function closeQazaPage() {
-  hideAllAppPages();
-
-  let morePage = document.getElementById("morePage");
-  let bottomNav = document.getElementById("bottomNav");
-  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-  if (morePage) morePage.style.display = "block";
-  if (bottomNav) bottomNav.style.display = "flex";
-  if (floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-  window.scrollTo(0, 0);
-}
-
-// =========================
-// SHOW QAZA TAB
-// =========================
-function showQazaTab(tabName) {
-  let prayerTab = document.getElementById("qazaPrayerTab");
-  let progressTab = document.getElementById("qazaProgressTab");
-  let prayerBtn = document.getElementById("qazaPrayerTabBtn");
-  let progressBtn = document.getElementById("qazaProgressTabBtn");
-
-  if (tabName === "prayer") {
-    if (prayerTab) prayerTab.style.display = "block";
-    if (progressTab) progressTab.style.display = "none";
-
-    if (prayerBtn) {
-      prayerBtn.style.background = "white";
-      prayerBtn.style.fontWeight = "800";
-    }
-
-    if (progressBtn) {
-      progressBtn.style.background = "transparent";
-      progressBtn.style.fontWeight = "700";
-    }
-  } else {
-    if (prayerTab) prayerTab.style.display = "none";
-    if (progressTab) progressTab.style.display = "block";
-
-    if (prayerBtn) {
-      prayerBtn.style.background = "transparent";
-      prayerBtn.style.fontWeight = "700";
-    }
-
-    if (progressBtn) {
-      progressBtn.style.background = "white";
-      progressBtn.style.fontWeight = "800";
-    }
-  }
-
-  updateQazaProgressUI();
-}
-
-
-// =========================
-// GET QAZA TOTAL
-// =========================
-function getQazaTotal(prayerName) {
-  let value = parseInt(localStorage.getItem("qaza_total_" + prayerName) || "0", 10);
-  if (isNaN(value) || value < 0) value = 0;
-  return value;
-}
-
-// =========================
-// QAZA PERFORMED BUTTON LOGIC
-// =========================
-function getQazaTotal(prayerName) {
-  let value = parseInt(localStorage.getItem("qaza_total_" + prayerName) || "0", 10);
-  if (isNaN(value) || value < 0) value = 0;
-  return value;
-}
-
-function setQazaTotal(prayerName, value) {
-  value = parseInt(value, 10);
-  if (isNaN(value) || value < 0) value = 0;
-  localStorage.setItem("qaza_total_" + prayerName, String(value));
-}
-
-function getQazaPerformed(prayerName) {
-  let value = parseInt(localStorage.getItem("qaza_performed_" + prayerName) || "0", 10);
-  if (isNaN(value) || value < 0) value = 0;
-  return value;
-}
-
-function setQazaPerformed(prayerName, value) {
-  value = parseInt(value, 10);
-  if (isNaN(value) || value < 0) value = 0;
-  localStorage.setItem("qaza_performed_" + prayerName, String(value));
-}
-
-function getQazaRemaining(prayerName) {
-  let total = getQazaTotal(prayerName);
-  let performed = getQazaPerformed(prayerName);
-  let remaining = total - performed;
-  if (remaining < 0) remaining = 0;
-  return remaining;
-}
-
-function saveQazaTotalFromInput(prayerName) {
-  let inputId = "qaza" + prayerName.charAt(0).toUpperCase() + prayerName.slice(1) + "TotalInput";
-  let inputEl = document.getElementById(inputId);
-  if (!inputEl) return;
-
-  let total = parseInt(inputEl.value || "0", 10);
-  if (isNaN(total) || total < 0) total = 0;
-
-  setQazaTotal(prayerName, total);
-
-  let performed = getQazaPerformed(prayerName);
-  if (performed > total) {
-    setQazaPerformed(prayerName, total);
-  }
-
-  setQazaUpdatedTime(prayerName);
-  loadQazaTrackerData();
-}
-
-function changeQazaPerformed(prayerName, changeAmount) {
-  let total = getQazaTotal(prayerName);
-  let performed = getQazaPerformed(prayerName);
-
-  performed = performed + changeAmount;
-
-  if (performed < 0) performed = 0;
-  if (performed > total) performed = total;
-
-  setQazaPerformed(prayerName, performed);
-  setQazaUpdatedTime(prayerName);
-  loadQazaTrackerData();
-}
-
-
-     
-// =========================
-// SET QAZA TOTAL
-// =========================
-function setQazaTotal(prayerName, value) {
-  value = parseInt(value, 10);
-  if (isNaN(value) || value < 0) value = 0;
-  localStorage.setItem("qaza_total_" + prayerName, String(value));
-}
-
-// =========================
-// GET QAZA PERFORMED
-// =========================
-function getQazaPerformed(prayerName) {
-  let value = parseInt(localStorage.getItem("qaza_performed_" + prayerName) || "0", 10);
-  if (isNaN(value) || value < 0) value = 0;
-  return value;
-}
-
-// =========================
-// SET QAZA PERFORMED
-// =========================
-function setQazaPerformed(prayerName, value) {
-  value = parseInt(value, 10);
-  if (isNaN(value) || value < 0) value = 0;
-  localStorage.setItem("qaza_performed_" + prayerName, String(value));
-}
-
-// =========================
-// GET QAZA REMAINING
-// =========================
-function getQazaRemaining(prayerName) {
-  let total = getQazaTotal(prayerName);
-  let performed = getQazaPerformed(prayerName);
-  let remaining = total - performed;
-  if (remaining < 0) remaining = 0;
-  return remaining;
-}
-
-// =========================
-// SAVE QAZA TOTAL FROM INPUT
-// =========================
-function saveQazaTotalFromInput(prayerName) {
-  let inputId = "qaza" + prayerName.charAt(0).toUpperCase() + prayerName.slice(1) + "TotalInput";
-  let inputEl = document.getElementById(inputId);
-  if (!inputEl) return;
-
-  let total = parseInt(inputEl.value || "0", 10);
-  if (isNaN(total) || total < 0) total = 0;
-
-  setQazaTotal(prayerName, total);
-
-  let performed = getQazaPerformed(prayerName);
-  if (performed > total) {
-    performed = total;
-    setQazaPerformed(prayerName, performed);
-  }
-
-  setQazaUpdatedTime(prayerName);
-  loadQazaTrackerData();
-}
-
-// =========================
-// CHANGE QAZA PERFORMED
-// =========================
-function changeQazaPerformed(prayerName, changeAmount) {
-  let total = getQazaTotal(prayerName);
-  let performed = getQazaPerformed(prayerName);
-
-  performed = performed + changeAmount;
-
-  if (performed < 0) performed = 0;
-  if (performed > total) performed = total;
-
-  setQazaPerformed(prayerName, performed);
-  setQazaUpdatedTime(prayerName);
-  loadQazaTrackerData();
-}
-
-     
-
-// =========================
-// GET QAZA VALUE
-// =========================
-function getQazaValue(prayerName) {
-  let value = parseInt(localStorage.getItem("qaza_" + prayerName) || "0", 10);
-  if (isNaN(value) || value < 0) value = 0;
-  return value;
-}
-
-// =========================
-// SET QAZA VALUE
-// =========================
-function setQazaValue(prayerName, value) {
-  if (value < 0) value = 0;
-  localStorage.setItem("qaza_" + prayerName, String(value));
-}
-
-// =========================
-// GET QAZA UPDATED TIME
-// =========================
-function getQazaUpdatedTime(prayerName) {
-  return localStorage.getItem("qaza_updated_" + prayerName) || "";
-}
-
-// =========================
-// SET QAZA UPDATED TIME
-// =========================
-function setQazaUpdatedTime(prayerName) {
-  let now = new Date();
-  let formatted = now.toLocaleString();
-  localStorage.setItem("qaza_updated_" + prayerName, formatted);
-}
-
-// =========================
-// GET DAILY COMPLETE VALUE
-// =========================
-function getQazaDailyCompleteValue() {
-  let value = parseInt(localStorage.getItem("qaza_daily_complete") || "1", 10);
-  if (isNaN(value) || value < 1) value = 1;
-  return value;
-}
-
-// =========================
-// SET DAILY COMPLETE VALUE
-// =========================
-function setQazaDailyCompleteValue(value) {
-  if (value < 1) value = 1;
-  localStorage.setItem("qaza_daily_complete", String(value));
-}
-
-// =========================
-// CHANGE DAILY COMPLETE VALUE
-// =========================
-function changeQazaDailyComplete(changeAmount) {
-  let current = getQazaDailyCompleteValue();
-  current = current + changeAmount;
-
-  if (current < 1) current = 1;
-
-  setQazaDailyCompleteValue(current);
-  updateQazaProgressUI();
-}
-
-// =========================
-// CHANGE QAZA COUNT
-// =========================
-function changeQazaCount(prayerName, changeAmount) {
-  let current = getQazaValue(prayerName);
-  current = current + changeAmount;
-
-  if (current < 0) current = 0;
-
-  setQazaValue(prayerName, current);
-  setQazaUpdatedTime(prayerName);
-  loadQazaTrackerData();
-}
-
-// =========================
-// HANDLE QAZA MANUAL INPUT
-// =========================
-function handleQazaManualInput(prayerName, inputValue) {
-  let cleanValue = parseInt(inputValue, 10);
-
-  if (isNaN(cleanValue) || cleanValue < 0) {
-    cleanValue = 0;
-  }
-
-  setQazaValue(prayerName, cleanValue);
-  setQazaUpdatedTime(prayerName);
-  loadQazaTrackerData();
-}
-
-// =========================
-// LOAD QAZA TRACKER DATA
-// =========================
-function loadQazaTrackerData() {
-  updateSingleQazaPrayerUI("fajr", "qazaFajrTotalInput", "qazaFajrPerformedText", "qazaFajrRemainingText", "qazaFajrUpdated");
-  updateSingleQazaPrayerUI("dhuhr", "qazaDhuhrCount", "qazaDhuhrUpdated");
-  updateSingleQazaPrayerUI("asr", "qazaAsrCount", "qazaAsrUpdated");
-  updateSingleQazaPrayerUI("maghrib", "qazaMaghribCount", "qazaMaghribUpdated");
-  updateSingleQazaPrayerUI("isha", "qazaIshaCount", "qazaIshaUpdated");
-  updateSingleQazaPrayerUI("witr", "qazaWitrCount", "qazaWitrUpdated");
-
-  updateQazaProgressUI();
-}
-
-// =========================
-// UPDATE SINGLE QAZA PRAYER UI
-// =========================
-function updateSingleQazaPrayerUI(prayerName, totalInputId, performedId, remainingId, updatedId) {
-  let totalInputEl = document.getElementById(totalInputId);
-  let performedEl = document.getElementById(performedId);
-  let remainingEl = document.getElementById(remainingId);
-  let updatedEl = document.getElementById(updatedId);
-
-  let total = getQazaTotal(prayerName);
-  let performed = getQazaPerformed(prayerName);
-  let remaining = getQazaRemaining(prayerName);
-  let updatedText = getQazaUpdatedTime(prayerName);
-
-  if (totalInputEl) totalInputEl.value = total;
-  if (performedEl) performedEl.innerText = performed;
-  if (remainingEl) remainingEl.innerText = "Remaining Salah: " + remaining;
-
-  if (updatedEl) {
-    if (updatedText) {
-      updatedEl.innerText = "Last updated: " + updatedText;
-    } else {
-      updatedEl.innerText = "Last updated: —";
-    }
-  }
-}
-// =========================
-// UPDATE QAZA PROGRESS UI
-// =========================
-function updateQazaProgressUI() {
-  let totalRemaining = 0;
-
-  qazaPrayerNames.forEach(function(prayerName) {
-    totalRemaining += getQazaValue(prayerName);
-  });
-
-  let maxRemaining = 0;
-  qazaPrayerNames.forEach(function(prayerName) {
-    let value = getQazaValue(prayerName);
-    if (value > maxRemaining) maxRemaining = value;
-  });
-
-  let completedTotal = 0;
-  let totalPossible = maxRemaining * qazaPrayerNames.length;
-
-  if (totalPossible > 0) {
-    completedTotal = totalPossible - totalRemaining;
-  } else {
-    completedTotal = 0;
-  }
-
-  let finishedPercent = 0;
-  if (totalPossible > 0) {
-    finishedPercent = Math.round((completedTotal / totalPossible) * 100);
-  }
-
-  updateQazaRing("qazaMainProgressRing", 352, finishedPercent);
-  setText("qazaMainPercentText", finishedPercent + "%");
-  setText("qazaFinishedPercentText", finishedPercent + "%");
-  setText("qazaCompletedTotalText", completedTotal);
-
-  updateSinglePrayerProgress("fajr", "qazaFajrRing", "qazaFajrPercent", maxRemaining);
-  updateSinglePrayerProgress("dhuhr", "qazaDhuhrRing", "qazaDhuhrPercent", maxRemaining);
-  updateSinglePrayerProgress("asr", "qazaAsrRing", "qazaAsrPercent", maxRemaining);
-  updateSinglePrayerProgress("maghrib", "qazaMaghribRing", "qazaMaghribPercent", maxRemaining);
-  updateSinglePrayerProgress("isha", "qazaIshaRing", "qazaIshaPercent", maxRemaining);
-  updateSinglePrayerProgress("witr", "qazaWitrRing", "qazaWitrPercent", maxRemaining);
-
-  let dailyValue = getQazaDailyCompleteValue();
-  setText("qazaDailyCompleteValue", dailyValue);
-
-  let daysText = "0 days";
-  if (totalRemaining > 0) {
-    let daysNeeded = Math.ceil(totalRemaining / dailyValue);
-    daysText = daysNeeded + " days";
-  }
-
-  setText("qazaDaysLeftText", daysText);
-}
-
-// =========================
-// UPDATE SINGLE PRAYER PROGRESS
-// =========================
-function updateSinglePrayerProgress(prayerName, ringId, percentId, maxRemaining) {
-  let value = getQazaValue(prayerName);
-  let percent = 0;
-
-  if (maxRemaining > 0) {
-    percent = Math.round(((maxRemaining - value) / maxRemaining) * 100);
-  }
-
-  updateQazaRing(ringId, 176, percent);
-  setText(percentId, percent + "%");
-}
-
-// =========================
-// UPDATE QAZA RING
-// =========================
-function updateQazaRing(ringId, circleLength, percent) {
-  let ring = document.getElementById(ringId);
-  if (!ring) return;
-
-  let safePercent = percent;
-  if (safePercent < 0) safePercent = 0;
-  if (safePercent > 100) safePercent = 100;
-
-  let offset = circleLength - (circleLength * safePercent / 100);
-  ring.style.strokeDashoffset = offset;
-}
-
-// =========================
-// SET TEXT
-// =========================
-function setText(id, value) {
-  let el = document.getElementById(id);
-  if (el) el.innerText = value;
-}
-
-// =========================
-// INIT QAZA TRACKER
-// =========================
-function initQazaTracker() {
-  qazaPrayerNames.forEach(function(prayerName) {
-    if (localStorage.getItem("qaza_" + prayerName) === null) {
-      localStorage.setItem("qaza_" + prayerName, "0");
-    }
-  });
-
-  if (localStorage.getItem("qaza_daily_complete") === null) {
-    localStorage.setItem("qaza_daily_complete", "1");
-  }
-
-  loadQazaTrackerData();
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  initQazaTracker();
-});
-
-
-
-     
-
-
+const qazaPrayerLabels = {
+  fajr: "Fajr",
+  dhuhr: "Dhuhr",
+  asr: "Asr",
+  maghrib: "Maghrib",
+  isha: "Isha",
+  witr: "Witr"
+};
 
 // =========================
 // HIDE ALL APP PAGES
@@ -15053,7 +14543,7 @@ function changeQazaCount(prayerName, changeAmount) {
 // LOAD QAZA TRACKER DATA
 // =========================
 function loadQazaTrackerData() {
-  updateSingleQazaPrayerUI("fajr", "qazaFajrTotalInput", "qazaFajrPerformedText", "qazaFajrRemainingText", "qazaFajrUpdated");
+  updateSingleQazaPrayerUI("fajr", "qazaFajrCount", "qazaFajrUpdated");
   updateSingleQazaPrayerUI("dhuhr", "qazaDhuhrCount", "qazaDhuhrUpdated");
   updateSingleQazaPrayerUI("asr", "qazaAsrCount", "qazaAsrUpdated");
   updateSingleQazaPrayerUI("maghrib", "qazaMaghribCount", "qazaMaghribUpdated");
@@ -16238,82 +15728,88 @@ overflow:auto;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
-       QAZA TOP AREA
-  ========================= -->
+  <!-- QAZA TOP GREEN AREA -->
   <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 2px 6px 2px;
-  margin-bottom:8px;
+  width:100%;
+  height:22%;
+  min-height:170px;
+  background:linear-gradient(180deg, #57d487 0%, #4cc97d 100%);
+  position:relative;
   ">
 
     <!-- QAZA BACK BUTTON -->
     <button onclick="closeQazaPage()" style="
-    width:42px;
-    height:42px;
+    position:absolute;
+    top:6%;
+    left:4%;
+    width:11%;
+    height:11%;
+    min-width:42px;
+    min-height:42px;
+    border:none;
     border-radius:50%;
-    border:1px solid rgba(0,0,0,0.08);
-    background:white;
+    background:rgba(255,255,255,0.22);
+    color:white;
     font-size:22px;
-    cursor:pointer;
+    font-weight:700;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:#111;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    cursor:pointer;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.10);
     ">
       ←
     </button>
 
     <!-- QAZA PAGE TITLE -->
     <div style="
-    font-size:20px;
+    position:absolute;
+    bottom:14%;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:8%;
+    min-font-size:28px;
     font-weight:800;
-    color:#111;
-    letter-spacing:-0.3px;
+    color:white;
+    letter-spacing:0.3px;
     ">
       Qaza Tracker
     </div>
-
-    <div style="width:42px;height:42px;"></div>
   </div>
 
-  <!-- =========================
-       QAZA CONTENT
-  ========================= -->
+  <!-- QAZA CONTENT WRAP -->
   <div style="
-  padding:16px 16px 120px 16px;
+  padding:18px 16px 120px 16px;
   box-sizing:border-box;
   ">
 
-    <!-- =========================
-         QAZA TOP TOGGLE
-    ========================= -->
+    <!-- QAZA TAB TOGGLE -->
     <div style="
-    background:rgba(255,255,255,0.72);
+    background:rgba(0,0,0,0.06);
     border-radius:999px;
     padding:4px;
     display:flex;
     align-items:center;
     gap:4px;
-    margin-top:0;
-    margin-bottom:14px;
+    margin-top:-38px;
+    margin-bottom:18px;
     position:relative;
     z-index:2;
     box-shadow:0 8px 20px rgba(0,0,0,0.06);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
     ">
       <button id="qazaPrayerTabBtn" onclick="showQazaTab('prayer')" style="
       flex:1;
-      height:42px;
+      height:48px;
       border:none;
       border-radius:999px;
       background:white;
       color:#111;
-      font-size:16px;
+      font-size:18px;
       font-weight:800;
       cursor:pointer;
       ">
@@ -16322,12 +15818,12 @@ box-sizing:border-box;
 
       <button id="qazaProgressTabBtn" onclick="showQazaTab('progress')" style="
       flex:1;
-      height:42px;
+      height:48px;
       border:none;
       border-radius:999px;
       background:transparent;
       color:#111;
-      font-size:16px;
+      font-size:18px;
       font-weight:700;
       cursor:pointer;
       ">
@@ -16340,171 +15836,120 @@ box-sizing:border-box;
     ========================= -->
     <div id="qazaPrayerTab" style="display:block;">
 
-     <!-- FAJR CARD -->
-<div style="
-background:white;
-border-radius:24px;
-padding:16px 14px;
-margin-bottom:12px;
-box-shadow:0 8px 20px rgba(0,0,0,0.05);
-">
-  <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px;
-  ">
-    <div style="font-size:22px;font-weight:800;color:#111;">Fajr</div>
-    <div id="qazaFajrUpdated" style="font-size:12px;color:#7a7a7a;font-weight:700;text-align:right;">Last updated: —</div>
-  </div>
-
-  <div style="margin-bottom:10px;">
-    <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Salah</div>
-    <input
-      id="qazaFajrTotalInput"
-      type="number"
-      min="0"
-      inputmode="numeric"
-      oninput="saveQazaTotalFromInput('fajr')"
-      style="
-      width:100%;
-      height:52px;
-      border:none;
-      border-radius:16px;
-      background:#f3f3f7;
-      padding:0 14px;
-      font-size:24px;
-      font-weight:800;
-      color:#111;
-      box-sizing:border-box;
-      outline:none;
-      "
-    >
-  </div>
-
-  <div style="margin-bottom:10px;">
-    <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
-
-    <div style="
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    ">
-      <button onclick="changeQazaPerformed('fajr', -1)" style="
-      width:52px;
-      height:52px;
-      border:none;
-      border-radius:16px;
-      background:#f3f3f7;
-      color:#111;
-      font-size:30px;
-      font-weight:700;
-      cursor:pointer;
-      flex-shrink:0;
-      ">
-        −
-      </button>
-
-      <div id="qazaFajrPerformedText" style="
-      flex:1;
-      height:52px;
-      border-radius:16px;
-      background:#f8f8fa;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:24px;
-      font-weight:800;
-      color:#111;
-      ">
-        0
-      </div>
-
-      <button onclick="changeQazaPerformed('fajr', 1)" style="
-      width:52px;
-      height:52px;
-      border:none;
-      border-radius:16px;
-      background:#f3f3f7;
-      color:#111;
-      font-size:30px;
-      font-weight:700;
-      cursor:pointer;
-      flex-shrink:0;
-      ">
-        +
-      </button>
-    </div>
-  </div>
-
-  <div id="qazaFajrRemainingText" style="
-  font-size:14px;
-  font-weight:700;
-  color:#666;
-  ">
-    Remaining Salah: 0
-  </div>
-</div>
-      <!-- DHUHR CARD -->
+      <!-- FAJR CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:14px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:26px;
+      padding:18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       ">
         <div style="
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:10px;
-        margin-bottom:12px;
+        gap:12px;
+        margin-bottom:14px;
         ">
-          <div style="font-size:20px;font-weight:800;color:#111;">Dhuhr</div>
-          <div id="qazaDhuhrUpdated" style="font-size:12px;color:#777;font-weight:600;">Last updated: —</div>
+          <div style="font-size:26px;font-weight:800;color:#111;">Fajr</div>
+          <div id="qazaFajrUpdated" style="font-size:14px;color:#666;font-weight:600;">Last updated: —</div>
         </div>
 
         <div style="
         display:flex;
         align-items:center;
-        gap:10px;
+        gap:12px;
         ">
-          <input id="qazaDhuhrCount" type="number" inputmode="numeric" value="0" oninput="handleQazaManualInput('dhuhr', this.value)" style="
+          <div id="qazaFajrCount" style="
           flex:1;
           background:#f3f3f7;
           border-radius:18px;
-          min-height:58px;
-          height:58px;
-          display:block;
-          padding:0 16px;
-          font-size:28px;
+          min-height:72px;
+          display:flex;
+          align-items:center;
+          padding:0 18px;
+          font-size:34px;
           font-weight:800;
           color:#111;
           box-sizing:border-box;
-          border:none;
-          outline:none;
-          width:100%;
-          -webkit-appearance:none;
-          appearance:none;
           ">
+            0
+          </div>
 
           <div style="
-          width:28%;
-          min-width:98px;
+          width:25%;
+          min-width:110px;
           background:#f7f7f8;
           border-radius:18px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:0 4px;
-          min-height:58px;
+          padding:0 6px;
+          min-height:60px;
           box-sizing:border-box;
           ">
-            <button onclick="changeQazaCount('dhuhr', -1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">−</button>
-            <div style="width:1px;height:30px;background:rgba(0,0,0,0.14);"></div>
-            <button onclick="changeQazaCount('dhuhr', 1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">+</button>
+            <button onclick="changeQazaCount('fajr', -1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+            <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+            <button onclick="changeQazaCount('fajr', 1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DHUHR CARD -->
+      <div style="
+      background:white;
+      border-radius:26px;
+      padding:18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      ">
+        <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        margin-bottom:14px;
+        ">
+          <div style="font-size:26px;font-weight:800;color:#111;">Dhuhr</div>
+          <div id="qazaDhuhrUpdated" style="font-size:14px;color:#666;font-weight:600;">Last updated: —</div>
+        </div>
+
+        <div style="
+        display:flex;
+        align-items:center;
+        gap:12px;
+        ">
+          <div id="qazaDhuhrCount" style="
+          flex:1;
+          background:#f3f3f7;
+          border-radius:18px;
+          min-height:72px;
+          display:flex;
+          align-items:center;
+          padding:0 18px;
+          font-size:34px;
+          font-weight:800;
+          color:#111;
+          box-sizing:border-box;
+          ">
+            0
+          </div>
+
+          <div style="
+          width:25%;
+          min-width:110px;
+          background:#f7f7f8;
+          border-radius:18px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:0 6px;
+          min-height:60px;
+          box-sizing:border-box;
+          ">
+            <button onclick="changeQazaCount('dhuhr', -1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+            <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+            <button onclick="changeQazaCount('dhuhr', 1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
           </div>
         </div>
       </div>
@@ -16512,61 +15957,58 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
       <!-- ASR CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:14px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:26px;
+      padding:18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       ">
         <div style="
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:10px;
-        margin-bottom:12px;
+        gap:12px;
+        margin-bottom:14px;
         ">
-          <div style="font-size:20px;font-weight:800;color:#111;">Asr</div>
-          <div id="qazaAsrUpdated" style="font-size:12px;color:#777;font-weight:600;">Last updated: —</div>
+          <div style="font-size:26px;font-weight:800;color:#111;">Asr</div>
+          <div id="qazaAsrUpdated" style="font-size:14px;color:#666;font-weight:600;">Last updated: —</div>
         </div>
 
         <div style="
         display:flex;
         align-items:center;
-        gap:10px;
+        gap:12px;
         ">
-          <input id="qazaAsrCount" type="number" inputmode="numeric" value="0" oninput="handleQazaManualInput('asr', this.value)" style="
+          <div id="qazaAsrCount" style="
           flex:1;
           background:#f3f3f7;
           border-radius:18px;
-          min-height:58px;
-          height:58px;
-          display:block;
-          padding:0 16px;
-          font-size:28px;
+          min-height:72px;
+          display:flex;
+          align-items:center;
+          padding:0 18px;
+          font-size:34px;
           font-weight:800;
           color:#111;
           box-sizing:border-box;
-          border:none;
-          outline:none;
-          width:100%;
-          -webkit-appearance:none;
-          appearance:none;
           ">
+            0
+          </div>
 
           <div style="
-          width:28%;
-          min-width:98px;
+          width:25%;
+          min-width:110px;
           background:#f7f7f8;
           border-radius:18px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:0 4px;
-          min-height:58px;
+          padding:0 6px;
+          min-height:60px;
           box-sizing:border-box;
           ">
-            <button onclick="changeQazaCount('asr', -1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">−</button>
-            <div style="width:1px;height:30px;background:rgba(0,0,0,0.14);"></div>
-            <button onclick="changeQazaCount('asr', 1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">+</button>
+            <button onclick="changeQazaCount('asr', -1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+            <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+            <button onclick="changeQazaCount('asr', 1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
           </div>
         </div>
       </div>
@@ -16574,61 +16016,58 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
       <!-- MAGHRIB CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:14px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:26px;
+      padding:18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       ">
         <div style="
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:10px;
-        margin-bottom:12px;
+        gap:12px;
+        margin-bottom:14px;
         ">
-          <div style="font-size:20px;font-weight:800;color:#111;">Maghrib</div>
-          <div id="qazaMaghribUpdated" style="font-size:12px;color:#777;font-weight:600;">Last updated: —</div>
+          <div style="font-size:26px;font-weight:800;color:#111;">Maghrib</div>
+          <div id="qazaMaghribUpdated" style="font-size:14px;color:#666;font-weight:600;">Last updated: —</div>
         </div>
 
         <div style="
         display:flex;
         align-items:center;
-        gap:10px;
+        gap:12px;
         ">
-          <input id="qazaMaghribCount" type="number" inputmode="numeric" value="0" oninput="handleQazaManualInput('maghrib', this.value)" style="
+          <div id="qazaMaghribCount" style="
           flex:1;
           background:#f3f3f7;
           border-radius:18px;
-          min-height:58px;
-          height:58px;
-          display:block;
-          padding:0 16px;
-          font-size:28px;
+          min-height:72px;
+          display:flex;
+          align-items:center;
+          padding:0 18px;
+          font-size:34px;
           font-weight:800;
           color:#111;
           box-sizing:border-box;
-          border:none;
-          outline:none;
-          width:100%;
-          -webkit-appearance:none;
-          appearance:none;
           ">
+            0
+          </div>
 
           <div style="
-          width:28%;
-          min-width:98px;
+          width:25%;
+          min-width:110px;
           background:#f7f7f8;
           border-radius:18px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:0 4px;
-          min-height:58px;
+          padding:0 6px;
+          min-height:60px;
           box-sizing:border-box;
           ">
-            <button onclick="changeQazaCount('maghrib', -1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">−</button>
-            <div style="width:1px;height:30px;background:rgba(0,0,0,0.14);"></div>
-            <button onclick="changeQazaCount('maghrib', 1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">+</button>
+            <button onclick="changeQazaCount('maghrib', -1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+            <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+            <button onclick="changeQazaCount('maghrib', 1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
           </div>
         </div>
       </div>
@@ -16636,61 +16075,58 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
       <!-- ISHA CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:14px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:26px;
+      padding:18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       ">
         <div style="
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:10px;
-        margin-bottom:12px;
+        gap:12px;
+        margin-bottom:14px;
         ">
-          <div style="font-size:20px;font-weight:800;color:#111;">Isha</div>
-          <div id="qazaIshaUpdated" style="font-size:12px;color:#777;font-weight:600;">Last updated: —</div>
+          <div style="font-size:26px;font-weight:800;color:#111;">Isha</div>
+          <div id="qazaIshaUpdated" style="font-size:14px;color:#666;font-weight:600;">Last updated: —</div>
         </div>
 
         <div style="
         display:flex;
         align-items:center;
-        gap:10px;
+        gap:12px;
         ">
-          <input id="qazaIshaCount" type="number" inputmode="numeric" value="0" oninput="handleQazaManualInput('isha', this.value)" style="
+          <div id="qazaIshaCount" style="
           flex:1;
           background:#f3f3f7;
           border-radius:18px;
-          min-height:58px;
-          height:58px;
-          display:block;
-          padding:0 16px;
-          font-size:28px;
+          min-height:72px;
+          display:flex;
+          align-items:center;
+          padding:0 18px;
+          font-size:34px;
           font-weight:800;
           color:#111;
           box-sizing:border-box;
-          border:none;
-          outline:none;
-          width:100%;
-          -webkit-appearance:none;
-          appearance:none;
           ">
+            0
+          </div>
 
           <div style="
-          width:28%;
-          min-width:98px;
+          width:25%;
+          min-width:110px;
           background:#f7f7f8;
           border-radius:18px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:0 4px;
-          min-height:58px;
+          padding:0 6px;
+          min-height:60px;
           box-sizing:border-box;
           ">
-            <button onclick="changeQazaCount('isha', -1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">−</button>
-            <div style="width:1px;height:30px;background:rgba(0,0,0,0.14);"></div>
-            <button onclick="changeQazaCount('isha', 1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">+</button>
+            <button onclick="changeQazaCount('isha', -1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+            <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+            <button onclick="changeQazaCount('isha', 1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
           </div>
         </div>
       </div>
@@ -16698,61 +16134,58 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
       <!-- WITR CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:14px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:26px;
+      padding:18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       ">
         <div style="
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:10px;
-        margin-bottom:12px;
+        gap:12px;
+        margin-bottom:14px;
         ">
-          <div style="font-size:20px;font-weight:800;color:#111;">Witr</div>
-          <div id="qazaWitrUpdated" style="font-size:12px;color:#777;font-weight:600;">Last updated: —</div>
+          <div style="font-size:26px;font-weight:800;color:#111;">Witr</div>
+          <div id="qazaWitrUpdated" style="font-size:14px;color:#666;font-weight:600;">Last updated: —</div>
         </div>
 
         <div style="
         display:flex;
         align-items:center;
-        gap:10px;
+        gap:12px;
         ">
-          <input id="qazaWitrCount" type="number" inputmode="numeric" value="0" oninput="handleQazaManualInput('witr', this.value)" style="
+          <div id="qazaWitrCount" style="
           flex:1;
           background:#f3f3f7;
           border-radius:18px;
-          min-height:58px;
-          height:58px;
-          display:block;
-          padding:0 16px;
-          font-size:28px;
+          min-height:72px;
+          display:flex;
+          align-items:center;
+          padding:0 18px;
+          font-size:34px;
           font-weight:800;
           color:#111;
           box-sizing:border-box;
-          border:none;
-          outline:none;
-          width:100%;
-          -webkit-appearance:none;
-          appearance:none;
           ">
+            0
+          </div>
 
           <div style="
-          width:28%;
-          min-width:98px;
+          width:25%;
+          min-width:110px;
           background:#f7f7f8;
           border-radius:18px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:0 4px;
-          min-height:58px;
+          padding:0 6px;
+          min-height:60px;
           box-sizing:border-box;
           ">
-            <button onclick="changeQazaCount('witr', -1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">−</button>
-            <div style="width:1px;height:30px;background:rgba(0,0,0,0.14);"></div>
-            <button onclick="changeQazaCount('witr', 1)" style="width:46%;height:44px;border:none;background:transparent;font-size:30px;font-weight:700;cursor:pointer;">+</button>
+            <button onclick="changeQazaCount('witr', -1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+            <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+            <button onclick="changeQazaCount('witr', 1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
           </div>
         </div>
       </div>
@@ -16764,34 +16197,34 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
     ========================= -->
     <div id="qazaProgressTab" style="display:none;">
 
-      <!-- BIG SUMMARY CARD -->
+      <!-- BIG PROGRESS CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:16px 14px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:28px;
+      padding:20px 16px;
+      margin-bottom:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:14px;
       ">
         <div style="
-        width:46%;
+        width:48%;
         display:flex;
         align-items:center;
         justify-content:center;
         ">
-          <div style="position:relative;width:140px;height:140px;">
-            <svg width="140" height="140" viewBox="0 0 140 140">
-              <circle cx="70" cy="70" r="56" stroke="#dceee5" stroke-width="10" fill="none"></circle>
-              <circle id="qazaMainProgressRing" cx="70" cy="70" r="56" stroke="#57d487" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="352" stroke-dashoffset="352" transform="rotate(-90 70 70)"></circle>
+          <div style="position:relative;width:160px;height:160px;">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="64" stroke="#dceee5" stroke-width="12" fill="none"></circle>
+              <circle id="qazaMainProgressRing" cx="80" cy="80" r="64" stroke="#57d487" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="402" transform="rotate(-90 80 80)"></circle>
             </svg>
             <div id="qazaMainPercentText" style="
             position:absolute;
             top:50%;
             left:50%;
             transform:translate(-50%,-50%);
-            font-size:24px;
+            font-size:26px;
             font-weight:800;
             color:#111;
             ">
@@ -16800,117 +16233,119 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
           </div>
         </div>
 
-        <div style="width:54%;">
-          <div style="font-size:14px;color:#666;font-weight:700;margin-bottom:6px;">Finished</div>
-          <div id="qazaFinishedPercentText" style="font-size:30px;font-weight:800;color:#111;line-height:1;margin-bottom:14px;">0%</div>
-
-          <div style="font-size:14px;color:#666;font-weight:700;margin-bottom:6px;">Completed prayers</div>
-          <div id="qazaCompletedTotalText" style="font-size:28px;font-weight:800;color:#111;line-height:1;">0</div>
+        <div style="
+        width:52%;
+        ">
+          <div style="font-size:17px;color:#222;font-weight:700;margin-bottom:10px;">Finished</div>
+          <div id="qazaFinishedPercentText" style="font-size:42px;font-weight:800;color:#111;line-height:1;">0%</div>
+          <div style="height:14px;"></div>
+          <div style="font-size:17px;color:#222;font-weight:700;margin-bottom:10px;">Completed prayers</div>
+          <div id="qazaCompletedTotalText" style="font-size:34px;font-weight:800;color:#111;line-height:1;">0</div>
         </div>
       </div>
 
-      <!-- SMALL PRAYER RINGS CARD -->
+      <!-- SMALL RINGS CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:16px 10px;
-      margin-bottom:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:28px;
+      padding:20px 12px;
+      margin-bottom:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       ">
         <div style="
         display:grid;
         grid-template-columns:repeat(3, 1fr);
-        gap:16px 8px;
+        gap:18px 10px;
         justify-items:center;
         ">
 
           <div style="text-align:center;">
-            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px;">Fajr</div>
-            <div style="position:relative;width:74px;height:74px;">
-              <svg width="74" height="74" viewBox="0 0 74 74">
-                <circle cx="37" cy="37" r="28" stroke="#dceee5" stroke-width="6" fill="none"></circle>
-                <circle id="qazaFajrRing" cx="37" cy="37" r="28" stroke="#57d487" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" transform="rotate(-90 37 37)"></circle>
+            <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:8px;">Fajr</div>
+            <div style="position:relative;width:88px;height:88px;">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r="34" stroke="#dceee5" stroke-width="7" fill="none"></circle>
+                <circle id="qazaFajrRing" cx="44" cy="44" r="34" stroke="#57d487" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 44 44)"></circle>
               </svg>
-              <div id="qazaFajrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:800;color:#111;">0%</div>
+              <div id="qazaFajrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:#111;">0%</div>
             </div>
           </div>
 
           <div style="text-align:center;">
-            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px;">Dhuhr</div>
-            <div style="position:relative;width:74px;height:74px;">
-              <svg width="74" height="74" viewBox="0 0 74 74">
-                <circle cx="37" cy="37" r="28" stroke="#dceee5" stroke-width="6" fill="none"></circle>
-                <circle id="qazaDhuhrRing" cx="37" cy="37" r="28" stroke="#57d487" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" transform="rotate(-90 37 37)"></circle>
+            <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:8px;">Dhuhr</div>
+            <div style="position:relative;width:88px;height:88px;">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r="34" stroke="#dceee5" stroke-width="7" fill="none"></circle>
+                <circle id="qazaDhuhrRing" cx="44" cy="44" r="34" stroke="#57d487" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 44 44)"></circle>
               </svg>
-              <div id="qazaDhuhrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:800;color:#111;">0%</div>
+              <div id="qazaDhuhrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:#111;">0%</div>
             </div>
           </div>
 
           <div style="text-align:center;">
-            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px;">Asr</div>
-            <div style="position:relative;width:74px;height:74px;">
-              <svg width="74" height="74" viewBox="0 0 74 74">
-                <circle cx="37" cy="37" r="28" stroke="#dceee5" stroke-width="6" fill="none"></circle>
-                <circle id="qazaAsrRing" cx="37" cy="37" r="28" stroke="#57d487" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" transform="rotate(-90 37 37)"></circle>
+            <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:8px;">Asr</div>
+            <div style="position:relative;width:88px;height:88px;">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r="34" stroke="#dceee5" stroke-width="7" fill="none"></circle>
+                <circle id="qazaAsrRing" cx="44" cy="44" r="34" stroke="#57d487" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 44 44)"></circle>
               </svg>
-              <div id="qazaAsrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:800;color:#111;">0%</div>
+              <div id="qazaAsrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:#111;">0%</div>
             </div>
           </div>
 
           <div style="text-align:center;">
-            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px;">Maghrib</div>
-            <div style="position:relative;width:74px;height:74px;">
-              <svg width="74" height="74" viewBox="0 0 74 74">
-                <circle cx="37" cy="37" r="28" stroke="#dceee5" stroke-width="6" fill="none"></circle>
-                <circle id="qazaMaghribRing" cx="37" cy="37" r="28" stroke="#57d487" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" transform="rotate(-90 37 37)"></circle>
+            <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:8px;">Maghrib</div>
+            <div style="position:relative;width:88px;height:88px;">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r="34" stroke="#dceee5" stroke-width="7" fill="none"></circle>
+                <circle id="qazaMaghribRing" cx="44" cy="44" r="34" stroke="#57d487" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 44 44)"></circle>
               </svg>
-              <div id="qazaMaghribPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:800;color:#111;">0%</div>
+              <div id="qazaMaghribPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:#111;">0%</div>
             </div>
           </div>
 
           <div style="text-align:center;">
-            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px;">Isha</div>
-            <div style="position:relative;width:74px;height:74px;">
-              <svg width="74" height="74" viewBox="0 0 74 74">
-                <circle cx="37" cy="37" r="28" stroke="#dceee5" stroke-width="6" fill="none"></circle>
-                <circle id="qazaIshaRing" cx="37" cy="37" r="28" stroke="#57d487" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" transform="rotate(-90 37 37)"></circle>
+            <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:8px;">Isha</div>
+            <div style="position:relative;width:88px;height:88px;">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r="34" stroke="#dceee5" stroke-width="7" fill="none"></circle>
+                <circle id="qazaIshaRing" cx="44" cy="44" r="34" stroke="#57d487" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 44 44)"></circle>
               </svg>
-              <div id="qazaIshaPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:800;color:#111;">0%</div>
+              <div id="qazaIshaPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:#111;">0%</div>
             </div>
           </div>
 
           <div style="text-align:center;">
-            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:6px;">Witr</div>
-            <div style="position:relative;width:74px;height:74px;">
-              <svg width="74" height="74" viewBox="0 0 74 74">
-                <circle cx="37" cy="37" r="28" stroke="#dceee5" stroke-width="6" fill="none"></circle>
-                <circle id="qazaWitrRing" cx="37" cy="37" r="28" stroke="#57d487" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" transform="rotate(-90 37 37)"></circle>
+            <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:8px;">Witr</div>
+            <div style="position:relative;width:88px;height:88px;">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" r="34" stroke="#dceee5" stroke-width="7" fill="none"></circle>
+                <circle id="qazaWitrRing" cx="44" cy="44" r="34" stroke="#57d487" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 44 44)"></circle>
               </svg>
-              <div id="qazaWitrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:800;color:#111;">0%</div>
+              <div id="qazaWitrPercent" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:#111;">0%</div>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- DAILY FINISH CARD -->
+      <!-- DAILY COMPLETION CARD -->
       <div style="
       background:white;
-      border-radius:24px;
-      padding:16px 14px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      border-radius:28px;
+      padding:22px 16px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:14px;
       ">
         <div style="width:38%;">
-          <div style="font-size:16px;font-weight:700;color:#111;line-height:1.4;margin-bottom:12px;">
+          <div style="font-size:20px;font-weight:700;color:#111;line-height:1.4;margin-bottom:16px;">
             If you complete every day
           </div>
 
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div id="qazaDailyCompleteValue" style="font-size:34px;font-weight:800;color:#111;min-width:28px;">1</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div id="qazaDailyCompleteValue" style="font-size:42px;font-weight:800;color:#111;min-width:34px;">1</div>
 
             <div style="
             flex:1;
@@ -16919,22 +16354,22 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
             display:flex;
             align-items:center;
             justify-content:space-between;
-            padding:0 4px;
-            min-height:54px;
+            padding:0 6px;
+            min-height:60px;
             box-sizing:border-box;
             ">
-              <button onclick="changeQazaDailyComplete(-1)" style="width:46%;height:42px;border:none;background:transparent;font-size:28px;font-weight:700;cursor:pointer;">−</button>
-              <div style="width:1px;height:28px;background:rgba(0,0,0,0.14);"></div>
-              <button onclick="changeQazaDailyComplete(1)" style="width:46%;height:42px;border:none;background:transparent;font-size:28px;font-weight:700;cursor:pointer;">+</button>
+              <button onclick="changeQazaDailyComplete(-1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">−</button>
+              <div style="width:1px;height:34px;background:rgba(0,0,0,0.14);"></div>
+              <button onclick="changeQazaDailyComplete(1)" style="width:46%;height:48px;border:none;background:transparent;font-size:34px;font-weight:700;cursor:pointer;">+</button>
             </div>
           </div>
 
-          <div style="font-size:14px;font-weight:700;color:#111;">
+          <div style="font-size:17px;font-weight:700;color:#111;">
             qaza prayers
           </div>
         </div>
 
-        <div style="width:62%;font-size:17px;font-weight:800;color:#57c77a;line-height:1.4;">
+        <div style="width:62%;font-size:20px;font-weight:800;color:#57c77a;line-height:1.4;">
           All qaza prayers will be completed in
           <span id="qazaDaysLeftText">0 days</span>
         </div>
@@ -16944,6 +16379,7 @@ box-shadow:0 8px 20px rgba(0,0,0,0.05);
 
   </div>
 </div>
+
 
 
 
