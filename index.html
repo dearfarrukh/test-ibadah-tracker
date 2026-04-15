@@ -1957,9 +1957,139 @@ border:1px solid rgba(0,0,0,0.03);
      
 </div>
 
+<!-- =========================
+     ADD CUSTOM ZIKR BUTTON
+========================= -->
+<div style="
+margin-top:18px;
+">
 
+  <button onclick="openAddCustomZikrPopup()" style="
+  width:100%;
+  border:none;
+  border-radius:24px;
+  padding:18px;
+  background:white;
+  color:#111;
+  font-size:18px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  ">
+    ＋ Add Your Own Zikr
+  </button>
 
+</div>
 
+<!-- =========================
+     CUSTOM ZIKR LIST
+========================= -->
+<div id="customZikrList" style="
+display:flex;
+flex-direction:column;
+gap:16px;
+margin-top:16px;
+"></div>
+
+<!-- =========================
+     ADD CUSTOM ZIKR POPUP
+========================= -->
+<div id="addCustomZikrPopup" onclick="closeAddCustomZikrPopup()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(6px);
+z-index:6000;
+align-items:center;
+justify-content:center;
+padding:20px;
+">
+
+  <div onclick="event.stopPropagation()" style="
+  width:100%;
+  max-width:340px;
+  background:white;
+  border-radius:28px;
+  padding:20px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.2);
+  ">
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:12px;
+    ">
+      Add Your Zikr
+    </div>
+
+    <!-- English -->
+    <input id="customZikrEnglishInput" placeholder="English name" style="
+    width:100%;
+    padding:14px;
+    border-radius:16px;
+    border:none;
+    background:#f2f2f7;
+    margin-bottom:10px;
+    font-size:16px;
+    ">
+
+    <!-- Arabic -->
+    <textarea id="customZikrArabicInput" placeholder="Arabic text" style="
+    width:100%;
+    padding:14px;
+    border-radius:16px;
+    border:none;
+    background:#f2f2f7;
+    margin-bottom:10px;
+    font-size:18px;
+    direction:rtl;
+    min-height:80px;
+    "></textarea>
+
+    <!-- Target -->
+    <input id="customZikrTargetInput" type="number" placeholder="Target (33)" style="
+    width:100%;
+    padding:14px;
+    border-radius:16px;
+    border:none;
+    background:#f2f2f7;
+    margin-bottom:14px;
+    font-size:16px;
+    ">
+
+    <!-- Save -->
+    <button onclick="saveNewCustomZikr()" style="
+    width:100%;
+    padding:14px;
+    border-radius:16px;
+    border:none;
+    background:#111;
+    color:white;
+    font-weight:800;
+    margin-bottom:8px;
+    ">
+      Save
+    </button>
+
+    <!-- Cancel -->
+    <button onclick="closeAddCustomZikrPopup()" style="
+    width:100%;
+    padding:14px;
+    border-radius:16px;
+    border:none;
+    background:#eee;
+    font-weight:700;
+    ">
+      Cancel
+    </button>
+
+  </div>
+</div>
 
      
 <!-- =========================
@@ -6809,6 +6939,35 @@ window.open("https://qiblafinder.withgoogle.com/","_blank");
 let currentZikr = "";
 let lastMainTab = "tracker";
 let lastMoreSourceTab = "tracker";
+
+// =========================
+// OPEN ADD CUSTOM ZIKR POPUP
+// =========================
+function openAddCustomZikrPopup(){
+
+  let popup = document.getElementById("addCustomZikrPopup");
+  let englishInput = document.getElementById("customZikrEnglishInput");
+  let arabicInput = document.getElementById("customZikrArabicInput");
+  let targetInput = document.getElementById("customZikrTargetInput");
+
+  if(englishInput) englishInput.value = "";
+  if(arabicInput) arabicInput.value = "";
+  if(targetInput) targetInput.value = "33";
+
+  if(popup){
+    popup.style.display = "flex";
+  }
+}
+
+// =========================
+// CLOSE ADD CUSTOM ZIKR POPUP
+// =========================
+function closeAddCustomZikrPopup(){
+  let popup = document.getElementById("addCustomZikrPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+}
 
 const zikrData = {
 subhanallah: {
