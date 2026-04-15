@@ -1822,6 +1822,140 @@ border:1px solid rgba(0,0,0,0.03);
 </div>
 
 
+
+
+
+<!-- Alhamdulillah Zikr Card -->
+<div onclick="openZikrDetail('alhamdulillah')" style="
+background:white;
+border-radius:26px;
+padding:18px 16px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+">
+
+  <!-- Left Progress Ring -->
+  <div id="zikrCardRing-alhamdulillah" style="
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  flex-shrink:0;
+  position:relative;
+  background:conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  ">
+    <div id="zikrCardRingText-alhamdulillah" style="
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:800;
+    color:#666;
+    ">
+      0
+    </div>
+  </div>
+
+  <!-- Center Text -->
+  <div style="
+  flex:1;
+  min-width:0;
+  ">
+
+    <div style="
+    font-size:19px;
+    font-weight:800;
+    color:#111;
+    line-height:1.2;
+    margin-bottom:4px;
+    ">
+      Alhamdulillah
+    </div>
+
+    <div style="
+    font-size:15px;
+    color:#666;
+    font-family:'Amiri','Noto Naskh Arabic',serif;
+    direction:rtl;
+    line-height:1.5;
+    margin-bottom:6px;
+    ">
+      ٱلْحَمْدُ لِلَّٰهِ
+    </div>
+
+    <div id="zikrCardProgressText-alhamdulillah" style="
+    font-size:13px;
+    font-weight:700;
+    color:#8a8a8a;
+    ">
+      0 / 33
+    </div>
+
+  </div>
+
+  <!-- Right Actions -->
+  <div style="
+  width:50px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-shrink:0;
+  ">
+
+    <!-- Zikr Menu Button -->
+    <button onclick="event.stopPropagation();openZikrTargetPopup('alhamdulillah')" style="
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:50%;
+    background:#f2f2f7;
+    color:#666;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    ">
+      ⋮
+    </button>
+
+    <!-- Start Zikr Button -->
+    <button onclick="event.stopPropagation();openZikrDetail('alhamdulillah')" style="
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:50%;
+    background:#111;
+    color:white;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 6px 14px rgba(0,0,0,0.16);
+    ">
+      ▶
+    </button>
+
+  </div>
+
+</div>
+     
 <!-- =========================
      ZIKR TARGET POPUP
 ========================= -->
@@ -6686,6 +6820,13 @@ arabic: `لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّ
 meaning: `گناہ سے بچنے کی ہمت ہے نہ نیکی کرنے کی طاقت مگر
 اللہ ہی کی توفیق سے۔`,
 ref: `صحیح البخاری، الادب المفرد، باب قول: لا حول ولا قوة إلا بالله<br>حدیث: 6409`
+},
+alhamdulillah: {
+hadith: `رسول اللہ ﷺ نے فرمایا:
+"الطُّهُورُ شَطْرُ الإِيمَانِ، وَالْحَمْدُ لِلَّهِ تَمْلأُ الْمِيزَانَ"`,
+arabic: `ٱلْحَمْدُ لِلَّٰهِ`,
+meaning: `تمام تعریفیں اللہ ہی کے لیے ہیں۔`,
+ref: `صحیح مسلم، کتاب الطہارة، حدیث: 223`
 }
 };
 
@@ -6736,14 +6877,16 @@ function openZikrTargetPopup(name){
   let input = document.getElementById("zikrCustomTargetInput");
 
   if(title){
-    if(name === "subhanallah"){
-      title.innerText = "SubhanAllahi wa bihamdihi";
-    }else if(name === "hawqala"){
-      title.innerText = "La hawla wa la quwwata illa billah";
-    }else{
-      title.innerText = "Select target";
-    }
+  if(name === "subhanallah"){
+    title.innerText = "SubhanAllahi wa bihamdihi";
+  }else if(name === "hawqala"){
+    title.innerText = "La hawla wa la quwwata illa billah";
+  }else if(name === "alhamdulillah"){
+    title.innerText = "Alhamdulillah";
+  }else{
+    title.innerText = "Select target";
   }
+}
 
   if(input){
     input.value = "";
@@ -6856,6 +6999,7 @@ function updateSingleZikrCardUI(name){
 function updateAllZikrCardUI(){
   updateSingleZikrCardUI("subhanallah");
   updateSingleZikrCardUI("hawqala");
+  updateSingleZikrCardUI("alhamdulillah");
 }
 
 
@@ -6976,6 +7120,9 @@ if(name === "subhanallah"){
 }
 else if(name === "hawqala"){
   englishTitle = "La hawla wa la quwwata illa billah";
+}
+else if(name === "alhamdulillah"){
+  englishTitle = "Alhamdulillah";
 }
 else{
   englishTitle = name;
