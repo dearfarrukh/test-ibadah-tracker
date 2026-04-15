@@ -5342,7 +5342,14 @@ function setZikrMode(mode){
 
 zikrTarget = mode;
 zikrCount = 0;
+
+if(currentZikr){
+  localStorage.setItem(getZikrCardTargetKey(currentZikr), String(mode));
+  localStorage.setItem(getZikrCardCountKey(currentZikr), "0");
+}
+
 updateZikrDisplay();
+updateSingleZikrCardUI(currentZikr);
 
 }
 
@@ -5351,15 +5358,16 @@ updateZikrDisplay();
 // =========================
 function increaseZikrTasbih(){
 
-if(zikrTarget === "inf"){
-zikrCount++;
-}else{
 if(zikrCount < zikrTarget){
-zikrCount++;
+  zikrCount++;
 }
+
+if(currentZikr){
+  localStorage.setItem(getZikrCardCountKey(currentZikr), String(zikrCount));
 }
 
 updateZikrDisplay();
+updateSingleZikrCardUI(currentZikr);
 
 if(isVibrationEnabled()){
 clickSound.currentTime = 0;
@@ -5372,13 +5380,21 @@ navigator.vibrate(30);
 
 }
 
+
+     
 // =========================
 // RESET ZIKR TASBIH
 // =========================
 function resetZikrTasbih(){
 
 zikrCount = 0;
+
+if(currentZikr){
+  localStorage.setItem(getZikrCardCountKey(currentZikr), "0");
+}
+
 updateZikrDisplay();
+updateSingleZikrCardUI(currentZikr);
 
 }
   
@@ -6604,6 +6620,22 @@ ref: `صحیح البخاری، الادب المفرد، باب قول: لا ح
 let currentZikrTargetEdit = "";
 
 // =========================
+// GET ZIKR CARD COUNT KEY
+// =========================
+function getZikrCardCountKey(name){
+  return "zikr-card-count-" + name;
+}
+
+// =========================
+// GET ZIKR CARD COUNT
+// =========================
+function getZikrCardCount(name){
+  return parseInt(localStorage.getItem(getZikrCardCountKey(name)) || "0", 10);
+}
+
+
+
+// =========================
 // GET ZIKR CARD TARGET KEY
 // =========================
 function getZikrCardTargetKey(name){
@@ -6698,21 +6730,48 @@ function saveCustomZikrCardTarget(){
 // =========================
 function updateSingleZikrCardUI(name){
 
-  let target = getZikrCardTarget(name);
+  let target = parseInt(getZikrCardTarget(name), 10);
+  let count = getZikrCardCount(name);
+
   let progressText = document.getElementById("zikrCardProgressText-" + name);
   let ringText = document.getElementById("zikrCardRingText-" + name);
   let ring = document.getElementById("zikrCardRing-" + name);
 
+  if(!target || target < 1){
+    target = 33;
+  }
+
+  if(count < 0){
+    count = 0;
+  }
+
+  if(count > target){
+    count = target;
+  }
+
+  let progressDeg = (count / target) * 360;
+
   if(progressText){
-    progressText.innerText = "0 / " + target;
+    progressText.innerText = count + " / " + target;
   }
 
   if(ringText){
-    ringText.innerText = "0";
+    if(count >= target){
+      ringText.innerText = "✓";
+      ringText.style.color = "#34c759";
+      ringText.style.fontSize = "20px";
+      ringText.style.fontWeight = "900";
+    }else{
+      ringText.innerText = count;
+      ringText.style.color = "#666";
+      ringText.style.fontSize = "14px";
+      ringText.style.fontWeight = "800";
+    }
   }
 
   if(ring){
-    ring.style.background = "conic-gradient(#34c759 0deg, #34c759 0deg, #e9e9ee 0deg, #e9e9ee 360deg)";
+    ring.style.background =
+      "conic-gradient(#34c759 0deg, #34c759 " + progressDeg + "deg, #e9e9ee " + progressDeg + "deg, #e9e9ee 360deg)";
   }
 }
 
@@ -6823,8 +6882,14 @@ window.scrollTo(0,0);
 function openZikrDetail(name){
 
 currentZikr = name;
-zikrCount = 0;
-zikrTarget = 100;
+
+zikrCount = getZikrCardCount(name);
+zikrTarget = parseInt(getZikrCardTarget(name), 10);
+
+if(!zikrTarget || zikrTarget < 1){
+  zikrTarget = 33;
+}
+
 updateZikrDisplay();
 
 let data = zikrData[name];
@@ -6840,13 +6905,13 @@ document.getElementById("zikrDetailPage").style.display = "block";
 
 window.scrollTo(0,0);
 }
-
 // =========================
 // CLOSE ZIKR DETAIL
 // =========================
 function closeZikrDetail(){
 document.getElementById("zikrDetailPage").style.display = "none";
 document.getElementById("zikrPage").style.display = "block";
+updateAllZikrCardUI();
 window.scrollTo(0,0);
 }
 // =========================
