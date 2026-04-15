@@ -290,6 +290,24 @@ max-width:100%;
 height:auto;
 }
 
+
+
+@keyframes slideUpZikr {
+  from {
+    transform:translateY(100%);
+    opacity:0;
+  }
+  to {
+    transform:translateY(0);
+    opacity:1;
+  }
+}
+
+
+
+
+     
+
 /* =========================
    INTERACTIVE QURAN PAGE DRAG CSS
    ========================= */
@@ -2233,6 +2251,93 @@ letter-spacing:-0.2px;
   </div>
 </div>
      </div>
+
+
+<!-- =========================
+     TARGET REACHED POPUP
+========================= -->
+<div id="zikrTargetReachedPopup" style="
+display:none;
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+z-index:99999;
+padding:20px;
+box-sizing:border-box;
+">
+
+  <div style="
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  background:white;
+  border-radius:28px;
+  padding:22px 20px 20px 20px;
+  box-shadow:0 -10px 40px rgba(0,0,0,0.2);
+  text-align:center;
+  animation:slideUpZikr 0.35s ease;
+  ">
+
+    <div style="
+    font-size:22px;
+    font-weight:900;
+    color:#f5b301;
+    margin-bottom:6px;
+    ">
+      Target Reached!
+    </div>
+
+    <div id="zikrReachedMessage" style="
+    font-size:15px;
+    color:#666;
+    margin-bottom:6px;
+    ">
+      Mashallah you have completed
+    </div>
+
+    <div id="zikrReachedName" style="
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:16px;
+    ">
+    </div>
+
+    <div style="
+    display:flex;
+    gap:10px;
+    ">
+
+      <button onclick="continueAfterTarget()" style="
+      flex:1;
+      padding:14px;
+      border-radius:16px;
+      border:none;
+      background:#f2f2f7;
+      font-weight:800;
+      font-size:16px;
+      ">
+        Continue
+      </button>
+
+      <button onclick="resetAfterTarget()" style="
+      flex:1;
+      padding:14px;
+      border-radius:16px;
+      border:none;
+      background:#f5b301;
+      color:white;
+      font-weight:900;
+      font-size:16px;
+      ">
+        Reset
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
      
 <!-- =========================
      ZIKR TARGET POPUP
@@ -5799,6 +5904,9 @@ function increaseZikrTasbih(){
 
 if(zikrCount < zikrTarget){
   zikrCount++;
+     if(zikrTarget !== "inf" && zikrCount === zikrTarget){
+  showZikrTargetReached();
+}
 }
 
 if(currentZikr){
@@ -5818,6 +5926,72 @@ navigator.vibrate(30);
 }
 
 }
+
+
+
+
+
+// =========================
+// SHOW TARGET REACHED POPUP
+// =========================
+function showZikrTargetReached(){
+
+  let popup = document.getElementById("zikrTargetReachedPopup");
+  let msg = document.getElementById("zikrReachedMessage");
+  let name = document.getElementById("zikrReachedName");
+
+  if(msg){
+    msg.innerText = "Mashallah you have completed " + zikrTarget;
+  }
+
+  if(name){
+    name.innerText = getZikrDisplayTitle(currentZikr);
+  }
+
+  if(popup){
+    popup.style.display = "block";
+  }
+
+  // make counter yellow
+  let countEl = document.getElementById("zikrCountText");
+  if(countEl){
+    countEl.style.color = "#f5b301";
+  }
+}
+
+// =========================
+// CONTINUE AFTER TARGET
+// =========================
+function continueAfterTarget(){
+  let popup = document.getElementById("zikrTargetReachedPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+}
+
+// =========================
+// RESET AFTER TARGET
+// =========================
+function resetAfterTarget(){
+
+  zikrCount = 0;
+
+  localStorage.setItem(getZikrCardCountKey(currentZikr), "0");
+
+  updateZikrDisplay();
+
+  let popup = document.getElementById("zikrTargetReachedPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+
+  let countEl = document.getElementById("zikrCountText");
+  if(countEl){
+    countEl.style.color = "#5f946b";
+  }
+
+  updateAllZikrCardUI();
+}  
 
 
      
