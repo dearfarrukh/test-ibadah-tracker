@@ -5646,10 +5646,48 @@ setDate(new Date(p[0],p[1]-1,p[2]));
 // =========================
 function loadTasks(){
 
+// =========================
+// LOAD TASK LIST SAFELY
+// =========================
+let storedTaskList = localStorage.getItem("taskList");
+
+if(storedTaskList){
+try{
+taskList = JSON.parse(storedTaskList);
+}catch(err){
+taskList = [];
+}
+}
+
+// =========================
+// EMERGENCY TASK RECOVERY
+// =========================
+if(!taskList || taskList.length === 0){
+
+let backupStoredTaskList = localStorage.getItem("taskList_backup");
+
+if(backupStoredTaskList){
+try{
+taskList = JSON.parse(backupStoredTaskList);
+}catch(err){
+taskList = [];
+}
+}
+
+}
+
+// =========================
+// SAVE HIDDEN TASK BACKUP
+// =========================
+if(taskList && taskList.length > 0){
+localStorage.setItem("taskList_backup", JSON.stringify(taskList));
+}
+
 let dateKey = formatKey(currentDate);
 let saved = JSON.parse(localStorage.getItem(dateKey)) || {};
 
 let container = document.getElementById("taskContainer");
+if(!container) return;
 container.innerHTML = "";
 
 let key = new Date(currentDate).setHours(0,0,0,0);
@@ -5687,7 +5725,7 @@ ${task.name}
 </span>
 
 ${isSurah(task.name) ?
-'<span onclick="event.stopPropagation();handleTaskClick(\''+task.name+'\')" style="background:#007aff;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📄 PDF</span>'
+'<span onclick="event.stopPropagation();handleTaskClick(\\''+task.name+'\\')" style="background:#007aff;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📄 PDF</span>'
 : ''}
 
 </div>
