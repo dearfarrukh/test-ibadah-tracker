@@ -2989,211 +2989,72 @@ flex-shrink:0;
    <!-- PRAYER TAB -->
   <div id="qazaPrayerTab" style="display:block;">
 
-       <!-- FAJR CARD -->
+    <!-- FAJR CARD -->
     <div style="
     background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,252,0.96) 100%);
-    border-radius:22px;
-    padding:12px 12px 10px 12px;
-    margin-bottom:10px;
-    box-shadow:0 8px 18px rgba(0,0,0,0.05);
+    border-radius:24px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
     border:1px solid rgba(255,255,255,0.75);
     ">
-
-      <!-- FAJR HEADER -->
       <div style="
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
+      text-align:center;
+      font-size:22px;
+      font-weight:800;
+      color:#111;
+      line-height:1.1;
+      margin-bottom:14px;
       ">
-        <div style="
-        font-size:20px;
-        font-weight:800;
-        color:#111;
-        line-height:1.1;
-        ">
-          Fajr
-        </div>
-
-        <div id="fajrLastUpdated" style="
-        font-size:10px;
-        font-weight:700;
-        color:#8a8a8a;
-        line-height:1.25;
-        text-align:right;
-        max-width:42%;
-        ">
-          —
-        </div>
+        Fajr
       </div>
 
-      <!-- FAJR INFO ROW -->
-      <div style="
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      margin-bottom:8px;
-      ">
-
-        <!-- FAJR TOTAL BOX -->
-        <div style="
-        background:#f7f7fa;
-        border-radius:14px;
-        padding:8px 9px;
-        ">
-          <div style="
-          font-size:10px;
-          font-weight:700;
-          color:#888;
-          margin-bottom:4px;
-          line-height:1;
-          ">
-            Total
-          </div>
-
-          <input id="fajrTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="0" style="
-          width:100%;
-          height:28px;
-          border:none;
-          background:transparent;
-          padding:0;
-          margin:0;
-          box-sizing:border-box;
-          font-size:18px;
-          font-weight:800;
-          color:#111;
-          outline:none;
-          ">
-        </div>
-
-        <!-- FAJR REMAINING BOX -->
-        <div style="
-        background:#f7f7fa;
-        border-radius:14px;
-        padding:8px 9px;
-        text-align:right;
-        ">
-          <div style="
-          font-size:10px;
-          font-weight:700;
-          color:#888;
-          margin-bottom:4px;
-          line-height:1;
-          ">
-            Remaining
-          </div>
-
-          <div id="fajrRemaining" style="
-          font-size:18px;
-          font-weight:800;
-          color:#111;
-          line-height:1.1;
-          ">
-            0
-          </div>
-        </div>
-      </div>
-
-      <!-- FAJR MAIN CONTROL BAR -->
-      <div style="
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:0;
+      <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
+      <input id="fajrTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      width:100%;
+      height:44px;
+      border-radius:14px;
+      border:none;
       background:#f3f3f6;
-      border-radius:18px;
-      min-height:52px;
-      padding:0 2px;
-      margin-bottom:8px;
+      padding:0 12px;
+      margin-bottom:12px;
+      box-sizing:border-box;
+      font-size:16px;
+      font-weight:700;
+      color:#111;
+      outline:none;
       ">
 
-      <button
-onclick="handleFajrDecreaseTap()"
-onmousedown="startHoldDecreaseFajr()"
-onmouseup="stopHoldFajr()"
-onmouseleave="stopHoldFajr()"
-ontouchstart="startHoldDecreaseFajr()"
-ontouchend="stopHoldFajr()"
-ontouchcancel="stopHoldFajr()"
-style="
-width:30%;
-min-height:48px;
-border:none;
-background:transparent;
-color:#111;
-font-size:30px;
-font-weight:700;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-border-radius:16px;
--webkit-tap-highlight-color:transparent;
-touch-action:manipulation;
-">
-  −
-</button>
+      <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <button onclick="decreaseFajr()" style="
+        width:44px;height:44px;border-radius:14px;border:none;background:#f3f3f6;color:#111;
+        font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        ">−</button>
 
         <div id="fajrPerformed" style="
-        width:40%;
-        min-height:48px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:22px;
-        font-weight:800;
-        color:#111;
-        line-height:1;
-        ">
-          0
+        flex:1;height:44px;border-radius:14px;background:#f3f3f6;display:flex;align-items:center;justify-content:center;
+        font-size:17px;font-weight:800;color:#111;
+        ">0</div>
+
+        <button onclick="increaseFajr()" style="
+        width:44px;height:44px;border-radius:14px;border:none;background:#111;color:white;
+        font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+        box-shadow:0 6px 14px rgba(0,0,0,0.10);
+        ">+</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#f7f7fa;border-radius:16px;padding:12px 10px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#888;margin-bottom:3px;">Remaining</div>
+          <div id="fajrRemaining" style="font-size:17px;font-weight:800;color:#111;">0</div>
         </div>
 
-       <button
-onclick="handleFajrIncreaseTap()"
-onmousedown="startHoldIncreaseFajr()"
-onmouseup="stopHoldFajr()"
-onmouseleave="stopHoldFajr()"
-ontouchstart="startHoldIncreaseFajr()"
-ontouchend="stopHoldFajr()"
-ontouchcancel="stopHoldFajr()"
-style="
-width:30%;
-min-height:48px;
-border:none;
-background:transparent;
-color:#111;
-font-size:26px;
-font-weight:800;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-border-radius:16px;
--webkit-tap-highlight-color:transparent;
-touch-action:manipulation;
-">
-  +
-</button>
+        <div style="background:#f7f7fa;border-radius:16px;padding:12px 10px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#888;margin-bottom:3px;">Last Updated</div>
+          <div id="fajrLastUpdated" style="font-size:11px;font-weight:700;color:#666;line-height:1.35;">—</div>
+        </div>
       </div>
-
-      <!-- FAJR THIN PROGRESS LINE -->
-     <div style="
-width:100%;
-height:5px;
-background:#6f6f73;
-border-radius:999px;
-overflow:hidden;
-">
-        <div id="fajrProgressFill" style="
-        width:0%;
-        height:100%;
-        background:#34c759;
-        border-radius:999px;
-        transition:width 0.22s ease;
-        "></div>
-      </div>
-
     </div>
 
     <!-- DHUHR CARD -->
@@ -3875,105 +3736,6 @@ overflow:hidden;
 
   </div>
 
-  <!-- =========================
-       QAZA LOCK REQUIRED POPUP
-  ========================= -->
-  <div id="qazaLockRequiredPopup" onclick="closeQazaLockRequiredPopup()" style="
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(0,0,0,0.35);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  z-index:10050;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  box-sizing:border-box;
-  ">
-
-    <div onclick="event.stopPropagation()" style="
-    width:100%;
-    max-width:340px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,248,250,0.96) 100%);
-    border-radius:30px;
-    padding:24px 20px 18px 20px;
-    box-shadow:0 22px 50px rgba(0,0,0,0.20);
-    border:1px solid rgba(255,255,255,0.7);
-    text-align:center;
-    ">
-
-      <div style="
-      width:58px;
-      height:58px;
-      border-radius:50%;
-      background:#f2f2f7;
-      color:#111;
-      font-size:28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin:0 auto 14px auto;
-      ">
-        🔒
-      </div>
-
-      <div style="
-      font-size:22px;
-      font-weight:800;
-      color:#111;
-      margin-bottom:8px;
-      letter-spacing:-0.3px;
-      ">
-        Unlock first
-      </div>
-
-      <div style="
-      font-size:15px;
-      line-height:1.6;
-      color:#666;
-      margin-bottom:18px;
-      ">
-        Unlock first to edit Qaza totals
-      </div>
-
-      <button onclick="unlockQazaEditingFromPopup()" style="
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:16px;
-      margin-bottom:10px;
-      background:#111;
-      color:white;
-      font-size:18px;
-      font-weight:800;
-      cursor:pointer;
-      ">
-        Unlock Editing
-      </button>
-
-      <button onclick="closeQazaLockRequiredPopup()" style="
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:14px;
-      background:#f2f2f7;
-      color:#666;
-      font-size:17px;
-      font-weight:700;
-      cursor:pointer;
-      ">
-        Cancel
-      </button>
-
-    </div>
-  </div>
-
-
-     
 </div>
 
 
@@ -8406,7 +8168,6 @@ function hideAllAppPages(){
   });
 
   hideAllQuranLayers();
-  autoLockQazaIfHidden();
 }
 
 
@@ -8458,12 +8219,12 @@ function updateQazaLockButtonUI(){
     btn.style.border = "1px solid rgba(0,0,0,0.08)";
     btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
   }else{
-  btn.innerText = "🔓";
-  btn.style.background = "#34C759";
-  btn.style.color = "white";
-  btn.style.border = "1px solid rgba(0,0,0,0.08)";
-  btn.style.boxShadow = "0 6px 14px rgba(52,199,89,0.35)";
-}
+    btn.innerText = "🔓";
+    btn.style.background = "#111";
+    btn.style.color = "white";
+    btn.style.border = "1px solid rgba(0,0,0,0.08)";
+    btn.style.boxShadow = "0 6px 14px rgba(0,0,0,0.14)";
+  }
 }
 
 
@@ -8490,59 +8251,6 @@ function updateQazaTotalInputsLockState(){
 
   });
 }
-
-
-
-     // =========================
-// OPEN QAZA LOCK REQUIRED POPUP
-// =========================
-function openQazaLockRequiredPopup(){
-  let popup = document.getElementById("qazaLockRequiredPopup");
-  if(popup){
-    popup.style.display = "flex";
-  }
-}
-
-// =========================
-// CLOSE QAZA LOCK REQUIRED POPUP
-// =========================
-function closeQazaLockRequiredPopup(){
-  let popup = document.getElementById("qazaLockRequiredPopup");
-  if(popup){
-    popup.style.display = "none";
-  }
-}
-
-// =========================
-// UNLOCK QAZA EDITING FROM POPUP
-// =========================
-function unlockQazaEditingFromPopup(){
-  setQazaLockState(false);
-  closeQazaLockRequiredPopup();
-}
-
-
-
-
-
-// =========================
-// QAZA LOCKED INPUT TAP HANDLER
-// =========================
-document.addEventListener("click", function(e){
-
-  let target = e.target;
-  if(!target) return;
-
-  if(target.classList && target.classList.contains("qazaTotalInput")){
-
-    if(getQazaLockState()){
-      e.preventDefault();
-      target.blur();
-      openQazaLockRequiredPopup();
-    }
-
-  }
-});
 
 
      
@@ -8575,31 +8283,10 @@ function openQazaPage(){
   updateQazaTotalInputsLockState();
   window.scrollTo(0,0);
 }
-
-
-// =========================
-// AUTO LOCK WHEN QAZA PAGE HIDES
-// =========================
-function autoLockQazaIfHidden(){
-
-  let qazaPage = document.getElementById("qazaPage");
-
-  if(qazaPage && qazaPage.style.display !== "block"){
-    setQazaLockState(true);
-  }
-}
-
-
-     
-
-     
 // =========================
 // CLOSE QAZA PAGE
 // =========================
 function closeQazaPage(){
-
-  // 🔒 AUTO LOCK WHEN LEAVING QAZA PAGE
-  setQazaLockState(true);
 
   let qazaPage = document.getElementById("qazaPage");
   let morePage = document.getElementById("morePage");
@@ -8614,6 +8301,7 @@ function closeQazaPage(){
 
   window.scrollTo(0,0);
 }
+
 // =========================
 // SHOW QAZA PRAYER TAB
 // =========================
@@ -16282,11 +15970,8 @@ function updateSingleQazaUI(prayer){
   }
 
   updateSingleQazaRing(prayer);
-  updateSingleQazaProgressLine(prayer);
 }
 
-
-     
 // INCREASE ONE QAZA PRAYER
 function increaseQazaPrayer(prayer){
 
@@ -16310,87 +15995,6 @@ function decreaseQazaPrayer(prayer){
   updateQazaProgressTabUI();
 }
 
-// =========================
-// FAJR HOLD BUTTON SYSTEM
-// =========================
-let fajrHoldStartTimer = null;
-let fajrHoldRepeatTimer = null;
-let fajrHoldTriggered = false;
-
-// =========================
-// START HOLD INCREASE FAJR
-// =========================
-function startHoldIncreaseFajr(){
-  stopHoldFajr();
-  fajrHoldTriggered = false;
-
-  fajrHoldStartTimer = setTimeout(function(){
-    fajrHoldTriggered = true;
-    increaseFajr();
-
-    fajrHoldRepeatTimer = setInterval(function(){
-      increaseFajr();
-   }, 180);
-  }, 350);
-}
-
-// =========================
-// START HOLD DECREASE FAJR
-// =========================
-function startHoldDecreaseFajr(){
-  stopHoldFajr();
-  fajrHoldTriggered = false;
-
-  fajrHoldStartTimer = setTimeout(function(){
-    fajrHoldTriggered = true;
-    decreaseFajr();
-
-    fajrHoldRepeatTimer = setInterval(function(){
-      decreaseFajr();
-    }, 180);
-  }, 350);
-}
-
-// =========================
-// STOP HOLD FAJR
-// =========================
-function stopHoldFajr(){
-  if(fajrHoldStartTimer){
-    clearTimeout(fajrHoldStartTimer);
-    fajrHoldStartTimer = null;
-  }
-
-  if(fajrHoldRepeatTimer){
-    clearInterval(fajrHoldRepeatTimer);
-    fajrHoldRepeatTimer = null;
-  }
-}
-
-// =========================
-// HANDLE FAJR INCREASE TAP
-// =========================
-function handleFajrIncreaseTap(){
-  if(fajrHoldTriggered){
-    fajrHoldTriggered = false;
-    return;
-  }
-
-  increaseFajr();
-}
-
-// =========================
-// HANDLE FAJR DECREASE TAP
-// =========================
-function handleFajrDecreaseTap(){
-  if(fajrHoldTriggered){
-    fajrHoldTriggered = false;
-    return;
-  }
-
-  decreaseFajr();
-}
-
-     
 // FAJR BUTTONS
 function increaseFajr(){ increaseQazaPrayer("fajr"); }
 function decreaseFajr(){ decreaseQazaPrayer("fajr"); }
@@ -16443,28 +16047,6 @@ document.addEventListener("input", function(e){
   });
 });
 
-
-// UPDATE ONE QAZA THIN PROGRESS LINE
-function updateSingleQazaProgressLine(prayer){
-
-  let fill = document.getElementById(prayer + "ProgressFill");
-  if(!fill) return;
-
-  let percent = 0;
-
-  if(qazaData[prayer].total > 0){
-    percent = Math.round((qazaData[prayer].done / qazaData[prayer].total) * 100);
-  }
-
-  if(percent < 0) percent = 0;
-  if(percent > 100) percent = 100;
-
-  fill.style.width = percent + "%";
-}
-
-
-
-     
 // =========================
 // GET QAZA GOAL PER DAY
 // =========================
