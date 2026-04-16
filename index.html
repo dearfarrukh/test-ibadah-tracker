@@ -3108,22 +3108,32 @@ flex-shrink:0;
       margin-bottom:8px;
       ">
 
-        <button onclick="decreaseFajr()" style="
-        width:30%;
-        min-height:48px;
-        border:none;
-        background:transparent;
-        color:#111;
-        font-size:30px;
-        font-weight:700;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        border-radius:16px;
-        ">
-          −
-        </button>
+      <button
+onclick="handleFajrDecreaseTap()"
+onmousedown="startHoldDecreaseFajr()"
+onmouseup="stopHoldFajr()"
+onmouseleave="stopHoldFajr()"
+ontouchstart="startHoldDecreaseFajr()"
+ontouchend="stopHoldFajr()"
+ontouchcancel="stopHoldFajr()"
+style="
+width:30%;
+min-height:48px;
+border:none;
+background:transparent;
+color:#111;
+font-size:30px;
+font-weight:700;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border-radius:16px;
+-webkit-tap-highlight-color:transparent;
+touch-action:manipulation;
+">
+  −
+</button>
 
         <div id="fajrPerformed" style="
         width:40%;
@@ -3139,22 +3149,32 @@ flex-shrink:0;
           0
         </div>
 
-        <button onclick="increaseFajr()" style="
-        width:30%;
-        min-height:48px;
-        border:none;
-        background:transparent;
-        color:#111;
-        font-size:26px;
-        font-weight:800;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        border-radius:16px;
-        ">
-          +
-        </button>
+       <button
+onclick="handleFajrIncreaseTap()"
+onmousedown="startHoldIncreaseFajr()"
+onmouseup="stopHoldFajr()"
+onmouseleave="stopHoldFajr()"
+ontouchstart="startHoldIncreaseFajr()"
+ontouchend="stopHoldFajr()"
+ontouchcancel="stopHoldFajr()"
+style="
+width:30%;
+min-height:48px;
+border:none;
+background:transparent;
+color:#111;
+font-size:26px;
+font-weight:800;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border-radius:16px;
+-webkit-tap-highlight-color:transparent;
+touch-action:manipulation;
+">
+  +
+</button>
       </div>
 
       <!-- FAJR THIN PROGRESS LINE -->
@@ -16290,6 +16310,87 @@ function decreaseQazaPrayer(prayer){
   updateQazaProgressTabUI();
 }
 
+// =========================
+// FAJR HOLD BUTTON SYSTEM
+// =========================
+let fajrHoldStartTimer = null;
+let fajrHoldRepeatTimer = null;
+let fajrHoldTriggered = false;
+
+// =========================
+// START HOLD INCREASE FAJR
+// =========================
+function startHoldIncreaseFajr(){
+  stopHoldFajr();
+  fajrHoldTriggered = false;
+
+  fajrHoldStartTimer = setTimeout(function(){
+    fajrHoldTriggered = true;
+    increaseFajr();
+
+    fajrHoldRepeatTimer = setInterval(function(){
+      increaseFajr();
+    }, 100);
+  }, 250);
+}
+
+// =========================
+// START HOLD DECREASE FAJR
+// =========================
+function startHoldDecreaseFajr(){
+  stopHoldFajr();
+  fajrHoldTriggered = false;
+
+  fajrHoldStartTimer = setTimeout(function(){
+    fajrHoldTriggered = true;
+    decreaseFajr();
+
+    fajrHoldRepeatTimer = setInterval(function(){
+      decreaseFajr();
+    }, 100);
+  }, 250);
+}
+
+// =========================
+// STOP HOLD FAJR
+// =========================
+function stopHoldFajr(){
+  if(fajrHoldStartTimer){
+    clearTimeout(fajrHoldStartTimer);
+    fajrHoldStartTimer = null;
+  }
+
+  if(fajrHoldRepeatTimer){
+    clearInterval(fajrHoldRepeatTimer);
+    fajrHoldRepeatTimer = null;
+  }
+}
+
+// =========================
+// HANDLE FAJR INCREASE TAP
+// =========================
+function handleFajrIncreaseTap(){
+  if(fajrHoldTriggered){
+    fajrHoldTriggered = false;
+    return;
+  }
+
+  increaseFajr();
+}
+
+// =========================
+// HANDLE FAJR DECREASE TAP
+// =========================
+function handleFajrDecreaseTap(){
+  if(fajrHoldTriggered){
+    fajrHoldTriggered = false;
+    return;
+  }
+
+  decreaseFajr();
+}
+
+     
 // FAJR BUTTONS
 function increaseFajr(){ increaseQazaPrayer("fajr"); }
 function decreaseFajr(){ decreaseQazaPrayer("fajr"); }
