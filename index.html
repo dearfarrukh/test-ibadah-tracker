@@ -2931,8 +2931,8 @@ user-select: none;
       Qaza Tracker
     </div>
 
-   <!-- Qaza Lock Button -->
-<button id="qazaLockToggleBtn" style="
+  <!-- Qaza Lock Button -->
+<button id="qazaLockToggleBtn" onclick="toggleQazaLockState()" style="
 width:42px;
 height:42px;
 border-radius:50%;
@@ -8170,6 +8170,67 @@ function hideAllAppPages(){
   hideAllQuranLayers();
 }
 
+
+// =========================
+// GET QAZA LOCK STATE
+// =========================
+function getQazaLockState(){
+  let saved = localStorage.getItem("qazaTotalsLocked");
+
+  if(saved === null){
+    localStorage.setItem("qazaTotalsLocked", "true");
+    return true;
+  }
+
+  return saved === "true";
+}
+
+// =========================
+// SET QAZA LOCK STATE
+// =========================
+function setQazaLockState(isLocked){
+  localStorage.setItem("qazaTotalsLocked", isLocked ? "true" : "false");
+  updateQazaLockButtonUI();
+}
+
+// =========================
+// TOGGLE QAZA LOCK STATE
+// =========================
+function toggleQazaLockState(){
+  let isLocked = getQazaLockState();
+  setQazaLockState(!isLocked);
+}
+
+// =========================
+// UPDATE QAZA LOCK BUTTON UI
+// =========================
+function updateQazaLockButtonUI(){
+
+  let btn = document.getElementById("qazaLockToggleBtn");
+  if(!btn) return;
+
+  let isLocked = getQazaLockState();
+
+  if(isLocked){
+    btn.innerText = "🔒";
+    btn.style.background = "white";
+    btn.style.color = "#111";
+    btn.style.border = "1px solid rgba(0,0,0,0.08)";
+    btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
+  }else{
+    btn.innerText = "🔓";
+    btn.style.background = "#111";
+    btn.style.color = "white";
+    btn.style.border = "1px solid rgba(0,0,0,0.08)";
+    btn.style.boxShadow = "0 6px 14px rgba(0,0,0,0.14)";
+  }
+}
+
+
+
+
+     
+
 // =========================
 // OPEN QAZA PAGE
 // =========================
@@ -8191,9 +8252,10 @@ function openQazaPage(){
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
   if(bottomNav) bottomNav.style.display = "flex";
 
-   showQazaPrayerTab();
+  showQazaPrayerTab();
   loadFajrData();
   updateQazaProgressTabUI();
+  updateQazaLockButtonUI();
   window.scrollTo(0,0);
 }
 
