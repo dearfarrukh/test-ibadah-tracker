@@ -3224,7 +3224,15 @@ overflow:hidden;
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <button onclick="decreaseDhuhr()" style="
+       <button 
+onclick="handleQazaTap('dhuhr','decrease')"
+onmousedown="startHoldQaza('dhuhr','decrease')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('dhuhr','decrease')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#f3f3f6;color:#111;
         font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         ">−</button>
@@ -3234,7 +3242,15 @@ overflow:hidden;
         font-size:17px;font-weight:800;color:#111;
         ">0</div>
 
-        <button onclick="increaseDhuhr()" style="
+        <button 
+onclick="handleQazaTap('dhuhr','increase')"
+onmousedown="startHoldQaza('dhuhr','increase')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('dhuhr','increase')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#111;color:white;
         font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         box-shadow:0 6px 14px rgba(0,0,0,0.10);
@@ -3282,7 +3298,15 @@ overflow:hidden;
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <button onclick="decreaseAsr()" style="
+        <button 
+onclick="handleQazaTap('asr','decrease')"
+onmousedown="startHoldQaza('asr','decrease')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('asr','decrease')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#f3f3f6;color:#111;
         font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         ">−</button>
@@ -3292,7 +3316,15 @@ overflow:hidden;
         font-size:17px;font-weight:800;color:#111;
         ">0</div>
 
-        <button onclick="increaseAsr()" style="
+        <button 
+onclick="handleQazaTap('asr','increase')"
+onmousedown="startHoldQaza('asr','increase')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('asr','increase')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#111;color:white;
         font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         box-shadow:0 6px 14px rgba(0,0,0,0.10);
@@ -3340,7 +3372,15 @@ overflow:hidden;
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <button onclick="decreaseMaghrib()" style="
+        <button 
+onclick="handleQazaTap('maghrib','decrease')"
+onmousedown="startHoldQaza('maghrib','decrease')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('maghrib','decrease')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#f3f3f6;color:#111;
         font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         ">−</button>
@@ -3350,7 +3390,15 @@ overflow:hidden;
         font-size:17px;font-weight:800;color:#111;
         ">0</div>
 
-        <button onclick="increaseMaghrib()" style="
+        <button 
+onclick="handleQazaTap('maghrib','increase')"
+onmousedown="startHoldQaza('maghrib','increase')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('maghrib','increase')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#111;color:white;
         font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         box-shadow:0 6px 14px rgba(0,0,0,0.10);
@@ -3398,7 +3446,15 @@ overflow:hidden;
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <button onclick="decreaseIsha()" style="
+        <button 
+onclick="handleQazaTap('isha','decrease')"
+onmousedown="startHoldQaza('isha','decrease')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('isha','decrease')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#f3f3f6;color:#111;
         font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         ">−</button>
@@ -3408,7 +3464,15 @@ overflow:hidden;
         font-size:17px;font-weight:800;color:#111;
         ">0</div>
 
-        <button onclick="increaseIsha()" style="
+        <button 
+onclick="handleQazaTap('isha','increase')"
+onmousedown="startHoldQaza('isha','increase')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('isha','increase')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#111;color:white;
         font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         box-shadow:0 6px 14px rgba(0,0,0,0.10);
@@ -3456,7 +3520,15 @@ overflow:hidden;
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Salah Performed</div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <button onclick="decreaseWitr()" style="
+        <button 
+onclick="handleQazaTap('witr','decrease')"
+onmousedown="startHoldQaza('witr','decrease')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('witr','decrease')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#f3f3f6;color:#111;
         font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         ">−</button>
@@ -3466,7 +3538,15 @@ overflow:hidden;
         font-size:17px;font-weight:800;color:#111;
         ">0</div>
 
-        <button onclick="increaseWitr()" style="
+        <button 
+onclick="handleQazaTap('witr','increase')"
+onmousedown="startHoldQaza('witr','increase')"
+onmouseup="stopHoldQaza()"
+onmouseleave="stopHoldQaza()"
+ontouchstart="startHoldQaza('witr','increase')"
+ontouchend="stopHoldQaza()"
+ontouchcancel="stopHoldQaza()"
+style="
         width:44px;height:44px;border-radius:14px;border:none;background:#111;color:white;
         font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
         box-shadow:0 6px 14px rgba(0,0,0,0.10);
@@ -16390,6 +16470,77 @@ function handleFajrDecreaseTap(){
   decreaseFajr();
 }
 
+
+// =========================
+// UNIVERSAL QAZA HOLD SYSTEM
+// =========================
+let qazaHoldStartTimer = null;
+let qazaHoldRepeatTimer = null;
+let qazaHoldTriggered = false;
+let currentHoldPrayer = null;
+let currentHoldType = null;
+
+// START HOLD
+function startHoldQaza(prayer, type){
+  stopHoldQaza();
+
+  currentHoldPrayer = prayer;
+  currentHoldType = type;
+  qazaHoldTriggered = false;
+
+  qazaHoldStartTimer = setTimeout(function(){
+    qazaHoldTriggered = true;
+
+    if(type === "increase"){
+      window["increase" + capitalize(prayer)]();
+    } else {
+      window["decrease" + capitalize(prayer)]();
+    }
+
+    qazaHoldRepeatTimer = setInterval(function(){
+      if(type === "increase"){
+        window["increase" + capitalize(prayer)]();
+      } else {
+        window["decrease" + capitalize(prayer)]();
+      }
+    }, 500); // 2 per second
+  }, 450); // hold delay
+}
+
+// STOP HOLD
+function stopHoldQaza(){
+  if(qazaHoldStartTimer){
+    clearTimeout(qazaHoldStartTimer);
+    qazaHoldStartTimer = null;
+  }
+
+  if(qazaHoldRepeatTimer){
+    clearInterval(qazaHoldRepeatTimer);
+    qazaHoldRepeatTimer = null;
+  }
+}
+
+// TAP HANDLER
+function handleQazaTap(prayer, type){
+  if(qazaHoldTriggered){
+    qazaHoldTriggered = false;
+    return;
+  }
+
+  if(type === "increase"){
+    window["increase" + capitalize(prayer)]();
+  } else {
+    window["decrease" + capitalize(prayer)]();
+  }
+}
+
+// CAPITALIZE helper
+function capitalize(str){
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+     
      
 // FAJR BUTTONS
 function increaseFajr(){ increaseQazaPrayer("fajr"); }
