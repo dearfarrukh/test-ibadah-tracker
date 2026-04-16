@@ -17278,6 +17278,258 @@ document.addEventListener("input", function(e){
 });
 
 
+     // =========================
+// ASR HOLD BUTTON SYSTEM
+// =========================
+let asrHoldStartTimer = null;
+let asrHoldRepeatTimer = null;
+let asrHoldTriggered = false;
+
+function startHoldIncreaseAsr(){
+  stopHoldAsr();
+  asrHoldTriggered = false;
+
+  asrHoldStartTimer = setTimeout(function(){
+    asrHoldTriggered = true;
+    increaseAsr();
+
+    asrHoldRepeatTimer = setInterval(function(){
+      increaseAsr();
+    }, 180);
+  }, 350);
+}
+
+function startHoldDecreaseAsr(){
+  stopHoldAsr();
+  asrHoldTriggered = false;
+
+  asrHoldStartTimer = setTimeout(function(){
+    asrHoldTriggered = true;
+    decreaseAsr();
+
+    asrHoldRepeatTimer = setInterval(function(){
+      decreaseAsr();
+    }, 180);
+  }, 350);
+}
+
+function stopHoldAsr(){
+  if(asrHoldStartTimer){
+    clearTimeout(asrHoldStartTimer);
+    asrHoldStartTimer = null;
+  }
+
+  if(asrHoldRepeatTimer){
+    clearInterval(asrHoldRepeatTimer);
+    asrHoldRepeatTimer = null;
+  }
+}
+
+function handleAsrIncreaseTap(){
+  if(asrHoldTriggered){
+    asrHoldTriggered = false;
+    return;
+  }
+  increaseAsr();
+}
+
+function handleAsrDecreaseTap(){
+  if(asrHoldTriggered){
+    asrHoldTriggered = false;
+    return;
+  }
+  decreaseAsr();
+}
+
+// =========================
+// MAGHRIB HOLD BUTTON SYSTEM
+// =========================
+let maghribHoldStartTimer = null;
+let maghribHoldRepeatTimer = null;
+let maghribHoldTriggered = false;
+
+function startHoldIncreaseMaghrib(){
+  stopHoldMaghrib();
+  maghribHoldTriggered = false;
+
+  maghribHoldStartTimer = setTimeout(function(){
+    maghribHoldTriggered = true;
+    increaseMaghrib();
+
+    maghribHoldRepeatTimer = setInterval(function(){
+      increaseMaghrib();
+    }, 180);
+  }, 350);
+}
+
+function startHoldDecreaseMaghrib(){
+  stopHoldMaghrib();
+  maghribHoldTriggered = false;
+
+  maghribHoldStartTimer = setTimeout(function(){
+    maghribHoldTriggered = true;
+    decreaseMaghrib();
+
+    maghribHoldRepeatTimer = setInterval(function(){
+      decreaseMaghrib();
+    }, 180);
+  }, 350);
+}
+
+function stopHoldMaghrib(){
+  if(maghribHoldStartTimer){
+    clearTimeout(maghribHoldStartTimer);
+    maghribHoldStartTimer = null;
+  }
+
+  if(maghribHoldRepeatTimer){
+    clearInterval(maghribHoldRepeatTimer);
+    maghribHoldRepeatTimer = null;
+  }
+}
+
+function handleMaghribIncreaseTap(){
+  if(maghribHoldTriggered){
+    maghribHoldTriggered = false;
+    return;
+  }
+  increaseMaghrib();
+}
+
+function handleMaghribDecreaseTap(){
+  if(maghribHoldTriggered){
+    maghribHoldTriggered = false;
+    return;
+  }
+  decreaseMaghrib();
+}
+
+// =========================
+// ISHA HOLD BUTTON SYSTEM
+// =========================
+let ishaHoldStartTimer = null;
+let ishaHoldRepeatTimer = null;
+let ishaHoldTriggered = false;
+
+function startHoldIncreaseIsha(){
+  stopHoldIsha();
+  ishaHoldTriggered = false;
+
+  ishaHoldStartTimer = setTimeout(function(){
+    ishaHoldTriggered = true;
+    increaseIsha();
+
+    ishaHoldRepeatTimer = setInterval(function(){
+      increaseIsha();
+    }, 180);
+  }, 350);
+}
+
+function startHoldDecreaseIsha(){
+  stopHoldIsha();
+  ishaHoldTriggered = false;
+
+  ishaHoldStartTimer = setTimeout(function(){
+    ishaHoldTriggered = true;
+    decreaseIsha();
+
+    ishaHoldRepeatTimer = setInterval(function(){
+      decreaseIsha();
+    }, 180);
+  }, 350);
+}
+
+function stopHoldIsha(){
+  if(ishaHoldStartTimer){
+    clearTimeout(ishaHoldStartTimer);
+    ishaHoldStartTimer = null;
+  }
+
+  if(ishaHoldRepeatTimer){
+    clearInterval(ishaHoldRepeatTimer);
+    ishaHoldRepeatTimer = null;
+  }
+}
+
+function handleIshaIncreaseTap(){
+  if(ishaHoldTriggered){
+    ishaHoldTriggered = false;
+    return;
+  }
+  increaseIsha();
+}
+
+function handleIshaDecreaseTap(){
+  if(ishaHoldTriggered){
+    ishaHoldTriggered = false;
+    return;
+  }
+  decreaseIsha();
+}
+
+// =========================
+// WITR HOLD BUTTON SYSTEM
+// =========================
+let witrHoldStartTimer = null;
+let witrHoldRepeatTimer = null;
+let witrHoldTriggered = false;
+
+function startHoldIncreaseWitr(){
+  stopHoldWitr();
+  witrHoldTriggered = false;
+
+  witrHoldStartTimer = setTimeout(function(){
+    witrHoldTriggered = true;
+    increaseWitr();
+
+    witrHoldRepeatTimer = setInterval(function(){
+      increaseWitr();
+    }, 180);
+  }, 350);
+}
+
+function startHoldDecreaseWitr(){
+  stopHoldWitr();
+  witrHoldTriggered = false;
+
+  witrHoldStartTimer = setTimeout(function(){
+    witrHoldTriggered = true;
+    decreaseWitr();
+
+    witrHoldRepeatTimer = setInterval(function(){
+      decreaseWitr();
+    }, 180);
+  }, 350);
+}
+
+function stopHoldWitr(){
+  if(witrHoldStartTimer){
+    clearTimeout(witrHoldStartTimer);
+    witrHoldStartTimer = null;
+  }
+
+  if(witrHoldRepeatTimer){
+    clearInterval(witrHoldRepeatTimer);
+    witrHoldRepeatTimer = null;
+  }
+}
+
+function handleWitrIncreaseTap(){
+  if(witrHoldTriggered){
+    witrHoldTriggered = false;
+    return;
+  }
+  increaseWitr();
+}
+
+function handleWitrDecreaseTap(){
+  if(witrHoldTriggered){
+    witrHoldTriggered = false;
+    return;
+  }
+  decreaseWitr();
+}
+
 // UPDATE ONE QAZA THIN PROGRESS LINE
 function updateSingleQazaProgressLine(prayer){
 
