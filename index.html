@@ -1516,7 +1516,7 @@ z-index:6;
 <div id="fingerRingMenuPanel" style="
 position:absolute;
 top:0;
-right:calc(-75% + 18px);
+right:-75%;
 width:75%;
 height:100%;
 background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(246,247,250,0.98) 100%);
@@ -1529,7 +1529,7 @@ overflow:visible;
 display:block;
 ">
 <!-- FINGER RING MENU HANDLE -->
-<div onclick="openFingerRingMenu()" style="
+<div onclick="toggleFingerRingMenu()" style="
 position:absolute;
 left:-18px;
 top:50%;
@@ -15073,6 +15073,23 @@ function openFingerRingMenu(){
   if(overlay) overlay.style.display = "block";
 }
 
+
+     function toggleFingerRingMenu(){
+
+  let panel = document.getElementById("fingerRingMenuPanel");
+  let overlay = document.getElementById("fingerRingMenuOverlay");
+
+  if(panel.style.right === "0px" || panel.style.right === "0%"){
+    // CLOSE
+    panel.style.right = "-75%";
+    if(overlay) overlay.style.display = "none";
+  }else{
+    // OPEN
+    panel.style.right = "0";
+    if(overlay) overlay.style.display = "block";
+  }
+
+}
 // =========================
 // CLOSE FINGER RING MENU
 // =========================
