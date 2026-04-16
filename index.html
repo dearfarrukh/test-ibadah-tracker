@@ -2877,7 +2877,7 @@ If the page does not load, Google may be blocking iframe on your device.
 <!-- =========================
      QAZA TRACKER PAGE
 ========================= -->
-<div id="qazaPage" style="
+<div id="qazaPage" ondblclick="event.preventDefault()" style="
 display:none;
 position:fixed;
 top:0;
@@ -16129,6 +16129,27 @@ function updateQazaProgressTabUI(){
 }
   
 
+
+     // =========================
+// STOP DOUBLE TAP ZOOM (QAZA PAGE)
+// =========================
+(function(){
+  let lastTap = 0;
+
+  document.addEventListener('touchend', function(e){
+    let qaza = document.getElementById("qazaPage");
+    if(!qaza || qaza.style.display !== "block") return;
+
+    let now = new Date().getTime();
+    if(now - lastTap < 300){
+      e.preventDefault();
+    }
+    lastTap = now;
+  }, { passive:false });
+})();
+
+
+     
   
 </script>
   
