@@ -3736,6 +3736,105 @@ flex-shrink:0;
 
   </div>
 
+  <!-- =========================
+       QAZA LOCK REQUIRED POPUP
+  ========================= -->
+  <div id="qazaLockRequiredPopup" onclick="closeQazaLockRequiredPopup()" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  z-index:10050;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  box-sizing:border-box;
+  ">
+
+    <div onclick="event.stopPropagation()" style="
+    width:100%;
+    max-width:340px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,248,250,0.96) 100%);
+    border-radius:30px;
+    padding:24px 20px 18px 20px;
+    box-shadow:0 22px 50px rgba(0,0,0,0.20);
+    border:1px solid rgba(255,255,255,0.7);
+    text-align:center;
+    ">
+
+      <div style="
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      background:#f2f2f7;
+      color:#111;
+      font-size:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto 14px auto;
+      ">
+        🔒
+      </div>
+
+      <div style="
+      font-size:22px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:8px;
+      letter-spacing:-0.3px;
+      ">
+        Unlock first
+      </div>
+
+      <div style="
+      font-size:15px;
+      line-height:1.6;
+      color:#666;
+      margin-bottom:18px;
+      ">
+        Unlock first to edit Qaza totals
+      </div>
+
+      <button onclick="unlockQazaEditingFromPopup()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:10px;
+      background:#111;
+      color:white;
+      font-size:18px;
+      font-weight:800;
+      cursor:pointer;
+      ">
+        Unlock Editing
+      </button>
+
+      <button onclick="closeQazaLockRequiredPopup()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:14px;
+      background:#f2f2f7;
+      color:#666;
+      font-size:17px;
+      font-weight:700;
+      cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+    </div>
+  </div>
+
+
+     
 </div>
 
 
@@ -8251,6 +8350,59 @@ function updateQazaTotalInputsLockState(){
 
   });
 }
+
+
+
+     // =========================
+// OPEN QAZA LOCK REQUIRED POPUP
+// =========================
+function openQazaLockRequiredPopup(){
+  let popup = document.getElementById("qazaLockRequiredPopup");
+  if(popup){
+    popup.style.display = "flex";
+  }
+}
+
+// =========================
+// CLOSE QAZA LOCK REQUIRED POPUP
+// =========================
+function closeQazaLockRequiredPopup(){
+  let popup = document.getElementById("qazaLockRequiredPopup");
+  if(popup){
+    popup.style.display = "none";
+  }
+}
+
+// =========================
+// UNLOCK QAZA EDITING FROM POPUP
+// =========================
+function unlockQazaEditingFromPopup(){
+  setQazaLockState(false);
+  closeQazaLockRequiredPopup();
+}
+
+
+
+
+
+// =========================
+// QAZA LOCKED INPUT TAP HANDLER
+// =========================
+document.addEventListener("click", function(e){
+
+  let target = e.target;
+  if(!target) return;
+
+  if(target.classList && target.classList.contains("qazaTotalInput")){
+
+    if(getQazaLockState()){
+      e.preventDefault();
+      target.blur();
+      openQazaLockRequiredPopup();
+    }
+
+  }
+});
 
 
      
