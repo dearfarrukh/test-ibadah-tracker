@@ -1378,7 +1378,7 @@ overflow:hidden;
       letter-spacing:1px;
       margin-bottom:4%;
       ">
-        TALLY COUNTER
+        TASBIH COUNTER
       </div>
 
       <!-- DIGITAL SCREEN -->
@@ -1497,6 +1497,251 @@ z-index:6;
       0 / 33
     </div>
 
+
+  <!-- FINGER RING MENU OVERLAY -->
+  <div id="fingerRingMenuOverlay" onclick="closeFingerRingMenu()" style="
+  display:none;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.22);
+  z-index:20;
+  "></div>
+
+  <!-- FINGER RING MENU HANDLE -->
+  <div onclick="openFingerRingMenu()" style="
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:8%;
+  max-width:28px;
+  min-width:20px;
+  height:18%;
+  min-height:110px;
+  max-height:150px;
+  background:rgba(255,255,255,0.92);
+  border-top-left-radius:18px;
+  border-bottom-left-radius:18px;
+  box-shadow:-4px 8px 20px rgba(0,0,0,0.12);
+  z-index:21;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  ">
+
+    <div style="
+    font-size:24px;
+    font-weight:700;
+    color:#111;
+    line-height:1;
+    ">
+      ‹
+    </div>
+  </div>
+
+  <!-- FINGER RING RIGHT MENU PANEL -->
+  <div id="fingerRingMenuPanel" style="
+  position:absolute;
+  top:0;
+  right:-78%;
+  width:78%;
+  height:100%;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(246,247,250,0.98) 100%);
+  border-top-left-radius:30px;
+  border-bottom-left-radius:30px;
+  box-shadow:-12px 0 30px rgba(0,0,0,0.16);
+  z-index:22;
+  transition:right 0.28s ease;
+  overflow:hidden;
+  ">
+
+    <!-- MENU INNER -->
+    <div style="
+    position:relative;
+    width:100%;
+    height:100%;
+    padding:20px 16px 24px 16px;
+    box-sizing:border-box;
+    ">
+
+      <!-- MENU TOP BAR -->
+      <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+      ">
+
+        <div style="
+        font-size:22px;
+        font-weight:800;
+        color:#111;
+        letter-spacing:-0.3px;
+        ">
+          Zikr List
+        </div>
+
+        <button onclick="closeFingerRingMenu()" style="
+        width:38px;
+        height:38px;
+        border:none;
+        border-radius:12px;
+        background:#f2f2f7;
+        color:#111;
+        font-size:20px;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        ">
+          ✕
+        </button>
+      </div>
+
+      <!-- ZIKR LIST SCROLL AREA -->
+      <div id="fingerRingZikrList" style="
+      position:absolute;
+      top:78px;
+      left:16px;
+      right:16px;
+      bottom:94px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding-right:2px;
+      box-sizing:border-box;
+      ">
+
+        <!-- DEMO ZIKR CARD -->
+        <div style="
+        background:white;
+        border-radius:22px;
+        padding:14px 14px;
+        box-shadow:0 8px 20px rgba(0,0,0,0.06);
+        border:1px solid rgba(0,0,0,0.03);
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        ">
+
+          <div style="
+          flex:1;
+          min-width:0;
+          ">
+            <div style="
+            font-size:17px;
+            font-weight:800;
+            color:#111;
+            margin-bottom:4px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            ">
+              SubhanAllah
+            </div>
+
+            <div style="
+            font-size:13px;
+            font-weight:700;
+            color:#666;
+            ">
+              12 / 33
+            </div>
+          </div>
+
+          <div style="
+          width:24px;
+          text-align:center;
+          font-size:18px;
+          font-weight:800;
+          color:#34c759;
+          ">
+            ✓
+          </div>
+
+          <button style="
+          width:32px;
+          height:32px;
+          border:none;
+          border-radius:50%;
+          background:#f2f2f7;
+          color:#666;
+          font-size:18px;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex-shrink:0;
+          ">
+            ⋮
+          </button>
+        </div>
+
+      </div>
+
+      <!-- MENU BOTTOM ACTIONS -->
+      <div style="
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      ">
+
+        <!-- RESET ALL -->
+        <button onclick="alert('Reset all comes next step')" style="
+        min-width:54px;
+        height:54px;
+        border:none;
+        border-radius:50%;
+        background:#f2f2f7;
+        color:#111;
+        font-size:24px;
+        font-weight:800;
+        cursor:pointer;
+        box-shadow:0 8px 18px rgba(0,0,0,0.08);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        ">
+          ↻
+        </button>
+
+        <!-- ADD ZIKR -->
+        <button onclick="alert('Add zikr comes next step')" style="
+        min-width:56px;
+        height:56px;
+        border:none;
+        border-radius:50%;
+        background:#111;
+        color:white;
+        font-size:30px;
+        font-weight:700;
+        cursor:pointer;
+        box-shadow:0 10px 22px rgba(0,0,0,0.16);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        ">
+          ＋
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+       
   </div>
 
 </div>
@@ -14796,6 +15041,9 @@ function showRoyalMode(){
      // =========================
 // SHOW FINGER RING MODE
 // =========================
+// =========================
+// SHOW FINGER RING MODE
+// =========================
 function showFingerRingMode(){
 
   let classicTasbih = document.getElementById("classicTasbih");
@@ -14807,8 +15055,39 @@ function showFingerRingMode(){
   if(darkNightTasbih) darkNightTasbih.style.display = "none";
   if(royalTasbih) royalTasbih.style.display = "none";
   if(fingerRingTasbih) fingerRingTasbih.style.display = "block";
+
+  closeFingerRingMenu();
+  updateFingerRingTasbihUI();
 }
 
+// =========================
+// OPEN FINGER RING MENU
+// =========================
+function openFingerRingMenu(){
+
+  let panel = document.getElementById("fingerRingMenuPanel");
+  let overlay = document.getElementById("fingerRingMenuOverlay");
+
+  if(panel) panel.style.right = "0";
+  if(overlay) overlay.style.display = "block";
+}
+
+// =========================
+// CLOSE FINGER RING MENU
+// =========================
+function closeFingerRingMenu(){
+
+  let panel = document.getElementById("fingerRingMenuPanel");
+  let overlay = document.getElementById("fingerRingMenuOverlay");
+
+  if(panel) panel.style.right = "-78%";
+  if(overlay) overlay.style.display = "none";
+}
+
+
+
+
+     
 // =========================
 // UPDATE ROYAL TASBIH UI
 // =========================
