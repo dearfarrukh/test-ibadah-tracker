@@ -3010,7 +3010,7 @@ flex-shrink:0;
       </div>
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
-      <input id="fajrTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      <input id="fajrTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
       width:100%;
       height:44px;
       border-radius:14px;
@@ -3078,7 +3078,7 @@ flex-shrink:0;
       </div>
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
-      <input id="dhuhrTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      <input id="dhuhrTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
       width:100%;height:44px;border-radius:14px;border:none;background:#f3f3f6;padding:0 12px;margin-bottom:12px;
       box-sizing:border-box;font-size:16px;font-weight:700;color:#111;outline:none;
       ">
@@ -3136,7 +3136,7 @@ flex-shrink:0;
       </div>
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
-      <input id="asrTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      <input id="asrTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
       width:100%;height:44px;border-radius:14px;border:none;background:#f3f3f6;padding:0 12px;margin-bottom:12px;
       box-sizing:border-box;font-size:16px;font-weight:700;color:#111;outline:none;
       ">
@@ -3194,7 +3194,7 @@ flex-shrink:0;
       </div>
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
-      <input id="maghribTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      <input id="maghribTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
       width:100%;height:44px;border-radius:14px;border:none;background:#f3f3f6;padding:0 12px;margin-bottom:12px;
       box-sizing:border-box;font-size:16px;font-weight:700;color:#111;outline:none;
       ">
@@ -3252,7 +3252,7 @@ flex-shrink:0;
       </div>
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
-      <input id="ishaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      <input id="ishaTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
       width:100%;height:44px;border-radius:14px;border:none;background:#f3f3f6;padding:0 12px;margin-bottom:12px;
       box-sizing:border-box;font-size:16px;font-weight:700;color:#111;outline:none;
       ">
@@ -3310,7 +3310,7 @@ flex-shrink:0;
       </div>
 
       <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:6px;">Total Qaza Salah</div>
-      <input id="witrTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
+      <input id="witrTotalInput" class="qazaTotalInput" type="number" min="0" placeholder="Enter total qaza" style="
       width:100%;height:44px;border-radius:14px;border:none;background:#f3f3f6;padding:0 12px;margin-bottom:12px;
       box-sizing:border-box;font-size:16px;font-weight:700;color:#111;outline:none;
       ">
@@ -8191,6 +8191,7 @@ function getQazaLockState(){
 function setQazaLockState(isLocked){
   localStorage.setItem("qazaTotalsLocked", isLocked ? "true" : "false");
   updateQazaLockButtonUI();
+  updateQazaTotalInputsLockState();
 }
 
 // =========================
@@ -8228,6 +8229,29 @@ function updateQazaLockButtonUI(){
 
 
 
+     // =========================
+// UPDATE QAZA TOTAL INPUTS LOCK STATE
+// =========================
+function updateQazaTotalInputsLockState(){
+
+  let totalInputs = document.querySelectorAll(".qazaTotalInput");
+  let isLocked = getQazaLockState();
+
+  totalInputs.forEach(function(input){
+
+    if(isLocked){
+      input.readOnly = true;
+      input.style.opacity = "0.75";
+      input.style.cursor = "pointer";
+    }else{
+      input.readOnly = false;
+      input.style.opacity = "1";
+      input.style.cursor = "text";
+    }
+
+  });
+}
+
 
      
 
@@ -8256,9 +8280,9 @@ function openQazaPage(){
   loadFajrData();
   updateQazaProgressTabUI();
   updateQazaLockButtonUI();
+  updateQazaTotalInputsLockState();
   window.scrollTo(0,0);
 }
-
 // =========================
 // CLOSE QAZA PAGE
 // =========================
