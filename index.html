@@ -8267,6 +8267,7 @@ function hideAllAppPages(){
   });
 
   hideAllQuranLayers();
+  autoLockQazaIfHidden();
 }
 
 
@@ -8435,10 +8436,31 @@ function openQazaPage(){
   updateQazaTotalInputsLockState();
   window.scrollTo(0,0);
 }
+
+
+// =========================
+// AUTO LOCK WHEN QAZA PAGE HIDES
+// =========================
+function autoLockQazaIfHidden(){
+
+  let qazaPage = document.getElementById("qazaPage");
+
+  if(qazaPage && qazaPage.style.display !== "block"){
+    setQazaLockState(true);
+  }
+}
+
+
+     
+
+     
 // =========================
 // CLOSE QAZA PAGE
 // =========================
 function closeQazaPage(){
+
+  // 🔒 AUTO LOCK WHEN LEAVING QAZA PAGE
+  setQazaLockState(true);
 
   let qazaPage = document.getElementById("qazaPage");
   let morePage = document.getElementById("morePage");
@@ -8453,7 +8475,6 @@ function closeQazaPage(){
 
   window.scrollTo(0,0);
 }
-
 // =========================
 // SHOW QAZA PRAYER TAB
 // =========================
