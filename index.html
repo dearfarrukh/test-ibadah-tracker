@@ -3315,14 +3315,14 @@ border:1px solid rgba(255,255,255,0.75);
   margin-bottom:8px;
   ">
 
-    <button
-onclick="handleQazaTap('dhuhr','decrease')"
-onmousedown="startHoldQaza('dhuhr','decrease')"
-onmouseup="stopHoldQaza()"
-onmouseleave="stopHoldQaza()"
-ontouchstart="startHoldQaza('dhuhr','decrease')"
-ontouchend="stopHoldQaza()"
-ontouchcancel="stopHoldQaza()"
+  <button
+onclick="handleDhuhrDecreaseTap()"
+onmousedown="startHoldDecreaseDhuhr()"
+onmouseup="stopHoldDhuhr()"
+onmouseleave="stopHoldDhuhr()"
+ontouchstart="startHoldDecreaseDhuhr()"
+ontouchend="stopHoldDhuhr()"
+ontouchcancel="stopHoldDhuhr()"
 style="
 width:30%;
 min-height:48px;
@@ -3342,28 +3342,28 @@ touch-action:manipulation;
   −
 </button>
 
-    <div id="dhuhrPerformed" style="
-    width:40%;
-    min-height:48px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-    font-weight:800;
-    color:#111;
-    line-height:1;
-    ">
-      0
-    </div>
+<div id="dhuhrPerformed" style="
+width:40%;
+min-height:48px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:800;
+color:#111;
+line-height:1;
+">
+  0
+</div>
 
-    <button
-onclick="handleQazaTap('dhuhr','increase')"
-onmousedown="startHoldQaza('dhuhr','increase')"
-onmouseup="stopHoldQaza()"
-onmouseleave="stopHoldQaza()"
-ontouchstart="startHoldQaza('dhuhr','increase')"
-ontouchend="stopHoldQaza()"
-ontouchcancel="stopHoldQaza()"
+<button
+onclick="handleDhuhrIncreaseTap()"
+onmousedown="startHoldIncreaseDhuhr()"
+onmouseup="stopHoldDhuhr()"
+onmouseleave="stopHoldDhuhr()"
+ontouchstart="startHoldIncreaseDhuhr()"
+ontouchend="stopHoldDhuhr()"
+ontouchcancel="stopHoldDhuhr()"
 style="
 width:30%;
 min-height:48px;
@@ -16545,7 +16545,85 @@ function handleFajrDecreaseTap(){
 // FAJR BUTTONS
 function increaseFajr(){ increaseQazaPrayer("fajr"); }
 function decreaseFajr(){ decreaseQazaPrayer("fajr"); }
+// =========================
+// DHUHR HOLD BUTTON SYSTEM
+// =========================
+let dhuhrHoldStartTimer = null;
+let dhuhrHoldRepeatTimer = null;
+let dhuhrHoldTriggered = false;
 
+// =========================
+// START HOLD INCREASE DHUHR
+// =========================
+function startHoldIncreaseDhuhr(){
+  stopHoldDhuhr();
+  dhuhrHoldTriggered = false;
+
+  dhuhrHoldStartTimer = setTimeout(function(){
+    dhuhrHoldTriggered = true;
+    increaseDhuhr();
+
+    dhuhrHoldRepeatTimer = setInterval(function(){
+      increaseDhuhr();
+    }, 180);
+  }, 350);
+}
+
+// =========================
+// START HOLD DECREASE DHUHR
+// =========================
+function startHoldDecreaseDhuhr(){
+  stopHoldDhuhr();
+  dhuhrHoldTriggered = false;
+
+  dhuhrHoldStartTimer = setTimeout(function(){
+    dhuhrHoldTriggered = true;
+    decreaseDhuhr();
+
+    dhuhrHoldRepeatTimer = setInterval(function(){
+      decreaseDhuhr();
+    }, 180);
+  }, 350);
+}
+
+// =========================
+// STOP HOLD DHUHR
+// =========================
+function stopHoldDhuhr(){
+  if(dhuhrHoldStartTimer){
+    clearTimeout(dhuhrHoldStartTimer);
+    dhuhrHoldStartTimer = null;
+  }
+
+  if(dhuhrHoldRepeatTimer){
+    clearInterval(dhuhrHoldRepeatTimer);
+    dhuhrHoldRepeatTimer = null;
+  }
+}
+
+// =========================
+// HANDLE DHUHR INCREASE TAP
+// =========================
+function handleDhuhrIncreaseTap(){
+  if(dhuhrHoldTriggered){
+    dhuhrHoldTriggered = false;
+    return;
+  }
+
+  increaseDhuhr();
+}
+
+// =========================
+// HANDLE DHUHR DECREASE TAP
+// =========================
+function handleDhuhrDecreaseTap(){
+  if(dhuhrHoldTriggered){
+    dhuhrHoldTriggered = false;
+    return;
+  }
+
+  decreaseDhuhr();
+}
 // DHUHR BUTTONS
 function increaseDhuhr(){ increaseQazaPrayer("dhuhr"); }
 function decreaseDhuhr(){ decreaseQazaPrayer("dhuhr"); }
