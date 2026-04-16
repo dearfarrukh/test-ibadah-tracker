@@ -7512,6 +7512,7 @@ center.innerText = count + " / " + target;
 buildTasbihBars();
 updateDarkNightNumber();
 updateRoyalTasbihUI();
+updateFingerRingTasbihUI();
   
 if(counter){
 counter.classList.remove("glow");
@@ -8060,7 +8061,31 @@ buildTasbihBars();
 updateDarkNightNumber();
 updateRoyalTasbihUI();
 }
-  
+
+
+// =========================
+// UPDATE FINGER RING TASBIH UI
+// =========================
+function updateFingerRingTasbihUI(){
+
+  let count = parseInt(localStorage.getItem(getTasbihKey()) || 0);
+  let target = localStorage.getItem(getTargetKey()) || 33;
+
+  let screen = document.getElementById("fingerRingDigitalScreen");
+  let progress = document.getElementById("fingerRingSelectedZikrProgress");
+
+  if(screen){
+    screen.innerText = count;
+  }
+
+  if(progress){
+    progress.innerText = count + " / " + (target === "inf" ? "∞" : target);
+  }
+}
+
+
+
+     
 // =========================
 // RESET TASBIH
 // =========================
@@ -8087,6 +8112,7 @@ center.innerText = "0 / " + target;
 buildTasbihBars();
 updateDarkNightNumber();
 updateRoyalTasbihUI();
+updateFingerRingTasbihUI();
 }
   
 // ===== ZIKR TASBIH SYSTEM =====
