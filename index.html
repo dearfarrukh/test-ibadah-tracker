@@ -1510,39 +1510,7 @@ z-index:6;
   z-index:20;
   "></div>
 
-<!-- FINGER RING MENU HANDLE -->
-<div onclick="openFingerRingMenu()" style="
-position:absolute;
-right:0;
-top:50%;
-transform:translateY(-50%);
-width:4.5%;
-max-width:16px;
-min-width:10px;
-height:16%;
-min-height:90px;
-max-height:130px;
-background:rgba(255,255,255,0.96);
-border-top-left-radius:18px;
-border-bottom-left-radius:18px;
-box-shadow:-4px 8px 18px rgba(0,0,0,0.10);
-z-index:21;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-">
 
-  <div style="
-  font-size:22px;
-  font-weight:800;
-  color:#111;
-  line-height:1;
-  opacity:0.8;
-  ">
-    ‹
-  </div>
-</div>
 
 <!-- FINGER RING RIGHT MENU PANEL -->
 <div id="fingerRingMenuPanel" style="
@@ -1560,7 +1528,38 @@ transition:right 0.28s ease;
 overflow:hidden;
 display:block;
 ">
+<!-- FINGER RING MENU HANDLE -->
+<div onclick="openFingerRingMenu()" style="
+position:absolute;
+left:-18px;
+top:50%;
+transform:translateY(-50%);
+width:18px;
+height:110px;
+background:rgba(255,255,255,0.96);
+border-top-left-radius:18px;
+border-bottom-left-radius:18px;
+box-shadow:-4px 8px 18px rgba(0,0,0,0.10);
+z-index:23;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+">
 
+  <div style="
+  font-size:22px;
+  font-weight:800;
+  color:#111;
+  line-height:1;
+  opacity:0.8;
+  ">
+    ‹
+  </div>
+</div>
+
+
+     
     <!-- MENU INNER -->
     <div style="
     position:relative;
