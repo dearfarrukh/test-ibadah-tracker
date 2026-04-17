@@ -1524,7 +1524,7 @@ border-top-left-radius:30px;
 border-bottom-left-radius:30px;
 box-shadow:-12px 0 30px rgba(0,0,0,0.16);
 z-index:22;
-transform:translateX(100%);
+transform:translateX(110%);
 transition:transform 0.28s ease;
 overflow:visible;
 display:block;
@@ -15095,7 +15095,7 @@ function toggleFingerRingMenu(){
   if(!panel) return;
 
   if(panel.style.transform === "translateX(0%)" || panel.style.transform === "translateX(0px)" || panel.style.transform === "translateX(0)"){
-    if(panel) panel.style.transform = "translateX(100%)";
+    if(panel) panel.style.transform = "translateX(110%)";
     if(overlay) overlay.style.display = "none";
     if(handle) handle.style.right = "0";
     if(arrow) arrow.innerText = "‹";
@@ -15119,7 +15119,7 @@ function closeFingerRingMenu(){
   let handle = document.getElementById("fingerRingMenuHandle");
   let arrow = document.getElementById("fingerRingMenuHandleArrow");
 
-  if(panel) panel.style.transform = "translateX(100%)";
+  if(panel) panel.style.transform = "translateX(110%)";
   if(overlay) overlay.style.display = "none";
   if(handle) handle.style.right = "0";
   if(arrow) arrow.innerText = "‹";
