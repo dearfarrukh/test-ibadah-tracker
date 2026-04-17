@@ -4761,17 +4761,19 @@ z-index:9997;
 <!-- =========================
      LEFT EDGE MENU HANDLE
 ========================= -->
-
 <div id="menuHandle" onclick="toggleSideMenu()" style="
 position:fixed;
-top:20px;;
+top:18px;
 left:0;
-transform:none;
-width:28px;
-height:70px;
-background:#6f6f73;
-border-top-right-radius:20px;
-border-bottom-right-radius:20px;
+width:34px;
+height:96px;
+background:rgba(255,255,255,0.68);
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+border-top-right-radius:18px;
+border-bottom-right-radius:18px;
+border:1px solid rgba(255,255,255,0.55);
+box-shadow:0 6px 18px rgba(0,0,0,0.10);
 display:flex;
 align-items:center;
 justify-content:center;
@@ -4781,11 +4783,15 @@ transition:all 0.25s ease;
 ">
 
 <span id="menuHandleIcon" style="
-color:#000000;
-font-size:18px;
-font-weight:700;
+color:#3a3a3c;
+font-size:10px;
+font-weight:800;
+letter-spacing:1.5px;
+line-height:1.15;
+text-align:center;
+display:block;
 ">
-›
+M<br>E<br>N<br>U
 </span>
 
 </div>
