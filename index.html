@@ -4837,9 +4837,10 @@ Menu
 
      
 <!-- Go To Main Page Card -->
+<!-- Go To Main Page Card -->
 <div onclick="goToMainPage()" style="
 background:rgba(255,255,255,0.82);
-padding:16px 18px;
+padding:14px 18px;
 border-radius:20px;
 font-size:18px;
 font-weight:800;
@@ -4848,14 +4849,18 @@ margin-bottom:14px;
 box-shadow:0 8px 18px rgba(0,0,0,0.08);
 cursor:pointer;
 border:1px solid rgba(255,255,255,0.55);
+display:flex;
+align-items:center;
 ">
-<img src="Images/Icons/home.png" style="width:26px;height:26px;margin-right:10px;"> Main Page
+<img src="Images/Icons/home.png" class="sideMenuIcon">
+<span>Main Page</span>
 </div>
   
 <!-- Refresh App Card -->
+<!-- Refresh App Card -->
 <div onclick="refreshApp()" style="
 background:rgba(255,255,255,0.82);
-padding:16px 18px;
+padding:14px 18px;
 border-radius:20px;
 font-size:18px;
 font-weight:800;
@@ -4864,14 +4869,18 @@ margin-bottom:14px;
 box-shadow:0 8px 18px rgba(0,0,0,0.08);
 cursor:pointer;
 border:1px solid rgba(255,255,255,0.55);
+display:flex;
+align-items:center;
 ">
-<img src="Images/Icons/refresh.png" style="width:26px;height:26px;margin-right:10px;"> Refresh App
+<img src="Images/Icons/refresh.png" class="sideMenuIcon">
+<span>Refresh App</span>
 </div>
 
 <!-- Open Backup Popup Card -->
+<!-- Open Backup Popup Card -->
 <div onclick="openBackupPopup()" style="
 background:rgba(255,255,255,0.82);
-padding:16px 18px;
+padding:14px 18px;
 border-radius:20px;
 font-size:18px;
 font-weight:800;
@@ -4880,16 +4889,19 @@ margin-bottom:14px;
 box-shadow:0 8px 18px rgba(0,0,0,0.08);
 cursor:pointer;
 border:1px solid rgba(255,255,255,0.55);
+display:flex;
+align-items:center;
 ">
-<img src="Images/Icons/backup.png" style="width:26px;height:26px;margin-right:10px;"> Backup
+<img src="Images/Icons/backup.png" class="sideMenuIcon">
+<span>Backup</span>
 </div>
-
   
   
 <!-- Open App Settings Page Card -->
+<!-- Open App Settings Page Card -->
 <div onclick="openAppSettingsPage()" style="
 background:rgba(255,255,255,0.82);
-padding:16px 18px;
+padding:14px 18px;
 border-radius:20px;
 font-size:18px;
 font-weight:800;
@@ -4898,8 +4910,11 @@ margin-bottom:14px;
 box-shadow:0 8px 18px rgba(0,0,0,0.08);
 cursor:pointer;
 border:1px solid rgba(255,255,255,0.55);
+display:flex;
+align-items:center;
 ">
-<img src="Images/Icons/settings.png" style="width:26px;height:26px;margin-right:10px;"> App Settings
+<img src="Images/Icons/settings.png" class="sideMenuIcon">
+<span>App Settings</span>
 </div>
 
   
@@ -16050,6 +16065,10 @@ function openMonthlySalahPrintPreviewPage(){
         <title>Monthly Salah Timetable</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
+
+
+
+     
           body{
             margin:0;
             padding:12px 12px 28px 12px;
@@ -16272,6 +16291,20 @@ function openMonthlySalahPrintPreviewPage(){
   user-select:none;
   -webkit-user-select:none;
 }
+
+/* =========================
+   SIDE MENU PREMIUM ICON
+========================= */
+.sideMenuIcon{
+  width:42px;
+  height:42px;
+  margin-right:14px;
+  vertical-align:middle;
+  object-fit:contain;
+}
+
+
+
      
 
   </style>
