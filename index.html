@@ -13931,21 +13931,18 @@ let menu = document.getElementById("sideMenu");
 let overlay = document.getElementById("sideMenuOverlay");
 let handleIcon = document.getElementById("menuHandleIcon");
 
+// always keep MENU text
+if(handleIcon) handleIcon.innerHTML = "M<br>E<br>N<br>U";
+
 if(menu.style.left === "0px"){
 
 menu.style.left = "-100%";
 if(overlay) overlay.style.display = "none";
 
-// arrow → (closed)
-if(handleIcon) handleIcon.textContent = "›";
-
 }else{
 
 menu.style.left = "0px";
 if(overlay) overlay.style.display = "block";
-
-// arrow ← (open)
-if(handleIcon) handleIcon.textContent = "‹";
 
 }
 
