@@ -18456,19 +18456,67 @@ box-shadow:0 10px 24px rgba(0,0,0,0.08);
 
 
   
-<!-- Bottom Navigation -->
-<div id="bottomNav">
+<!-- =========================
+     BOTTOM APP NAVIGATION
+========================= -->
+<div id="bottomNav" style="
+display:flex;
+justify-content:space-around;
+align-items:center;
+padding:10px 0;
+background:rgba(255,255,255,0.9);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+border-top:1px solid #ddd;
+">
 
-<div onclick="openHomePage()" class="navItem">🏠<br>Home</div>
+<!-- HOME -->
+<div onclick="openHomePage()" class="navItem" style="
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+">
+  <img src="Images/Icons/Home1.png" style="width:32px;height:32px;">
+  <div style="font-size:12px;font-weight:700;">Home</div>
+</div>
 
-<!-- Open Salah Page Card -->
-<div class="navItem" onclick="openSalahPage()">🕒<br>Salah</div>
+<!-- SALAH -->
+<div onclick="openSalahPage()" class="navItem" style="
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+">
+  <img src="Images/Icons/Salah.png" style="width:32px;height:32px;">
+  <div style="font-size:12px;font-weight:700;">Salah</div>
+</div>
 
-<!-- Open Tracker Page Card -->
-<div class="navItem" onclick="openTrackerPage()">📈<br>Tracker</div>
+<!-- TRACKER -->
+<div onclick="openTrackerPage()" class="navItem" style="
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+">
+  <img src="Images/Icons/Tracker.png" style="width:32px;height:32px;">
+  <div style="font-size:12px;font-weight:700;">Tracker</div>
+</div>
 
-<!-- Open More Page Card -->
-<div class="navItem" onclick="openMorePage()">•••<br>More</div>
+<!-- MORE -->
+<div onclick="openMorePage()" class="navItem" style="
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+">
+  <img src="Images/Icons/More.png" style="width:32px;height:32px;">
+  <div style="font-size:12px;font-weight:700;">More</div>
+</div>
 
 </div>
 
