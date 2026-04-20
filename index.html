@@ -11200,65 +11200,9 @@ function openQuran16BookmarksPage(){
 
 
 
-// =========================
-// OPEN 16 LINE QURAN MAIN PAGE
-// =========================
-function openQuran16MainPage(){
 
-  let arabicQuranPage = document.getElementById("arabicQuranPage");
-  let quran15Page = document.getElementById("quran15Page");
-  let quran16MainPage = document.getElementById("quran16MainPage");
-  let quranReadingPage = document.getElementById("quranReadingPage");
-  let juzIndexPage = document.getElementById("juzIndexPage");
-  let surahIndexPage = document.getElementById("surahIndexPage");
-  let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
-  let bottomNav = document.getElementById("bottomNav");
 
-  if(arabicQuranPage) arabicQuranPage.style.display = "none";
-  if(quran15Page) quran15Page.style.display = "none";
-  if(quranReadingPage) quranReadingPage.style.display = "none";
-  if(juzIndexPage) juzIndexPage.style.display = "none";
-  if(surahIndexPage) surahIndexPage.style.display = "none";
-  if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
 
-  if(quran16MainPage) quran16MainPage.style.display = "block";
-  if(bottomNav) bottomNav.style.display = "flex";
-
-  window.scrollTo(0,0);
-}
-
-// =========================
-// CLOSE 16 LINE QURAN MAIN PAGE
-// =========================
-function closeQuran16MainPage(){
-
-  let quran16MainPage = document.getElementById("quran16MainPage");
-  let bottomNav = document.getElementById("bottomNav");
-
-  if(quran16MainPage) quran16MainPage.style.display = "none";
-  if(bottomNav) bottomNav.style.display = "flex";
-
-  openHomePage();
-}
-
-     // =========================
-// TEMP 16 LINE QURAN FUNCTIONS
-// =========================
-function openQuran16ContinueReading(){
-  alert("16 Line Continue Reading next step");
-}
-
-function openQuran16SurahListPage(){
-  alert("16 Line Surah List next step");
-}
-
-function openQuran16JuzListPage(){
-  alert("16 Line Juz List next step");
-}
-
-function openQuran16BookmarksPage(){
-  alert("16 Line Bookmarks next step");
-}
 
 // =========================
 // OPEN 15 LINE SURAH PAGE
