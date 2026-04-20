@@ -11116,6 +11116,22 @@ window.scrollTo(0,0);
 
 }
 
+     // =========================
+// CLOSE 15 LINE QURAN PAGE
+// =========================
+function closeQuran15Page(){
+
+let quranPage = document.getElementById("quranPage");
+let quran15Page = document.getElementById("quran15Page");
+let bottomNav = document.getElementById("bottomNav");
+
+if(quran15Page) quran15Page.style.display = "none";
+if(quranPage) quranPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
 
 // =========================
 // OPEN 16 LINE QURAN MAIN PAGE
@@ -11181,22 +11197,7 @@ function openQuran16BookmarksPage(){
 }
      
 
-// =========================
-// CLOSE 15 LINE QURAN PAGE
-// =========================
-function closeQuran15Page(){
 
-let quranPage = document.getElementById("quranPage");
-let quran15Page = document.getElementById("quran15Page");
-let bottomNav = document.getElementById("bottomNav");
-
-if(quran15Page) quran15Page.style.display = "none";
-if(quranPage) quranPage.style.display = "block";
-if(bottomNav) bottomNav.style.display = "flex";
-
-window.scrollTo(0,0);
-
-}
 
 
 // =========================
