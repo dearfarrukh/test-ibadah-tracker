@@ -11177,23 +11177,51 @@ function closeQuran16MainPage(){
 }
 
 
-     // =========================
-// TEMP 16 LINE QURAN FUNCTIONS
+// =========================
+// 16 LINE QURAN SHARED READER FUNCTIONS
 // =========================
 function openQuran16ContinueReading(){
-  alert("16 Line Continue Reading next step");
+
+  let quran16MainPage = document.getElementById("quran16MainPage");
+  if(quran16MainPage) quran16MainPage.style.display = "none";
+
+  resumeQuran15Reading();
 }
 
 function openQuran16SurahListPage(){
-  alert("16 Line Surah List next step");
+
+  let quran16MainPage = document.getElementById("quran16MainPage");
+  let surahIndexPage = document.getElementById("surahIndexPage");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quran16MainPage) quran16MainPage.style.display = "none";
+  if(surahIndexPage) surahIndexPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  window.scrollTo(0,0);
+  loadSurahIndexList();
 }
 
 function openQuran16JuzListPage(){
-  alert("16 Line Juz List next step");
+
+  let quran16MainPage = document.getElementById("quran16MainPage");
+  let juzIndexPage = document.getElementById("juzIndexPage");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quran16MainPage) quran16MainPage.style.display = "none";
+  if(juzIndexPage) juzIndexPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  window.scrollTo(0,0);
+  loadJuzIndexList();
 }
 
 function openQuran16BookmarksPage(){
-  alert("16 Line Bookmarks next step");
+
+  let quran16MainPage = document.getElementById("quran16MainPage");
+  if(quran16MainPage) quran16MainPage.style.display = "none";
+
+  openQuran15BookmarkPage();
 }
      
 
