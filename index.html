@@ -312,11 +312,7 @@ height:auto;
    INTERACTIVE QURAN PAGE DRAG CSS
    ========================= */
 .quranFlipStage{
-position:absolute;
-top:0;
-left:0;
-right:0;
-bottom:0;
+position:relative;
 width:100%;
 height:100%;
 margin:0;
@@ -324,19 +320,17 @@ padding:0;
 overflow:hidden;
 touch-action:pan-y;
 background:#000;
+box-sizing:border-box;
 }
 
 .quranFlipTrack{
-position:absolute;
-top:0;
-left:0;
-right:0;
-bottom:0;
+position:relative;
 width:100%;
 height:100%;
 margin:0;
 padding:0;
 background:#000;
+box-sizing:border-box;
 }
 
 .quranFlipSheet{
@@ -5691,11 +5685,11 @@ quranReaderTopBarVisible = !quranReaderTopBarVisible;
 
 if(quranReaderTopBarVisible){
   topBar.style.top = "0";
-  content.style.transform = "translateY(74px)";
+  content.style.paddingTop = "74px";
 }
 else{
   topBar.style.top = "-74px";
-  content.style.transform = "translateY(0)";
+  content.style.paddingTop = "0";
 }
 }
 
@@ -5714,7 +5708,7 @@ if(topBar){
 }
 
 if(content){
-  content.style.transform = "translateY(0)";
+  content.style.paddingTop = "0";
 }
 
 }
@@ -19800,10 +19794,13 @@ top:0;
 left:0;
 right:0;
 bottom:0;
+width:100%;
 height:100%;
 background:#000;
-transition:transform 0.28s ease;
+transition:padding-top 0.28s ease;
 overflow:hidden;
+box-sizing:border-box;
+padding-top:0;
 ">
 
       <!-- PUT YOUR EXISTING QURAN READING INNER CONTENT BELOW THIS LINE -->
@@ -19865,17 +19862,14 @@ border:1px solid rgba(140,120,90,0.10);
 ========================= -->
 <div id="mushafPageView" style="
 display:none;
-position:absolute;
-top:0;
-left:0;
-right:0;
-bottom:0;
+position:relative;
 width:100%;
 height:100%;
 margin:0;
 padding:0;
 background:#000;
 overflow:hidden;
+box-sizing:border-box;
 ">
 
   <!-- Full Quran Page Wrapper -->
