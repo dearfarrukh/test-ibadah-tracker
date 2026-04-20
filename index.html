@@ -5672,13 +5672,11 @@ quranReaderTopBarVisible = !quranReaderTopBarVisible;
 
 if(quranReaderTopBarVisible){
   topBar.style.top = "0";
-  content.style.top = "74px";
-  content.style.height = "calc(100% - 74px)";
+ content.style.transform = "translateY(74px)";
 }
 else{
   topBar.style.top = "-74px";
-  content.style.top = "0";
-  content.style.height = "100%";
+  content.style.transform = "translateY(0)";
 }
 
 }
@@ -19667,9 +19665,7 @@ box-sizing:border-box;
 
 
      
-  <!-- =========================
-     QURAN READING PAGE
-========================= -->
+ 
 <!-- =========================
      QURAN READING PAGE
 ========================= -->
@@ -19739,15 +19735,17 @@ box-sizing:border-box;
     </div>
 
     <!-- READING CONTENT HOLDER -->
-    <div id="quranReaderContent" style="
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    transition:top 0.28s ease, height 0.28s ease;
-    overflow:hidden;
-    ">
+ <div id="quranReaderContent" style="
+position:absolute;
+top:0;
+left:0;
+right:0;
+bottom:0;
+height:100%;
+transition:top 0.28s ease, height 0.28s ease;
+overflow:hidden;
+background:#000;
+">
 
       <!-- PUT YOUR EXISTING QURAN READING INNER CONTENT BELOW THIS LINE -->
 
