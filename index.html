@@ -319,6 +319,8 @@ right:0;
 bottom:0;
 width:100%;
 height:100%;
+margin:0;
+padding:0;
 overflow:hidden;
 touch-action:pan-y;
 background:#000;
@@ -332,6 +334,8 @@ right:0;
 bottom:0;
 width:100%;
 height:100%;
+margin:0;
+padding:0;
 background:#000;
 }
 
@@ -339,11 +343,16 @@ background:#000;
 position:absolute;
 top:0;
 left:0;
+right:0;
+bottom:0;
 width:100%;
 height:100%;
+margin:0;
+padding:0;
 transform:translateX(0%);
 transition:transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
 will-change:transform;
+background:#000;
 }
 
 .quranFlipSheet img{
@@ -19692,7 +19701,7 @@ box-sizing:border-box;
 ">
 
   <!-- TAP AREA WRAP -->
-<div id="quranReaderShell" onclick="toggleQuranReaderTopBar()" style="
+<div id="quranReaderShell" style="
 position:absolute;
 top:0;
 left:0;
@@ -19713,7 +19722,7 @@ height:74px;
 display:flex;
 align-items:flex-end;
 justify-content:space-between;
-padding:0 16px 12px 52px;
+padding:0 16px 12px 62px;
 box-sizing:border-box;
 background:rgba(20,20,20,0.92);
 backdrop-filter:blur(16px);
@@ -19785,7 +19794,7 @@ transition:top 0.28s ease;
     </div>
 
     <!-- READING CONTENT HOLDER -->
- <div id="quranReaderContent" style="
+<div id="quranReaderContent" onclick="toggleQuranReaderTopBar()" style="
 position:absolute;
 top:0;
 left:0;
@@ -19857,10 +19866,15 @@ border:1px solid rgba(140,120,90,0.10);
 <div id="mushafPageView" style="
 display:none;
 position:absolute;
-top:60px;
+top:0;
 left:0;
 right:0;
 bottom:0;
+width:100%;
+height:100%;
+margin:0;
+padding:0;
+background:#000;
 overflow:hidden;
 ">
 
