@@ -19843,7 +19843,7 @@ box-sizing:border-box;
     </div>
 
     <!-- Surah Number Card -->
-    <div onclick="openQuran16SurahPrompt()" style="
+   <div onclick="openQuran16SurahPage()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -19960,6 +19960,77 @@ box-sizing:border-box;
 
 </div>
 
+
+<!-- =========================
+     QURAN 16 SURAH PAGE
+========================= -->
+<div id="quran16SurahPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5003;
+background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
+
+  <!-- =========================
+       QURAN 16 SURAH PAGE TOP BAR
+  ========================= -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  ">
+
+    <button onclick="closeQuran16SurahPage()" style="
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.08);
+    background:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    ">
+      16 Line Surah Index
+    </div>
+
+    <div style="width:42px;height:42px;"></div>
+  </div>
+
+  <!-- =========================
+       QURAN 16 SURAH LIST
+  ========================= -->
+  <div id="quran16SurahList" style="
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  "></div>
+
+</div>
+
+
+
+     
 <!-- =========================
      16 LINE QURAN READING PAGE
 ========================= -->
