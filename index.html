@@ -5716,6 +5716,39 @@ if(content){
 }
 
 // =========================
+// CLOSE SHARED QURAN READER
+// =========================
+function closeSharedQuranReader(){
+
+  let quranReadingPage = document.getElementById("quranReadingPage");
+  let quran16Page = document.getElementById("quran16Page");
+  let quran15Page = document.getElementById("quran15Page");
+  let arabicQuranPage = document.getElementById("arabicQuranPage");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quranReadingPage) quranReadingPage.style.display = "none";
+
+  if(quranReadingSource === "quran16"){
+    if(quran16Page) quran16Page.style.display = "block";
+  }
+  else if(
+    quranReadingSource === "quran15" ||
+    quranReadingSource === "continue15" ||
+    quranReadingSource === "juz"
+  ){
+    if(quran15Page) quran15Page.style.display = "block";
+  }
+  else{
+    if(arabicQuranPage) arabicQuranPage.style.display = "block";
+  }
+
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  window.scrollTo(0,0);
+}
+     
+
+// =========================
 // OPEN 16 LINE QURAN PAGE
 // =========================
 function openQuran16Page(){
@@ -20610,7 +20643,7 @@ transition:top 0.28s ease;
 ">
 
   <!-- Close Quran Reading Page Button -->
-  <button onclick="event.stopPropagation();closeQuranReadingPage()" style="
+<button onclick="event.stopPropagation();closeSharedQuranReader()" style="
   width:42px;
   height:42px;
   border:none;
