@@ -5715,6 +5715,75 @@ if(content){
 
 }
 
+
+// =========================
+// TOGGLE 16 LINE QURAN READER TOP BAR
+// =========================
+function toggleQuran16ReaderTopBar(){
+
+let topBar = document.getElementById("quran16ReaderMiniTopBar");
+let content = document.getElementById("quran16ReaderContent");
+
+if(!topBar || !content) return;
+
+if(typeof quran16ReaderTopBarVisible === "undefined"){
+  window.quran16ReaderTopBarVisible = false;
+}
+
+quran16ReaderTopBarVisible = !quran16ReaderTopBarVisible;
+
+if(quran16ReaderTopBarVisible){
+  topBar.style.top = "0";
+  content.style.paddingTop = "74px";
+}
+else{
+  topBar.style.top = "-74px";
+  content.style.paddingTop = "0";
+}
+}
+
+// =========================
+// RESET 16 LINE QURAN READER TOP BAR
+// =========================
+function resetQuran16ReaderTopBar(){
+
+let topBar = document.getElementById("quran16ReaderMiniTopBar");
+let content = document.getElementById("quran16ReaderContent");
+
+quran16ReaderTopBarVisible = false;
+
+if(topBar){
+  topBar.style.top = "-74px";
+}
+
+if(content){
+  content.style.paddingTop = "0";
+}
+}
+
+// =========================
+// CLOSE 16 LINE QURAN READING PAGE
+// =========================
+function closeQuran16ReadingPage(){
+
+  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
+  let quran16Page = document.getElementById("quran16Page");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
+  if(quran16Page) quran16Page.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  resetQuran16ReaderTopBar();
+  window.scrollTo(0,0);
+}
+
+
+
+
+
+     
+
 // =========================
 // ENSURE 16 LINE READER PAGE
 // =========================
