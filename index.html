@@ -5843,7 +5843,7 @@ function openQuran16FromSurah(surahNumber){
 
      
 
-     // =========================
+// =========================
 // OPEN 16 LINE QURAN PAGE NUMBER
 // =========================
 function openQuran16PageNumber(page){
@@ -5856,11 +5856,12 @@ function openQuran16PageNumber(page){
   let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
   let quranReadingTextCard = document.getElementById("quranReadingTextCard");
   let mushafPageView = document.getElementById("mushafPageView");
+  let mushafPageImage = document.getElementById("mushafPageImage");
   let bottomNav = document.getElementById("bottomNav");
 
-  hideAllQuranLayers();
-
   quranReadingSource = "quran16";
+
+  hideAllQuranLayers();
 
   if(quran16Page) quran16Page.style.display = "none";
   if(quranReadingPage) quranReadingPage.style.display = "block";
@@ -5874,8 +5875,13 @@ function openQuran16PageNumber(page){
   if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
   if(mushafPageView) mushafPageView.style.display = "block";
 
-  loadQuran16Page(page);
+  if(mushafPageImage){
+    mushafPageImage.style.display = "block";
+    mushafPageImage.removeAttribute("src");
+  }
+
   resetQuranReaderTopBar();
+  loadQuran16Page(page);
 
   setTimeout(function(){
     setupInteractiveQuranFlip({
@@ -6953,18 +6959,17 @@ function loadQuran16Page(page){
   currentQuran16PageNumber = page;
 
   localStorage.setItem("lastQuran16Page", String(page));
-  localStorage.setItem("lastQuran16ReadingSource", quranReadingSource || "quran16");
+  localStorage.setItem("lastQuran16ReadingSource", "quran16");
 
   let img = document.getElementById("mushafPageImage");
   let debug = document.getElementById("mushafDebugText");
 
-  if(!img) return;
-
-  let localPath = getQuran16ImagePath(page);
-
-  if(debug){
-    debug.innerText = "Opening 16 Line page " + page;
+  if(!img){
+    alert("mushafPageImage not found");
+    return;
   }
+
+  let localPath = "16linequranpages/" + page + ".jpg";
 
   img.onload = function(){
     if(debug){
@@ -6976,11 +6981,14 @@ function loadQuran16Page(page){
     if(debug){
       debug.innerText = "Could not load: " + localPath;
     }
+    alert("Could not load " + localPath);
   };
 
   img.src = localPath;
 }
 
+
+     
 // =========================
 // NEXT 16 LINE QURAN PAGE
 // =========================
