@@ -6919,6 +6919,65 @@ function getPrevQuran16ImageSrc(){
 
 
 // =========================
+// LOAD 16 LINE QURAN PAGE
+// =========================
+function loadQuran16Page(page){
+
+  if(page < 1) page = 1;
+  if(page > totalQuran16Pages) page = totalQuran16Pages;
+
+  currentQuran16PageNumber = page;
+
+  localStorage.setItem("lastQuran16Page", String(page));
+  localStorage.setItem("lastQuran16ReadingSource", "quran16");
+
+  let img = document.getElementById("mushafPageImage");
+  let debug = document.getElementById("mushafDebugText");
+
+  if(!img){
+    alert("mushafPageImage not found");
+    return;
+  }
+
+  let localPath = "16linequranpages/" + page + ".jpg";
+
+  img.onload = function(){
+    if(debug){
+      debug.innerText = "Loaded 16 Line page: " + localPath;
+    }
+  };
+
+  img.onerror = function(){
+    if(debug){
+      debug.innerText = "Could not load: " + localPath;
+    }
+    alert("Could not load " + localPath);
+  };
+
+  img.src = localPath;
+}
+
+// =========================
+// NEXT 16 LINE QURAN PAGE
+// =========================
+function nextQuran16Page(){
+  loadQuran16Page(currentQuran16PageNumber + 1);
+}
+
+// =========================
+// PREVIOUS 16 LINE QURAN PAGE
+// =========================
+function prevQuran16Page(){
+  loadQuran16Page(currentQuran16PageNumber - 1);
+}
+
+
+
+
+
+
+     
+// =========================
 // REAL JUZ PAGE COUNTS
 // =========================
 const juzPageCounts = {
@@ -7033,60 +7092,6 @@ function loadMushafPage(page){
   currentMushafPage = page;
 
 
-// =========================
-// LOAD 16 LINE QURAN PAGE
-// =========================
-function loadQuran16Page(page){
-
-  if(page < 1) page = 1;
-  if(page > totalQuran16Pages) page = totalQuran16Pages;
-
-  currentQuran16PageNumber = page;
-
-  localStorage.setItem("lastQuran16Page", String(page));
-  localStorage.setItem("lastQuran16ReadingSource", "quran16");
-
-  let img = document.getElementById("mushafPageImage");
-  let debug = document.getElementById("mushafDebugText");
-
-  if(!img){
-    alert("mushafPageImage not found");
-    return;
-  }
-
-  let localPath = "16linequranpages/" + page + ".jpg";
-
-  img.onload = function(){
-    if(debug){
-      debug.innerText = "Loaded 16 Line page: " + localPath;
-    }
-  };
-
-  img.onerror = function(){
-    if(debug){
-      debug.innerText = "Could not load: " + localPath;
-    }
-    alert("Could not load " + localPath);
-  };
-
-  img.src = localPath;
-}
-
-
-     
-// =========================
-// NEXT 16 LINE QURAN PAGE
-// =========================
-function nextQuran16Page(){
-  loadQuran16Page(currentQuran16PageNumber + 1);
-}
-
-// =========================
-// PREVIOUS 16 LINE QURAN PAGE
-// =========================
-function prevQuran16Page(){
-  loadQuran16Page(currentQuran16PageNumber - 1);
-}
 
 
 
