@@ -6514,24 +6514,43 @@ function getRealJuzInfoFromMushafPage(page){
   };
 }
 
+
 // =========================
 // BUILD MUSHAF IMAGE PATH
 // =========================
 function buildMushafImagePath(page){
 
+  // 16 LINE MODE → use your real images
+  if(currentMushafMode === "16"){
+    return "15linequran/" + page + ".jpg";
+  }
+
+  // 15 LINE (old system stays same)
   let info = getRealJuzInfoFromMushafPage(page);
   let paddedPage = String(info.pageInsideJuz).padStart(2, "0");
 
   return "QuranPages/juz" + info.juzNumber + "/" + info.juzNumber + "-" + paddedPage + ".png";
 }
 
+
+// =========================
+// GET ACTIVE MUSHAF MAX PAGE
+// =========================
+function getActiveMushafMaxPage(){
+  return currentMushafMode === "16" ? 551 : 847;
+}
+
+
+     
 // =========================
 // GET NEXT MUSHAF IMAGE SRC
 // =========================
 function getNextMushafImageSrc(){
 
   let nextPage = currentMushafPage + 1;
-  if(nextPage > totalMushafPages) nextPage = totalMushafPages;
+  let maxPage = getActiveMushafMaxPage();
+
+  if(nextPage > maxPage) nextPage = maxPage;
 
   return buildMushafImagePath(nextPage);
 }
@@ -6554,8 +6573,10 @@ function getPrevMushafImageSrc(){
 // =========================
 function loadMushafPage(page){
 
-  if(page < 1) page = 1;
-  if(page > totalMushafPages) page = totalMushafPages;
+  let maxPage = getActiveMushafMaxPage();
+
+if(page < 1) page = 1;
+if(page > maxPage) page = maxPage;
 
   currentMushafPage = page;
 
@@ -11182,10 +11203,12 @@ function closeQuran16MainPage(){
 // =========================
 function openQuran16ContinueReading(){
 
+  currentMushafMode = "16";
+
   let quran16MainPage = document.getElementById("quran16MainPage");
   if(quran16MainPage) quran16MainPage.style.display = "none";
 
-  resumeQuran15Reading();
+  resumeQuran16Reading();
 }
 
 function openQuran16SurahListPage(){
