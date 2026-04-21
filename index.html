@@ -5860,6 +5860,8 @@ function openQuran16FromSurah(surahNumber){
 // =========================
 function openQuran16Page(){
 
+  alert("openQuran16Page clicked");
+
   let quran16Page = document.getElementById("quran16Page");
   let quran15Page = document.getElementById("quran15Page");
   let arabicQuranPage = document.getElementById("arabicQuranPage");
@@ -5867,6 +5869,8 @@ function openQuran16Page(){
   let quran15SurahPage = document.getElementById("quran15SurahPage");
   let juzIndexPage = document.getElementById("juzIndexPage");
   let bottomNav = document.getElementById("bottomNav");
+
+  console.log("quran16Page element:", quran16Page);
 
   if(quran15Page) quran15Page.style.display = "none";
   if(arabicQuranPage) arabicQuranPage.style.display = "none";
@@ -5878,7 +5882,6 @@ function openQuran16Page(){
 
   window.scrollTo(0,0);
 }
-
 // =========================
 // CLOSE 16 LINE QURAN PAGE
 // =========================
