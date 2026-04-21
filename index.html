@@ -5871,7 +5871,59 @@ function openQuran16FromSurah(surahNumber){
 
   let realPage = startPage - 1;
 
-  openQuran16PageNumber(realPage);
+  quranReadingSource = "quran16";
+
+  let quran16Page = document.getElementById("quran16Page");
+  let quranReadingPage = document.getElementById("quranReadingPage");
+  let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
+  let quranReadingArabicName = document.getElementById("quranReadingArabicName");
+  let quranReadingMeta = document.getElementById("quranReadingMeta");
+  let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
+  let quranReadingTextCard = document.getElementById("quranReadingTextCard");
+  let mushafPageView = document.getElementById("mushafPageView");
+  let bottomNav = document.getElementById("bottomNav");
+
+  hideAllQuranLayers();
+
+  if(quran16Page) quran16Page.style.display = "none";
+  if(quranReadingPage) quranReadingPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Surah " + surahNumber;
+  if(quranReadingArabicName) quranReadingArabicName.innerText = "";
+  if(quranReadingMeta) quranReadingMeta.innerText = "16 Line Quran";
+
+  if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
+  if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
+  if(mushafPageView) mushafPageView.style.display = "block";
+
+  loadQuran16Page(realPage);
+  resetQuranReaderTopBar();
+
+  setTimeout(function(){
+    setupInteractiveQuranFlip({
+      stage: document.getElementById("quranFlipStage"),
+      sheet: document.getElementById("quranFlipSheet"),
+      underPage: document.getElementById("quranFlipUnderPage"),
+      frontImage: document.getElementById("mushafPageImage"),
+      underImage: document.getElementById("quranUnderImage"),
+      shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+      onNext: function(){
+        nextQuran16Page();
+      },
+      onPrev: function(){
+        prevQuran16Page();
+      },
+      getNextImageSrc: function(){
+        return getNextQuran16ImageSrc();
+      },
+      getPrevImageSrc: function(){
+        return getPrevQuran16ImageSrc();
+      }
+    });
+  }, 100);
+
+  window.scrollTo(0,0);
 }
 
      
@@ -9421,9 +9473,7 @@ manageTasks();
 }
 
 
-// =========================
-// HIDE ALL QURAN LAYERS
-// =========================
+
 // =========================
 // HIDE ALL QURAN LAYERS
 // =========================
@@ -9432,6 +9482,7 @@ function hideAllQuranLayers(){
 let quranPage = document.getElementById("quranPage");
 let arabicQuranPage = document.getElementById("arabicQuranPage");
 let quran15Page = document.getElementById("quran15Page");
+let quran16Page = document.getElementById("quran16Page");
 let quran15SurahPage = document.getElementById("quran15SurahPage");
 let surahIndexPage = document.getElementById("surahIndexPage");
 let quranReadingPage = document.getElementById("quranReadingPage");
@@ -9440,6 +9491,7 @@ let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
 if(quranPage) quranPage.style.display = "none";
 if(arabicQuranPage) arabicQuranPage.style.display = "none";
 if(quran15Page) quran15Page.style.display = "none";
+if(quran16Page) quran16Page.style.display = "none";
 if(quran15SurahPage) quran15SurahPage.style.display = "none";
 if(surahIndexPage) surahIndexPage.style.display = "none";
 if(quranReadingPage) quranReadingPage.style.display = "none";
@@ -12531,13 +12583,16 @@ else if(quranReadingSource === "juz"){
   if(mushafPageView) mushafPageView.style.display = "none";
   loadJuzIndexList();
 }
+else if(quranReadingSource === "quran16"){
+  let quran16Page = document.getElementById("quran16Page");
+  if(quran16Page) quran16Page.style.display = "block";
+  if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
+  if(mushafPageView) mushafPageView.style.display = "none";
+}
 else{
   if(surahIndexPage) surahIndexPage.style.display = "block";
   if(quranReadingTextCard) quranReadingTextCard.style.display = "block";
   if(mushafPageView) mushafPageView.style.display = "none";
-}
-window.scrollTo(0,0);
-
 }
   
 
