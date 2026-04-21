@@ -5915,18 +5915,18 @@ function openQuran16BookmarkPage(){
 // =========================
 function openQuran16SurahPage(){
 
-  let surahNumber = prompt("Enter Surah number (1 to 114)");
+  let pageNumber = prompt("Enter 16 line image page number to test (example: 1 or 10)");
 
-  if(surahNumber === null) return;
+  if(pageNumber === null) return;
 
-  surahNumber = parseInt(surahNumber);
+  pageNumber = parseInt(pageNumber);
 
-  if(!surahNumber || surahNumber < 1 || surahNumber > 114){
-    alert("Please enter a valid Surah number from 1 to 114");
+  if(!pageNumber || pageNumber < 1 || pageNumber > 551){
+    alert("Please enter a valid page number from 1 to 551");
     return;
   }
 
-  openQuran16FromSurah(surahNumber);
+  openQuran16PageNumber(pageNumber);
 }
 
 // =========================
