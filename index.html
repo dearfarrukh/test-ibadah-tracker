@@ -5914,7 +5914,19 @@ function openQuran16BookmarkPage(){
 // OPEN 16 LINE SURAH PAGE
 // =========================
 function openQuran16SurahPage(){
-  alert("16 Line Surah Index will be connected in next step");
+
+  let surahNumber = prompt("Enter Surah number (1 to 114)");
+
+  if(surahNumber === null) return;
+
+  surahNumber = parseInt(surahNumber);
+
+  if(!surahNumber || surahNumber < 1 || surahNumber > 114){
+    alert("Please enter a valid Surah number from 1 to 114");
+    return;
+  }
+
+  openQuran16FromSurah(surahNumber);
 }
 
 // =========================
