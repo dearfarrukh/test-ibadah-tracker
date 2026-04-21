@@ -5718,59 +5718,14 @@ if(content){
 // =========================
 // ENSURE 16 LINE READER PAGE
 // =========================
-     function ensureQuran16ReadingPage(){
+   function ensureQuran16ReadingPage(){
 
-  if(document.getElementById("quran16ReadingPage")) return;
+  let page = document.getElementById("quran16ReadingPage");
 
-  let sourcePage = document.getElementById("quranReadingPage");
-  if(!sourcePage){
-    alert("quranReadingPage not found");
+  if(!page){
+    alert("quran16ReadingPage not found");
     return;
   }
-
-  let clone = sourcePage.cloneNode(true);
-
-  clone.id = "quran16ReadingPage";
-
-  let idMap = {
-    quranReaderMiniTopBar: "quran16ReaderMiniTopBar",
-    quranReaderContent: "quran16ReaderContent",
-    quranReadingEnglishName: "quran16ReadingEnglishName",
-    quranReadingArabicName: "quran16ReadingArabicName",
-    quranReadingMeta: "quran16ReadingMeta",
-    quranReadingLoadingCard: "quran16ReadingLoadingCard",
-    quranReadingTextCard: "quran16ReadingTextCard",
-    mushafPageView: "quran16MushafPageView",
-    quranFlipStage: "quran16FlipStage",
-    quranFlipTrack: "quran16FlipTrack",
-    quranFlipSheet: "quran16FlipSheet",
-    quranFlipUnderPage: "quran16FlipUnderPage",
-    quranUnderImage: "quran16UnderImage",
-    mushafPageImage: "quran16PageImage",
-    mushafDebugText: "quran16DebugText"
-  };
-
-  Object.keys(idMap).forEach(function(oldId){
-    let el = clone.querySelector("#" + oldId);
-    if(el){
-      el.id = idMap[oldId];
-    }
-  });
-
-  let clickableEls = clone.querySelectorAll("[onclick]");
-  clickableEls.forEach(function(el){
-    let clickCode = el.getAttribute("onclick") || "";
-
-    clickCode = clickCode.replace(/closeSharedQuranReader\(\)/g, "closeQuran16ReadingPage()");
-    clickCode = clickCode.replace(/closeQuranReadingPage\(\)/g, "closeQuran16ReadingPage()");
-    clickCode = clickCode.replace(/toggleQuranReaderTopBar\(\)/g, "toggleQuran16ReaderTopBar()");
-
-    el.setAttribute("onclick", clickCode);
-  });
-
-  clone.style.display = "none";
-
-  sourcePage.parentNode.insertBefore(clone, sourcePage.nextSibling);
 }
 
 
@@ -5798,6 +5753,9 @@ function openQuran16FromSurah(surahNumber){
   if(quran16ReadingArabicName) quran16ReadingArabicName.innerText = "";
   if(quran16ReadingMeta) quran16ReadingMeta.innerText = "16 Line Quran";
 }
+
+
+     
 
 // =========================
 // RESUME 16 LINE QURAN READING
@@ -5868,72 +5826,6 @@ function closeQuran16Page(){
   window.scrollTo(0,0);
 }
 
-// =========================
-// RESUME 16 LINE QURAN READING
-// =========================
-function resumeQuran16Reading(){
-
-  let lastPage = parseInt(localStorage.getItem("lastQuran16Page") || "0");
-
-  if(!lastPage || lastPage < 1){
-    alert("No previous 16 line reading found");
-    return;
-  }
-
-  let quran16Page = document.getElementById("quran16Page");
-  let quranReadingPage = document.getElementById("quranReadingPage");
-  let quranReadingEnglishName = document.getElementById("quranReadingEnglishName");
-  let quranReadingArabicName = document.getElementById("quranReadingArabicName");
-  let quranReadingMeta = document.getElementById("quranReadingMeta");
-  let quranReadingLoadingCard = document.getElementById("quranReadingLoadingCard");
-  let quranReadingTextCard = document.getElementById("quranReadingTextCard");
-  let mushafPageView = document.getElementById("mushafPageView");
-  let bottomNav = document.getElementById("bottomNav");
-
-  hideAllQuranLayers();
-
-  quranReadingSource = "quran16";
-
-  if(quran16Page) quran16Page.style.display = "none";
-  if(quranReadingPage) quranReadingPage.style.display = "block";
-  if(bottomNav) bottomNav.style.display = "flex";
-
-  if(quranReadingEnglishName) quranReadingEnglishName.innerText = "Continue Reading";
-  if(quranReadingArabicName) quranReadingArabicName.innerText = "";
-  if(quranReadingMeta) quranReadingMeta.innerText = "16 Line Quran";
-
-  if(quranReadingLoadingCard) quranReadingLoadingCard.style.display = "none";
-  if(quranReadingTextCard) quranReadingTextCard.style.display = "none";
-  if(mushafPageView) mushafPageView.style.display = "block";
-
-  loadQuran16Page(lastPage);
-  resetQuranReaderTopBar();
-
-  setTimeout(function(){
-    setupInteractiveQuranFlip({
-      stage: document.getElementById("quranFlipStage"),
-      sheet: document.getElementById("quranFlipSheet"),
-      underPage: document.getElementById("quranFlipUnderPage"),
-      frontImage: document.getElementById("mushafPageImage"),
-      underImage: document.getElementById("quranUnderImage"),
-      shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
-      onNext: function(){
-        nextQuran16Page();
-      },
-      onPrev: function(){
-        prevQuran16Page();
-      },
-      getNextImageSrc: function(){
-        return getNextQuran16ImageSrc();
-      },
-      getPrevImageSrc: function(){
-        return getPrevQuran16ImageSrc();
-      }
-    });
-  }, 100);
-
-  window.scrollTo(0,0);
-}
 
 
      // =========================
@@ -5953,11 +5845,13 @@ function openQuran16PageNumber(page){
   let quran16MushafPageView = document.getElementById("quran16MushafPageView");
   let quran16PageImage = document.getElementById("quran16PageImage");
   let bottomNav = document.getElementById("bottomNav");
+  let oldSharedReader = document.getElementById("quranReadingPage");
 
   quranReadingSource = "quran16";
 
   hideAllQuranLayers();
 
+  if(oldSharedReader) oldSharedReader.style.display = "none";
   if(quran16Page) quran16Page.style.display = "none";
   if(quran16ReadingPage) quran16ReadingPage.style.display = "block";
   if(bottomNav) bottomNav.style.display = "flex";
@@ -6003,7 +5897,6 @@ function openQuran16PageNumber(page){
 
   window.scrollTo(0,0);
 }
-
      
 // =========================
 // OPEN 16 LINE SURAH PAGE
@@ -6901,18 +6794,6 @@ function getPrevMushafImageSrc(){
   return buildMushafImagePath(prevPage);
 }
 
-     
-
-// =========================
-// LOAD MUSHAF PAGE
-// =========================
-function loadMushafPage(page){
-
-  if(page < 1) page = 1;
-  if(page > totalMushafPages) page = totalMushafPages;
-
-  currentMushafPage = page;
-
 
 // =========================
 // LOAD 16 LINE QURAN PAGE
@@ -6957,6 +6838,35 @@ function loadQuran16Page(page){
 
   img.src = localPath;
 }
+
+// =========================
+// NEXT 16 LINE QURAN PAGE
+// =========================
+function nextQuran16Page(){
+  loadQuran16Page(currentQuran16PageNumber + 1);
+}
+
+// =========================
+// PREVIOUS 16 LINE QURAN PAGE
+// =========================
+function prevQuran16Page(){
+  loadQuran16Page(currentQuran16PageNumber - 1);
+}
+     
+     
+
+// =========================
+// LOAD MUSHAF PAGE
+// =========================
+function loadMushafPage(page){
+
+  if(page < 1) page = 1;
+  if(page > totalMushafPages) page = totalMushafPages;
+
+  currentMushafPage = page;
+
+
+
 
 // =========================
 // NEXT 16 LINE QURAN PAGE
