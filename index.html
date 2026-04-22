@@ -6013,7 +6013,14 @@ function handleQuran16SwipeMove(event){
   if(!touch) return;
 
   quran16SwipeEndX = touch.clientX;
-  quran16SwipeEndY = touch.clientY;
+
+  let diffX = quran16SwipeEndX - quran16SwipeStartX;
+
+  let img = document.getElementById("quran16PageImage");
+  if(img){
+    img.style.transition = "none";
+    img.style.transform = "translateX(" + diffX + "px)";
+  }
 }
 
 // =========================
@@ -6034,15 +6041,59 @@ function handleQuran16SwipeEnd(){
 
   window.quran16SwipeLocked = true;
 
-  // swipe left = next page
-  if(diffX < -70){
-    nextQuran16Page();
-  }
+ let img = document.getElementById("quran16PageImage");
+let swipeArea = document.getElementById("quran16SwipeArea");
 
-  // swipe right = previous page
-  else if(diffX > 70){
+if(!img || !swipeArea) return;
+
+let threshold = swipeArea.offsetWidth * 0.18;
+
+// smooth animation
+img.style.transition = "transform 0.18s ease-out";
+
+// 🔁 ARABIC REVERSE
+// swipe left → PREVIOUS page
+if(diffX < -threshold){
+
+  img.style.transform = "translateX(-100%)";
+
+  setTimeout(function(){
     prevQuran16Page();
-  }
+
+    img.style.transition = "none";
+    img.style.transform = "translateX(100%)";
+
+    setTimeout(function(){
+      img.style.transition = "transform 0.18s ease-out";
+      img.style.transform = "translateX(0)";
+    }, 20);
+
+  }, 180);
+}
+
+// swipe right → NEXT page
+else if(diffX > threshold){
+
+  img.style.transform = "translateX(100%)";
+
+  setTimeout(function(){
+    nextQuran16Page();
+
+    img.style.transition = "none";
+    img.style.transform = "translateX(-100%)";
+
+    setTimeout(function(){
+      img.style.transition = "transform 0.18s ease-out";
+      img.style.transform = "translateX(0)";
+    }, 20);
+
+  }, 180);
+}
+
+// return back if not enough swipe
+else{
+  img.style.transform = "translateX(0)";
+}
 
   setTimeout(function(){
     window.quran16SwipeLocked = false;
