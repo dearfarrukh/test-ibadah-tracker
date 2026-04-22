@@ -12799,6 +12799,10 @@ if(quranPage) quranPage.style.display = "none";
 if(tasbihPage) tasbihPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+let handle = document.getElementById("menuHandle");
+if(handle) handle.style.display = "none";
+
 if(bottomNav) bottomNav.style.display = "flex";
 
 updateTasbihTopButton();
@@ -15189,6 +15193,8 @@ closeDarkTargetMenu();
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
+let handle = document.getElementById("menuHandle");
+if(handle) handle.style.display = "none";
 let savedTarget = localStorage.getItem(getTargetKey()) || 33;
 let darkTargetText = document.getElementById("darkTargetText");
 if(darkTargetText){
@@ -15238,6 +15244,9 @@ closeDarkTargetMenu();
 // Hide menu handle in Tasbih
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+let handle = document.getElementById("menuHandle");
+if(handle) handle.style.display = "none";
 
 }
 
@@ -15320,6 +15329,9 @@ function showRoyalMode(){
 // Hide menu handle in Tasbih
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+let handle = document.getElementById("menuHandle");
+if(handle) handle.style.display = "none";
 }
 
 // =========================
