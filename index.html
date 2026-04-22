@@ -6146,36 +6146,6 @@ const juzNamesArabic = {
   29: "تَبَارَكَ ٱلَّذِى",
   30: "عَمَّ"
 };
-
-// =========================
-// GET 16 LINE JUZ INFO FROM PAGE
-// =========================
-function getQuran16JuzInfoFromPage(page){
-
-  let juzStarts = [
-    1, 20, 38, 56, 74, 92, 110, 128, 146, 164,
-    182, 200, 218, 236, 254, 272, 290, 308, 326, 344,
-    362, 380, 398, 416, 434, 452, 470, 488, 508, 528
-  ];
-
-  let juzNumber = 1;
-
-  for(let i = 0; i < juzStarts.length; i++){
-    if(page >= juzStarts[i]){
-      juzNumber = i + 1;
-    }
-  }
-
-  return {
-    juzNumber: juzNumber,
-    juzStart: juzStarts[juzNumber - 1]
-  };
-}
-
-
-
-
-
      
 // =========================
 // GET 16 LINE IMAGE PATH
@@ -6258,18 +6228,20 @@ function closeQuran16Page(){
   window.scrollTo(0,0);
 }
 
-// =========================
+     // =========================
 // OPEN 16 LINE BOOKMARK POPUP
 // =========================
 function openQuran16BookmarkPopup(){
-  openBookmarkPopup();
+
+  let page = currentQuran16PageNumber || 1;
+
+  alert("Bookmark popup coming next\nPage: " + page);
 }
 
 // =========================
 // OPEN 16 LINE PAGE NUMBER
 // =========================
 function openQuran16PageNumber(page){
-       quranReadingSource = "quran16";
 
   if(page < 1) page = 1;
   if(page > totalQuran16Pages) page = totalQuran16Pages;
@@ -6699,29 +6671,6 @@ function openQuran16FromJuz(juzNumber){
 
   openQuran16PageNumber(startPage);
 }
-
-
-
-// =========================
-// GET 16 LINE SURAH INFO FROM PAGE
-// =========================
-function getQuran16SurahInfoFromPage(page){
-
-  let matchedSurah = quran16SurahData[0];
-
-  for(let i = 0; i < quran16SurahData.length; i++){
-    let surah = quran16SurahData[i];
-    let startPage = surahToQuran16PageMap[surah.num] || 1;
-
-    if(page >= startPage){
-      matchedSurah = surah;
-    }
-  }
-
-  return matchedSurah;
-}
-
-
 
      
 // =========================
@@ -13111,53 +13060,21 @@ function openBookmarkPopup(){
   }
 
   let surah = "";
-  let juzText = "";
-  let defaultName = "Bookmark";
+let surahEl = document.getElementById("quranReadingEnglishName");
+if(surahEl) surah = surahEl.innerText || "";
 
-  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
+let juzText = "";
 
-  // =========================
-  // 16 LINE QURAN BOOKMARK
-  // =========================
-  if(
-    (typeof quranReadingSource !== "undefined" && quranReadingSource === "quran16") ||
-    (quran16ReadingPage && quran16ReadingPage.style.display === "block")
-  ){
-    let currentPage = currentQuran16PageNumber || 1;
-    let surahInfo = getQuran16SurahInfoFromPage(currentPage);
-    let juzInfo = getQuran16JuzInfoFromPage(currentPage);
-
-    if(surahInfo && surahInfo.en){
-      surah = surahInfo.en;
-    }
-
-    if(juzInfo && juzInfo.juzNumber){
-      juzText = "Juz " + juzInfo.juzNumber;
-    }
-
-    defaultName = surah ? ("Surah " + surah) : ("Page " + (currentPage + 1));
+if(typeof currentMushafPage !== "undefined" && currentMushafPage){
+  let juzInfo = getRealJuzInfoFromMushafPage(currentMushafPage);
+  if(juzInfo && juzInfo.juzNumber){
+    juzText = "Juz " + juzInfo.juzNumber;
   }
+}
 
-  // =========================
-  // 15 LINE / ARABIC BOOKMARK
-  // =========================
-  else{
-    let surahEl = document.getElementById("quranReadingEnglishName");
-    if(surahEl) surah = surahEl.innerText || "";
-
-    if(typeof currentMushafPage !== "undefined" && currentMushafPage){
-      let juzInfo = getRealJuzInfoFromMushafPage(currentMushafPage);
-      if(juzInfo && juzInfo.juzNumber){
-        juzText = "Juz " + juzInfo.juzNumber;
-      }
-    }
-
-    defaultName = surah ? ("Surah " + surah) : "Bookmark";
-  }
-
-  if(juzBox) juzBox.innerText = juzText;
-  if(surahBox) surahBox.innerText = surah;
-  if(input) input.value = defaultName;
+if(juzBox) juzBox.innerText = juzText;
+if(surahBox) surahBox.innerText = surah;
+if(input) input.value = surah ? "Surah " + surah : "Bookmark";
 
   // force popup to top level
   document.body.appendChild(popup);
@@ -13215,29 +13132,17 @@ function saveBookmark(){
   let juzName = "";
   let bookmarkType = "arabic";
   let bookmarkPage = null;
-  let bookmarkDisplayPage = null;
 
   if(input) customName = input.value.trim();
   if(surahBox) surahName = surahBox.innerText.trim();
   if(juzBox) juzName = juzBox.innerText.trim();
 
   if(typeof quranReadingSource !== "undefined"){
-    if(quranReadingSource === "quran16"){
-      bookmarkType = "16line";
-    }else if(
-      quranReadingSource === "quran15" ||
-      quranReadingSource === "continue15" ||
-      quranReadingSource === "juz"
-    ){
+    if(quranReadingSource === "quran15" || quranReadingSource === "continue15" || quranReadingSource === "juz"){
       bookmarkType = "15line";
     }else{
       bookmarkType = "arabic";
     }
-  }
-
-  if(bookmarkType === "16line" && typeof currentQuran16PageNumber !== "undefined"){
-    bookmarkPage = currentQuran16PageNumber || 1;
-    bookmarkDisplayPage = bookmarkPage + 1;
   }
 
   if(bookmarkType === "15line" && typeof currentMushafPage !== "undefined"){
@@ -13260,7 +13165,6 @@ function saveBookmark(){
     surah: surahName,
     juz: juzName,
     page: bookmarkPage,
-    displayPage: bookmarkDisplayPage,
     createdAt: now.toISOString(),
     createdAtText: now.toLocaleString()
   };
