@@ -12390,13 +12390,19 @@ function openZikrCardMenu(name, event){
 
   if(!popup || !box) return;
 
-  if(manualBtn){
-    if(getZikrCardManualDone(name)){
-      manualBtn.innerText = "Mark as Not Done";
-    }else{
-      manualBtn.innerText = "Mark as Done";
-    }
+ if(manualBtn){
+
+  let count = getZikrCardCount(name);
+  let target = parseInt(getZikrCardTarget(name), 10);
+  let manualDone = getZikrCardManualDone(name);
+
+  if(count >= target || manualDone){
+    manualBtn.innerText = "Mark as Not Done";
+  }else{
+    manualBtn.innerText = "Mark as Done";
   }
+
+}
 
   popup.style.display = "block";
 
