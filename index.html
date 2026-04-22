@@ -5701,6 +5701,112 @@ box-sizing:border-box;
 
 </div>
 
+
+<!-- =========================
+     16 LINE QURAN BOOKMARK PAGE
+========================= -->
+<div id="quran16BookmarkPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:92px;
+z-index:5004;
+background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
+overflow:auto;
+padding:18px 16px 120px 16px;
+box-sizing:border-box;
+">
+
+  <!-- 16 LINE BOOKMARK PAGE TOP BAR -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  ">
+
+    <!-- Close 16 Line Bookmark Page Button -->
+    <button onclick="closeQuran16BookmarkPage()" style="
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.08);
+    background:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+      ←
+    </button>
+
+    <div style="
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    ">
+      Bookmarks
+    </div>
+
+    <div style="width:42px;height:42px;"></div>
+  </div>
+
+  <!-- 16 LINE BOOKMARK HERO CARD -->
+  <div style="
+  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
+  border-radius:30px;
+  padding:28px 22px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  border:1px solid rgba(255,255,255,0.7);
+  margin-bottom:18px;
+  ">
+
+    <div style="
+    font-size:34px;
+    margin-bottom:12px;
+    ">
+      🔖
+    </div>
+
+    <div style="
+    font-size:28px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.5px;
+    line-height:1.1;
+    margin-bottom:8px;
+    ">
+      16 Line Bookmarks
+    </div>
+
+    <div style="
+    font-size:15px;
+    line-height:1.6;
+    color:#666;
+    max-width:280px;
+    margin:0 auto;
+    ">
+      Your saved bookmarks for the 16 line Quran
+    </div>
+
+  </div>
+
+  <!-- 16 LINE BOOKMARK LIST -->
+  <div id="quran16BookmarkList" style="
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  "></div>
+
+</div> 
      
 
 <!-- =========================
@@ -6675,7 +6781,182 @@ function openQuran16FromSurah(surahNumber){
 }
 
 
+// =========================
+// OPEN 16 LINE BOOKMARK PAGE
+// =========================
+function openQuran16BookmarkPage(){
 
+  let quran16Page = document.getElementById("quran16Page");
+  let quran16SurahPage = document.getElementById("quran16SurahPage");
+  let quran16JuzPage = document.getElementById("quran16JuzPage");
+  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
+  let quran16BookmarkPage = document.getElementById("quran16BookmarkPage");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quran16Page) quran16Page.style.display = "none";
+  if(quran16SurahPage) quran16SurahPage.style.display = "none";
+  if(quran16JuzPage) quran16JuzPage.style.display = "none";
+  if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
+
+  if(quran16BookmarkPage) quran16BookmarkPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  loadQuran16BookmarkList();
+  window.scrollTo(0,0);
+}
+
+// =========================
+// CLOSE 16 LINE BOOKMARK PAGE
+// =========================
+function closeQuran16BookmarkPage(){
+
+  let quran16Page = document.getElementById("quran16Page");
+  let quran16BookmarkPage = document.getElementById("quran16BookmarkPage");
+  let bottomNav = document.getElementById("bottomNav");
+
+  if(quran16BookmarkPage) quran16BookmarkPage.style.display = "none";
+  if(quran16Page) quran16Page.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  window.scrollTo(0,0);
+}
+
+// =========================
+// LOAD 16 LINE BOOKMARK LIST
+// =========================
+function loadQuran16BookmarkList(){
+
+  let container = document.getElementById("quran16BookmarkList");
+  if(!container) return;
+
+  let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+  let bookmarks = allBookmarks.filter(function(item){
+    return item.type === "16line";
+  });
+
+  container.innerHTML = "";
+
+  if(!bookmarks.length){
+    container.innerHTML = `
+      <div style="
+      background:white;
+      border-radius:24px;
+      padding:22px 18px;
+      text-align:center;
+      box-shadow:0 8px 22px rgba(0,0,0,0.07);
+      color:#666;
+      font-size:15px;
+      font-weight:600;
+      ">
+        No 16 line bookmarks saved yet
+      </div>
+    `;
+    return;
+  }
+
+  bookmarks.forEach(function(bookmark){
+
+    let card = document.createElement("div");
+
+    card.onclick = function(){
+      openSavedQuran16Bookmark(bookmark.id);
+    };
+
+    card.style.cssText = `
+    background:white;
+    border-radius:24px;
+    padding:18px 16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.07);
+    border:1px solid rgba(0,0,0,0.03);
+    cursor:pointer;
+    `;
+
+    card.innerHTML = `
+      <div style="
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      ">
+        <div style="min-width:0;flex:1;">
+          <div style="
+          font-size:18px;
+          font-weight:800;
+          color:#111;
+          margin-bottom:4px;
+          ">
+            ${bookmark.name || "Bookmark"}
+          </div>
+
+          <div style="
+          font-size:14px;
+          color:#444;
+          margin-bottom:4px;
+          ">
+            ${bookmark.surah || "16 Line Quran"}
+          </div>
+
+          <div style="
+          font-size:13px;
+          color:#666;
+          margin-bottom:4px;
+          ">
+            Page ${bookmark.displayPage || bookmark.page || 1}
+          </div>
+
+          <div style="
+          font-size:12px;
+          color:#999;
+          ">
+            ${bookmark.createdAtText || ""}
+          </div>
+        </div>
+
+        <div style="
+        font-size:22px;
+        color:#b0b0b8;
+        flex-shrink:0;
+        ">
+          🔖
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// =========================
+// OPEN SAVED 16 LINE BOOKMARK
+// =========================
+function openSavedQuran16Bookmark(bookmarkId){
+
+  let allBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+  let bookmark = allBookmarks.find(function(item){
+    return String(item.id) === String(bookmarkId);
+  });
+
+  if(!bookmark){
+    alert("Bookmark not found");
+    return;
+  }
+
+  if(bookmark.type !== "16line"){
+    alert("This is not a 16 line bookmark");
+    return;
+  }
+
+  let page = parseInt(bookmark.page || 0);
+
+  if(!page || page < 1){
+    alert("Saved page not found in this bookmark");
+    return;
+  }
+
+  openQuran16PageNumber(page);
+}
 
      
 
@@ -20638,6 +20919,66 @@ letter-spacing:-0.3px;
       </div>
     </div>
 
+<!-- 16 LINE BOOKMARKS CARD -->
+<div onclick="openQuran16BookmarkPage()" style="
+background:white;
+border-radius:26px;
+padding:22px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+">
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  ">
+    <div style="
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:#f2f2f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    flex-shrink:0;
+    ">
+      🔖
+    </div>
+    <div>
+      <div style="
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:4px;
+      ">
+        Bookmarks
+      </div>
+      <div style="
+      font-size:14px;
+      color:#666;
+      ">
+        View your saved 16 line bookmarks
+      </div>
+    </div>
+  </div>
+  <div style="
+  font-size:24px;
+  color:#b0b0b8;
+  margin-left:14px;
+  ">
+    ›
+  </div>
+</div>
+
+
+
+       
   </div>
 
 </div>
