@@ -6028,78 +6028,58 @@ function handleQuran16SwipeMove(event){
 // =========================
 function handleQuran16SwipeEnd(){
 
-  if(window.quran16SwipeLocked) return;
-
   let diffX = quran16SwipeEndX - quran16SwipeStartX;
-  let diffY = quran16SwipeEndY - quran16SwipeStartY;
 
-  let absX = Math.abs(diffX);
-  let absY = Math.abs(diffY);
+  let img = document.getElementById("quran16PageImage");
+  let swipeArea = document.getElementById("quran16SwipeArea");
 
-  if(absX < 70) return;
-  if(absY > absX) return;
+  if(!img || !swipeArea){
+    return;
+  }
 
-  window.quran16SwipeLocked = true;
+  let threshold = swipeArea.offsetWidth * 0.18;
 
- let img = document.getElementById("quran16PageImage");
-let swipeArea = document.getElementById("quran16SwipeArea");
+  img.style.transition = "transform 0.18s ease-out";
 
-if(!img || !swipeArea) return;
+  // Arabic reverse
+  // swipe left = previous page
+  if(diffX < -threshold){
 
-let threshold = swipeArea.offsetWidth * 0.18;
-
-// smooth animation
-img.style.transition = "transform 0.18s ease-out";
-
-// 🔁 ARABIC REVERSE
-// swipe left → PREVIOUS page
-if(diffX < -threshold){
-
-  img.style.transform = "translateX(-100%)";
-
-  setTimeout(function(){
-    prevQuran16Page();
-
-    img.style.transition = "none";
-    img.style.transform = "translateX(100%)";
-
-    setTimeout(function(){
-      img.style.transition = "transform 0.18s ease-out";
-      img.style.transform = "translateX(0)";
-    }, 20);
-
-  }, 180);
-}
-
-// swipe right → NEXT page
-else if(diffX > threshold){
-
-  img.style.transform = "translateX(100%)";
-
-  setTimeout(function(){
-    nextQuran16Page();
-
-    img.style.transition = "none";
     img.style.transform = "translateX(-100%)";
 
     setTimeout(function(){
-      img.style.transition = "transform 0.18s ease-out";
-      img.style.transform = "translateX(0)";
-    }, 20);
+      prevQuran16Page();
+      img.style.transition = "none";
+      img.style.transform = "translateX(100%)";
 
-  }, 180);
+      setTimeout(function(){
+        img.style.transition = "transform 0.18s ease-out";
+        img.style.transform = "translateX(0px)";
+      }, 20);
+    }, 180);
+  }
+
+  // swipe right = next page
+  else if(diffX > threshold){
+
+    img.style.transform = "translateX(100%)";
+
+    setTimeout(function(){
+      nextQuran16Page();
+      img.style.transition = "none";
+      img.style.transform = "translateX(-100%)";
+
+      setTimeout(function(){
+        img.style.transition = "transform 0.18s ease-out";
+        img.style.transform = "translateX(0px)";
+      }, 20);
+    }, 180);
+  }
+
+  else{
+    img.style.transform = "translateX(0px)";
+  }
 }
-
-// return back if not enough swipe
-else{
-  img.style.transform = "translateX(0)";
-}
-
-  setTimeout(function(){
-    window.quran16SwipeLocked = false;
-  }, 300);
-}
-
 // =========================
 // SETUP QURAN 16 SWIPE
 // =========================
