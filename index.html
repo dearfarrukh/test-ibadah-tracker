@@ -5965,42 +5965,40 @@ const surahToQuran16PageMap = {
 
 // =========================
 // 16 LINE JUZ TO PAGE MAP
-// real juz start pages adjusted to your current system
-// because first deleted page should not open page 0
+// use exact user-provided start pages
 // =========================
 const juzToQuran16PageMap = {
   1: 1,
-  2: 31,
-  3: 52,
-  4: 66,
-  5: 88,
-  6: 94,
-  7: 111,
-  8: 131,
-  9: 161,
-  10: 166,
-  11: 187,
+  2: 20,
+  3: 38,
+  4: 56,
+  5: 74,
+  6: 92,
+  7: 110,
+  8: 128,
+  9: 146,
+  10: 164,
+  11: 182,
   12: 200,
-  13: 227,
-  14: 243,
-  15: 262,
-  16: 281,
-  17: 293,
+  13: 218,
+  14: 236,
+  15: 254,
+  16: 272,
+  17: 290,
   18: 308,
-  19: 333,
-  20: 352,
+  19: 326,
+  20: 344,
   21: 362,
   22: 380,
-  23: 400,
-  24: 426,
-  25: 442,
-  26: 453,
-  27: 483,
-  28: 490,
+  23: 398,
+  24: 416,
+  25: 434,
+  26: 452,
+  27: 470,
+  28: 488,
   29: 508,
-  30: 545
+  30: 528
 };
-
 
 
 
@@ -6425,6 +6423,8 @@ function renderQuran16JuzList(){
   container.innerHTML = "";
 
   for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
+           let startPage = juzToQuran16PageMap[juzNumber] || 1;
+    let displayPage = startPage + 1;
 
     let card = document.createElement("div");
 
@@ -6483,7 +6483,7 @@ function renderQuran16JuzList(){
           font-size:14px;
           color:#666;
           ">
-                      Open from first page
+                                Starts on page ${displayPage}
           </div>
         </div>
       </div>
@@ -6512,10 +6512,6 @@ function openQuran16FromJuz(juzNumber){
   if(!startPage){
     alert("Juz mapping not found");
     return;
-  }
-
-  if(startPage < 1){
-    startPage = 1;
   }
 
   openQuran16PageNumber(startPage);
