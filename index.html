@@ -17586,6 +17586,15 @@ function applySalahWeatherBackground(bgType){
   salahPage.style.background =
     "linear-gradient(rgba(8,12,20,0.18), rgba(8,12,20,0.18)), url('" + imagePath + "') center center / cover no-repeat";
   salahPage.style.backgroundColor = "#0f172a";
+
+  // FORCE IMMEDIATE REPAINT SO SALAH CARD UPDATES WITHOUT TAP
+  salahPage.style.transform = "translateZ(0)";
+  salahPage.style.webkitTransform = "translateZ(0)";
+
+  requestAnimationFrame(function(){
+    salahPage.style.transform = "";
+    salahPage.style.webkitTransform = "";
+  });
 }
 
 /* =========================
