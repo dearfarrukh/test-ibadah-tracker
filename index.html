@@ -5664,25 +5664,7 @@ box-sizing:border-box;
 ========================= -->
 <script>
 
-// =========================
-// MENU HANDLE VISIBILITY
-// =========================
-function updateMenuHandleVisibility(activePageName){
 
-  let menuHandle = document.getElementById("floatingMenuBtn");
-
-  if(!menuHandle) return;
-
-  if(
-    activePageName === "home" ||
-    activePageName === "salah" ||
-    activePageName === "tracker"
-  ){
-    menuHandle.style.display = "flex";
-  }else{
-    menuHandle.style.display = "none";
-  }
-}
 
      
 // =========================
@@ -9609,7 +9591,7 @@ if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
 function openTrackerPage(){
 
 closeBookmarkPopup();
-updateMenuHandleVisibility("tracker");
+
 lastMainTab = "tracker";
      
 let homePage = document.getElementById("homePage");
@@ -9692,7 +9674,6 @@ openTrackerPage();
 function openHomePage(){
 
 closeBookmarkPopup();
-     updateMenuHandleVisibility("home");
 
 let homePage = document.getElementById("homePage");
 let trackerPage = document.getElementById("trackerPage");
@@ -9726,7 +9707,6 @@ hideAllQuranLayers();
 if(homePage) homePage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-     
 lastMainTab = "home";
 updateHomePageSalahSummary();
 window.scrollTo(0,0);
@@ -14661,7 +14641,7 @@ changeSalahDay(-1);  // swipe right = previous day
 function openSalahPage(){
 
 closeBookmarkPopup();
-updateMenuHandleVisibility("salah");
+
 lastMainTab = "salah";
 
 let morePage = document.getElementById("morePage");
