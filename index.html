@@ -7174,16 +7174,58 @@ function openSavedQuran16Bookmark(bookmarkId){
     return;
   }
 
-  let page = parseInt(bookmark.page || 0);
+  let page = parseInt(bookmark.page || "0");
 
   if(!page || page < 1){
-    alert("Saved page not found in this bookmark");
+    alert("Saved page not found");
     return;
   }
 
-  openQuran16PageNumber(page);
-}
+  let quran16Page = document.getElementById("quran16Page");
+  let quran16SurahPage = document.getElementById("quran16SurahPage");
+  let quran16JuzPage = document.getElementById("quran16JuzPage");
+  let quran16BookmarkPage = document.getElementById("quran16BookmarkPage");
+  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
+  let bottomNav = document.getElementById("bottomNav");
 
+  if(quran16Page) quran16Page.style.display = "none";
+  if(quran16SurahPage) quran16SurahPage.style.display = "none";
+  if(quran16JuzPage) quran16JuzPage.style.display = "none";
+  if(quran16BookmarkPage) quran16BookmarkPage.style.display = "none";
+
+  if(quran16ReadingPage) quran16ReadingPage.style.display = "block";
+  if(bottomNav) bottomNav.style.display = "flex";
+
+  currentQuran16PageNumber = page;
+  quranReadingSource = "quran16";
+
+  loadQuran16Page(page);
+
+  setTimeout(function(){
+    setupInteractiveQuranFlip({
+      stage: document.getElementById("quran16FlipStage"),
+      sheet: document.getElementById("quran16FlipSheet"),
+      underPage: document.getElementById("quran16FlipUnderPage"),
+      frontImage: document.getElementById("quran16PageImage"),
+      underImage: document.getElementById("quran16UnderImage"),
+      shadow: document.querySelector("#quran16FlipSheet .quranFlipShadow"),
+      onNext: function(){
+        prevQuran16Page();
+      },
+      onPrev: function(){
+        nextQuran16Page();
+      },
+      getNextImageSrc: function(){
+        return getPrevQuran16ImageSrc();
+      },
+      getPrevImageSrc: function(){
+        return getNextQuran16ImageSrc();
+      }
+    });
+  }, 100);
+
+  window.scrollTo(0,0);
+}
 
 // =========================
 // SAVE 16 LINE BOOKMARK
