@@ -12465,6 +12465,10 @@ function handleManualDoneFromZikrMenu(){
 
   closeZikrCardMenu();
 
+  let count = getZikrCardCount(name);
+  let target = parseInt(getZikrCardTarget(name), 10);
+  let manualDone = getZikrCardManualDone(name);
+
   currentZikrManualDoneEdit = name;
 
   let popup = document.getElementById("zikrManualDonePopup");
@@ -12474,11 +12478,17 @@ function handleManualDoneFromZikrMenu(){
 
   if(!popup) return;
 
-  if(getZikrCardManualDone(name)){
+  if(count >= target){
+    if(title) title.innerText = "Reset this zikr for today?";
+    if(text) text.innerHTML = "This will reset your app tasbih count and remove the check mark for this zikr.";
+    if(confirmBtn) confirmBtn.innerText = "Reset";
+  }
+  else if(manualDone){
     if(title) title.innerText = "Mark this zikr as not done for today?";
-    if(text) text.innerText = "This will remove only the manual check mark. Your tasbih count and progress ring will stay the same.";
+    if(text) text.innerHTML = "This will remove only the manual check mark. Your tasbih count and progress ring will stay the same.";
     if(confirmBtn) confirmBtn.innerText = "Mark as Not Done";
-  }else{
+  }
+  else{
     if(title) title.innerText = "Mark this zikr as done for today?";
     if(text) text.innerHTML = "This will only show the check mark.<br>Your tasbih count and green progress ring will stay the same.";
     if(confirmBtn) confirmBtn.innerText = "Mark as Done";
@@ -12506,15 +12516,27 @@ function confirmManualDoneForZikr(){
   let name = currentZikrManualDoneEdit;
   if(!name) return;
 
-  let isDone = getZikrCardManualDone(name);
+  let count = getZikrCardCount(name);
+  let target = parseInt(getZikrCardTarget(name), 10);
+  let manualDone = getZikrCardManualDone(name);
 
-  if(isDone){
+  if(count >= target){
+    localStorage.setItem(getZikrCardCountKey(name), "0");
     localStorage.removeItem(getZikrCardManualDoneKey(name));
-  }else{
+  }
+  else if(manualDone){
+    localStorage.removeItem(getZikrCardManualDoneKey(name));
+  }
+  else{
     localStorage.setItem(getZikrCardManualDoneKey(name), "true");
   }
 
   updateSingleZikrCardUI(name);
+
+  if(typeof updateZikrCount === "function" && currentZikrName === name){
+    updateZikrCount();
+  }
+
   closeZikrManualDonePopup();
 }
      
