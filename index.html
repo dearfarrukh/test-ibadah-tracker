@@ -5983,6 +5983,137 @@ function prevQuran16Page(){
 }
 
 // =========================
+// QURAN 16 DRAG SWIPE VARIABLES
+// =========================
+let quran16DragStartX = 0;
+let quran16DragCurrentX = 0;
+let quran16DragDiffX = 0;
+let quran16Dragging = false;
+let quran16SwipeReady = false;
+
+// =========================
+// HANDLE QURAN 16 DRAG START
+// =========================
+function handleQuran16DragStart(event){
+
+  let touch = event.touches[0];
+  if(!touch) return;
+
+  quran16DragStartX = touch.clientX;
+  quran16DragCurrentX = touch.clientX;
+  quran16DragDiffX = 0;
+  quran16Dragging = true;
+
+  let img = document.getElementById("quran16PageImage");
+  if(img){
+    img.style.transition = "none";
+  }
+}
+
+// =========================
+// HANDLE QURAN 16 DRAG MOVE
+// =========================
+function handleQuran16DragMove(event){
+
+  if(!quran16Dragging) return;
+
+  let touch = event.touches[0];
+  if(!touch) return;
+
+  quran16DragCurrentX = touch.clientX;
+  quran16DragDiffX = quran16DragCurrentX - quran16DragStartX;
+
+  let img = document.getElementById("quran16PageImage");
+  if(img){
+    img.style.transform = "translateX(" + quran16DragDiffX + "px)";
+  }
+
+  event.preventDefault();
+}
+
+// =========================
+// HANDLE QURAN 16 DRAG END
+// =========================
+function handleQuran16DragEnd(){
+
+  if(!quran16Dragging) return;
+
+  quran16Dragging = false;
+
+  let img = document.getElementById("quran16PageImage");
+  let swipeArea = document.getElementById("quran16SwipeArea");
+
+  if(!img || !swipeArea){
+    quran16DragDiffX = 0;
+    return;
+  }
+
+  let threshold = swipeArea.offsetWidth * 0.18;
+
+  img.style.transition = "transform 0.18s ease-out";
+
+  // Arabic reverse feel
+  // drag left = previous page
+  if(quran16DragDiffX < -threshold){
+
+    img.style.transform = "translateX(-100%)";
+
+    setTimeout(function(){
+      prevQuran16Page();
+      img.style.transition = "none";
+      img.style.transform = "translateX(100%)";
+
+      setTimeout(function(){
+        img.style.transition = "transform 0.18s ease-out";
+        img.style.transform = "translateX(0px)";
+      }, 20);
+    }, 180);
+  }
+
+  // drag right = next page
+  else if(quran16DragDiffX > threshold){
+
+    img.style.transform = "translateX(100%)";
+
+    setTimeout(function(){
+      nextQuran16Page();
+      img.style.transition = "none";
+      img.style.transform = "translateX(-100%)";
+
+      setTimeout(function(){
+        img.style.transition = "transform 0.18s ease-out";
+        img.style.transform = "translateX(0px)";
+      }, 20);
+    }, 180);
+  }
+
+  else{
+    img.style.transform = "translateX(0px)";
+  }
+
+  quran16DragDiffX = 0;
+}
+
+// =========================
+// SETUP QURAN 16 DRAG SWIPE
+// =========================
+function setupQuran16DragSwipe(){
+
+  if(quran16SwipeReady) return;
+
+  let swipeArea = document.getElementById("quran16SwipeArea");
+  if(!swipeArea) return;
+
+  swipeArea.addEventListener("touchstart", handleQuran16DragStart, { passive:false });
+  swipeArea.addEventListener("touchmove", handleQuran16DragMove, { passive:false });
+  swipeArea.addEventListener("touchend", handleQuran16DragEnd);
+  swipeArea.addEventListener("touchcancel", handleQuran16DragEnd);
+
+  quran16SwipeReady = true;
+}
+}
+
+// =========================
 // QURAN 16 SWIPE VARIABLES
 // =========================
 let quran16SwipeStartX = 0;
