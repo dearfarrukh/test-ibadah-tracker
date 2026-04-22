@@ -5931,8 +5931,8 @@ function openQuran16PageNumber(page){
 
   currentQuran16PageNumber = page;
   localStorage.setItem("lastQuran16Page", String(page));
-
   loadQuran16Page(page);
+  setupQuran16Swipe();
 
   window.scrollTo(0,0);
 }
@@ -5980,6 +5980,93 @@ function prevQuran16Page(){
   loadQuran16Page(currentQuran16PageNumber - 1);
 }
 
+// =========================
+// QURAN 16 SWIPE VARIABLES
+// =========================
+let quran16SwipeStartX = 0;
+let quran16SwipeEndX = 0;
+let quran16SwipeStartY = 0;
+let quran16SwipeEndY = 0;
+
+// =========================
+// HANDLE QURAN 16 SWIPE START
+// =========================
+function handleQuran16SwipeStart(event){
+
+  let touch = event.touches[0];
+  if(!touch) return;
+
+  quran16SwipeStartX = touch.clientX;
+  quran16SwipeEndX = touch.clientX;
+  quran16SwipeStartY = touch.clientY;
+  quran16SwipeEndY = touch.clientY;
+}
+
+// =========================
+// HANDLE QURAN 16 SWIPE MOVE
+// =========================
+function handleQuran16SwipeMove(event){
+
+  let touch = event.touches[0];
+  if(!touch) return;
+
+  quran16SwipeEndX = touch.clientX;
+  quran16SwipeEndY = touch.clientY;
+}
+
+// =========================
+// HANDLE QURAN 16 SWIPE END
+// =========================
+function handleQuran16SwipeEnd(){
+
+  if(window.quran16SwipeLocked) return;
+
+  let diffX = quran16SwipeEndX - quran16SwipeStartX;
+  let diffY = quran16SwipeEndY - quran16SwipeStartY;
+
+  let absX = Math.abs(diffX);
+  let absY = Math.abs(diffY);
+
+  if(absX < 70) return;
+  if(absY > absX) return;
+
+  window.quran16SwipeLocked = true;
+
+  // swipe left = next page
+  if(diffX < -70){
+    nextQuran16Page();
+  }
+
+  // swipe right = previous page
+  else if(diffX > 70){
+    prevQuran16Page();
+  }
+
+  setTimeout(function(){
+    window.quran16SwipeLocked = false;
+  }, 300);
+}
+
+// =========================
+// SETUP QURAN 16 SWIPE
+// =========================
+function setupQuran16Swipe(){
+
+  let swipeArea = document.getElementById("quran16SwipeArea");
+  if(!swipeArea) return;
+
+  if(swipeArea.dataset.swipeReady === "yes") return;
+
+  swipeArea.addEventListener("touchstart", handleQuran16SwipeStart, { passive:true });
+  swipeArea.addEventListener("touchmove", handleQuran16SwipeMove, { passive:true });
+  swipeArea.addEventListener("touchend", handleQuran16SwipeEnd);
+
+  swipeArea.dataset.swipeReady = "yes";
+}
+
+
+
+     
 // =========================
 // CLOSE 16 LINE READING PAGE
 // =========================
@@ -20253,14 +20340,16 @@ box-sizing:border-box;
   position:absolute;
   top:0;
   left:0;
-  right:0;
-  height:60px;
+  width:100%;
+  height:8%;
+  min-height:56px;
   z-index:20;
   background:rgba(255,255,255,0.96);
   display:flex;
   align-items:center;
   justify-content:center;
   box-shadow:0 6px 16px rgba(0,0,0,0.08);
+  box-sizing:border-box;
   ">
 
     <!-- Close 16 Line Reader Button -->
@@ -20322,26 +20411,34 @@ box-sizing:border-box;
   <!-- =========================
        16 LINE IMAGE AREA
   ========================= -->
-  <div style="
+  <!-- =========================
+       16 LINE IMAGE AREA
+  ========================= -->
+  <div id="quran16SwipeArea" style="
   position:absolute;
-  top:60px;
+  top:8%;
   left:0;
-  right:0;
-  bottom:78px;
+  width:100%;
+  height:92%;
   overflow:hidden;
   background:#000;
   display:flex;
   align-items:center;
   justify-content:center;
+  touch-action:pan-y;
   ">
 
     <img id="quran16PageImage" src="" style="
     width:100%;
     height:100%;
     object-fit:contain;
-    object-position:center center;
+    object-position:center top;
     display:block;
     background:#000;
+    user-select:none;
+    -webkit-user-drag:none;
+    -webkit-user-select:none;
+    pointer-events:none;
     ">
 
   </div>
