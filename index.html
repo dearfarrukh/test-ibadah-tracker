@@ -5807,6 +5807,129 @@ box-sizing:border-box;
   "></div>
 
 </div> 
+
+<!-- =========================
+     16 LINE BOOKMARK POPUP
+========================= -->
+<div id="quran16BookmarkPopup" onclick="closeQuran16BookmarkPopup()" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.40);
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
+z-index:100200;
+align-items:center;
+justify-content:center;
+padding:20px;
+box-sizing:border-box;
+">
+
+  <div onclick="event.stopPropagation()" style="
+  width:100%;
+  max-width:340px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,248,250,0.96) 100%);
+  border-radius:30px;
+  padding:24px 20px 18px 20px;
+  box-shadow:0 22px 50px rgba(0,0,0,0.20);
+  border:1px solid rgba(255,255,255,0.7);
+  text-align:center;
+  ">
+
+    <div style="
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:#f2f2f7;
+    color:#111;
+    font-size:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 14px auto;
+    ">
+      🔖
+    </div>
+
+    <div style="
+    font-size:22px;
+    font-weight:800;
+    color:#111;
+    margin-bottom:8px;
+    letter-spacing:-0.3px;
+    ">
+      Add Bookmark
+    </div>
+
+    <div id="quran16BookmarkJuzName" style="
+    font-size:14px;
+    font-weight:700;
+    color:#666;
+    margin-bottom:4px;
+    ">
+      Juz 1
+    </div>
+
+    <div id="quran16BookmarkSurahName" style="
+    font-size:18px;
+    font-weight:800;
+    color:#111;
+    margin-bottom:14px;
+    ">
+      Al-Fatihah
+    </div>
+
+    <!-- 16 LINE BOOKMARK NAME INPUT -->
+    <input id="quran16BookmarkInput" placeholder="Bookmark name" style="
+    width:100%;
+    box-sizing:border-box;
+    padding:16px 16px;
+    border:none;
+    border-radius:18px;
+    background:#f2f2f7;
+    margin-bottom:14px;
+    font-size:16px;
+    color:#111;
+    outline:none;
+    ">
+
+    <button onclick="saveQuran16Bookmark()" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:10px;
+    background:#111;
+    color:white;
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    ">
+      Save
+    </button>
+
+    <button onclick="closeQuran16BookmarkPopup()" style="
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:14px;
+    background:#f2f2f7;
+    color:#666;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    ">
+      Cancel
+    </button>
+
+  </div>
+</div>
+
+
+
      
 
 <!-- =========================
@@ -6146,6 +6269,35 @@ const juzNamesArabic = {
   29: "تَبَارَكَ ٱلَّذِى",
   30: "عَمَّ"
 };
+
+
+
+// =========================
+// GET 16 LINE JUZ INFO FROM PAGE
+// =========================
+function getQuran16JuzInfoFromPage(page){
+
+  let juzStarts = [
+    1, 20, 38, 56, 74, 92, 110, 128, 146, 164,
+    182, 200, 218, 236, 254, 272, 290, 308, 326, 344,
+    362, 380, 398, 416, 434, 452, 470, 488, 508, 528
+  ];
+
+  let juzNumber = 1;
+
+  for(let i = 0; i < juzStarts.length; i++){
+    if(page >= juzStarts[i]){
+      juzNumber = i + 1;
+    }
+  }
+
+  return {
+    juzNumber: juzNumber,
+    juzStart: juzStarts[juzNumber - 1]
+  };
+}
+
+     
      
 // =========================
 // GET 16 LINE IMAGE PATH
@@ -6228,16 +6380,58 @@ function closeQuran16Page(){
   window.scrollTo(0,0);
 }
 
-     // =========================
+// =========================
 // OPEN 16 LINE BOOKMARK POPUP
 // =========================
 function openQuran16BookmarkPopup(){
 
-  let page = currentQuran16PageNumber || 1;
+  let popup = document.getElementById("quran16BookmarkPopup");
+  let surahBox = document.getElementById("quran16BookmarkSurahName");
+  let juzBox = document.getElementById("quran16BookmarkJuzName");
+  let input = document.getElementById("quran16BookmarkInput");
 
-  alert("Bookmark popup coming next\nPage: " + page);
+  let currentPage = currentQuran16PageNumber || 1;
+  let surahInfo = getQuran16SurahInfoFromPage(currentPage);
+  let juzInfo = getQuran16JuzInfoFromPage(currentPage);
+
+  let surahName = surahInfo && surahInfo.en ? surahInfo.en : "16 Line Quran";
+  let juzName = juzInfo && juzInfo.juzNumber ? ("Juz " + juzInfo.juzNumber) : "Juz 1";
+
+  if(juzBox) juzBox.innerText = juzName;
+  if(surahBox) surahBox.innerText = surahName;
+  if(input) input.value = "Surah " + surahName;
+
+  if(popup){
+    popup.style.display = "flex";
+  }
+
+  setTimeout(function(){
+    if(input) input.focus();
+  }, 100);
 }
 
+
+// =========================
+// CLOSE 16 LINE BOOKMARK POPUP
+// =========================
+function closeQuran16BookmarkPopup(){
+
+  let popup = document.getElementById("quran16BookmarkPopup");
+  let input = document.getElementById("quran16BookmarkInput");
+
+  if(popup){
+    popup.style.display = "none";
+  }
+
+  if(input){
+    input.value = "";
+  }
+}
+
+
+
+
+     
 // =========================
 // OPEN 16 LINE PAGE NUMBER
 // =========================
@@ -6672,6 +6866,28 @@ function openQuran16FromJuz(juzNumber){
   openQuran16PageNumber(startPage);
 }
 
+
+// =========================
+// GET 16 LINE SURAH INFO FROM PAGE
+// =========================
+function getQuran16SurahInfoFromPage(page){
+
+  let matchedSurah = quran16SurahData[0];
+
+  for(let i = 0; i < quran16SurahData.length; i++){
+    let surah = quran16SurahData[i];
+    let startPage = surahToQuran16PageMap[surah.num] || 1;
+
+    if(page >= startPage){
+      matchedSurah = surah;
+    }
+  }
+
+  return matchedSurah;
+}
+
+
+     
      
 // =========================
 // OPEN 16 LINE SURAH PAGE
@@ -6967,6 +7183,51 @@ function openSavedQuran16Bookmark(bookmarkId){
 
   openQuran16PageNumber(page);
 }
+
+
+// =========================
+// SAVE 16 LINE BOOKMARK
+// =========================
+function saveQuran16Bookmark(){
+
+  let input = document.getElementById("quran16BookmarkInput");
+  let surahBox = document.getElementById("quran16BookmarkSurahName");
+  let juzBox = document.getElementById("quran16BookmarkJuzName");
+
+  let customName = input ? input.value.trim() : "";
+  let surahName = surahBox ? surahBox.innerText.trim() : "";
+  let juzName = juzBox ? juzBox.innerText.trim() : "";
+
+  let page = currentQuran16PageNumber || 1;
+  let displayPage = page + 1;
+
+  if(!customName){
+    alert("Please enter bookmark name");
+    return;
+  }
+
+  let savedBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+  let now = new Date();
+
+  let bookmarkItem = {
+    id: Date.now(),
+    type: "16line",
+    name: customName,
+    surah: surahName,
+    juz: juzName,
+    page: page,
+    displayPage: displayPage,
+    createdAt: now.toISOString(),
+    createdAtText: now.toLocaleString()
+  };
+
+  savedBookmarks.unshift(bookmarkItem);
+  localStorage.setItem("quranBookmarks", JSON.stringify(savedBookmarks));
+
+  closeQuran16BookmarkPopup();
+  alert("Bookmark saved");
+}
+
 
      
 
