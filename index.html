@@ -7081,22 +7081,49 @@ function loadQuran16BookmarkList(){
     return;
   }
 
+  let openCardController = null;
+
   bookmarks.forEach(function(bookmark){
 
+    let swipeWrap = document.createElement("div");
+    swipeWrap.style.position = "relative";
+    swipeWrap.style.width = "100%";
+    swipeWrap.style.borderRadius = "24px";
+    swipeWrap.style.overflow = "hidden";
+    swipeWrap.style.marginBottom = "12px";
+    swipeWrap.style.touchAction = "pan-y";
+
+    let deleteBack = document.createElement("div");
+    deleteBack.style.position = "absolute";
+    deleteBack.style.top = "0";
+    deleteBack.style.right = "0";
+    deleteBack.style.bottom = "0";
+    deleteBack.style.width = "96px";
+    deleteBack.style.background = "linear-gradient(180deg,#ff453a 0%, #ff3b30 100%)";
+    deleteBack.style.display = "flex";
+    deleteBack.style.alignItems = "center";
+    deleteBack.style.justifyContent = "center";
+    deleteBack.style.color = "white";
+    deleteBack.style.fontSize = "16px";
+    deleteBack.style.fontWeight = "800";
+    deleteBack.style.letterSpacing = "-0.2px";
+    deleteBack.style.borderRadius = "24px";
+    deleteBack.style.userSelect = "none";
+    deleteBack.style.webkitUserSelect = "none";
+    deleteBack.style.boxShadow = "inset 0 0 0 1px rgba(255,255,255,0.10)";
+    deleteBack.innerText = "Delete";
+
     let card = document.createElement("div");
-
-    card.onclick = function(){
-      openSavedQuran16Bookmark(bookmark.id);
-    };
-
-    card.style.cssText = `
-    background:white;
-    border-radius:24px;
-    padding:18px 16px;
-    box-shadow:0 8px 22px rgba(0,0,0,0.07);
-    border:1px solid rgba(0,0,0,0.03);
-    cursor:pointer;
-    `;
+    card.style.position = "relative";
+    card.style.background = "white";
+    card.style.borderRadius = "24px";
+    card.style.padding = "18px 16px";
+    card.style.boxShadow = "0 8px 22px rgba(0,0,0,0.07)";
+    card.style.border = "1px solid rgba(0,0,0,0.03)";
+    card.style.cursor = "pointer";
+    card.style.transform = "translateX(0px)";
+    card.style.transition = "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)";
+    card.style.willChange = "transform";
 
     card.innerHTML = `
       <div style="
@@ -7149,10 +7176,185 @@ function loadQuran16BookmarkList(){
       </div>
     `;
 
-    container.appendChild(card);
+    let startX = 0;
+    let startY = 0;
+    let deltaX = 0;
+    let isDragging = false;
+    let isHorizontalSwipe = false;
+    let didMove = false;
+    let fullSwipeTriggered = false;
+    let isOpen = false;
+
+    let openX = -96;
+    let halfOpenThreshold = -48;
+    let fullSwipeThreshold = -48;
+    let maxDrag = -138;
+
+    function setCardX(x){
+      card.style.transform = "translateX(" + x + "px)";
+    }
+
+    function closeThisCard(){
+      card.style.transition = "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)";
+      setCardX(0);
+      isOpen = false;
+
+      if(openCardController && openCardController.card === card){
+        openCardController = null;
+      }
+    }
+
+    function openThisCard(){
+      if(openCardController && openCardController.card !== card){
+        openCardController.close();
+      }
+
+      card.style.transition = "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)";
+      setCardX(openX);
+      isOpen = true;
+
+      openCardController = {
+        card: card,
+        close: closeThisCard
+      };
+    }
+
+    function deleteThisBookmark(){
+      let savedBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+      savedBookmarks = savedBookmarks.filter(function(item){
+        return String(item.id) !== String(bookmark.id);
+      });
+
+      localStorage.setItem("quranBookmarks", JSON.stringify(savedBookmarks));
+      loadQuran16BookmarkList();
+    }
+
+    function askDeleteBookmark(){
+      let ok = confirm('Delete bookmark "' + (bookmark.name || "Bookmark") + '"?');
+
+      if(ok){
+        deleteThisBookmark();
+      }else{
+        closeThisCard();
+      }
+    }
+
+    deleteBack.onclick = function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      askDeleteBookmark();
+    };
+
+    card.onclick = function(e){
+      if(didMove || fullSwipeTriggered){
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+
+      if(isOpen){
+        closeThisCard();
+        return;
+      }
+
+      openSavedQuran16Bookmark(bookmark.id);
+    };
+
+    swipeWrap.addEventListener("touchstart", function(e){
+      let touch = e.touches[0];
+      if(!touch) return;
+
+      startX = touch.clientX;
+      startY = touch.clientY;
+      deltaX = isOpen ? openX : 0;
+      isDragging = true;
+      isHorizontalSwipe = false;
+      didMove = false;
+      fullSwipeTriggered = false;
+
+      card.style.transition = "none";
+
+      if(openCardController && openCardController.card !== card){
+        openCardController.close();
+      }
+    }, {passive:true});
+
+    swipeWrap.addEventListener("touchmove", function(e){
+      if(!isDragging) return;
+
+      let touch = e.touches[0];
+      if(!touch) return;
+
+      let moveX = touch.clientX - startX;
+      let moveY = touch.clientY - startY;
+
+      if(!isHorizontalSwipe){
+        if(Math.abs(moveX) > 8 && Math.abs(moveX) > Math.abs(moveY)){
+          isHorizontalSwipe = true;
+        }else{
+          return;
+        }
+      }
+
+      e.preventDefault();
+      didMove = true;
+
+      let nextX = (isOpen ? openX : 0) + moveX;
+
+      if(nextX > 0){
+        nextX = nextX * 0.18;
+      }
+
+      if(nextX < maxDrag){
+        nextX = maxDrag;
+      }
+
+      setCardX(nextX);
+      deltaX = nextX;
+    }, {passive:false});
+
+    swipeWrap.addEventListener("touchend", function(){
+      if(!isDragging) return;
+
+      isDragging = false;
+      card.style.transition = "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)";
+
+      if(!isHorizontalSwipe){
+        didMove = false;
+        return;
+      }
+
+      if(deltaX <= fullSwipeThreshold){
+        fullSwipeTriggered = true;
+        setCardX(openX);
+
+        setTimeout(function(){
+          askDeleteBookmark();
+          setTimeout(function(){
+            fullSwipeTriggered = false;
+          }, 120);
+        }, 110);
+
+        return;
+      }
+
+      if(deltaX <= halfOpenThreshold){
+        openThisCard();
+      }else{
+        closeThisCard();
+      }
+
+      setTimeout(function(){
+        didMove = false;
+      }, 60);
+    });
+
+    swipeWrap.appendChild(deleteBack);
+    swipeWrap.appendChild(card);
+    container.appendChild(swipeWrap);
   });
 }
-
 // =========================
 // OPEN SAVED 16 LINE BOOKMARK
 // =========================
