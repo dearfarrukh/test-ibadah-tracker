@@ -420,42 +420,41 @@ background:#000;
 <div id="topHeader">
 
 <!-- =========================
-     TOP HEADER APP TITLE
+     TOP HEADER APP TITLE (BIG LOGO VERSION)
 ========================= -->
 <div style="
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
-gap:12px;
-margin-bottom:10px;
-padding-left:0;
+gap:8px;
+margin-bottom:18px;
 width:100%;
 ">
 
+  <!-- BIG LOGO -->
   <img src="Images/Icons/QuranTracker.png" style="
-  width:11%;
-  max-width:58px;
-  min-width:42px;
+  width:32%;
+  max-width:140px;
+  min-width:90px;
   height:auto;
   aspect-ratio:1 / 1;
   object-fit:contain;
   display:block;
-  flex-shrink:0;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.30));
   ">
 
+  <!-- TITLE -->
   <h1 style="
   margin:0;
-  font-size:32px;
-  font-weight:800;
-  line-height:1.1;
+  font-size:38px;
+  font-weight:900;
+  line-height:1.05;
   color:white;
   text-align:center;
-  -webkit-text-stroke:1.2px black;
-  text-shadow:
-    1px 1px 0 black,
-    -1px 1px 0 black,
-    1px -1px 0 black,
-    -1px -1px 0 black;
+  letter-spacing:-0.8px;
+  font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  text-shadow:0 6px 18px rgba(0,0,0,0.35);
   ">
     Ibadah Tracker
   </h1>
