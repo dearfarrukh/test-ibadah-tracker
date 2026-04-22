@@ -5964,6 +5964,48 @@ const surahToQuran16PageMap = {
 };
 
 // =========================
+// 16 LINE JUZ TO PAGE MAP
+// real juz start pages adjusted to your current system
+// because first deleted page should not open page 0
+// =========================
+const juzToQuran16PageMap = {
+  1: 1,
+  2: 31,
+  3: 52,
+  4: 66,
+  5: 88,
+  6: 94,
+  7: 111,
+  8: 131,
+  9: 161,
+  10: 166,
+  11: 187,
+  12: 200,
+  13: 227,
+  14: 243,
+  15: 262,
+  16: 281,
+  17: 293,
+  18: 308,
+  19: 333,
+  20: 352,
+  21: 362,
+  22: 380,
+  23: 400,
+  24: 426,
+  25: 442,
+  26: 453,
+  27: 483,
+  28: 490,
+  29: 508,
+  30: 545
+};
+
+
+
+
+     
+// =========================
 // GET 16 LINE IMAGE PATH
 // =========================
 function getQuran16ImagePath(page){
@@ -6386,8 +6428,8 @@ function renderQuran16JuzList(){
 
     let card = document.createElement("div");
 
-    card.onclick = function(){
-      alert("Juz " + juzNumber + " clicked. Next step we will connect it to the correct page.");
+      card.onclick = function(){
+      openQuran16FromJuz(juzNumber);
     };
 
     card.style.cssText = `
@@ -6441,7 +6483,7 @@ function renderQuran16JuzList(){
           font-size:14px;
           color:#666;
           ">
-            Open this juz
+                      Open from first page
           </div>
         </div>
       </div>
@@ -6460,7 +6502,24 @@ function renderQuran16JuzList(){
   }
 }
 
+// =========================
+// OPEN 16 LINE FROM JUZ
+// =========================
+function openQuran16FromJuz(juzNumber){
 
+  let startPage = juzToQuran16PageMap[juzNumber];
+
+  if(!startPage){
+    alert("Juz mapping not found");
+    return;
+  }
+
+  if(startPage < 1){
+    startPage = 1;
+  }
+
+  openQuran16PageNumber(startPage);
+}
 
      
 // =========================
