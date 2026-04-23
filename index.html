@@ -10910,6 +10910,20 @@ manageTasks();
 }
 
 
+// =========================
+// SET MAIN MENU HANDLE VISIBILITY
+// =========================
+function setMainMenuHandleVisibility(show){
+
+let handle = document.getElementById("menuHandle");
+if(!handle) return;
+
+handle.style.display = show ? "flex" : "none";
+
+}
+
+
+     
 
 // =========================
 // HIDE ALL QURAN LAYERS
@@ -10966,6 +10980,9 @@ if(last22Page) last22Page.style.display = "none";
 if(ikhlasPage) ikhlasPage.style.display = "none";
 if(yaseenPage) yaseenPage.style.display = "none";
 
+// FORCE HIDE MENU HANDLE ON QURAN / PDF / SURAH PAGES
+setMainMenuHandleVisibility(false);
+
 }
      
 
@@ -10993,7 +11010,7 @@ let bottomNav = document.getElementById("bottomNav");
 let handle = document.getElementById("menuHandle");
 
 // CLOSE ALL MAIN PAGES
-if(handle) handle.style.display = "flex";
+setMainMenuHandleVisibility(false);
 if(homePage) homePage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
 if(morePage) morePage.style.display = "none";
@@ -11012,7 +11029,7 @@ if(trackerPage) trackerPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 if(bottomNav) bottomNav.style.display = "flex";
-
+setMainMenuHandleVisibility(true);
 window.scrollTo(0,0);
 
 }
@@ -11073,7 +11090,7 @@ let appSettingsPage = document.getElementById("appSettingsPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 let handle = document.getElementById("menuHandle");
      
-if(handle) handle.style.display = "flex";
+setMainMenuHandleVisibility(false);
 if(trackerPage) trackerPage.style.display = "none";
 if(salahPage) salahPage.style.display = "none";
 if(morePage) morePage.style.display = "none";
@@ -11090,6 +11107,7 @@ hideAllQuranLayers();
 
 if(homePage) homePage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+setMainMenuHandleVisibility(true);
 
 lastMainTab = "home";
 updateHomePageSalahSummary();
@@ -11288,7 +11306,7 @@ if(morePage) morePage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
-
+setMainMenuHandleVisibility(false);
 window.scrollTo(0,0);
 }
 
@@ -16243,7 +16261,7 @@ let handle = document.getElementById("menuHandle");
 
 updateSalahTopButton();
 
-if(handle) handle.style.display = "flex";
+setMainMenuHandleVisibility(false);
 if(homePage) homePage.style.display = "none";
 if(trackerPage) trackerPage.style.display = "none";
 if(qazaPage) qazaPage.style.display = "none";
@@ -16261,6 +16279,7 @@ if(salahPage) salahPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 if(bottomNav) bottomNav.style.display = "flex";
+setMainMenuHandleVisibility(true);
 
 let savedMode = localStorage.getItem("salahLocationMode") || "current";
 
