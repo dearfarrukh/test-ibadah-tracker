@@ -21405,20 +21405,23 @@ padding:18px 16px 120px 16px;
 box-sizing:border-box;
 ">
 
-  <!-- JUZ PAGE TOP BAR -->
- <div style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:18px;
-padding-left:60px;
-box-sizing:border-box;
-">
+  <!-- =========================
+       15 LINE JUZ LIST TOP BAR
+  ========================= -->
+  <div style="
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:56px;
+  margin-bottom:18px;
+  box-sizing:border-box;
+  ">
 
     <!-- CLOSE JUZ PAGE BUTTON -->
     <button onclick="closeJuzIndexPage()" style="
     position:absolute;
-    left:20;
+    left:0;
     width:42px;
     height:42px;
     border-radius:50%;
@@ -21437,10 +21440,15 @@ box-sizing:border-box;
 
     <!-- JUZ PAGE TITLE -->
     <div style="
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
     font-size:20px;
     font-weight:800;
     color:#111;
     letter-spacing:-0.3px;
+    text-align:center;
+    white-space:nowrap;
     ">
       Juz List
     </div>
@@ -22901,19 +22909,22 @@ padding:18px 16px 120px 16px;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
-       TOP BAR
+   <!-- =========================
+       15 LINE SURAH LIST TOP BAR
   ========================= -->
- <div style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:18px;
-padding-left:60px;
-box-sizing:border-box;
-">
+  <div style="
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:56px;
+  margin-bottom:18px;
+  box-sizing:border-box;
+  ">
 
     <button onclick="closeQuran15SurahPage()" style="
+    position:absolute;
+    left:0;
     width:42px;
     height:42px;
     border-radius:50%;
@@ -22931,14 +22942,19 @@ box-sizing:border-box;
     </button>
 
     <div style="
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
     font-size:20px;
     font-weight:800;
     color:#111;
+    letter-spacing:-0.3px;
+    text-align:center;
+    white-space:nowrap;
     ">
       Surah List
     </div>
 
-    <div style="width:42px;"></div>
   </div>
 
   <!-- =========================
