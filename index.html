@@ -3332,7 +3332,8 @@ letter-spacing:-0.2px;
       margin-bottom:8px;
       ">
 
-      <button
+     
+<button class="qazaAdjustBtn"
 onclick="handleFajrDecreaseTap()"
 onmousedown="startHoldDecreaseFajr()"
 onmouseup="stopHoldFajr()"
@@ -3373,7 +3374,8 @@ touch-action:manipulation;
           0
         </div>
 
-       <button
+       
+<button class="qazaAdjustBtn"
 onclick="handleFajrIncreaseTap()"
 onmousedown="startHoldIncreaseFajr()"
 onmouseup="stopHoldFajr()"
@@ -3539,7 +3541,7 @@ border:1px solid rgba(255,255,255,0.75);
   margin-bottom:8px;
   ">
 
-  <button
+ <button class="qazaAdjustBtn"
 onclick="handleDhuhrDecreaseTap()"
 onmousedown="startHoldDecreaseDhuhr()"
 onmouseup="stopHoldDhuhr()"
@@ -3580,7 +3582,7 @@ line-height:1;
   0
 </div>
 
-<button
+<button class="qazaAdjustBtn"
 onclick="handleDhuhrIncreaseTap()"
 onmousedown="startHoldIncreaseDhuhr()"
 onmouseup="stopHoldDhuhr()"
@@ -3748,7 +3750,7 @@ border:1px solid rgba(255,255,255,0.75);
   margin-bottom:8px;
   ">
 
-    <button
+   <button class="qazaAdjustBtn"
 onclick="handleAsrDecreaseTap()"
 onmousedown="startHoldDecreaseAsr()"
 onmouseup="stopHoldAsr()"
@@ -3789,7 +3791,7 @@ touch-action:manipulation;
       0
     </div>
 
-    <button
+   <button class="qazaAdjustBtn"
 onclick="handleAsrIncreaseTap()"
 onmousedown="startHoldIncreaseAsr()"
 onmouseup="stopHoldAsr()"
@@ -3955,7 +3957,7 @@ border:1px solid rgba(255,255,255,0.75);
   margin-bottom:8px;
   ">
 
-    <button
+   <button class="qazaAdjustBtn"
 onclick="handleMaghribDecreaseTap()"
 onmousedown="startHoldDecreaseMaghrib()"
 onmouseup="stopHoldMaghrib()"
@@ -3996,7 +3998,7 @@ touch-action:manipulation;
       0
     </div>
 
-    <button
+ <button class="qazaAdjustBtn"
 onclick="handleMaghribIncreaseTap()"
 onmousedown="startHoldIncreaseMaghrib()"
 onmouseup="stopHoldMaghrib()"
@@ -4162,7 +4164,7 @@ border:1px solid rgba(255,255,255,0.75);
   margin-bottom:8px;
   ">
 
-    <button
+  <button class="qazaAdjustBtn"
 onclick="handleIshaDecreaseTap()"
 onmousedown="startHoldDecreaseIsha()"
 onmouseup="stopHoldIsha()"
@@ -4203,7 +4205,7 @@ touch-action:manipulation;
       0
     </div>
 
-    <button
+   <button class="qazaAdjustBtn"
 onclick="handleIshaIncreaseTap()"
 onmousedown="startHoldIncreaseIsha()"
 onmouseup="stopHoldIsha()"
@@ -4369,7 +4371,7 @@ border:1px solid rgba(255,255,255,0.75);
   margin-bottom:8px;
   ">
 
-    <button
+ <button class="qazaAdjustBtn"
 onclick="handleWitrDecreaseTap()"
 onmousedown="startHoldDecreaseWitr()"
 onmouseup="stopHoldWitr()"
@@ -4410,7 +4412,7 @@ touch-action:manipulation;
       0
     </div>
 
-    <button
+ <button class="qazaAdjustBtn"
 onclick="handleWitrIncreaseTap()"
 onmousedown="startHoldIncreaseWitr()"
 onmouseup="stopHoldWitr()"
@@ -11428,17 +11430,17 @@ function updateQazaLockButtonUI(){
 
   if(isLocked){
     btn.innerText = "🔒";
-    btn.style.background = "white";
-    btn.style.color = "#111";
-    btn.style.border = "1px solid rgba(0,0,0,0.08)";
-    btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
+    btn.style.background = "#FF3B30";
+    btn.style.color = "white";
+    btn.style.border = "1px solid rgba(255,59,48,0.25)";
+    btn.style.boxShadow = "0 6px 14px rgba(255,59,48,0.28)";
   }else{
-  btn.innerText = "🔓";
-  btn.style.background = "#34C759";
-  btn.style.color = "white";
-  btn.style.border = "1px solid rgba(0,0,0,0.08)";
-  btn.style.boxShadow = "0 6px 14px rgba(52,199,89,0.35)";
-}
+    btn.innerText = "🔓";
+    btn.style.background = "#34C759";
+    btn.style.color = "white";
+    btn.style.border = "1px solid rgba(0,0,0,0.08)";
+    btn.style.boxShadow = "0 6px 14px rgba(52,199,89,0.35)";
+  }
 }
 
 
@@ -11449,6 +11451,7 @@ function updateQazaLockButtonUI(){
 function updateQazaTotalInputsLockState(){
 
   let totalInputs = document.querySelectorAll(".qazaTotalInput");
+  let qazaButtons = document.querySelectorAll(".qazaAdjustBtn");
   let isLocked = getQazaLockState();
 
   totalInputs.forEach(function(input){
@@ -11461,6 +11464,20 @@ function updateQazaTotalInputsLockState(){
       input.readOnly = false;
       input.style.opacity = "1";
       input.style.cursor = "text";
+    }
+
+  });
+
+  qazaButtons.forEach(function(btn){
+
+    if(isLocked){
+      btn.style.opacity = "0.45";
+      btn.style.cursor = "not-allowed";
+      btn.style.pointerEvents = "none";
+    }else{
+      btn.style.opacity = "1";
+      btn.style.cursor = "pointer";
+      btn.style.pointerEvents = "auto";
     }
 
   });
