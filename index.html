@@ -10185,6 +10185,9 @@ function isSurah(name){
 // =========================
 function handleTaskClick(name){
 
+let handle = document.getElementById("menuHandle");
+if(handle) handle.style.display = "none";
+
 if(name === "Surah Ikhlas"){
 openSurahPage('ikhlasPage');
 return;
@@ -10196,7 +10199,7 @@ openWaqiyaPage();
 return;
 }
 
-  if(name === "Surah Yaseen"){
+if(name === "Surah Yaseen"){
 openSurahPage('yaseenPage');
 return;
 }
