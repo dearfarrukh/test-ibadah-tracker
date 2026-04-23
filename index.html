@@ -20191,7 +20191,30 @@ function updateQazaProgressTabUI(){
   }, { passive:false });
 })();
 
+// =========================
+// FORCE TRACKER RETURN FROM SURAH / PDF STYLE PAGES
+// =========================
+function closeSurahPage(pageId){
 
+  let page = document.getElementById(pageId);
+
+  if(page){
+    page.style.display = "none";
+  }
+
+  openTrackerPage();
+}
+
+function closeWaqiyaPage(){
+
+  let waqiyaPage = document.getElementById("waqiyaPage");
+
+  if(waqiyaPage){
+    waqiyaPage.style.display = "none";
+  }
+
+  openTrackerPage();
+}
      
   
 </script>
