@@ -6497,6 +6497,9 @@ function getQuran16JuzInfoFromPage(page){
   };
 }
 
+
+
+
      
      
 // =========================
@@ -6505,6 +6508,82 @@ function getQuran16JuzInfoFromPage(page){
 function getQuran16ImagePath(page){
   return "16linequranpages/" + page + ".jpg";
 }
+
+
+
+
+// =========================
+// DOWNLOAD JUZ 30 TEST
+// =========================
+async function downloadJuz30Test(){
+
+  let btn = document.getElementById("juz30DownloadBtn");
+  if(btn){
+    btn.disabled = true;
+    btn.innerText = "Downloading...";
+    btn.style.opacity = "0.7";
+  }
+
+  try{
+    const cache = await caches.open("ibadah-runtime-v1");
+    let filesToCache = [];
+
+    // Juz 30 starts at page 528 in your 16 line Quran
+    for(let page = 528; page <= 549; page++){
+      filesToCache.push(getQuran16ImagePath(page));
+    }
+
+    await cache.addAll(filesToCache);
+
+    localStorage.setItem("juz30OfflineDownloaded", "yes");
+
+    if(btn){
+      btn.innerText = "Juz 30 Downloaded";
+      btn.style.opacity = "1";
+      btn.style.background = "#dff6e4";
+      btn.style.color = "#177245";
+    }
+
+    alert("Juz 30 test downloaded successfully");
+  }
+  catch(error){
+    console.log("Juz 30 download failed:", error);
+
+    if(btn){
+      btn.disabled = false;
+      btn.innerText = "Juz 30 Test";
+      btn.style.opacity = "1";
+    }
+
+    alert("Juz 30 download failed");
+  }
+}
+
+// =========================
+// UPDATE JUZ 30 DOWNLOAD BUTTON UI
+// =========================
+function updateJuz30DownloadButtonUI(){
+
+  let btn = document.getElementById("juz30DownloadBtn");
+  if(!btn) return;
+
+  let isDownloaded = localStorage.getItem("juz30OfflineDownloaded") === "yes";
+
+  if(isDownloaded){
+    btn.innerText = "Juz 30 Downloaded";
+    btn.style.background = "#dff6e4";
+    btn.style.color = "#177245";
+    btn.style.opacity = "1";
+  }else{
+    btn.innerText = "Juz 30 Test";
+    btn.style.background = "white";
+    btn.style.color = "#111";
+    btn.style.opacity = "1";
+    btn.disabled = false;
+  }
+}
+
+     
 
 
 // =========================
@@ -19006,6 +19085,7 @@ localStorage.setItem("appSettingsReturnPage", "more");
 }
 
 if(appSettingsPage) appSettingsPage.style.display = "block";
+     updateJuz30DownloadButtonUI();
 window.scrollTo(0,0);
 }
 
@@ -23696,8 +23776,8 @@ overflow:auto;
         16 Line Quran
         </button>
 
-        <!-- JUZ 30 TEST BUTTON -->
-        <button style="
+               <!-- JUZ 30 TEST BUTTON -->
+        <button id="juz30DownloadBtn" onclick="downloadJuz30Test()" style="
         width:100%;
         padding:14px 16px;
         border:none;
