@@ -6509,7 +6509,130 @@ function getQuran16ImagePath(page){
   return "16linequranpages/" + page + ".jpg";
 }
 
+// =========================
+// DOWNLOAD 16 LINE FULL QURAN
+// =========================
+async function downloadQuran16Full(){
 
+  let btn = document.getElementById("quran16DownloadBtn");
+  if(!btn) return;
+
+  btn.disabled = true;
+  btn.innerText = "Downloading...";
+  btn.style.opacity = "0.7";
+
+  try{
+    const cache = await caches.open("ibadah-runtime-v1");
+
+    for(let page = 1; page <= 549; page++){
+
+      let url = getQuran16ImagePath(page);
+
+      try{
+        let response = await fetch(url, { cache: "no-store" });
+        if(response.ok){
+          await cache.put(url, response.clone());
+        }
+      }catch(error){
+        console.log("16 line skip page:", page, error);
+      }
+
+      if(page % 20 === 0){
+        btn.innerText = "Downloading " + page + " / 549";
+      }
+    }
+
+    localStorage.setItem("quran16FullDownloaded", "yes");
+
+    btn.innerText = "16 Line Downloaded";
+    btn.style.opacity = "1";
+    btn.style.background = "#dff6e4";
+    btn.style.color = "#177245";
+
+    alert("16 Line Quran downloaded successfully");
+  }
+  catch(error){
+    console.log("16 line full download failed:", error);
+    btn.disabled = false;
+    btn.innerText = "16 Line Quran";
+    btn.style.opacity = "1";
+    alert("16 Line Quran download failed");
+  }
+}
+
+// =========================
+// DOWNLOAD 15 LINE FULL QURAN
+// =========================
+async function downloadQuran15Full(){
+
+  let btn = document.getElementById("quran15DownloadBtn");
+  if(!btn) return;
+
+  btn.disabled = true;
+  btn.innerText = "Downloading...";
+  btn.style.opacity = "0.7";
+
+  try{
+    const cache = await caches.open("ibadah-runtime-v1");
+
+    for(let page = 1; page <= 847; page++){
+
+      let url = buildMushafImagePath(page);
+
+      try{
+        let response = await fetch(url, { cache: "no-store" });
+        if(response.ok){
+          await cache.put(url, response.clone());
+        }
+      }catch(error){
+        console.log("15 line skip page:", page, error);
+      }
+
+      if(page % 20 === 0){
+        btn.innerText = "Downloading " + page + " / 847";
+      }
+    }
+
+    localStorage.setItem("quran15FullDownloaded", "yes");
+
+    btn.innerText = "15 Line Downloaded";
+    btn.style.opacity = "1";
+    btn.style.background = "#dff6e4";
+    btn.style.color = "#177245";
+
+    alert("15 Line Quran downloaded successfully");
+  }
+  catch(error){
+    console.log("15 line full download failed:", error);
+    btn.disabled = false;
+    btn.innerText = "15 Line Quran";
+    btn.style.opacity = "1";
+    alert("15 Line Quran download failed");
+  }
+}
+
+// =========================
+// UPDATE FULL DOWNLOAD BUTTON UI
+// =========================
+function updateFullQuranDownloadButtonsUI(){
+
+  let btn15 = document.getElementById("quran15DownloadBtn");
+  let btn16 = document.getElementById("quran16DownloadBtn");
+
+  if(btn15 && localStorage.getItem("quran15FullDownloaded") === "yes"){
+    btn15.innerText = "15 Line Downloaded";
+    btn15.style.background = "#dff6e4";
+    btn15.style.color = "#177245";
+    btn15.style.opacity = "1";
+  }
+
+  if(btn16 && localStorage.getItem("quran16FullDownloaded") === "yes"){
+    btn16.innerText = "16 Line Downloaded";
+    btn16.style.background = "#dff6e4";
+    btn16.style.color = "#177245";
+    btn16.style.opacity = "1";
+  }
+}
 
 
 // =========================
@@ -19086,6 +19209,7 @@ localStorage.setItem("appSettingsReturnPage", "more");
 
 if(appSettingsPage) appSettingsPage.style.display = "block";
      updateJuz30DownloadButtonUI();
+     updateFullQuranDownloadButtonsUI();
 window.scrollTo(0,0);
 }
 
@@ -23740,8 +23864,8 @@ overflow:auto;
 
         </div>
 
-        <!-- 15 LINE QURAN BUTTON -->
-        <button style="
+               <!-- 15 LINE QURAN BUTTON -->
+        <button id="quran15DownloadBtn" onclick="downloadQuran15Full()" style="
         width:100%;
         padding:14px 16px;
         margin-bottom:10px;
@@ -23759,7 +23883,7 @@ overflow:auto;
         </button>
 
         <!-- 16 LINE QURAN BUTTON -->
-        <button style="
+        <button id="quran16DownloadBtn" onclick="downloadQuran16Full()" style="
         width:100%;
         padding:14px 16px;
         margin-bottom:10px;
