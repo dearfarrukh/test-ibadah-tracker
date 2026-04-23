@@ -21497,20 +21497,37 @@ padding:18px 16px 120px 16px;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
+   <!-- =========================
        SURAH INDEX TOP BAR
   ========================= -->
- <div style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:18px;
-padding-left:60px;
-box-sizing:border-box;
-">
+  <div style="
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:56px;
+  margin-bottom:18px;
+  box-sizing:border-box;
+  ">
+
+    <div style="
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:22px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    text-align:center;
+    white-space:nowrap;
+    ">
+      Surah Index
+    </div>
 
     <!-- Close Surah Index Page Button -->
     <button onclick="closeSurahIndexPage()" style="
+    position:absolute;
+    right:0;
     width:42px;
     height:42px;
     border-radius:50%;
@@ -21527,16 +21544,6 @@ box-sizing:border-box;
       ←
     </button>
 
-    <div style="
-    font-size:22px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.3px;
-    ">
-      Surah Index
-    </div>
-
-    <div style="width:42px;height:42px;"></div>
   </div>
 
    <!-- =========================
