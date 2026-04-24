@@ -20632,6 +20632,42 @@ function closeWaqiyaPage(){
 
   openTrackerPage();
 }
+
+
+
+// =========================
+// OPEN AYATUL KURSI PAGE
+// =========================
+function openAyatulKursiPage(){
+
+  let duaPage = document.getElementById("duaPage");
+  let ayatulKursiPage = document.getElementById("ayatulKursiPage");
+
+  if(duaPage) duaPage.style.display = "none";
+  if(ayatulKursiPage) ayatulKursiPage.style.display = "block";
+
+  window.scrollTo(0,0);
+}
+
+
+// =========================
+// CLOSE AYATUL KURSI PAGE
+// =========================
+function closeAyatulKursiPage(){
+
+  let duaPage = document.getElementById("duaPage");
+  let ayatulKursiPage = document.getElementById("ayatulKursiPage");
+
+  if(ayatulKursiPage) ayatulKursiPage.style.display = "none";
+  if(duaPage) duaPage.style.display = "block";
+
+  window.scrollTo(0,0);
+}
+
+
+
+
+
      
   
 </script>
