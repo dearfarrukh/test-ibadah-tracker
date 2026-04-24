@@ -9284,21 +9284,41 @@ function manageTasks(){
 
 document.getElementById("taskMenuContent").innerHTML = `
 <div style="
-font-size:30px;
+width:46px;
+height:5px;
+border-radius:999px;
+background:#d1d1d6;
+margin:0 auto 18px auto;
+"></div>
+
+<div style="
+font-size:28px;
 font-weight:900;
 color:#111;
-margin-bottom:20px;
-letter-spacing:-0.4px;
+margin-bottom:6px;
+letter-spacing:-0.6px;
+text-align:center;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 Manage Tasks
 </div>
 
-<!-- Show Add Task Button -->
+<div style="
+font-size:15px;
+font-weight:600;
+color:#777;
+text-align:center;
+line-height:1.4;
+margin-bottom:22px;
+">
+Add, rename, or remove your daily tracker tasks.
+</div>
+
 <button onclick="showAddTask()" style="
 width:100%;
-padding:18px;
+padding:17px;
 margin-bottom:12px;
-font-size:22px;
+font-size:20px;
 font-weight:800;
 border:none;
 border-radius:20px;
@@ -9307,64 +9327,63 @@ color:white;
 box-shadow:0 8px 20px rgba(0,0,0,0.14);
 cursor:pointer;
 letter-spacing:-0.2px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
-Add Task
+＋ Add Task
 </button>
 
-<!-- Show Rename Task Button -->
 <button onclick="showRenameTask()" style="
 width:100%;
 padding:17px;
 margin-bottom:12px;
-font-size:20px;
+font-size:19px;
 font-weight:800;
 border:none;
 border-radius:20px;
-background:#e9e9ee;
+background:#f2f2f7;
 color:#111;
-box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
 cursor:pointer;
 letter-spacing:-0.2px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
-Rename Task
+✏️ Rename Task
 </button>
 
-<!-- Show Remove Task Button -->
 <button onclick="showRemoveTask()" style="
 width:100%;
 padding:17px;
-margin-bottom:12px;
-font-size:20px;
+margin-bottom:16px;
+font-size:19px;
 font-weight:800;
 border:none;
 border-radius:20px;
-background:#e9e9ee;
+background:#fff1f1;
 color:#d11a2a;
-box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
 cursor:pointer;
 letter-spacing:-0.2px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
-Remove Task
+🗑️ Remove Task
 </button>
 
-<!-- Close Task Menu Button -->
 <button onclick="closeTaskMenu()" style="
 width:100%;
-padding:18px;
-background:#f5f5f7;
-font-size:22px;
-font-weight:700;
+padding:16px;
+background:#e9e9ee;
+font-size:19px;
+font-weight:800;
 border:none;
-border-radius:22px;
-color:#666;
+border-radius:20px;
+color:#555;
 cursor:pointer;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
-Close
+Cancel
 </button>
 `;
 
 document.getElementById("taskMenu").style.display = "block";
-  document.getElementById("menuOverlay").style.display = "block";
+document.getElementById("menuOverlay").style.display = "block";
 
 }
 
