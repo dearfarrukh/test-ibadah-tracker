@@ -23835,53 +23835,134 @@ Istikhara Dua
 </div>
 
 <!-- =========================
-     AYATUL KURSI CARD
+     AYATUL KURSI OPEN CARD
 ========================= -->
-<div class="card" style="margin-top:15px;">
+<div class="card" onclick="openAyatulKursiPage()" style="cursor:pointer;margin-top:15px;">
 
-  <!-- Title -->
-  <div style="
-  font-weight:700;
-  font-size:18px;
-  margin-bottom:12px;
-  text-align:center;
-  ">
-  Ayatul Kursi
-  </div>
+<div style="display:flex;justify-content:space-between;align-items:center;">
 
-  <!-- Arabic Text -->
-  <div style="
-  font-size:22px;
-  line-height:1.9;
-  text-align:right;
-  direction:rtl;
-  font-family:'Amiri', serif;
-  ">
-  اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ
-  </div>
+<div style="font-weight:600;font-size:17px;">
+Ayatul Kursi
+</div>
+
+<div style="font-size:24px;opacity:0.5;">
+›
+</div>
+
+</div>
+
+</div>
+
 <!-- =========================
-     AYATUL KURSI URDU
+     AYATUL KURSI PAGE
+========================= -->
+<div id="ayatulKursiPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:10002;
+background:#e9e9ee;
+overflow:auto;
+padding:15px;
+box-sizing:border-box;
+">
+
+<!-- =========================
+     TOP BAR
 ========================= -->
 <div style="
-margin-top:14px;
-font-size:16px;
-line-height:1.7;
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:15px;
+">
+
+<button onclick="closeAyatulKursiPage()" style="
+width:40px;
+height:40px;
+border-radius:50%;
+border:1px solid rgba(0,0,0,0.12);
+background:white;
+font-size:22px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+←
+</button>
+
+<div style="
+font-size:20px;
+font-weight:800;
+color:#111;
+">
+Ayatul Kursi
+</div>
+
+<div style="width:40px;"></div>
+
+</div>
+
+<!-- =========================
+     MAIN CARD
+========================= -->
+<div class="card" style="
+background:white;
+border-radius:22px;
+padding:18px;
+box-shadow:0 8px 25px rgba(0,0,0,0.10);
+">
+
+<!-- Arabic Title -->
+<div style="
+font-size:22px;
+font-weight:800;
+text-align:center;
+margin-bottom:16px;
+">
+آيَةُ الْكُرْسِي
+</div>
+
+<!-- Arabic -->
+<div style="
+font-size:24px;
+line-height:2.1;
 text-align:right;
 direction:rtl;
-background:#f5f5f7;
-padding:12px;
-border-radius:12px;
-font-weight:500;
-color:#333;
+font-family:'Amiri', serif;
+color:#111;
 ">
+اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ
+</div>
+
+<!-- Urdu -->
+<div style="
+margin-top:18px;
+padding:14px;
+border-radius:16px;
+background:#f5f5f7;
+font-size:17px;
+line-height:1.8;
+text-align:right;
+direction:rtl;
+color:#222;
+">
+
+<div style="font-weight:700;margin-bottom:8px;">
+اردو ترجمہ
+</div>
 
 اللہ وہ ہے جس کے سوا کوئی معبود نہیں، وہ زندہ ہے، سب کو قائم رکھنے والا ہے۔ اسے نہ اونگھ آتی ہے نہ نیند۔ جو کچھ آسمانوں میں ہے اور جو کچھ زمین میں ہے سب اسی کا ہے۔ کون ہے جو اس کی اجازت کے بغیر اس کے پاس سفارش کر سکے؟ وہ جانتا ہے جو کچھ ان کے سامنے ہے اور جو کچھ ان کے پیچھے ہے، اور وہ اس کے علم میں سے کسی چیز کا احاطہ نہیں کر سکتے مگر جتنا وہ چاہے۔ اس کی کرسی آسمانوں اور زمین پر چھائی ہوئی ہے، اور ان دونوں کی حفاظت اسے تھکاتی نہیں، اور وہی بلند و عظمت والا ہے۔
 
 </div>
+
 </div>
 
-
-
+</div>
      
 </div>
 
