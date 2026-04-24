@@ -9795,8 +9795,7 @@ ${task.name}
 </span>
 
 ${isSurah(task.name) ?
-'<span onclick="event.stopPropagation();handleTaskClick(\''+task.name+'\')" style="background:#007aff;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📄 PDF</span>' +
-(task.name === "Surah Mulk" ? '<span onclick="event.stopPropagation();openQuran16FromSurah(67)" style="background:#111;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📖</span>' : '')
+'<span onclick="event.stopPropagation();handleTaskClick(\''+task.name+'\')" style="background:#007aff;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📄 PDF</span>'
 : ''}
 
 </div>
