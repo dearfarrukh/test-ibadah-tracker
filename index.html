@@ -20782,34 +20782,6 @@ function closeWaqiyaPage(){
 
 
 
-// =========================
-// OPEN AYATUL KURSI PAGE
-// =========================
-function openAyatulKursiPage(){
-
-  let duaPage = document.getElementById("duaPage");
-  let ayatulKursiPage = document.getElementById("ayatulKursiPage");
-
-  if(duaPage) duaPage.style.display = "none";
-  if(ayatulKursiPage) ayatulKursiPage.style.display = "block";
-
-  window.scrollTo(0,0);
-}
-
-
-// =========================
-// CLOSE AYATUL KURSI PAGE
-// =========================
-function closeAyatulKursiPage(){
-
-  let duaPage = document.getElementById("duaPage");
-  let ayatulKursiPage = document.getElementById("ayatulKursiPage");
-
-  if(ayatulKursiPage) ayatulKursiPage.style.display = "none";
-  if(duaPage) duaPage.style.display = "block";
-
-  window.scrollTo(0,0);
-}
 
 
 
@@ -24017,78 +23989,7 @@ Istikhara Dua
 
 </div>
 
-<!-- =========================
-     AYATUL KURSI OPEN CARD
-========================= -->
-<div class="card" onclick="openAyatulKursiPage()" style="cursor:pointer;margin-top:15px;">
 
-<div style="display:flex;justify-content:space-between;align-items:center;">
-
-<div style="font-weight:600;font-size:17px;">
-Ayatul Kursi
-</div>
-
-<div style="font-size:24px;opacity:0.5;">
-›
-</div>
-
-</div>
-
-</div>
-
-<!-- =========================
-     AYATUL KURSI PAGE
-========================= -->
-<div id="ayatulKursiPage" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-z-index:10002;
-background:#e9e9ee;
-overflow:auto;
-padding:15px;
-box-sizing:border-box;
-">
-
-<!-- =========================
-     TOP BAR
-========================= -->
-<div style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:15px;
-">
-
-<button onclick="closeAyatulKursiPage()" style="
-width:40px;
-height:40px;
-border-radius:50%;
-border:1px solid rgba(0,0,0,0.12);
-background:white;
-font-size:22px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-">
-←
-</button>
-
-<div style="
-font-size:20px;
-font-weight:800;
-color:#111;
-">
-Ayatul Kursi
-</div>
-
-<div style="width:40px;"></div>
-
-</div>
 
 <!-- =========================
      MAIN CARD
