@@ -12018,13 +12018,13 @@ function closeQazaPage(){
   let qazaPage = document.getElementById("qazaPage");
   let morePage = document.getElementById("morePage");
   let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-  let bottomNav = document.getElementById("bottomNav");
+ 
 
   if(qazaPage) qazaPage.style.display = "none";
   if(morePage) morePage.style.display = "block";
 
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  if(bottomNav) bottomNav.style.display = "flex";
+    setBottomNavVisibility(true);
 
   window.scrollTo(0,0);
 }
@@ -13290,7 +13290,7 @@ let homePage = document.getElementById("homePage");
 let zikrPage = document.getElementById("zikrPage");
 let morePage = document.getElementById("morePage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 if(zikrPage) zikrPage.style.display = "none";
 
@@ -13306,7 +13306,7 @@ else{
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 }
 
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 
 window.scrollTo(0,0);
 
@@ -14801,7 +14801,7 @@ let trackerPage = document.getElementById("trackerPage");
 let morePage = document.getElementById("morePage");
 let tasbihPage = document.getElementById("tasbihPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 if(tasbihPage) tasbihPage.style.display = "none";
 
@@ -14818,7 +14818,7 @@ if(trackerPage) trackerPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 }
 
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 
 window.scrollTo(0,0);
 
