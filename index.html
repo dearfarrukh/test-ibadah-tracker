@@ -24839,19 +24839,13 @@ z-index:5000;
 overflow:hidden;
 padding:0;
 -webkit-overflow-scrolling:touch;
-background:none;
+background:#e9e9ee;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 
-  <!-- SALAH BACKGROUND LAYER -->
+  <!-- SALAH BACKGROUND LAYER REMOVED - IOS STYLE -->
   <div id="salahBgLayer" style="
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-  background:url('wallpaper.jpg') center/cover no-repeat;
-  transition:background 0.4s ease;
+  display:none;
   "></div>
 
   <!-- SALAH CONTENT LAYER -->
@@ -24861,6 +24855,7 @@ background:none;
   height:100%;
   overflow:auto;
   -webkit-overflow-scrolling:touch;
+  background:#e9e9ee;
   ">
 
     <!-- SALAH TOP AREA -->
@@ -24868,30 +24863,35 @@ background:none;
     position:sticky;
     top:0;
     z-index:50;
-    padding:15px 15px 6px 15px;
-    background:linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0));
+    padding:15px 15px 10px 15px;
+    background:rgba(233,233,238,0.92);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(0,0,0,0.06);
+    box-sizing:border-box;
     ">
 
       <div style="
       display:flex;
       justify-content:flex-end;
       align-items:center;
-      padding:10px 0 4px 0;
+      padding:8px 0 4px 0;
       ">
 
         <!-- SETTINGS BUTTON -->
         <button onclick="openSalahSettingsPage()" style="
-        width:40px;
-        height:40px;
+        width:42px;
+        height:42px;
         border-radius:50%;
-        border:1px solid #d6d6d6;
+        border:1px solid rgba(0,0,0,0.08);
         background:white;
         font-size:20px;
         cursor:pointer;
         display:flex;
         align-items:center;
         justify-content:center;
-        box-shadow:0 3px 10px rgba(0,0,0,0.12);
+        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         ">
           ⚙️
         </button>
@@ -24905,7 +24905,7 @@ background:none;
     width:100%;
     max-width:none;
     margin:0;
-    padding:0 14px 16px 14px;
+    padding:14px 14px 16px 14px;
     box-sizing:border-box;
     ">
 
@@ -24913,27 +24913,29 @@ background:none;
       text-align:center;
       margin-top:6px;
       margin-bottom:16px;
-      text-shadow:0 1px 3px rgba(0,0,0,0.35);
       ">
 
      
 
  
 <!-- =========================
-     SALAH CITY CLICK WRAPPER (FIXED CLICK AREA)
+     SALAH CITY CLICK WRAPPER (IOS STYLE)
 ========================= -->
 <div id="salahCityClickWrap" onclick="toggleSalahTopDropdown()" style="
 text-align:center;
 cursor:pointer;
 display:inline-block;
 width:100%;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 
   <!-- CITY NAME -->
   <div id="salahCityName" style="
-  font-size:22px;
-  font-weight:800;
-  color:white;
+  font-size:24px;
+  font-weight:900;
+  color:#111;
+  letter-spacing:-0.5px;
+  line-height:1.15;
   ">
   Loading location...
   </div>
@@ -24941,34 +24943,33 @@ width:100%;
   <!-- TAP TEXT -->
   <div style="
   font-size:13px;
-  font-weight:600;
-  color:white;
-  opacity:0.85;
-  margin-top:3px;
-  text-shadow:0 2px 6px rgba(0,0,0,0.3);
+  font-weight:700;
+  color:#777;
+  opacity:1;
+  margin-top:5px;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:6px;
   ">
 
-    <span style="font-size:13px; opacity:0.9;">🔎</span>
+    <span style="font-size:13px;opacity:0.9;">🔎</span>
     <span>Tap to change location</span>
 
   </div>
 
 </div>
 
-    <div id="salahSourceLabel" style="
-    font-size:14px;
-    font-weight:600;
-    color:white;
-    margin-top:4px;
-    opacity:0.95;
-    ">
-    Loading times...
-    </div>
-  </div>
+<div id="salahSourceLabel" style="
+font-size:14px;
+font-weight:700;
+color:#666;
+margin-top:6px;
+opacity:1;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+">
+Loading times...
+</div>  </div>
 
 <!-- =========================
      SALAH MY LOCATION WRAPPER
