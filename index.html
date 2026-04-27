@@ -11444,55 +11444,44 @@ handle.style.display = show ? "flex" : "none";
 // =========================
 function hideAllQuranLayers(){
 
-let quranPage = document.getElementById("quranPage");
-let arabicQuranPage = document.getElementById("arabicQuranPage");
-let quran15Page = document.getElementById("quran15Page");
-let quran15SurahPage = document.getElementById("quran15SurahPage");
-let surahIndexPage = document.getElementById("surahIndexPage");
-let quranReadingPage = document.getElementById("quranReadingPage");
-let quran15BookmarkPage = document.getElementById("quran15BookmarkPage");
-
-let quran16Page = document.getElementById("quran16Page");
-let quran16SurahPage = document.getElementById("quran16SurahPage");
-let quran16ReadingPage = document.getElementById("quran16ReadingPage");
-let quran16JuzPage = document.getElementById("quran16JuzPage");
-let quran16BookmarkPage = document.getElementById("quran16BookmarkPage");
-let quran16BookmarkPopup = document.getElementById("quran16BookmarkPopup");
+let quranLayerIds = [
+  "quranPage",
+  "arabicQuranPage",
+  "quran15Page",
+  "quran15SurahPage",
+  "surahIndexPage",
+  "quranReadingPage",
+  "quran15BookmarkPage",
+  "quran16Page",
+  "quran16SurahPage",
+  "quran16ReadingPage",
+  "quran16JuzPage",
+  "quran16BookmarkPage",
+  "quran16BookmarkPopup"
+];
 
 /* TRACKER SURAH / PDF STYLE PAGES */
-let waqiyaPage = document.getElementById("waqiyaPage");
-let mulkPage = document.getElementById("mulkPage");
-let rehmanPage = document.getElementById("rehmanPage");
-let sajdahPage = document.getElementById("sajdahPage");
-let taghabunPage = document.getElementById("taghabunPage");
-let last22Page = document.getElementById("last22Page");
-let ikhlasPage = document.getElementById("ikhlasPage");
-let yaseenPage = document.getElementById("yaseenPage");
+let trackerSurahPageIds = [
+  "waqiyaPage",
+  "mulkPage",
+  "rehmanPage",
+  "sajdahPage",
+  "taghabunPage",
+  "last22Page",
+  "ikhlasPage",
+  "yaseenPage"
+];
 
-if(quranPage) quranPage.style.display = "none";
-if(arabicQuranPage) arabicQuranPage.style.display = "none";
-if(quran15Page) quran15Page.style.display = "none";
-if(quran15SurahPage) quran15SurahPage.style.display = "none";
-if(surahIndexPage) surahIndexPage.style.display = "none";
-if(quranReadingPage) quranReadingPage.style.display = "none";
-if(quran15BookmarkPage) quran15BookmarkPage.style.display = "none";
-
-if(quran16Page) quran16Page.style.display = "none";
-if(quran16SurahPage) quran16SurahPage.style.display = "none";
-if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
-if(quran16JuzPage) quran16JuzPage.style.display = "none";
-if(quran16BookmarkPage) quran16BookmarkPage.style.display = "none";
-if(quran16BookmarkPopup) quran16BookmarkPopup.style.display = "none";
+quranLayerIds.forEach(function(id){
+  let el = document.getElementById(id);
+  if(el) el.style.display = "none";
+});
 
 /* FORCE CLOSE TRACKER SURAH / PDF STYLE PAGES */
-if(waqiyaPage) waqiyaPage.style.display = "none";
-if(mulkPage) mulkPage.style.display = "none";
-if(rehmanPage) rehmanPage.style.display = "none";
-if(sajdahPage) sajdahPage.style.display = "none";
-if(taghabunPage) taghabunPage.style.display = "none";
-if(last22Page) last22Page.style.display = "none";
-if(ikhlasPage) ikhlasPage.style.display = "none";
-if(yaseenPage) yaseenPage.style.display = "none";
+trackerSurahPageIds.forEach(function(id){
+  let el = document.getElementById(id);
+  if(el) el.style.display = "none";
+});
 
 // FORCE HIDE MENU HANDLE ON QURAN / PDF / SURAH PAGES
 setMainMenuHandleVisibility(false);
