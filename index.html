@@ -11060,79 +11060,104 @@ let options = visibleTasks.map(t=>`<option>${t.name}</option>`).join("");
 if(!options){
 document.getElementById("taskMenuContent").innerHTML = `
 <div style="
-display:flex;
-flex-direction:column;
-min-height:72vh;
-padding-bottom:120px;
-box-sizing:border-box;
-">
+width:46px;
+height:5px;
+border-radius:999px;
+background:#d1d1d6;
+margin:0 auto 18px auto;
+"></div>
 
 <div style="
-font-size:32px;
+font-size:28px;
 font-weight:900;
 color:#111;
-margin-bottom:22px;
+margin-bottom:6px;
 letter-spacing:-0.6px;
-line-height:1.05;
-padding-top:2px;
+text-align:center;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 Rename Task
+</div>
+
+<div style="
+font-size:15px;
+font-weight:600;
+color:#777;
+text-align:center;
+line-height:1.4;
+margin-bottom:22px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+">
+Choose a current task and give it a new name.
 </div>
 
 <div style="
 background:#f2f2f7;
 border-radius:20px;
 padding:18px;
-font-size:18px;
-font-weight:600;
+font-size:17px;
+font-weight:700;
 color:#666;
-margin-bottom:18px;
+margin-bottom:16px;
 line-height:1.5;
+text-align:center;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
-No current tasks to rename.
+No current tasks to rename.<br>
 Historical tasks are hidden from this screen.
 </div>
 
-<div style="flex:1;"></div>
-
-<!-- Back To Manage Tasks Button -->
 <button onclick="manageTasks()" style="
 width:100%;
 padding:16px;
-font-size:20px;
-font-weight:700;
+margin-top:8px;
+margin-bottom:90px;
+background:#e9e9ee;
+font-size:19px;
+font-weight:800;
 border:none;
-border-radius:22px;
-background:#f5f5f7;
-color:#666;
+border-radius:20px;
+color:#555;
 cursor:pointer;
-margin-bottom:20px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 Back
 </button>
-
-</div>
 `;
 return;
 }
 
 document.getElementById("taskMenuContent").innerHTML = `
 <div style="
-display:flex;
-flex-direction:column;
-min-height:72vh;
-padding-bottom:120px;
-box-sizing:border-box;
-">
+width:46px;
+height:5px;
+border-radius:999px;
+background:#d1d1d6;
+margin:0 auto 18px auto;
+"></div>
 
 <div style="
 font-size:28px;
-font-weight:800;
+font-weight:900;
 color:#111;
-margin-bottom:18px;
-letter-spacing:-0.3px;
+margin-bottom:6px;
+letter-spacing:-0.6px;
+text-align:center;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 Rename Task
+</div>
+
+<div style="
+font-size:15px;
+font-weight:600;
+color:#777;
+text-align:center;
+line-height:1.4;
+margin-bottom:22px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+">
+Choose a task, type the new name, then press Rename.
 </div>
 
 <!-- Rename Select -->
@@ -11140,31 +11165,36 @@ Rename Task
 width:100%;
 margin-bottom:12px;
 padding:16px 18px;
-font-size:20px;
-font-weight:600;
-border-radius:18px;
+font-size:19px;
+font-weight:800;
+border-radius:20px;
 border:none;
 background:#f2f2f7;
 box-sizing:border-box;
 color:#111;
+outline:none;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+-webkit-appearance:none;
+appearance:none;
 ">
 ${options}
 </select>
 
 <!-- Rename Input -->
-<input id="renameInput" placeholder="New Name" style="
+<input id="renameInput" placeholder="New task name" style="
 width:100%;
 margin-bottom:14px;
-padding:18px 16px;
-font-size:18px;
-font-weight:700;
-border-radius:18px;
+padding:17px 16px;
+font-size:19px;
+font-weight:800;
+border-radius:20px;
 border:none;
 outline:none;
-background:rgba(255,255,255,0.95);
+background:#f2f2f7;
 box-sizing:border-box;
 color:#111;
-box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);
+box-shadow:none;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 -webkit-appearance:none;
 appearance:none;
 ">
@@ -11172,9 +11202,9 @@ appearance:none;
 <!-- Confirm Rename Task Button -->
 <button onclick="confirmRenameTask()" style="
 width:100%;
-padding:18px;
+padding:17px;
 margin-bottom:12px;
-font-size:22px;
+font-size:20px;
 font-weight:800;
 border:none;
 border-radius:20px;
@@ -11183,43 +11213,65 @@ color:white;
 box-shadow:0 8px 20px rgba(0,0,0,0.14);
 cursor:pointer;
 letter-spacing:-0.2px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 Rename
 </button>
-
-<div style="flex:1;"></div>
 
 <!-- Back To Manage Tasks Button -->
 <button onclick="manageTasks()" style="
 width:100%;
 padding:16px;
-font-size:20px;
-font-weight:700;
+margin-top:8px;
+margin-bottom:90px;
+background:#e9e9ee;
+font-size:19px;
+font-weight:800;
 border:none;
-border-radius:22px;
-background:#f5f5f7;
-color:#666;
+border-radius:20px;
+color:#555;
 cursor:pointer;
-margin-bottom:20px;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ">
 Back
 </button>
-
-</div>
 `;
 
 }
-
 // =========================
 // CONFIRM RENAME TASK
 // =========================
 function confirmRenameTask(){
 
-let oldName = document.getElementById("renameSelect").value;
-let newName = document.getElementById("renameInput").value.trim();
+let renameSelect = document.getElementById("renameSelect");
+let renameInput = document.getElementById("renameInput");
 
-if(!newName) return;
+if(!renameSelect || !renameInput){
+alert("Rename box not found");
+return;
+}
 
+let oldName = renameSelect.value;
+let newName = renameInput.value.trim();
+
+if(!newName){
+alert("Please type a new task name");
+return;
+}
+
+if(newName === oldName){
+alert("Please type a different name");
+return;
+}
+
+let nameAlreadyExists = taskList.some(t => t.name === newName);
+
+if(nameAlreadyExists){
+alert("This task name already exists");
+return;
+}
+
+/* Rename task inside taskList */
 taskList = taskList.map(t=>{
 if(t.name === oldName){
 return {...t, name:newName};
@@ -11229,11 +11281,41 @@ return t;
 
 localStorage.setItem("taskList", JSON.stringify(taskList));
 
-closeTaskMenu();
-loadTasks();
+/* Rename saved checkbox data for every date */
+for(let i = 0; i < localStorage.length; i++){
+
+let storageKey = localStorage.key(i);
+
+if(!storageKey) continue;
+
+/* Only check daily tracker date keys */
+if(!storageKey.includes("-")) continue;
+
+let savedData;
+
+try{
+savedData = JSON.parse(localStorage.getItem(storageKey));
+}catch(error){
+continue;
+}
+
+if(!savedData || typeof savedData !== "object") continue;
+
+if(Object.prototype.hasOwnProperty.call(savedData, oldName)){
+
+savedData[newName] = savedData[oldName];
+delete savedData[oldName];
+
+localStorage.setItem(storageKey, JSON.stringify(savedData));
 
 }
 
+}
+
+loadTasks();
+manageTasks();
+
+}
 let deleteTargetTask = null;
 
 // =========================
