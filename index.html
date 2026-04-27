@@ -10489,9 +10489,8 @@ function isSurah(name){
 // =========================
 function handleTaskClick(name){
 
-let handle = document.getElementById("menuHandle");
-if(handle) handle.style.display = "none";
-
+setMainMenuHandleVisibility(false);
+     
 if(name === "Surah Ikhlas"){
 openSurahPage('ikhlasPage');
 return;
@@ -11796,8 +11795,7 @@ function hideAllAppPages(){
   hideAllQuranLayers();
   autoLockQazaIfHidden();
 
-  let handle = document.getElementById("menuHandle");
-  if(handle) handle.style.display = "none";
+   setMainMenuHandleVisibility(false);
 
 }
 
@@ -17181,8 +17179,8 @@ closeDarkTargetMenu();
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-let handle = document.getElementById("menuHandle");
-if(handle) handle.style.display = "none";
+setMainMenuHandleVisibility(false);
+     
 let savedTarget = localStorage.getItem(getTargetKey()) || 33;
 let darkTargetText = document.getElementById("darkTargetText");
 if(darkTargetText){
@@ -17233,8 +17231,7 @@ closeDarkTargetMenu();
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-let handle = document.getElementById("menuHandle");
-if(handle) handle.style.display = "none";
+setMainMenuHandleVisibility(false);
 
 }
 
@@ -17318,8 +17315,7 @@ function showRoyalMode(){
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-let handle = document.getElementById("menuHandle");
-if(handle) handle.style.display = "none";
+setMainMenuHandleVisibility(false);
 }
 
 // =========================
