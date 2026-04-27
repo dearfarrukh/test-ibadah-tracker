@@ -11435,7 +11435,17 @@ handle.style.display = show ? "flex" : "none";
 
 }
 
+// =========================
+// BOTTOM NAV VISIBILITY
+// =========================
+function setBottomNavVisibility(show){
 
+let bottomNav = document.getElementById("bottomNav");
+if(!bottomNav) return;
+
+bottomNav.style.display = show ? "flex" : "none";
+
+}
      
 
 // =========================
