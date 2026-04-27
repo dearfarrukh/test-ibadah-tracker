@@ -11859,7 +11859,8 @@ function hideAllAppPages(){
     "zikrPage",
     "zikrDetailPage",
     "qazaPage",
-    "appSettingsPage"
+    "appSettingsPage",
+    "juzIndexPage"
   ];
 
   pageIds.forEach(function(id){
@@ -11869,8 +11870,10 @@ function hideAllAppPages(){
 
   hideAllQuranLayers();
   autoLockQazaIfHidden();
-     let handle = document.getElementById("menuHandle");
-if(handle) handle.style.display = "none";
+
+  let handle = document.getElementById("menuHandle");
+  if(handle) handle.style.display = "none";
+
 }
 
 
