@@ -11509,7 +11509,7 @@ lastMainTab = "tracker";
 
 let trackerPage = document.getElementById("trackerPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 hideAllAppPages();
 
@@ -11517,7 +11517,7 @@ hideAllAppPages();
 if(trackerPage) trackerPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 setMainMenuHandleVisibility(true);
 window.scrollTo(0,0);
 
@@ -11734,7 +11734,7 @@ let homePage = document.getElementById("homePage");
 let morePage = document.getElementById("morePage");
 let salahPage = document.getElementById("salahPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 // remember where More was opened from
 if(homePage && homePage.style.display === "block"){
@@ -11754,7 +11754,7 @@ hideAllAppPages();
 if(morePage) morePage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 setMainMenuHandleVisibility(false);
 window.scrollTo(0,0);
 }
@@ -11973,7 +11973,7 @@ function openQazaPage(){
   lastMoreSourceTab = "more";
 
   let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-  let bottomNav = document.getElementById("bottomNav");
+
 
   hideAllAppPages();
 
@@ -11981,7 +11981,7 @@ function openQazaPage(){
   if(qazaPage) qazaPage.style.display = "block";
 
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  if(bottomNav) bottomNav.style.display = "flex";
+  setBottomNavVisibility(true);
 
   showQazaPrayerTab();
   loadFajrData();
@@ -13265,7 +13265,6 @@ function openZikrPage(){
 
 let zikrPage = document.getElementById("zikrPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
 
 hideAllAppPages();
 
@@ -13273,7 +13272,7 @@ if(zikrPage) zikrPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 
 renderCustomZikrCards();
 updateAllZikrCardUI();
@@ -14713,7 +14712,7 @@ closeBookmarkPopup();
 
 let quranPage = document.getElementById("quranPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 hideAllAppPages();
 
@@ -14722,7 +14721,7 @@ if(quranPage) quranPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 
 window.scrollTo(0,0);
 
@@ -14775,7 +14774,7 @@ closeBookmarkPopup();
 
 let tasbihPage = document.getElementById("tasbihPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 hideAllAppPages();
 
@@ -14784,7 +14783,7 @@ if(tasbihPage) tasbihPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 
 updateTasbihTopButton();
 loadTasbih();
@@ -16631,7 +16630,7 @@ lastMainTab = "salah";
 
 let salahPage = document.getElementById("salahPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-let bottomNav = document.getElementById("bottomNav");
+
 
 updateSalahTopButton();
 
@@ -16640,7 +16639,7 @@ hideAllAppPages();
 if(salahPage) salahPage.style.display = "block";
 
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-if(bottomNav) bottomNav.style.display = "flex";
+setBottomNavVisibility(true);
 setMainMenuHandleVisibility(true);
 
 let savedMode = localStorage.getItem("salahLocationMode") || "current";
