@@ -11879,12 +11879,14 @@ function updateQazaTotalInputsLockState(){
 
   });
 
-  qazaButtons.forEach(function(btn){
+   qazaButtons.forEach(function(btn){
 
     if(isLocked){
       btn.style.opacity = "0.45";
       btn.style.cursor = "not-allowed";
-      btn.style.pointerEvents = "none";
+
+      // Keep button tappable so we can show the unlock popup
+      btn.style.pointerEvents = "auto";
     }else{
       btn.style.opacity = "1";
       btn.style.cursor = "pointer";
@@ -11929,24 +11931,33 @@ function unlockQazaEditingFromPopup(){
 
 
 // =========================
-// QAZA LOCKED INPUT TAP HANDLER
+// QAZA LOCKED CONTROL TAP HANDLER
 // =========================
 document.addEventListener("click", function(e){
 
   let target = e.target;
   if(!target) return;
 
-  if(target.classList && target.classList.contains("qazaTotalInput")){
+  let isTotalInput = target.classList && target.classList.contains("qazaTotalInput");
+  let isAdjustButton = target.classList && target.classList.contains("qazaAdjustBtn");
+
+  if(isTotalInput || isAdjustButton){
 
     if(getQazaLockState()){
       e.preventDefault();
-      target.blur();
+      e.stopPropagation();
+
+      if(isTotalInput){
+        target.blur();
+      }
+
       openQazaLockRequiredPopup();
+      return false;
     }
 
   }
-});
 
+}, true);
 
      
 
