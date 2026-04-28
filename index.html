@@ -11458,7 +11458,7 @@ setMainMenuHandleVisibility(false);
 // =========================
 function openTrackerPage(){
 
-if(isSideMenuOpen) return;
+closeSideMenu();
      
 closeBookmarkPopup();
 
@@ -11603,7 +11603,7 @@ async function loadDailyQuranAyah(){
 // OPEN HOME PAGE
 // =========================
 function openHomePage(){
-if(isSideMenuOpen) return;
+closeSideMenu();
 closeBookmarkPopup();
 
 let homePage = document.getElementById("homePage");
@@ -11771,7 +11771,7 @@ countdownEl.innerText = "00:00:00";
 // =========================
 function openMorePage(){
 
-if(isSideMenuOpen) return;
+closeSideMenu();
 
 closeBookmarkPopup();
 
