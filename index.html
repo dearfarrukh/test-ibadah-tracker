@@ -13471,24 +13471,42 @@ updateAllZikrCardUI();
 window.scrollTo(0,0);
 }
 // =========================
+// GET TRACKER SURAH TITLE
+// =========================
+function getTrackerSurahTitle(id){
+
+  let titles = {
+    waqiyaPage: "Surah Waqiya",
+    mulkPage: "Surah Mulk",
+    rehmanPage: "Surah Rahman",
+    sajdahPage: "Surah Sajdah",
+    taghabunPage: "Surah Taghabun",
+    last22Page: "Last 22 Surahs",
+    ikhlasPage: "Surah Ikhlas",
+    yaseenPage: "Surah Yaseen"
+  };
+
+  return titles[id] || "Surah PDF";
+
+}
+
+
+// =========================
 // OPEN WAQIYA PAGE
 // =========================
 function openWaqiyaPage(){
 
-document.getElementById("waqiyaPage").style.display = "block";
-document.getElementById("floatingMenuBtn").style.display = "none";
-window.scrollTo(0,0);
+  openSurahPage("waqiyaPage");
 
 }
+
 
 // =========================
 // CLOSE WAQIYA PAGE
 // =========================
 function closeWaqiyaPage(){
 
-document.getElementById("waqiyaPage").style.display = "none";
-document.getElementById("floatingMenuBtn").style.display = "flex";
-window.scrollTo(0,0);
+  closeSurahPage("waqiyaPage");
 
 }
 
@@ -13496,20 +13514,43 @@ window.scrollTo(0,0);
 // =========================
 // OPEN SURAH PAGE
 // =========================
- function openSurahPage(id){
-document.getElementById(id).style.display = "block";
-document.getElementById("floatingMenuBtn").style.display = "none";
-window.scrollTo(0,0);
+function openSurahPage(id){
+
+  hideAllQuranLayers();
+
+  let page = document.getElementById(id);
+  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+  if(page) page.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+  setAppTopBarVisibility(true);
+  setAppTopBarTitle(getTrackerSurahTitle(id));
+
+  setBottomNavVisibility(false);
+  setMainMenuHandleVisibility(false);
+
+  window.scrollTo(0,0);
+
 }
+
 
 // =========================
 // CLOSE SURAH PAGE
 // =========================
 function closeSurahPage(id){
-document.getElementById(id).style.display = "none";
-document.getElementById("floatingMenuBtn").style.display = "flex";
-window.scrollTo(0,0);
+
+  let page = document.getElementById(id);
+
+  if(page) page.style.display = "none";
+
+  setAppTopBarVisibility(false);
+  setAppTopBarTitle("");
+
+  openTrackerPage();
+
 }
+
 
 
 
@@ -24387,7 +24428,8 @@ bottom:0;
 z-index:5000;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 ">
 
   <div style="padding:10px;">
@@ -24472,7 +24514,8 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
@@ -24505,7 +24548,8 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
@@ -24539,7 +24583,8 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
@@ -24574,7 +24619,8 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
@@ -24608,7 +24654,8 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
@@ -24645,7 +24692,8 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
@@ -24716,7 +24764,8 @@ bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
 -webkit-overflow-scrolling:touch;
-padding:15px;
+padding:90px 4% 40px 4%;
+box-sizing:border-box;
 z-index:5000;
 ">
 
