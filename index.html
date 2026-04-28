@@ -12221,7 +12221,39 @@ function showQazaProgressTab(){
 
 
 
+// =========================
+// OPEN IMAN PAGE
+// =========================
+function openImanPage(){
 
+let duaPage = document.getElementById("duaPage");
+let imanPage = document.getElementById("imanPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(duaPage) duaPage.style.display = "none";
+if(imanPage) imanPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "none";
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// CLOSE IMAN PAGE
+// =========================
+function closeImanPage(){
+
+let duaPage = document.getElementById("duaPage");
+let imanPage = document.getElementById("imanPage");
+let bottomNav = document.getElementById("bottomNav");
+
+if(imanPage) imanPage.style.display = "none";
+if(duaPage) duaPage.style.display = "block";
+if(bottomNav) bottomNav.style.display = "flex";
+
+window.scrollTo(0,0);
+
+}
 
 
 
@@ -24831,7 +24863,157 @@ box-sizing:border-box;
 <!-- END IMAN MUJMAL & MUFASSAL PAGE -->
 
 
+<!-- =========================
+     IMAN MUJMAL & MUFASSAL PAGE
+========================= -->
+<div id="imanPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:10002;
+background:linear-gradient(180deg, #f7f7fa 0%, #e9e9ee 100%);
+overflow:auto;
+-webkit-overflow-scrolling:touch;
+padding:90px 4% 120px 4%;
+box-sizing:border-box;
+">
 
+  <!-- =========================
+       IMAN PAGE BACK BUTTON
+  ========================= -->
+  <button onclick="closeImanPage()" style="
+  position:fixed;
+  top:18px;
+  left:4%;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  font-size:24px;
+  font-weight:700;
+  color:#111;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+  z-index:10003;
+  ">
+    ←
+  </button>
+
+  <!-- =========================
+       IMAN MUJMAL CARD
+  ========================= -->
+  <div style="
+  background:white;
+  border-radius:28px;
+  padding:22px 5%;
+  margin-bottom:16px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  box-sizing:border-box;
+  ">
+
+    <div style="
+    font-size:22px;
+    font-weight:900;
+    color:#111;
+    margin-bottom:16px;
+    text-align:center;
+    ">
+      ایمان مجمل
+    </div>
+
+    <div style="
+    font-family:'Amiri','Noto Naskh Arabic',serif;
+    direction:rtl;
+    text-align:right;
+    font-size:28px;
+    line-height:2.1;
+    color:#111;
+    font-weight:600;
+    margin-bottom:16px;
+    ">
+      اٰمَنْتُ بِاللہِ کَمَا ھُوَ بِاَسْمَآئِہٖ وَصِفَاتِہٖ وَقَبِلْتُ جَمِیْعَ اَحْکَامِہٖ اِقْرَارٌم بِاللِّسَانِ وَتَصْدِیْقٌ بِالْقَلْبِ
+    </div>
+
+    <div style="
+    font-family:'Noto Naskh Arabic','Amiri',serif;
+    direction:rtl;
+    text-align:right;
+    font-size:21px;
+    line-height:2;
+    color:#111;
+    background:#f7f7fa;
+    border-radius:20px;
+    padding:16px;
+    box-sizing:border-box;
+    ">
+      میں اللہ پر ایمان لایا جیسا کہ وہ اپنے ناموں اور صفات کے ساتھ ہے، اور میں نے اس کے تمام احکام قبول کیے، زبان سے اقرار کیا اور دل سے تصدیق کی۔
+    </div>
+
+  </div>
+
+  <!-- =========================
+       IMAN MUFASSAL CARD
+  ========================= -->
+  <div style="
+  background:white;
+  border-radius:28px;
+  padding:22px 5%;
+  margin-bottom:16px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  box-sizing:border-box;
+  ">
+
+    <div style="
+    font-size:22px;
+    font-weight:900;
+    color:#111;
+    margin-bottom:16px;
+    text-align:center;
+    ">
+      ایمان مفصل
+    </div>
+
+    <div style="
+    font-family:'Amiri','Noto Naskh Arabic',serif;
+    direction:rtl;
+    text-align:right;
+    font-size:28px;
+    line-height:2.1;
+    color:#111;
+    font-weight:600;
+    margin-bottom:16px;
+    ">
+      اٰمَنْتُ بِاللہِ وَمَلَائِکَتِہٖ وَکُتُبِہٖ وَرُسُلِہٖ وَالْیَوْمِ الْاٰخِرِ وَالْقَدْرِ خَیْرِہٖ وَشَرِّہٖ مِنَ اللہِ تَعَالٰی وَالْبَعْثِ بَعْدَ الْمَوْتِ
+    </div>
+
+    <div style="
+    font-family:'Noto Naskh Arabic','Amiri',serif;
+    direction:rtl;
+    text-align:right;
+    font-size:21px;
+    line-height:2;
+    color:#111;
+    background:#f7f7fa;
+    border-radius:20px;
+    padding:16px;
+    box-sizing:border-box;
+    ">
+      ایمان لایا میں اللہ پر، اس کے فرشتوں پر، اس کی کتابوں پر، اس کے رسولوں پر، قیامت کے دن پر، اور اس بات پر کہ اچھی اور بری تقدیر اللہ تعالیٰ کی طرف سے ہے، اور موت کے بعد دوبارہ اٹھائے جانے پر بھی ایمان لایا۔
+    </div>
+
+  </div>
+
+</div>
+<!-- END IMAN MUJMAL & MUFASSAL PAGE -->
      
 
 <!-- =========================
