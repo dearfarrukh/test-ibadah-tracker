@@ -12228,15 +12228,27 @@ function openImanPage(){
 
 let duaPage = document.getElementById("duaPage");
 let imanPage = document.getElementById("imanPage");
-let bottomNav = document.getElementById("bottomNav");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(duaPage) duaPage.style.display = "none";
 if(imanPage) imanPage.style.display = "block";
-if(bottomNav) bottomNav.style.display = "none";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(false);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Iman Mujmal & Mufassal");
+setAppTopBarBackButton(true, function(){
+  closeImanPage();
+});
 
 window.scrollTo(0,0);
 
 }
+
+
+
 
 // =========================
 // CLOSE IMAN PAGE
@@ -12245,13 +12257,10 @@ function closeImanPage(){
 
 let duaPage = document.getElementById("duaPage");
 let imanPage = document.getElementById("imanPage");
-let bottomNav = document.getElementById("bottomNav");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(imanPage) imanPage.style.display = "none";
 if(duaPage) duaPage.style.display = "block";
-
-if(bottomNav) bottomNav.style.display = "flex";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
 setBottomNavVisibility(true);
@@ -12263,8 +12272,6 @@ setAppTopBarBackButton(false, null);
 window.scrollTo(0,0);
 
 }
-
-
 
      
   
@@ -24737,30 +24744,7 @@ padding:90px 4% 120px 4%;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
-       IMAN PAGE BACK BUTTON
-  ========================= -->
-  <button onclick="closeImanPage()" style="
-  position:fixed;
-  top:18px;
-  left:4%;
-  width:42px;
-  height:42px;
-  border:none;
-  border-radius:50%;
-  background:white;
-  font-size:24px;
-  font-weight:700;
-  color:#111;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 12px rgba(0,0,0,0.10);
-  z-index:10003;
-  ">
-    ←
-  </button>
+ 
 
   <!-- =========================
        IMAN MUJMAL CARD
