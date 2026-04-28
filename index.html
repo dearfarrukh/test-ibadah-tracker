@@ -17295,26 +17295,69 @@ reader.readAsText(file);
 function openDuaViewer(duaName){
 
 let imageBox = document.getElementById("duaViewerImages");
+let duaPage = document.getElementById("duaPage");
+let duaViewerPage = document.getElementById("duaViewerPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-if(duaName === "istikhara"){
+if(imageBox && duaName === "istikhara"){
 imageBox.innerHTML = `
-<img src="duas/istikhara-1.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="duas/istikhara-2.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
-<img src="duas/istikhara-3.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
+<img src="duas/istikhara-1.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;box-shadow:0 8px 22px rgba(0,0,0,0.10);">
+<img src="duas/istikhara-2.jpg" style="width:100%;display:block;margin-top:12px;border-radius:22px;box-shadow:0 8px 22px rgba(0,0,0,0.10);">
+<img src="duas/istikhara-3.jpg" style="width:100%;display:block;margin-top:12px;border-radius:22px;box-shadow:0 8px 22px rgba(0,0,0,0.10);">
 `;
 }
 
-document.getElementById("duaViewerPage").style.display = "block";
-document.getElementById("floatingMenuBtn").style.display = "none";
-window.scrollTo(0,0);
+if(duaPage) duaPage.style.display = "none";
+if(duaViewerPage) duaViewerPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Istikhara Dua");
+setAppTopBarBackButton(true, function(){
+  closeDuaViewer();
+});
+
+if(typeof setAppTopBarRightButton === "function"){
+  setAppTopBarRightButton(false, "", null);
 }
 
+window.scrollTo(0,0);
+
+}
+
+
+     
 // =========================
 // CLOSE DUA VIEWER
 // =========================
 function closeDuaViewer(){
-document.getElementById("duaViewerPage").style.display = "none";
+
+let duaViewerPage = document.getElementById("duaViewerPage");
+let duaPage = document.getElementById("duaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(duaViewerPage) duaViewerPage.style.display = "none";
+if(duaPage) duaPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Dua");
+setAppTopBarBackButton(true, function(){
+  closeDuaPage();
+});
+
+if(typeof setAppTopBarRightButton === "function"){
+  setAppTopBarRightButton(false, "", null);
+}
+
 window.scrollTo(0,0);
+
 }
   
 // =========================
@@ -25284,7 +25327,7 @@ right:0;
 bottom:0;
 background:url('wallpaper.jpg') center/cover no-repeat;
 overflow:auto;
-padding:15px;
+padding:90px 4% 120px 4%;
 z-index:10002;
 ">
 
