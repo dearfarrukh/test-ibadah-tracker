@@ -19754,27 +19754,47 @@ window.scrollTo(0,0);
 function closeAppSettingsPage(){
 
 let appSettingsPage = document.getElementById("appSettingsPage");
-let defaultPage = localStorage.getItem("defaultPage") || "tracker";
+let returnPage = localStorage.getItem("appSettingsReturnPage") || "more";
 
 if(appSettingsPage) appSettingsPage.style.display = "none";
 
-// go to selected home page
-if(defaultPage === "salah"){
+// ALWAYS SHOW BOTTOM NAV AGAIN WHEN LEAVING APP SETTINGS
+setBottomNavVisibility(true);
+
+// RETURN TO THE PAGE YOU CAME FROM
+if(returnPage === "salah"){
 openSalahPage();
 }
-else if(defaultPage === "tasbih"){
+else if(returnPage === "tasbih"){
 openTasbihPage();
 }
-else if(defaultPage === "home"){
+else if(returnPage === "dua"){
+openDuaPage();
+}
+else if(returnPage === "qibla"){
+openQiblaPage();
+}
+else if(returnPage === "zikr"){
+openZikrPage();
+}
+else if(returnPage === "zikrDetail"){
+if(typeof openZikrPage === "function") openZikrPage();
+}
+else if(returnPage === "home"){
 openHomePage();
 }
-else{
+else if(returnPage === "tracker"){
 openTrackerPage();
 }
-
-window.scrollTo(0,0);
+else{
+openMorePage();
 }
 
+setBottomNavVisibility(true);
+
+window.scrollTo(0,0);
+
+}
 
 // =========================
 // GET DEFAULT PAGE LABEL
