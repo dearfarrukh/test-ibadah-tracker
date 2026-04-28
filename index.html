@@ -19562,12 +19562,16 @@ localStorage.setItem("appSettingsReturnPage", "zikr");
 localStorage.setItem("appSettingsReturnPage", "more");
 }
 
-if(appSettingsPage) appSettingsPage.style.display = "block";
-     updateJuz30DownloadButtonUI();
-     updateFullQuranDownloadButtonsUI();
-window.scrollTo(0,0);
-}
+setBottomNavVisibility(false);
 
+if(appSettingsPage) appSettingsPage.style.display = "block";
+
+updateJuz30DownloadButtonUI();
+updateFullQuranDownloadButtonsUI();
+
+window.scrollTo(0,0);
+
+}
 
 
   
