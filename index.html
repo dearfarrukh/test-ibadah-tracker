@@ -16,6 +16,44 @@
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 
+/* =========================
+   GLOBAL FIXED TOP BAR CSS
+========================= */
+.app-top-bar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:8%;
+  min-height:58px;
+  max-height:76px;
+  z-index:9999;
+  background:rgba(233,233,238,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  padding:env(safe-area-inset-top) 5% 0 5%;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+}
+
+.app-top-bar-title{
+  font-size:20px;
+  font-weight:800;
+  color:#111;
+  text-align:center;
+  letter-spacing:-0.3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:82%;
+}
+
+
+     
 body{
 font-family:-apple-system,BlinkMacSystemFont;
 margin:0;
@@ -11434,6 +11472,34 @@ handle.style.display = show ? "flex" : "none";
 
 }
 
+
+     // =========================
+// GLOBAL TOP BAR VISIBILITY
+// =========================
+function setAppTopBarVisibility(show){
+
+  let appTopBar = document.getElementById("appTopBar");
+  if(!appTopBar) return;
+
+  appTopBar.style.display = show ? "flex" : "none";
+
+}
+
+
+// =========================
+// GLOBAL TOP BAR TITLE
+// =========================
+function setAppTopBarTitle(title){
+
+  let appTopBarTitle = document.getElementById("appTopBarTitle");
+  if(!appTopBarTitle) return;
+
+  appTopBarTitle.innerText = title || "";
+
+}
+
+     
+
 // =========================
 // BOTTOM NAV VISIBILITY
 // =========================
@@ -11781,6 +11847,10 @@ window.scrollTo(0,0);
 // =========================
 function hideAllAppPages(){
 
+setAppTopBarVisibility(false);
+setAppTopBarTitle("");
+
+     
   let pageIds = [
     "homePage",
     "salahPage",
@@ -21332,7 +21402,12 @@ box-shadow:0 10px 24px rgba(0,0,0,0.08);
 
 
 
-
+<!-- =========================
+     GLOBAL FIXED TOP BAR
+========================= -->
+<div id="appTopBar" class="app-top-bar" style="display:none;">
+  <div id="appTopBarTitle" class="app-top-bar-title"></div>
+</div>
 
 
   
