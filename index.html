@@ -40,6 +40,31 @@
   box-shadow:0 8px 22px rgba(0,0,0,0.08);
 }
 
+ .app-top-bar-back{
+  position:absolute;
+  left:4%;
+  bottom:10px;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#111;
+  font-size:24px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+  cursor:pointer;
+  z-index:2;
+}
+
+.app-top-bar-spacer{
+  width:42px;
+  height:42px;
+}    
+
 .app-top-bar-title{
   font-size:20px;
   font-weight:800;
@@ -11487,6 +11512,39 @@ function setAppTopBarVisibility(show){
 
 
 // =========================
+// GLOBAL TOP BAR BACK ACTION
+// =========================
+let appTopBarBackAction = null;
+
+
+// =========================
+// SET GLOBAL TOP BAR BACK BUTTON
+// =========================
+function setAppTopBarBackButton(show, action){
+
+  let backBtn = document.getElementById("appTopBarBackBtn");
+  if(!backBtn) return;
+
+  backBtn.style.display = show ? "flex" : "none";
+  appTopBarBackAction = action || null;
+
+}
+
+
+// =========================
+// HANDLE GLOBAL TOP BAR BACK
+// =========================
+function handleAppTopBarBack(){
+
+  if(typeof appTopBarBackAction === "function"){
+    appTopBarBackAction();
+  }
+
+}
+
+     
+
+// =========================
 // GLOBAL TOP BAR TITLE
 // =========================
 function setAppTopBarTitle(title){
@@ -13524,8 +13582,11 @@ function openSurahPage(id){
   if(page) page.style.display = "block";
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
-  setAppTopBarVisibility(true);
-  setAppTopBarTitle(getTrackerSurahTitle(id));
+ setAppTopBarVisibility(true);
+setAppTopBarTitle(getTrackerSurahTitle(id));
+setAppTopBarBackButton(true, function(){
+  closeSurahPage(id);
+});
 
   setBottomNavVisibility(false);
   setMainMenuHandleVisibility(false);
@@ -13544,8 +13605,9 @@ function closeSurahPage(id){
 
   if(page) page.style.display = "none";
 
-  setAppTopBarVisibility(false);
-  setAppTopBarTitle("");
+ setAppTopBarVisibility(false);
+setAppTopBarTitle("");
+setAppTopBarBackButton(false, null);
 
   openTrackerPage();
 
@@ -21447,9 +21509,16 @@ box-shadow:0 10px 24px rgba(0,0,0,0.08);
      GLOBAL FIXED TOP BAR
 ========================= -->
 <div id="appTopBar" class="app-top-bar" style="display:none;">
-  <div id="appTopBarTitle" class="app-top-bar-title"></div>
-</div>
 
+  <button id="appTopBarBackBtn" class="app-top-bar-back" onclick="handleAppTopBarBack()" style="display:none;">
+    ←
+  </button>
+
+  <div id="appTopBarTitle" class="app-top-bar-title"></div>
+
+  <div class="app-top-bar-spacer"></div>
+
+</div>
 
   
 <!-- =========================
@@ -24432,32 +24501,9 @@ padding:90px 4% 40px 4%;
 box-sizing:border-box;
 ">
 
-  <div style="padding:10px;">
-<!-- Close Waqiya Page Button -->
-    <button onclick="closeWaqiyaPage()" style="
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    border:1px solid #ccc;
-    background:white;
-    font-size:20px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    ">
-    ←
-    </button>
-  </div>
+   <!-- Old back button removed because global top bar now has back button -->
 
-  <div class="card" style="
-  text-align:center;
-  padding:20px;
-  margin-top:10px;
-  ">
-    <div style="font-size:28px;font-weight:700;">Surah Waqiya</div>
-    <div style="font-size:14px;color:#666;margin-top:6px;">PDF View</div>
-  </div>
+       
 
   <div style="
   display:flex;
@@ -24519,15 +24565,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-<button onclick="closeSurahPage('mulkPage')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+<!-- Old back button removed (using global top bar back button) -->
 
 <img src="mulk-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 <img src="mulk-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
@@ -24553,15 +24591,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-<button onclick="closeSurahPage('rehmanPage')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+<!-- Old back button removed (using global top bar back button) -->
 
 <img src="rehman-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 <img src="rehman-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
@@ -24588,15 +24618,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-<button onclick="closeSurahPage('sajdahPage')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+<!-- Old back button removed (using global top bar back button) -->
 
 <img src="sajdah-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 <img src="sajdah-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
@@ -24624,15 +24646,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-<button onclick="closeSurahPage('taghabunPage')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+<!-- Old back button removed (using global top bar back button) -->
 
 <img src="taghabun-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 <img src="taghabun-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
@@ -24659,15 +24673,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-<button onclick="closeSurahPage('last22Page')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+<!-- Old back button removed (using global top bar back button) -->
 
 <img src="last22-1.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
 <img src="last22-2.jpg" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
@@ -24697,15 +24703,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-<button onclick="closeSurahPage('ikhlasPage')" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-">←</button>
+<!-- Old back button removed (using global top bar back button) -->
 
 <img src="Surah Ikhlas.jpg" style="
 width:100%;
@@ -24769,17 +24767,7 @@ box-sizing:border-box;
 z-index:5000;
 ">
 
-<!-- Close Surah Page Button -->
-  <button onclick="closeSurahPage('yaseenPage')" style="
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  border:1px solid #ccc;
-  background:white;
-  font-size:20px;
-  ">
-    ←
-  </button>
+<!-- Old back button removed (using global top bar back button) -->
 
   <img loading="lazy" src="yaseen-1.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
   <img loading="lazy" src="yaseen-2.png" style="width:100%;display:block;margin-top:10px;border-radius:22px;">
