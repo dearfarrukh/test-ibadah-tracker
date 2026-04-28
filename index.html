@@ -24030,55 +24030,204 @@ left:0;
 right:0;
 bottom:0;
 z-index:10001;
-background:url('wallpaper.jpg') center/cover no-repeat;
+background:linear-gradient(180deg, #f7f7fa 0%, #e9e9ee 100%);
 overflow:auto;
-padding:15px;
+-webkit-overflow-scrolling:touch;
+padding:18px 4% 120px 4%;
+box-sizing:border-box;
 ">
 
-<div style="padding:10px;">
-<!-- Close Dua Page Button -->
-<button onclick="closeDuaPage()" style="
-width:36px;
-height:36px;
-border-radius:50%;
-border:1px solid #ccc;
-background:white;
-font-size:20px;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-">
-←
-</button>
+  <!-- =========================
+       DUA PAGE TOP BAR
+  ========================= -->
+  <div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  padding-top:4px;
+  ">
+
+    <!-- Close Dua Page Button -->
+    <button onclick="closeDuaPage()" style="
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    font-size:24px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    flex-shrink:0;
+    ">
+      ←
+    </button>
+
+    <div style="
+    flex:1;
+    text-align:center;
+    font-size:20px;
+    font-weight:800;
+    color:#111;
+    letter-spacing:-0.3px;
+    margin:0 10px;
+    ">
+      Dua
+    </div>
+
+    <div style="
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+    "></div>
+
+  </div>
+
+  <!-- =========================
+       DUA HERO CARD
+  ========================= -->
+  <div style="
+  width:100%;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.88) 100%);
+  border-radius:30px;
+  padding:28px 6%;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  border:1px solid rgba(255,255,255,0.75);
+  box-sizing:border-box;
+  margin-bottom:18px;
+  ">
+
+    <div style="
+    font-size:38px;
+    margin-bottom:12px;
+    ">
+      🤲
+    </div>
+
+    <div style="
+    font-size:28px;
+    font-weight:900;
+    color:#111;
+    letter-spacing:-0.6px;
+    line-height:1.1;
+    margin-bottom:8px;
+    ">
+      Masnoon Duas
+    </div>
+
+    <div style="
+    width:86%;
+    margin:0 auto;
+    font-size:15px;
+    line-height:1.6;
+    color:#666;
+    font-weight:600;
+    ">
+      Read important duas with a clean and simple layout.
+    </div>
+
+  </div>
+
+  <!-- =========================
+       DUA LIST SECTION TITLE
+  ========================= -->
+  <div style="
+  font-size:13px;
+  font-weight:800;
+  color:#777;
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+  margin:0 0 10px 2%;
+  ">
+    Available Duas
+  </div>
+
+  <!-- =========================
+       ISTIKHARA DUA CARD
+  ========================= -->
+  <div onclick="openDuaViewer('istikhara')" style="
+  width:100%;
+  background:white;
+  border-radius:26px;
+  padding:18px 5%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  box-sizing:border-box;
+  margin-bottom:14px;
+  ">
+
+    <div style="
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+    flex:1;
+    ">
+
+      <div style="
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      background:#f2f2f7;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:26px;
+      flex-shrink:0;
+      ">
+        📿
+      </div>
+
+      <div style="
+      min-width:0;
+      flex:1;
+      ">
+
+        <div style="
+        font-size:19px;
+        font-weight:850;
+        color:#111;
+        line-height:1.2;
+        margin-bottom:5px;
+        ">
+          Istikhara Dua
+        </div>
+
+        <div style="
+        font-size:14px;
+        font-weight:600;
+        color:#666;
+        line-height:1.4;
+        ">
+          Dua for seeking guidance
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="
+    font-size:28px;
+    color:#b0b0b8;
+    flex-shrink:0;
+    ">
+      ›
+    </div>
+
+  </div>
+
 </div>
-
-<div class="card">
-
-<h2 style="margin:0;font-size:24px;font-weight:800;text-align:center;">
-📿 Masnoon Duas
-</h2>
-
-</div>
-
-<!-- Open Dua Viewer Card -->
-<div class="card" onclick="openDuaViewer('istikhara')" style="cursor:pointer;margin-top:15px;">
-
-<div style="display:flex;justify-content:space-between;align-items:center;">
-
-<div style="font-weight:600;font-size:17px;">
-Istikhara Dua
-</div>
-
-<div style="font-size:24px;opacity:0.5;">
-›
-</div>
-
-</div>
-
-</div>
-
-
 
 
 
