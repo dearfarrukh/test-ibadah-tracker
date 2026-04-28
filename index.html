@@ -12261,6 +12261,8 @@ function showQazaProgressTab(){
 // =========================
 function openDuaPage(){
 
+duaOpenedFromPage = getCurrentMainPageForDua();
+
 hideAllAppPages();
 
 let duaPage = document.getElementById("duaPage");
@@ -12282,12 +12284,17 @@ window.scrollTo(0,0);
 
 }
 
+
+     
 // =========================
 // CLOSE DUA PAGE
 // =========================
 function closeDuaPage(){
 
 let duaPage = document.getElementById("duaPage");
+let homePage = document.getElementById("homePage");
+let salahPage = document.getElementById("salahPage");
+let trackerPage = document.getElementById("trackerPage");
 let morePage = document.getElementById("morePage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
@@ -12296,21 +12303,42 @@ if(duaPage) duaPage.style.display = "none";
 setAppTopBarVisibility(false);
 setAppTopBarBackButton(false, null);
 
-if(lastMainTab === "more"){
+if(homePage) homePage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+
+if(duaOpenedFromPage === "home"){
+
+  if(homePage) homePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  lastMainTab = "home";
+
+}else if(duaOpenedFromPage === "salah"){
+
+  if(salahPage) salahPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  lastMainTab = "salah";
+
+}else if(duaOpenedFromPage === "more"){
 
   if(morePage) morePage.style.display = "block";
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-  setBottomNavVisibility(true);
-  setMainMenuHandleVisibility(false);
+  lastMainTab = "more";
 
 }else{
 
+  if(trackerPage) trackerPage.style.display = "block";
   if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  lastMainTab = "tracker";
 
-  setBottomNavVisibility(true);
-  setMainMenuHandleVisibility(true);
+}
 
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(true);
+
+if(duaOpenedFromPage === "more"){
+  setMainMenuHandleVisibility(false);
 }
 
 window.scrollTo(0,0);
@@ -12350,7 +12378,36 @@ window.open("https://qiblafinder.withgoogle.com/","_blank");
 let currentZikr = "";
 let lastMainTab = "tracker";
 let lastMoreSourceTab = "tracker";
+let duaOpenedFromPage = "tracker";
 
+// =========================
+// GET CURRENT MAIN PAGE FOR DUA
+// =========================
+function getCurrentMainPageForDua(){
+
+  let homePage = document.getElementById("homePage");
+  let salahPage = document.getElementById("salahPage");
+  let trackerPage = document.getElementById("trackerPage");
+  let morePage = document.getElementById("morePage");
+
+  if(homePage && homePage.style.display !== "none"){
+    return "home";
+  }
+
+  if(salahPage && salahPage.style.display !== "none"){
+    return "salah";
+  }
+
+  if(morePage && morePage.style.display !== "none"){
+    return "more";
+  }
+
+  if(trackerPage && trackerPage.style.display !== "none"){
+    return "tracker";
+  }
+
+  return lastMainTab || "tracker";
+}
 // =========================
 // OPEN ADD CUSTOM ZIKR POPUP
 // =========================
