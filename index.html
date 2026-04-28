@@ -1631,84 +1631,13 @@ bottom:92px;
 z-index:5000;
 background:linear-gradient(180deg, #ece9e1 0%, #e9e9ee 100%);
 overflow:auto;
-padding:18px 16px 120px 16px;
+padding:90px 4% 120px 4%;
 box-sizing:border-box;
 ">
 
-  <!-- =========================
-       ZIKR PAGE TOP BAR
-  ========================= -->
-  <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-  ">
+ 
 
-    <!-- Close Zikr Page Button -->
-    <button onclick="closeZikrPage()" style="
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:1px solid rgba(0,0,0,0.08);
-    background:white;
-    font-size:22px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#111;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    ">
-      ←
-    </button>
 
-    <div style="
-    font-size:20px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.3px;
-    ">
-      Daily Dhikr
-    </div>
-
-    <div style="width:42px;height:42px;"></div>
-  </div>
-
-  <!-- =========================
-       ZIKR HERO CARD
-  ========================= -->
-  <div style="
-  background:linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 100%);
-  border-radius:30px;
-  padding:28px 22px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-  border:1px solid rgba(255,255,255,0.7);
-  margin-bottom:18px;
-  ">
-
-    <div style="
-    font-size:34px;
-    margin-bottom:12px;
-    ">
-      🌿
-    </div>
-
-    <div style="
-    font-size:28px;
-    font-weight:800;
-    color:#111;
-    letter-spacing:-0.5px;
-    line-height:1.1;
-    margin-bottom:8px;
-    ">
-      Daily Dhikr
-    </div>
-
-   
-
-  </div>
 
   <!-- =========================
        ZIKR OPTION CARDS
@@ -13524,6 +13453,13 @@ if(zikrPage) zikrPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
 setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Daily Dhikr");
+setAppTopBarBackButton(true, function(){
+  closeZikrPage();
+});
 
 renderCustomZikrCards();
 updateAllZikrCardUI();
@@ -13539,23 +13475,47 @@ window.scrollTo(0,0);
 function closeZikrPage(){
 
 let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
 let zikrPage = document.getElementById("zikrPage");
 let morePage = document.getElementById("morePage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-
 if(zikrPage) zikrPage.style.display = "none";
 
+setAppTopBarVisibility(false);
+setAppTopBarBackButton(false, null);
+
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+
 if(lastMainTab === "home"){
-if(homePage) homePage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-}
-else if(lastMainTab === "more"){
-if(morePage) morePage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-}
-else{
-if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+
+  if(homePage) homePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+  setMainMenuHandleVisibility(false);
+
+}else if(lastMainTab === "more"){
+
+  if(morePage) morePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+  setMainMenuHandleVisibility(false);
+
+}else if(lastMainTab === "salah"){
+
+  if(salahPage) salahPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  setMainMenuHandleVisibility(true);
+
+}else{
+
+  if(trackerPage) trackerPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  setMainMenuHandleVisibility(true);
+  lastMainTab = "tracker";
+
 }
 
 setBottomNavVisibility(true);
