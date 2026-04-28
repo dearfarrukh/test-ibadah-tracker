@@ -12268,6 +12268,40 @@ window.scrollTo(0,0);
 
 
 
+
+
+
+     
+// =========================
+// CLOSE AYATUL KURSI PAGE
+// =========================
+function closeAyatulKursiPage(){
+
+let ayatulKursiPage = document.getElementById("ayatulKursiPage");
+let duaPage = document.getElementById("duaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(ayatulKursiPage) ayatulKursiPage.style.display = "none";
+if(duaPage) duaPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Dua");
+setAppTopBarBackButton(true, function(){
+  closeDuaPage();
+});
+
+if(typeof setAppTopBarRightButton === "function"){
+  setAppTopBarRightButton(false, "", null);
+}
+
+window.scrollTo(0,0);
+
+}
+
 // =========================
 // OPEN IMAN PAGE
 // =========================
@@ -12309,40 +12343,6 @@ let duaPage = document.getElementById("duaPage");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(imanPage) imanPage.style.display = "none";
-if(duaPage) duaPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Dua");
-setAppTopBarBackButton(true, function(){
-  closeDuaPage();
-});
-
-if(typeof setAppTopBarRightButton === "function"){
-  setAppTopBarRightButton(false, "", null);
-}
-
-window.scrollTo(0,0);
-
-}
-
-
-
-
-     
-// =========================
-// CLOSE AYATUL KURSI PAGE
-// =========================
-function closeAyatulKursiPage(){
-
-let ayatulKursiPage = document.getElementById("ayatulKursiPage");
-let duaPage = document.getElementById("duaPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(ayatulKursiPage) ayatulKursiPage.style.display = "none";
 if(duaPage) duaPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
