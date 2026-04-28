@@ -11513,6 +11513,91 @@ openTrackerPage();
 }
 
 
+// =========================
+// LOAD DAILY QURAN AYAH
+// =========================
+async function loadDailyQuranAyah(){
+
+  let arabicBox = document.getElementById("dailyQuranAyahArabic");
+  let urduBox = document.getElementById("dailyQuranAyahUrdu");
+  let refBox = document.getElementById("dailyQuranAyahReference");
+  let statusBox = document.getElementById("dailyQuranAyahStatus");
+
+  if(!arabicBox || !urduBox || !refBox || !statusBox) return;
+
+  let today = new Date();
+  let start = new Date(today.getFullYear(), 0, 0);
+  let diff = today - start;
+  let oneDay = 1000 * 60 * 60 * 24;
+  let dayNumber = Math.floor(diff / oneDay);
+
+  let ayahNumber = (dayNumber % 6236) + 1;
+
+  let savedAyah = localStorage.getItem("dailyQuranAyahSaved");
+
+  try{
+
+    statusBox.innerText = "Online";
+
+    let arabicUrl = "https://api.alquran.cloud/v1/ayah/" + ayahNumber + "/quran-uthmani";
+    let urduUrl = "https://api.alquran.cloud/v1/ayah/" + ayahNumber + "/ur.jalandhry";
+
+    let arabicResponse = await fetch(arabicUrl);
+    let urduResponse = await fetch(urduUrl);
+
+    if(!arabicResponse.ok || !urduResponse.ok){
+      throw new Error("Ayah loading failed");
+    }
+
+    let arabicData = await arabicResponse.json();
+    let urduData = await urduResponse.json();
+
+    let arabicAyah = arabicData.data.text;
+    let urduAyah = urduData.data.text;
+    let surahEnglish = arabicData.data.surah.englishName;
+    let surahNumber = arabicData.data.surah.number;
+    let ayahInSurah = arabicData.data.numberInSurah;
+
+    arabicBox.innerText = arabicAyah;
+    urduBox.innerText = urduAyah;
+    refBox.innerText = "Surah " + surahEnglish + " " + surahNumber + ":" + ayahInSurah;
+
+    let ayahToSave = {
+      arabic: arabicAyah,
+      urdu: urduAyah,
+      reference: "Surah " + surahEnglish + " " + surahNumber + ":" + ayahInSurah,
+      savedDate: today.toDateString()
+    };
+
+    localStorage.setItem("dailyQuranAyahSaved", JSON.stringify(ayahToSave));
+
+  }catch(error){
+
+    if(savedAyah){
+
+      let oldAyah = JSON.parse(savedAyah);
+
+      arabicBox.innerText = oldAyah.arabic;
+      urduBox.innerText = oldAyah.urdu;
+      refBox.innerText = oldAyah.reference;
+      statusBox.innerText = "Saved";
+
+    }else{
+
+      arabicBox.innerText = "Connect to internet once to load Daily Ayah.";
+      urduBox.innerText = "Daily Ayah لوڈ کرنے کے لیے ایک بار انٹرنیٹ سے کنیکٹ کریں۔";
+      refBox.innerText = "Offline";
+      statusBox.innerText = "Offline";
+
+    }
+
+  }
+
+}
+
+
+
+     
 
   // =========================
 // OPEN HOME PAGE
@@ -11533,6 +11618,7 @@ setMainMenuHandleVisibility(true);
 lastMainTab = "home";
 updateHomePageSalahSummary();
 window.scrollTo(0,0);
+loadDailyQuranAyah();
 
 }
 
@@ -18103,6 +18189,7 @@ if(document.readyState === "loading"){
   setAsrToggleUI();
   openSelectedDefaultPage();
   updateHomePageSalahSummary();
+  loadDailyQuranAyah();
   startSalahWeatherBackgroundWatcher();
 });
 }else{
@@ -18111,8 +18198,8 @@ if(document.readyState === "loading"){
   setAsrToggleUI();
   openSelectedDefaultPage();
   updateHomePageSalahSummary();
+  loadDailyQuranAyah();
 }
-
 })();
 
 
@@ -21775,6 +21862,88 @@ box-shadow:0 10px 24px rgba(0,0,0,0.08);
         </div>
 
       </div>
+    </div>
+
+    <!-- =========================
+         DAILY QURAN AYAH CARD
+    ========================= -->
+    <div id="dailyQuranAyahCard" style="
+    width:100%;
+    background:white;
+    border-radius:28px;
+    padding:20px 5%;
+    margin:18px 0 70px 0;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+    border:1px solid rgba(0,0,0,0.04);
+    box-sizing:border-box;
+    ">
+
+      <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+      ">
+
+        <div style="
+        font-size:20px;
+        font-weight:900;
+        color:#111;
+        letter-spacing:-0.3px;
+        ">
+          Daily Quran Ayah
+        </div>
+
+        <div id="dailyQuranAyahStatus" style="
+        font-size:12px;
+        font-weight:800;
+        color:#777;
+        background:#f2f2f7;
+        padding:7px 10px;
+        border-radius:999px;
+        white-space:nowrap;
+        ">
+          Loading
+        </div>
+
+      </div>
+
+      <div id="dailyQuranAyahArabic" style="
+      direction:rtl;
+      text-align:right;
+      font-family:'Amiri','Noto Naskh Arabic',serif;
+      font-size:25px;
+      line-height:2.1;
+      font-weight:600;
+      color:#111;
+      margin-bottom:16px;
+      ">
+        Loading ayah...
+      </div>
+
+      <div id="dailyQuranAyahUrdu" style="
+      direction:rtl;
+      text-align:right;
+      font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq','Noto Naskh Arabic',serif;
+      font-size:18px;
+      line-height:2.1;
+      font-weight:600;
+      color:#333;
+      margin-bottom:14px;
+      ">
+        براہ کرم انتظار کریں...
+      </div>
+
+      <div id="dailyQuranAyahReference" style="
+      font-size:14px;
+      font-weight:800;
+      color:#666;
+      text-align:left;
+      ">
+        Quran
+      </div>
+
     </div>
 
   </div>
