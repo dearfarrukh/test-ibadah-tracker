@@ -147,6 +147,38 @@ transform:translateX(20px);
 box-shadow:0 -2px 10px rgba(0,0,0,0.05);
 }
   
+
+     
+/* =========================
+   TRACKER SURAH PDF IOS STYLE
+========================= */
+.tracker-surah-pdf-page{
+  background:linear-gradient(180deg, #f7f7fa 0%, #e9e9ee 100%) !important;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:90px 4% 40px 4% !important;
+  box-sizing:border-box;
+}
+
+.tracker-surah-pdf-list{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.tracker-surah-pdf-img{
+  width:100%;
+  display:block;
+  border-radius:22px;
+  background:white;
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
+}     
+     
+     
+     
+     
+     
 .card{
 background:rgba(255,255,255,0.6);
 backdrop-filter:blur(20px);
@@ -24487,7 +24519,7 @@ box-shadow:0 4px 12px rgba(0,0,0,0.06);
 <!-- =========================
      WAQIYA PAGE
 ========================= -->
-  <div id="waqiyaPage" style="
+  <div id="waqiyaPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24551,7 +24583,7 @@ box-sizing:border-box;
 <!-- =========================
      MULK PAGE
 ========================= -->
-<div id="mulkPage" style="
+<div id="mulkPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24577,7 +24609,7 @@ z-index:5000;
 <!-- =========================
      REHMAN PAGE
 ========================= -->
-<div id="rehmanPage" style="
+<div id="rehmanPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24604,7 +24636,7 @@ z-index:5000;
 <!-- =========================
      SAJDAH PAGE
 ========================= -->
-<div id="sajdahPage" style="
+<div id="sajdahPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24632,7 +24664,7 @@ z-index:5000;
 <!-- =========================
      TAGHABUN PAGE
 ========================= -->
-<div id="taghabunPage" style="
+<div id="taghabunPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24659,7 +24691,7 @@ z-index:5000;
 <!-- =========================
      LAST22 PAGE
 ========================= -->
-<div id="last22Page" style="
+<div id="last22Page" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24688,8 +24720,7 @@ z-index:5000;
 
 <!-- =========================
      IKHLAS PAGE
-========================= -->
-<div id="ikhlasPage" style="
+========================= --><div id="ikhlasPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
@@ -24752,7 +24783,7 @@ font-size:20px;
 <!-- =========================
      YASEEN PAGE
 ========================= -->
- <div id="yaseenPage" style="
+<div id="yaseenPage" class="tracker-surah-pdf-page" style="
 display:none;
 position:fixed;
 top:0;
