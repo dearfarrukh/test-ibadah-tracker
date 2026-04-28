@@ -11362,6 +11362,14 @@ function setAppTopBarRightButton(show, text, action){
   rightBtn.innerHTML = text || "";
   appTopBarRightAction = action || null;
 
+  // RESET STYLE EVERY TIME
+  // This prevents Qaza red/green lock color from staying on Tasbih settings button.
+  rightBtn.style.background = "white";
+  rightBtn.style.color = "#111";
+  rightBtn.style.border = "none";
+  rightBtn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.10)";
+  rightBtn.style.opacity = "1";
+
 }
 
 
