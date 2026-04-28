@@ -3009,7 +3009,7 @@ bottom:92px;
 z-index:10002;
 background:#e9e9ee;
 overflow:auto;
-padding:20px 16px 120px 16px;
+padding:90px 4% 120px 4%;
 box-sizing:border-box;
 
 /* STOP ZOOM */
@@ -3019,59 +3019,6 @@ user-select: none;
 -webkit-tap-highlight-color: transparent;
 ">
 
-  <!-- TOP BAR -->
-  <div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-  ">
-
-    <!-- Close Qaza Page Button -->
-    <button onclick="closeQazaPage()" style="
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:1px solid rgba(0,0,0,0.08);
-    background:white;
-    font-size:22px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    ">
-      ←
-    </button>
-
-    <!-- Qaza Page Title -->
-    <div style="
-    font-size:20px;
-    font-weight:800;
-    color:#111;
-    ">
-      Qaza Tracker
-    </div>
-
-  <!-- Qaza Lock Button -->
-<button id="qazaLockToggleBtn" onclick="toggleQazaLockState()" style="
-width:42px;
-height:42px;
-border-radius:50%;
-border:1px solid rgba(0,0,0,0.08);
-background:white;
-color:#111;
-font-size:18px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
-flex-shrink:0;
-">
-  🔒
-</button>
-  </div>
 
   <!-- SEGMENT -->
   <div style="
@@ -11854,27 +11801,52 @@ function toggleQazaLockState(){
 // =========================
 function updateQazaLockButtonUI(){
 
-  let btn = document.getElementById("qazaLockToggleBtn");
-  if(!btn) return;
+  let oldBtn = document.getElementById("qazaLockToggleBtn");
+  let topBarBtn = document.getElementById("appTopBarRightBtn");
 
   let isLocked = getQazaLockState();
 
-  if(isLocked){
-    btn.innerText = "🔒";
-    btn.style.background = "#FF3B30";
-    btn.style.color = "white";
-    btn.style.border = "1px solid rgba(255,59,48,0.25)";
-    btn.style.boxShadow = "0 6px 14px rgba(255,59,48,0.28)";
-  }else{
-    btn.innerText = "🔓";
-    btn.style.background = "#34C759";
-    btn.style.color = "white";
-    btn.style.border = "1px solid rgba(0,0,0,0.08)";
-    btn.style.boxShadow = "0 6px 14px rgba(52,199,89,0.35)";
+  // OLD QAZA LOCK BUTTON
+  // This only works if the old Qaza top bar button still exists.
+  if(oldBtn){
+
+    if(isLocked){
+      oldBtn.innerText = "🔒";
+      oldBtn.style.background = "#FF3B30";
+      oldBtn.style.color = "white";
+      oldBtn.style.border = "1px solid rgba(255,59,48,0.25)";
+      oldBtn.style.boxShadow = "0 6px 14px rgba(255,59,48,0.28)";
+    }else{
+      oldBtn.innerText = "🔓";
+      oldBtn.style.background = "#34C759";
+      oldBtn.style.color = "white";
+      oldBtn.style.border = "1px solid rgba(0,0,0,0.08)";
+      oldBtn.style.boxShadow = "0 6px 14px rgba(52,199,89,0.35)";
+    }
+
   }
+
+  // GLOBAL TOP BAR LOCK BUTTON
+  // This is the new lock button on the right side of the global top bar.
+  if(topBarBtn){
+
+    if(isLocked){
+      topBarBtn.innerHTML = "🔒";
+      topBarBtn.style.background = "#FF3B30";
+      topBarBtn.style.color = "white";
+      topBarBtn.style.border = "1px solid rgba(255,59,48,0.25)";
+      topBarBtn.style.boxShadow = "0 6px 14px rgba(255,59,48,0.28)";
+    }else{
+      topBarBtn.innerHTML = "🔓";
+      topBarBtn.style.background = "#34C759";
+      topBarBtn.style.color = "white";
+      topBarBtn.style.border = "1px solid rgba(0,0,0,0.08)";
+      topBarBtn.style.boxShadow = "0 6px 14px rgba(52,199,89,0.35)";
+    }
+
+  }
+
 }
-
-
 
      // =========================
 // UPDATE QAZA TOTAL INPUTS LOCK STATE
@@ -11975,30 +11947,40 @@ document.addEventListener("click", function(e){
 // =========================
 function openQazaPage(){
 
-  closeBookmarkPopup();
+hideAllAppPages();
 
-  lastMainTab = "more";
-  lastMoreSourceTab = "more";
+let qazaPage = document.getElementById("qazaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+if(qazaPage) qazaPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Qaza Tracker");
+setAppTopBarBackButton(true, function(){
+  closeQazaPage();
+});
+setAppTopBarRightButton(true, "🔒", function(){
+  toggleQazaLockState();
+});
+
+showQazaPrayerTab();
+loadFajrData();
+loadDhuhrData();
+loadAsrData();
+loadMaghribData();
+loadIshaData();
+loadWitrData();
+updateQazaProgressTabUI();
+updateQazaLockButtonUI();
 
 
-  hideAllAppPages();
+window.scrollTo(0,0);
 
-  let qazaPage = document.getElementById("qazaPage");
-  if(qazaPage) qazaPage.style.display = "block";
-
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  setBottomNavVisibility(true);
-
-  showQazaPrayerTab();
-  loadFajrData();
-  updateQazaProgressTabUI();
-  updateQazaLockButtonUI();
-  updateQazaTotalInputsLockState();
-  window.scrollTo(0,0);
 }
-
 
 // =========================
 // AUTO LOCK WHEN QAZA PAGE HIDES
@@ -12021,22 +12003,60 @@ function autoLockQazaIfHidden(){
 // =========================
 function closeQazaPage(){
 
-  // 🔒 AUTO LOCK WHEN LEAVING QAZA PAGE
-  setQazaLockState(true);
+// 🔒 AUTO LOCK WHEN LEAVING QAZA PAGE
+setQazaLockState(true);
 
-  let qazaPage = document.getElementById("qazaPage");
-  let morePage = document.getElementById("morePage");
-  let floatingMenuBtn = document.getElementById("floatingMenuBtn");
- 
+let qazaPage = document.getElementById("qazaPage");
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let morePage = document.getElementById("morePage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-  if(qazaPage) qazaPage.style.display = "none";
-  if(morePage) morePage.style.display = "block";
+if(qazaPage) qazaPage.style.display = "none";
 
+setAppTopBarVisibility(false);
+setAppTopBarBackButton(false, null);
+setAppTopBarRightButton(false, "", null);
+
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+
+if(lastMainTab === "home"){
+
+  if(homePage) homePage.style.display = "block";
   if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-    setBottomNavVisibility(true);
+  setMainMenuHandleVisibility(true);
 
-  window.scrollTo(0,0);
+}else if(lastMainTab === "more"){
+
+  if(morePage) morePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+  setMainMenuHandleVisibility(false);
+
+}else if(lastMainTab === "salah"){
+
+  if(salahPage) salahPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  setMainMenuHandleVisibility(true);
+
+}else{
+
+  if(trackerPage) trackerPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  setMainMenuHandleVisibility(true);
+  lastMainTab = "tracker";
+
 }
+
+setBottomNavVisibility(true);
+
+window.scrollTo(0,0);
+
+}
+     
 // =========================
 // SHOW QAZA PRAYER TAB
 // =========================
