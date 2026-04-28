@@ -12263,8 +12263,20 @@ function openDuaPage(){
 
 hideAllAppPages();
 
-document.getElementById("duaPage").style.display = "block";
-document.getElementById("floatingMenuBtn").style.display = "none";
+let duaPage = document.getElementById("duaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(duaPage) duaPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Dua");
+setAppTopBarBackButton(true, function(){
+  closeDuaPage();
+});
 
 window.scrollTo(0,0);
 
@@ -12274,16 +12286,35 @@ window.scrollTo(0,0);
 // CLOSE DUA PAGE
 // =========================
 function closeDuaPage(){
-document.getElementById("duaPage").style.display = "none";
+
+let duaPage = document.getElementById("duaPage");
+let morePage = document.getElementById("morePage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(duaPage) duaPage.style.display = "none";
+
+setAppTopBarVisibility(false);
+setAppTopBarBackButton(false, null);
 
 if(lastMainTab === "more"){
-document.getElementById("morePage").style.display = "block";
-document.getElementById("floatingMenuBtn").style.display = "none";
+
+  if(morePage) morePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+  setBottomNavVisibility(true);
+  setMainMenuHandleVisibility(false);
+
 }else{
-document.getElementById("floatingMenuBtn").style.display = "flex";
+
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+
+  setBottomNavVisibility(true);
+  setMainMenuHandleVisibility(true);
+
 }
 
 window.scrollTo(0,0);
+
 }
 
 // =========================
@@ -24033,7 +24064,7 @@ z-index:10001;
 background:linear-gradient(180deg, #f7f7fa 0%, #e9e9ee 100%);
 overflow:auto;
 -webkit-overflow-scrolling:touch;
-padding:18px 4% 120px 4%;
+padding:90px 4% 120px 4%;
 box-sizing:border-box;
 ">
 
