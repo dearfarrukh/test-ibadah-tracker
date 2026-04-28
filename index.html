@@ -12246,10 +12246,19 @@ function closeImanPage(){
 let duaPage = document.getElementById("duaPage");
 let imanPage = document.getElementById("imanPage");
 let bottomNav = document.getElementById("bottomNav");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
 if(imanPage) imanPage.style.display = "none";
 if(duaPage) duaPage.style.display = "block";
+
 if(bottomNav) bottomNav.style.display = "flex";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(false);
+setAppTopBarBackButton(false, null);
 
 window.scrollTo(0,0);
 
