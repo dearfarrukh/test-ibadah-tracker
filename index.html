@@ -11658,6 +11658,8 @@ setMainMenuHandleVisibility(false);
 // =========================
 function openTrackerPage(){
 
+if(isSideMenuOpen) return;
+     
 closeBookmarkPopup();
 
 lastMainTab = "tracker";
@@ -11716,7 +11718,7 @@ openTrackerPage();
 // OPEN HOME PAGE
 // =========================
 function openHomePage(){
-
+if(isSideMenuOpen) return;
 closeBookmarkPopup();
 
 let homePage = document.getElementById("homePage");
@@ -11882,6 +11884,8 @@ countdownEl.innerText = "00:00:00";
 // OPEN MORE PAGE
 // =========================
 function openMorePage(){
+
+if(isSideMenuOpen) return;
 
 closeBookmarkPopup();
 
@@ -16826,6 +16830,8 @@ changeSalahDay(-1);  // swipe right = previous day
 // =========================
 function openSalahPage(){
 
+if(isSideMenuOpen) return;   
+     
 closeBookmarkPopup();
 
 lastMainTab = "salah";
@@ -16869,6 +16875,12 @@ returnToDefaultPage();
 }
 
 // =========================
+// SIDE MENU STATE
+// =========================
+let isSideMenuOpen = false;
+
+
+// =========================
 // TOGGLE SIDE MENU
 // =========================
 function toggleSideMenu(){
@@ -16877,6 +16889,8 @@ let menu = document.getElementById("sideMenu");
 let overlay = document.getElementById("sideMenuOverlay");
 let handleIcon = document.getElementById("menuHandleIcon");
 
+if(!menu) return;
+
 // always keep MENU text
 if(handleIcon) handleIcon.innerHTML = "M<br>E<br>N<br>U";
 
@@ -16884,22 +16898,32 @@ if(menu.style.left === "0px"){
 
 menu.style.left = "-100%";
 if(overlay) overlay.style.display = "none";
+isSideMenuOpen = false;
 
 }else{
 
 menu.style.left = "0px";
 if(overlay) overlay.style.display = "block";
+isSideMenuOpen = true;
 
 }
 
 }
+
 
 // =========================
 // CLOSE SIDE MENU
 // =========================
 function closeSideMenu(){
-document.getElementById("sideMenu").style.left = "-280px";
-document.getElementById("sideMenuOverlay").style.display = "none";
+
+let menu = document.getElementById("sideMenu");
+let overlay = document.getElementById("sideMenuOverlay");
+
+if(menu) menu.style.left = "-280px";
+if(overlay) overlay.style.display = "none";
+
+isSideMenuOpen = false;
+
 }
 
 // =========================
