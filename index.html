@@ -6249,6 +6249,11 @@ let currentQuran16PageNumber = 1;
 let totalQuran16Pages = 549;
 
 // =========================
+// 16 LINE QURAN BACK DESTINATION
+// =========================
+let quran16BackDestination = "quran16Page";
+
+// =========================
 // TRACKER TO 16 LINE SHORTCUT MEMORY
 // =========================
 let quran16OpenedFromTrackerShortcut = false;
@@ -6760,7 +6765,7 @@ function getPrevQuran16ImageSrc(){
 // OPEN 16 LINE QURAN PAGE
 // =========================
 function openQuran16Page(){
-
+quran16BackDestination = "quran16Page";
   let quranPage = document.getElementById("quranPage");
   let quran16Page = document.getElementById("quran16Page");
   let quran16ReadingPage = document.getElementById("quran16ReadingPage");
@@ -7019,21 +7024,36 @@ function restoreTrackerMenuHandleAfterQuranShortcut(){
 // =========================
 function closeQuran16ReadingPage(){
 
+  resetQuran16ReadingTopBar();
+
+  // =========================
+  // RETURN TO TRACKER IF OPENED FROM TRACKER SHORTCUT
+  // =========================
+  if(quran16BackDestination === "tracker"){
+
+    quran16BackDestination = "quran16Page";
+
+    if(typeof openTrackerPage === "function"){
+      openTrackerPage();
+      return;
+    }
+
+  }
+
+  // =========================
+  // NORMAL 16 LINE BACK BEHAVIOR
+  // =========================
   let quran16ReadingPage = document.getElementById("quran16ReadingPage");
   let quran16Page = document.getElementById("quran16Page");
-  
-
-  resetQuran16ReadingTopBar();
 
   if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
   if(quran16Page) quran16Page.style.display = "block";
- setBottomNavVisibility(true);
 
-  restoreTrackerMenuHandleAfterQuranShortcut();
+  setBottomNavVisibility(true);
+  setMainMenuHandleVisibility(false);
 
   window.scrollTo(0,0);
 }
-
 // =========================
 // HANDLE 16 LINE READING PAGE TAP
 // =========================
@@ -10802,8 +10822,12 @@ function openTrackerQuran16Shortcut(name){
           closeSideMenu();
         }
 
-        // Open 16 Line Quran page
-        openQuran16PageNumber(page);
+        // Tell 16 Line Quran back button to return to Tracker
+quran16BackDestination = "tracker";
+
+// Open 16 Line Quran page
+openQuran16PageNumber(page);
+         
       // Force hide menu handle again after page opens
       setMainMenuHandleVisibility(false);
 
