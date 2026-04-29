@@ -10004,7 +10004,15 @@ ${isSurah(task.name) ?
 +
 '<span onclick="event.stopPropagation();handleTaskClick(\''+task.name+'\')" style="background:#007aff;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📄 PDF</span>'
 +
-(task.name === "Surah Mulk"
+(
+  task.name === "Surah Mulk" ||
+  task.name === "Surah Sajdah" ||
+  task.name === "Surah Yaseen" ||
+  task.name === "Surah Rehman" ||
+  task.name === "Surah Taghabun" ||
+  task.name === "Surah Waqiya" ||
+  task.name === "Surah Ikhlas" ||
+  task.name === "Surah Ad Duha to Surah Al Nas"
   ? '<span onclick="event.stopPropagation();openTrackerQuran16Shortcut(\''+task.name+'\')" style="background:#34c759;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📖 16</span>'
   : ''
 )
@@ -10708,41 +10716,76 @@ function isSurah(name){
 // =========================
 function openTrackerQuran16Shortcut(name){
 
-  // Surah Mulk = Surah 67
+  let surahNumber = null;
+
+  // =========================
+  // TRACKER SURAH TO 16 LINE SURAH NUMBER
+  // =========================
   if(name === "Surah Mulk"){
+    surahNumber = 67;
+  }
 
-    if(typeof surahToQuran16PageMap !== "undefined" && typeof openQuran16PageNumber === "function"){
+  if(name === "Surah Sajdah"){
+    surahNumber = 32;
+  }
 
-      let page = surahToQuran16PageMap[67];
+  if(name === "Surah Yaseen"){
+    surahNumber = 36;
+  }
 
-            if(page){
+  if(name === "Surah Rehman"){
+    surahNumber = 55;
+  }
 
-        // Hide menu handle before opening Quran reader
-        setMainMenuHandleVisibility(false);
+  if(name === "Surah Taghabun"){
+    surahNumber = 64;
+  }
 
-        // Close side menu if it is open
-        if(typeof closeSideMenu === "function"){
-          closeSideMenu();
-        }
+  if(name === "Surah Waqiya"){
+    surahNumber = 56;
+  }
 
-        // Open 16 Line Quran page
-        openQuran16PageNumber(page);
+  if(name === "Surah Ikhlas"){
+    surahNumber = 112;
+  }
 
-        // Force hide menu handle again after page opens
-        setMainMenuHandleVisibility(false);
+  // Opens Surah Ad-Duha, then user can continue until Surah An-Nas
+  if(name === "Surah Ad Duha to Surah Al Nas"){
+    surahNumber = 93;
+  }
 
-        return;
-      }
-
-    }
-
-    alert("16 Line Surah Mulk shortcut could not open.");
+  if(!surahNumber){
+    alert("16 Line shortcut not ready for this Surah yet.");
     return;
   }
 
-  alert("16 Line shortcut not ready for this Surah yet.");
-}
+  if(typeof surahToQuran16PageMap !== "undefined" && typeof openQuran16PageNumber === "function"){
 
+    let page = surahToQuran16PageMap[surahNumber];
+
+    if(page){
+
+      // Hide menu handle before opening Quran reader
+      setMainMenuHandleVisibility(false);
+
+      // Close side menu if it is open
+      if(typeof closeSideMenu === "function"){
+        closeSideMenu();
+      }
+
+      // Open 16 Line Quran page
+      openQuran16PageNumber(page);
+
+      // Force hide menu handle again after page opens
+      setMainMenuHandleVisibility(false);
+
+      return;
+    }
+
+  }
+
+  alert("16 Line shortcut could not open.");
+}
 
 
      
