@@ -10715,8 +10715,22 @@ function openTrackerQuran16Shortcut(name){
 
       let page = surahToQuran16PageMap[67];
 
-      if(page){
+            if(page){
+
+        // Hide menu handle before opening Quran reader
+        setMainMenuHandleVisibility(false);
+
+        // Close side menu if it is open
+        if(typeof closeSideMenu === "function"){
+          closeSideMenu();
+        }
+
+        // Open 16 Line Quran page
         openQuran16PageNumber(page);
+
+        // Force hide menu handle again after page opens
+        setMainMenuHandleVisibility(false);
+
         return;
       }
 
