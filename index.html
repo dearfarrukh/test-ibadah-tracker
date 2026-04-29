@@ -6249,6 +6249,12 @@ let currentQuran16PageNumber = 1;
 let totalQuran16Pages = 549;
 
 // =========================
+// TRACKER TO 16 LINE SHORTCUT MEMORY
+// =========================
+let quran16OpenedFromTrackerShortcut = false;
+
+     
+// =========================
 // 16 LINE SURAH TO PAGE MAP
 // index page number minus 1
 // =========================
@@ -6794,6 +6800,8 @@ function closeQuran16Page(){
   if(quranPage) quranPage.style.display = "block";
   setBottomNavVisibility(true);
 
+   restoreTrackerMenuHandleAfterQuranShortcut();
+
   window.scrollTo(0,0);
 }
 
@@ -6988,7 +6996,23 @@ function setupQuran16Swipe(){
 }
 
 
+// =========================
+// RESTORE TRACKER MENU HANDLE AFTER QURAN SHORTCUT
+// =========================
+function restoreTrackerMenuHandleAfterQuranShortcut(){
 
+  if(!quran16OpenedFromTrackerShortcut) return;
+
+  let trackerPage = document.getElementById("trackerPage");
+
+  if(trackerPage && trackerPage.style.display === "block"){
+    setMainMenuHandleVisibility(true);
+    quran16OpenedFromTrackerShortcut = false;
+  }
+
+}
+
+     
      
 // =========================
 // CLOSE 16 LINE READING PAGE
@@ -7004,6 +7028,8 @@ function closeQuran16ReadingPage(){
   if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
   if(quran16Page) quran16Page.style.display = "block";
  setBottomNavVisibility(true);
+
+  restoreTrackerMenuHandleAfterQuranShortcut();
 
   window.scrollTo(0,0);
 }
@@ -10765,17 +10791,19 @@ function openTrackerQuran16Shortcut(name){
 
     if(page){
 
-      // Hide menu handle before opening Quran reader
-      setMainMenuHandleVisibility(false);
+            // Remember this Quran reader was opened from Tracker shortcut
+        quran16OpenedFromTrackerShortcut = true;
 
-      // Close side menu if it is open
-      if(typeof closeSideMenu === "function"){
-        closeSideMenu();
-      }
+        // Hide menu handle before opening Quran reader
+        setMainMenuHandleVisibility(false);
 
-      // Open 16 Line Quran page
-      openQuran16PageNumber(page);
+        // Close side menu if it is open
+        if(typeof closeSideMenu === "function"){
+          closeSideMenu();
+        }
 
+        // Open 16 Line Quran page
+        openQuran16PageNumber(page);
       // Force hide menu handle again after page opens
       setMainMenuHandleVisibility(false);
 
@@ -15695,8 +15723,9 @@ if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
 
 setBottomNavVisibility(true);
 
-window.scrollTo(0,0);
+  restoreTrackerMenuHandleAfterQuranShortcut();
 
+  window.scrollTo(0,0);
 }
 
 // =========================
