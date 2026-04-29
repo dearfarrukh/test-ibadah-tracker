@@ -10000,7 +10000,16 @@ ${task.name}
 </span>
 
 ${isSurah(task.name) ?
+'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">'
++
 '<span onclick="event.stopPropagation();handleTaskClick(\''+task.name+'\')" style="background:#007aff;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📄 PDF</span>'
++
+(task.name === "Surah Mulk"
+  ? '<span onclick="event.stopPropagation();openTrackerQuran16Shortcut(\''+task.name+'\')" style="background:#34c759;color:white;padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.5px;flex-shrink:0;">📖 16</span>'
+  : ''
+)
++
+'</div>'
 : ''}
 
 </div>
@@ -10689,6 +10698,40 @@ tasbihLock = false;
 function isSurah(name){
     return name.includes("Surah");
 }
+
+
+
+
+
+// =========================
+// OPEN TRACKER QURAN 16 SHORTCUT
+// =========================
+function openTrackerQuran16Shortcut(name){
+
+  // Surah Mulk = Surah 67
+  if(name === "Surah Mulk"){
+
+    if(typeof surahToQuran16PageMap !== "undefined" && typeof openQuran16PageNumber === "function"){
+
+      let page = surahToQuran16PageMap[67];
+
+      if(page){
+        openQuran16PageNumber(page);
+        return;
+      }
+
+    }
+
+    alert("16 Line Surah Mulk shortcut could not open.");
+    return;
+  }
+
+  alert("16 Line shortcut not ready for this Surah yet.");
+}
+
+
+
+     
 // =========================
 // HANDLE TASK CLICK
 // =========================
