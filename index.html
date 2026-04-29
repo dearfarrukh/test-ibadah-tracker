@@ -7797,6 +7797,25 @@ function saveQuran16Bookmark(){
   }
 
   let savedBookmarks = JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+
+  // =========================
+  // STOP DUPLICATE 16 LINE QURAN BOOKMARK
+  // =========================
+  let duplicateBookmark = savedBookmarks.some(function(savedBookmark){
+
+    return (
+      savedBookmark.type === "16line" &&
+      Number(savedBookmark.page) === Number(page)
+    );
+
+  });
+
+  if(duplicateBookmark){
+    alert("This 16 Line Quran page is already bookmarked.");
+    closeQuran16BookmarkPopup();
+    return;
+  }
+
   let now = new Date();
 
   let bookmarkItem = {
