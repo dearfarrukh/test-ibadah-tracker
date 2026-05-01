@@ -14456,6 +14456,7 @@ if(badgeEl){
 }
 
 document.getElementById("zikrHadithText").innerHTML = data.hadith || "";
+
 let arabicEl = document.getElementById("zikrArabicText");
 
 if(arabicEl){
@@ -14466,24 +14467,64 @@ if(arabicEl){
     arabicEl.style.display = "none";
   }
 }
+
 document.getElementById("zikrMeaningText").innerHTML = data.meaning || "";
 document.getElementById("zikrRefText").innerHTML = data.ref || "";
 
-document.getElementById("zikrPage").style.display = "none";
-document.getElementById("zikrDetailPage").style.display = "block";
+// hide Daily Dhikr list page
+let zikrPage = document.getElementById("zikrPage");
+if(zikrPage) zikrPage.style.display = "none";
+
+// hide shared top bars so only Zikr detail back button shows
+let duaTopBar = document.getElementById("duaTopBar");
+let zikrTopBar = document.getElementById("zikrTopBar");
+let appTopBar = document.getElementById("appTopBar");
+let topBar = document.getElementById("topBar");
+
+if(duaTopBar) duaTopBar.style.display = "none";
+if(zikrTopBar) zikrTopBar.style.display = "none";
+if(appTopBar) appTopBar.style.display = "none";
+if(topBar) topBar.style.display = "none";
+
+// show only Zikr detail page
+let zikrDetailPage = document.getElementById("zikrDetailPage");
+if(zikrDetailPage) zikrDetailPage.style.display = "block";
 
 window.scrollTo(0,0);
-}
-     
+
+}     
+
+
 // =========================
 // CLOSE ZIKR DETAIL
 // =========================
 function closeZikrDetail(){
-document.getElementById("zikrDetailPage").style.display = "none";
-document.getElementById("zikrPage").style.display = "block";
+
+let zikrDetailPage = document.getElementById("zikrDetailPage");
+let zikrPage = document.getElementById("zikrPage");
+
+if(zikrDetailPage) zikrDetailPage.style.display = "none";
+
+// safest way: use your real Daily Dhikr open function if it exists
+// this brings back the correct top bar
+if(typeof openZikrPage === "function"){
+  openZikrPage();
+  updateAllZikrCardUI();
+  window.scrollTo(0,0);
+  return;
+}
+
+// backup only
+if(zikrPage) zikrPage.style.display = "block";
+
 updateAllZikrCardUI();
 window.scrollTo(0,0);
+
 }
+
+
+
+     
 // =========================
 // GET TRACKER SURAH TITLE
 // =========================
