@@ -12795,20 +12795,24 @@ window.scrollTo(0,0);
 function closeFarghiRizqPage(){
 
 let farghiRizqPage = document.getElementById("farghiRizqPage");
+
+// hide Farghi Rizq page first
+if(farghiRizqPage) farghiRizqPage.style.display = "none";
+
+// open Dua page using the real Dua page function
+// this brings back the same top bar correctly
+if(typeof openDuaPage === "function"){
+openDuaPage();
+return;
+}
+
+// backup only, if openDuaPage is not found
 let duaPage = document.getElementById("duaPage");
 let bottomNav = document.getElementById("bottomNav");
 let floatingMenuBtn = document.getElementById("floatingMenuBtn");
 
-// hide Farghi Rizq page
-if(farghiRizqPage) farghiRizqPage.style.display = "none";
-
-// go back to Dua page
 if(duaPage) duaPage.style.display = "block";
-
-// still no bottom bar inside Dua page
 if(bottomNav) bottomNav.style.display = "none";
-
-// still no menu button inside Dua page
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
 
 window.scrollTo(0,0);
