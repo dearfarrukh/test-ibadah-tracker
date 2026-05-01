@@ -13976,6 +13976,56 @@ function getZikrCardManualDone(name){
 }
 
 // =========================
+// DELETE CUSTOM ZIKR FROM 3 DOT MENU
+// =========================
+function deleteCustomZikrFromMenu(){
+
+  let name = currentZikrCardMenuName;
+
+  if(!name) return;
+
+  if(!isCustomZikr(name)){
+    return;
+  }
+
+  let item = getCustomZikrById(name);
+
+  if(!item){
+    closeZikrCardMenu();
+    return;
+  }
+
+  let ok = confirm('Delete zikr "' + (item.englishName || "Custom Zikr") + '"?');
+
+  if(!ok){
+    closeZikrCardMenu();
+    return;
+  }
+
+  let list = getCustomZikrList();
+
+  list = list.filter(function(zikrItem){
+    return zikrItem.id !== name;
+  });
+
+  saveCustomZikrList(list);
+
+  localStorage.removeItem(getZikrCardCountKey(name));
+  localStorage.removeItem(getZikrCardTargetKey(name));
+  localStorage.removeItem(getZikrCardManualDoneKey(name));
+
+  closeZikrCardMenu();
+
+  renderCustomZikrCards();
+  updateAllZikrCardUI();
+
+}
+
+
+
+
+     
+// =========================
 // OPEN ZIKR CARD MENU
 // =========================
 function openZikrCardMenu(name, event){
@@ -14006,8 +14056,48 @@ if(manualBtn){
 
 }
 
-  popup.style.display = "block";
+// =========================
+// CUSTOM ZIKR DELETE MENU BUTTON
+// =========================
+let deleteBtn = document.getElementById("zikrDeleteCustomMenuBtn");
 
+if(!deleteBtn){
+
+  deleteBtn = document.createElement("button");
+  deleteBtn.id = "zikrDeleteCustomMenuBtn";
+  deleteBtn.innerText = "Delete";
+
+  deleteBtn.onclick = function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    deleteCustomZikrFromMenu();
+  };
+
+  deleteBtn.style.width = "100%";
+  deleteBtn.style.padding = "12px 14px";
+  deleteBtn.style.border = "none";
+  deleteBtn.style.borderTop = "1px solid #f0f0f3";
+  deleteBtn.style.background = "white";
+  deleteBtn.style.color = "#ff3b30";
+  deleteBtn.style.fontSize = "15px";
+  deleteBtn.style.fontWeight = "800";
+  deleteBtn.style.textAlign = "left";
+  deleteBtn.style.cursor = "pointer";
+  deleteBtn.style.borderRadius = "0 0 16px 16px";
+
+  box.appendChild(deleteBtn);
+
+}
+
+if(deleteBtn){
+  if(isCustomZikr(name)){
+    deleteBtn.style.display = "block";
+  }else{
+    deleteBtn.style.display = "none";
+  }
+}
+
+  popup.style.display = "block";
   let buttonRect = null;
 
   if(event && event.currentTarget){
