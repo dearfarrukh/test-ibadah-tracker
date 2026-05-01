@@ -12729,7 +12729,39 @@ function showQazaProgressTab(){
   }
 }
 
+// =========================
+// OPEN FARGHI RIZQ PAGE
+// =========================
+function openFarghiRizqPage(){
 
+let duaPage = document.getElementById("duaPage");
+let farghiRizqPage = document.getElementById("farghiRizqPage");
+let bottomNav = document.getElementById("bottomNav");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+// hide all main app pages first
+if(typeof hideAllAppPages === "function"){
+hideAllAppPages();
+}
+
+// keep dua page hidden
+if(duaPage) duaPage.style.display = "none";
+
+// show only Farghi Rizq page
+if(farghiRizqPage) farghiRizqPage.style.display = "block";
+
+// no bottom bar inside dua detail page
+if(bottomNav) bottomNav.style.display = "none";
+
+// no menu button inside dua detail page
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+window.scrollTo(0,0);
+
+}
+
+
+     
 
 // =========================
 // OPEN IMAN PAGE
@@ -12757,7 +12789,31 @@ window.scrollTo(0,0);
 
 }
 
+// =========================
+// CLOSE FARGHI RIZQ PAGE
+// =========================
+function closeFarghiRizqPage(){
 
+let farghiRizqPage = document.getElementById("farghiRizqPage");
+let duaPage = document.getElementById("duaPage");
+let bottomNav = document.getElementById("bottomNav");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+// hide Farghi Rizq page
+if(farghiRizqPage) farghiRizqPage.style.display = "none";
+
+// go back to Dua page
+if(duaPage) duaPage.style.display = "block";
+
+// still no bottom bar inside Dua page
+if(bottomNav) bottomNav.style.display = "none";
+
+// still no menu button inside Dua page
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+window.scrollTo(0,0);
+
+}
 
 
 // =========================
@@ -25130,7 +25186,87 @@ box-sizing:border-box;
 
   </div>
 
+<!-- =========================
+     FARGHI RIZQ DUA CARD
+========================= -->
+<div onclick="openFarghiRizqPage()" style="
+width:100%;
+background:white;
+border-radius:26px;
+padding:18px 5%;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+box-sizing:border-box;
+margin-bottom:14px;
+">
 
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  flex:1;
+  ">
+
+    <div style="
+    width:54px;
+    height:54px;
+    border-radius:18px;
+    background:#f2f2f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    flex-shrink:0;
+    ">
+      🌿
+    </div>
+
+    <div style="
+    min-width:0;
+    flex:1;
+    ">
+
+      <div style="
+      font-size:19px;
+      font-weight:850;
+      color:#111;
+      line-height:1.2;
+      margin-bottom:5px;
+      ">
+        Farghi Rizq
+      </div>
+
+      <div style="
+      font-size:14px;
+      font-weight:600;
+      color:#666;
+      line-height:1.4;
+      ">
+        Rizq ke liye dua
+      </div>
+
+    </div>
+
+  </div>
+
+  <div style="
+  font-size:28px;
+  color:#b0b0b8;
+  flex-shrink:0;
+  ">
+    ›
+  </div>
+
+</div>
+
+
+     
 <!-- =========================
      IMAN MUJMAL & MUFASSAL DUA CARD
 ========================= -->
@@ -25294,7 +25430,88 @@ margin-bottom:14px;
 
 </div>
 
+<!-- =========================
+     FARGHI RIZQ PAGE
+========================= -->
+<div id="farghiRizqPage" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:10002;
+background:linear-gradient(180deg, #f7f7fa 0%, #e9e9ee 100%);
+overflow:auto;
+-webkit-overflow-scrolling:touch;
+padding:90px 4% 120px 4%;
+box-sizing:border-box;
+">
 
+  <!-- =========================
+       FARGHI RIZQ PAGE BACK BUTTON
+  ========================= -->
+  <button onclick="closeFarghiRizqPage()" style="
+  position:fixed;
+  top:18px;
+  left:4%;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  font-size:24px;
+  font-weight:700;
+  color:#111;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+  z-index:10003;
+  ">
+    ←
+  </button>
+
+  <!-- =========================
+       FARGHI RIZQ IMAGE CARD
+  ========================= -->
+  <div style="
+  width:100%;
+  background:white;
+  border-radius:30px;
+  padding:14px 4%;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.03);
+  box-sizing:border-box;
+  overflow:hidden;
+  ">
+
+    <div style="
+    font-size:26px;
+    font-weight:900;
+    color:#111;
+    text-align:center;
+    margin-bottom:14px;
+    ">
+      Farghi Rizq
+    </div>
+
+    <img src="Images/Rizq.png" alt="Farghi Rizq Dua" style="
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:22px;
+    object-fit:contain;
+    ">
+
+  </div>
+
+</div>
+<!-- END FARGHI RIZQ PAGE -->
+
+
+     
 
 <!-- =========================
      IMAN MUJMAL & MUFASSAL PAGE
