@@ -9966,52 +9966,6 @@ function getDefaultPage(){
   return localStorage.getItem("defaultPage") || "tracker";
 }
 
-
-// =========================
-// OPEN MAIN PAGE FROM URL RETURN
-// =========================
-function openMainPageFromUrlReturn(){
-
-let params = new URLSearchParams(window.location.search);
-let page = params.get("page");
-
-if(page === "home"){
-  if(typeof openHomePage === "function"){
-    openHomePage();
-    return;
-  }
-}
-
-if(page === "more"){
-  if(typeof openMorePage === "function"){
-    openMorePage();
-    return;
-  }
-}
-
-if(page === "salah"){
-  if(typeof openSalahPage === "function"){
-    openSalahPage();
-    return;
-  }
-}
-
-if(page === "tracker"){
-  if(typeof openTrackerPage === "function"){
-    openTrackerPage();
-    return;
-  }
-}
-
-if(typeof openSelectedDefaultPage === "function"){
-  openSelectedDefaultPage();
-}
-
-}
-
-
-
-     
 // =========================
 // OPEN SELECTED DEFAULT PAGE
 // =========================
@@ -13022,21 +12976,6 @@ setAppTopBarBackButton(true, function(){
 window.scrollTo(0,0);
 
 }
-
-
-// =========================
-// OPEN DUA PAGE FROM NEW FOLDER
-// =========================
-function openDuaPageFromNewFolder(sourcePage){
-
-if(!sourcePage){
-sourcePage = "home";
-}
-
-window.location.href = "duapage/index.html?from=" + encodeURIComponent(sourcePage);
-
-}
-
 
      
   
@@ -19126,7 +19065,7 @@ if(document.readyState === "loading"){
   ibadahPatchSalahFunctions();
   ibadahScheduleMidnightRefresh();
   setAsrToggleUI();
-  openMainPageFromUrlReturn();
+  openSelectedDefaultPage();
   updateHomePageSalahSummary();
   loadQuranAyatOfTheDay();
   startSalahWeatherBackgroundWatcher();
@@ -19135,11 +19074,13 @@ if(document.readyState === "loading"){
   ibadahPatchSalahFunctions();
   ibadahScheduleMidnightRefresh();
   setAsrToggleUI();
-  openMainPageFromUrlReturn();
+  openSelectedDefaultPage();
   updateHomePageSalahSummary();
   loadQuranAyatOfTheDay();
 }
 })();
+
+
 
 // =========================
 // GET ASR METHOD
@@ -22793,7 +22734,7 @@ box-shadow:0 10px 24px rgba(0,0,0,0.08);
         </div>
 
         <!-- DUA SHORTCUT -->
-       <div onclick="openDuaPageFromNewFolder('home')" style="
+        <div onclick="openDuaPage()" style="
         background:#f8f8fa;
         border-radius:22px;
         padding:16px 8px;
@@ -23063,7 +23004,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 
      
 <!-- Open Dua Page Card -->
-<div onclick="openDuaPageFromNewFolder('more')" style="
+<div onclick="openDuaPage()" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
