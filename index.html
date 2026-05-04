@@ -19264,25 +19264,26 @@ let appSettingsPage = document.getElementById("appSettingsPage");
 let morePage = document.getElementById("morePage");
 let salahPage = document.getElementById("salahPage");
 let tasbihPage = document.getElementById("tasbihPage");
-let duaPage = document.getElementById("duaPage");
 let qiblaPage = document.getElementById("qiblaPage");
-let zikrPage = document.getElementById("zikrPage");
-let zikrDetailPage = document.getElementById("zikrDetailPage");
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+
+// IMPORTANT:
+// Dua and Daily Azkar are now separate folder pages.
+// Do not check old duaPage / zikrPage here anymore.
 
 if(salahPage && salahPage.style.display === "block"){
 localStorage.setItem("appSettingsReturnPage", "salah");
-}else if(morePage && morePage.style.display === "block"){
-localStorage.setItem("appSettingsReturnPage", "more");
 }else if(tasbihPage && tasbihPage.style.display === "block"){
 localStorage.setItem("appSettingsReturnPage", "tasbih");
-}else if(duaPage && duaPage.style.display === "block"){
-localStorage.setItem("appSettingsReturnPage", "dua");
 }else if(qiblaPage && qiblaPage.style.display === "block"){
 localStorage.setItem("appSettingsReturnPage", "qibla");
-}else if(zikrDetailPage && zikrDetailPage.style.display === "block"){
-localStorage.setItem("appSettingsReturnPage", "zikrDetail");
-}else if(zikrPage && zikrPage.style.display === "block"){
-localStorage.setItem("appSettingsReturnPage", "zikr");
+}else if(homePage && homePage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "home");
+}else if(trackerPage && trackerPage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "tracker");
+}else if(morePage && morePage.style.display === "block"){
+localStorage.setItem("appSettingsReturnPage", "more");
 }else{
 localStorage.setItem("appSettingsReturnPage", "more");
 }
@@ -19299,7 +19300,6 @@ window.scrollTo(0,0);
 }
 
 
-  
 // =========================
 // CLOSE APP SETTINGS PAGE
 // =========================
@@ -19313,24 +19313,18 @@ if(appSettingsPage) appSettingsPage.style.display = "none";
 // ALWAYS SHOW BOTTOM NAV AGAIN WHEN LEAVING APP SETTINGS
 setBottomNavVisibility(true);
 
-// RETURN TO THE PAGE YOU CAME FROM
+// IMPORTANT:
+// Do not return to old Dua or old Daily Zikr pages.
+// They are now folder pages, so Settings should return only to main app pages.
+
 if(returnPage === "salah"){
 openSalahPage();
 }
 else if(returnPage === "tasbih"){
 openTasbihPage();
 }
-else if(returnPage === "dua"){
-openDuaPage();
-}
 else if(returnPage === "qibla"){
 openQiblaPage();
-}
-else if(returnPage === "zikr"){
-openZikrPage();
-}
-else if(returnPage === "zikrDetail"){
-if(typeof openZikrPage === "function") openZikrPage();
 }
 else if(returnPage === "home"){
 openHomePage();
@@ -19347,7 +19341,6 @@ setBottomNavVisibility(true);
 window.scrollTo(0,0);
 
 }
-
 // =========================
 // GET DEFAULT PAGE LABEL
 // =========================
