@@ -16565,16 +16565,17 @@ isSideMenuOpen = false;
 }
 
 // =========================
-// MASTER REFRESH APP
+// REFRESH APP - KEEP QURAN DOWNLOADS SAFE
 // =========================
 async function refreshApp(){
 
   closeSideMenu();
 
   let ok = confirm(
-    "Master Refresh App?\n\n" +
-    "This will clear old app cache and reload the newest code.\n\n" +
-    "Your saved app data will stay safe."
+    "Refresh App?\n\n" +
+    "This will load the newest app code.\n\n" +
+    "Your saved app data will stay safe.\n" +
+    "Downloaded Quran pages will stay safe."
   );
 
   if(!ok) return;
@@ -16582,20 +16583,26 @@ async function refreshApp(){
   try{
 
     // =========================
-    // UNREGISTER SERVICE WORKERS
+    // UPDATE SERVICE WORKER ONLY
     // =========================
+    // We do NOT unregister service worker here.
+    // Unregistering can remove/break offline Quran downloads.
     if("serviceWorker" in navigator){
 
       let registrations = await navigator.serviceWorker.getRegistrations();
 
       for(let registration of registrations){
-        await registration.unregister();
+
+        if(registration && registration.update){
+          await registration.update();
+        }
+
       }
 
     }
 
     // =========================
-    // CLEAR APP CACHE
+    // CLEAR ONLY SAFE NON-QURAN CACHE
     // =========================
     if("caches" in window){
 
@@ -16603,8 +16610,23 @@ async function refreshApp(){
 
       for(let cacheName of cacheNames){
 
-        // This deletes app/browser caches.
-        // It does NOT delete localStorage saved data.
+        let lowerName = String(cacheName).toLowerCase();
+
+        let keepThisCache =
+          lowerName.includes("quran") ||
+          lowerName.includes("mushaf") ||
+          lowerName.includes("surah") ||
+          lowerName.includes("ayat") ||
+          lowerName.includes("offline") ||
+          lowerName.includes("download") ||
+          lowerName.includes("runtime");
+
+        if(keepThisCache){
+          console.log("Keeping Quran/download/runtime cache:", cacheName);
+          continue;
+        }
+
+        console.log("Deleting old app cache:", cacheName);
         await caches.delete(cacheName);
 
       }
@@ -16614,15 +16636,17 @@ async function refreshApp(){
     // =========================
     // FORCE FRESH RELOAD
     // =========================
-    let freshUrl = window.location.origin + window.location.pathname + "?masterRefresh=" + Date.now();
+    let cleanPath = window.location.origin + window.location.pathname;
+    let freshUrl = cleanPath + "?refreshKeepQuran=" + Date.now();
 
     window.location.replace(freshUrl);
 
   }catch(error){
 
-    console.log("Master refresh failed:", error);
+    console.log("Refresh app failed:", error);
 
-    let fallbackUrl = window.location.origin + window.location.pathname + "?masterRefresh=" + Date.now();
+    let cleanPath = window.location.origin + window.location.pathname;
+    let fallbackUrl = cleanPath + "?refreshKeepQuran=" + Date.now();
 
     window.location.replace(fallbackUrl);
 
