@@ -11458,10 +11458,12 @@ window.scrollTo(0,0);
 // =========================
 // OPEN DUA PAGE FROM FOLDER
 // =========================
-function openDuaPageFromFolder(){
+function openDuaPageFromFolder(fromPage){
 
-// full GitHub Pages path + fresh version number
-window.location.href = "/test-ibadah-tracker/duapage/index.html?v=" + Date.now();
+let sourcePage = fromPage || "home";
+
+// full GitHub Pages path + source page + fresh version number
+window.location.href = "/test-ibadah-tracker/duapage/index.html?from=" + sourcePage + "&v=" + Date.now();
 
 }
 
@@ -21517,7 +21519,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 
      
 <!-- Open Dua Page Card -->
-<div onclick="openDuaPageFromFolder()" style="
+onclick="openDuaPageFromFolder('more')"
 background:white;
 border-radius:22px;
 padding:18px 10px;
