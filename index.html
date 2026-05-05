@@ -9195,6 +9195,176 @@ setAppTopBarTitle("");
 
 
 // =========================
+// OPEN QAZA PAGE
+// =========================
+function openQazaPage(){
+
+hideAllAppPages();
+
+let qazaPage = document.getElementById("qazaPage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(qazaPage) qazaPage.style.display = "block";
+if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+
+setBottomNavVisibility(true);
+setMainMenuHandleVisibility(false);
+
+setAppTopBarVisibility(true);
+setAppTopBarTitle("Qaza Tracker");
+setAppTopBarBackButton(true, function(){
+  closeQazaPage();
+});
+setAppTopBarRightButton(true, "🔒", function(){
+  toggleQazaLockState();
+});
+
+showQazaPrayerTab();
+loadFajrData();
+loadDhuhrData();
+loadAsrData();
+loadMaghribData();
+loadIshaData();
+loadWitrData();
+updateQazaProgressTabUI();
+updateQazaLockButtonUI();
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// AUTO LOCK WHEN QAZA PAGE HIDES
+// =========================
+function autoLockQazaIfHidden(){
+
+  let qazaPage = document.getElementById("qazaPage");
+
+  if(qazaPage && qazaPage.style.display !== "block"){
+    setQazaLockState(true);
+  }
+}
+
+// =========================
+// CLOSE QAZA PAGE
+// =========================
+function closeQazaPage(){
+
+// 🔒 AUTO LOCK WHEN LEAVING QAZA PAGE
+setQazaLockState(true);
+
+let qazaPage = document.getElementById("qazaPage");
+let homePage = document.getElementById("homePage");
+let trackerPage = document.getElementById("trackerPage");
+let salahPage = document.getElementById("salahPage");
+let morePage = document.getElementById("morePage");
+let floatingMenuBtn = document.getElementById("floatingMenuBtn");
+
+if(qazaPage) qazaPage.style.display = "none";
+
+setAppTopBarVisibility(false);
+setAppTopBarBackButton(false, null);
+setAppTopBarRightButton(false, "", null);
+
+if(homePage) homePage.style.display = "none";
+if(trackerPage) trackerPage.style.display = "none";
+if(salahPage) salahPage.style.display = "none";
+if(morePage) morePage.style.display = "none";
+
+if(lastMainTab === "home"){
+
+  if(homePage) homePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+  setMainMenuHandleVisibility(true);
+
+}else if(lastMainTab === "more"){
+
+  if(morePage) morePage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+  setMainMenuHandleVisibility(false);
+
+}else if(lastMainTab === "salah"){
+
+  if(salahPage) salahPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  setMainMenuHandleVisibility(true);
+
+}else{
+
+  if(trackerPage) trackerPage.style.display = "block";
+  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+  setMainMenuHandleVisibility(true);
+  lastMainTab = "tracker";
+
+}
+
+setBottomNavVisibility(true);
+
+window.scrollTo(0,0);
+
+}
+
+// =========================
+// SHOW QAZA PRAYER TAB
+// =========================
+function showQazaPrayerTab(){
+
+  let prayerTab = document.getElementById("qazaPrayerTab");
+  let progressTab = document.getElementById("qazaProgressTab");
+  let prayerBtn = document.getElementById("qazaPrayerTabBtn");
+  let progressBtn = document.getElementById("qazaProgressTabBtn");
+
+  if(prayerTab) prayerTab.style.display = "block";
+  if(progressTab) progressTab.style.display = "none";
+
+  if(prayerBtn){
+    prayerBtn.style.background = "white";
+    prayerBtn.style.color = "#111";
+    prayerBtn.style.fontWeight = "800";
+    prayerBtn.style.boxShadow = "0 3px 8px rgba(0,0,0,0.06)";
+  }
+
+  if(progressBtn){
+    progressBtn.style.background = "transparent";
+    progressBtn.style.color = "#666";
+    progressBtn.style.fontWeight = "700";
+    progressBtn.style.boxShadow = "none";
+  }
+}
+
+// =========================
+// SHOW QAZA PROGRESS TAB
+// =========================
+function showQazaProgressTab(){
+
+  let prayerTab = document.getElementById("qazaPrayerTab");
+  let progressTab = document.getElementById("qazaProgressTab");
+  let prayerBtn = document.getElementById("qazaPrayerTabBtn");
+  let progressBtn = document.getElementById("qazaProgressTabBtn");
+
+  if(prayerTab) prayerTab.style.display = "none";
+  if(progressTab) progressTab.style.display = "block";
+
+  if(prayerBtn){
+    prayerBtn.style.background = "transparent";
+    prayerBtn.style.color = "#666";
+    prayerBtn.style.fontWeight = "700";
+    prayerBtn.style.boxShadow = "none";
+  }
+
+  if(progressBtn){
+    progressBtn.style.background = "white";
+    progressBtn.style.color = "#111";
+    progressBtn.style.fontWeight = "800";
+    progressBtn.style.boxShadow = "0 3px 8px rgba(0,0,0,0.06)";
+  }
+}
+     
+
+
+     
+
+// =========================
 // GET QAZA LOCK STATE
 // =========================
 function getQazaLockState(){
@@ -9381,6 +9551,10 @@ document.addEventListener("click", function(e){
 }, true);
 
 
+
+
+
+     
 // =========================
 // OPEN QAZA TRACKER FROM FOLDER
 // =========================
