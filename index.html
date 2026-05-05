@@ -6634,7 +6634,7 @@ function getDefaultPage(){
 // =========================
 function openSelectedDefaultPage(){
 
-  // FIRST CHECK: Did user come back from a folder page like Qaza?
+  // FIRST CHECK: Did user come back from a folder page like Qaza, Dua, Dhikr, or Tasbih?
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
   if(folderReturnPage){
@@ -6668,7 +6668,7 @@ function openSelectedDefaultPage(){
   if(defaultPage === "salah"){
     openSalahPage();
   }else if(defaultPage === "tasbih"){
-    openTasbihPage();
+    openTasbihPageFromHome();
   }else if(defaultPage === "home"){
     openHomePage();
   }else{
@@ -6688,7 +6688,7 @@ if(defaultPage === "salah"){
   openSalahPage();
 }
 else if(defaultPage === "tasbih"){
-  openTasbihPage();
+  openTasbihPageFromHome();
 }
 else if(defaultPage === "home"){
   openHomePage();
@@ -6698,8 +6698,6 @@ else{
 }
 
 }
-
-
 
   
 // =========================
@@ -9551,7 +9549,38 @@ document.addEventListener("click", function(e){
 }, true);
 
 
+// =========================
+// OPEN TASBIH PAGE FROM FOLDER
+// =========================
+function openTasbihPageFromFolder(fromPage){
 
+  if(!fromPage){
+    fromPage = "home";
+  }
+
+  localStorage.setItem("tasbihReturnPage", fromPage);
+
+  window.location.href = "tasbih/?from=" + fromPage;
+
+}
+
+// =========================
+// OPEN TASBIH PAGE FROM HOME
+// =========================
+function openTasbihPageFromHome(){
+
+  openTasbihPageFromFolder("home");
+
+}
+
+// =========================
+// OPEN TASBIH PAGE FROM MORE
+// =========================
+function openTasbihPageFromMore(){
+
+  openTasbihPageFromFolder("more");
+
+}
 
 
      
@@ -11508,20 +11537,19 @@ closeTasbihPage();
 function openHomeTasbihPage(){
 
 lastMainTab = "home";
-openTasbihPage();
+openTasbihPageFromHome();
 
 }
 
-  // =========================
+// =========================
 // OPEN TASBIH FROM MORE
 // =========================
 function openMoreTasbihPage(){
 
 lastMainTab = "more";
-openTasbihPage();
+openTasbihPageFromMore();
 
 }
-  
   
 
 // =========================
