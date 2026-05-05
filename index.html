@@ -8446,6 +8446,36 @@ function getDefaultPage(){
 // OPEN SELECTED DEFAULT PAGE
 // =========================
 function openSelectedDefaultPage(){
+
+  // FIRST CHECK: Did user come back from a folder page like Qaza?
+  let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
+
+  if(folderReturnPage){
+
+    localStorage.removeItem("ibadahFolderReturnPage");
+
+    if(folderReturnPage === "more" && typeof openMorePage === "function"){
+      openMorePage();
+      return;
+    }
+
+    if(folderReturnPage === "home" && typeof openHomePage === "function"){
+      openHomePage();
+      return;
+    }
+
+    if(folderReturnPage === "tracker" && typeof openTrackerPage === "function"){
+      openTrackerPage();
+      return;
+    }
+
+    if(folderReturnPage === "salah" && typeof openSalahPage === "function"){
+      openSalahPage();
+      return;
+    }
+  }
+
+  // NORMAL STARTUP: open your selected default page
   let defaultPage = getDefaultPage();
 
   if(defaultPage === "salah"){
@@ -8457,6 +8487,7 @@ function openSelectedDefaultPage(){
   }else{
     openTrackerPage();
   }
+
 }
 
 // =========================
@@ -11196,41 +11227,7 @@ function openQazaTrackerFromMore(){
 
 }
 
-// =========================
-// OPEN RETURN PAGE AFTER FOLDER BACK
-// =========================
-function openReturnPageAfterFolderBack(){
 
-  let returnPage = localStorage.getItem("ibadahFolderReturnPage");
-
-  if(!returnPage) return;
-
-  localStorage.removeItem("ibadahFolderReturnPage");
-
-  setTimeout(function(){
-
-    if(returnPage === "home" && typeof openHomePage === "function"){
-      openHomePage();
-      return;
-    }
-
-    if(returnPage === "more" && typeof openMorePage === "function"){
-      openMorePage();
-      return;
-    }
-
-    if(returnPage === "tracker" && typeof openTrackerPage === "function"){
-      openTrackerPage();
-      return;
-    }
-
-  }, 300);
-
-}
-
-window.addEventListener("load", function(){
-  openReturnPageAfterFolderBack();
-});
 
 
 
@@ -21669,7 +21666,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
      
 
 <!-- QAZA TRACKER CARD -->
-<div onclick="openQazaTrackerFromHome()" style="
+<div onclick="openQazaTrackerFromMore()" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
@@ -21682,7 +21679,6 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 </div>
 <div style="font-size:15px;font-weight:700;color:#111;">Qaza Tracker</div>
 </div>
-
      
 
 <!-- Open Qibla Page Card -->
