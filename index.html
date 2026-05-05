@@ -11162,6 +11162,79 @@ document.addEventListener("click", function(e){
 
 }, true);
 
+
+// =========================
+// OPEN QAZA TRACKER FROM FOLDER
+// =========================
+function openQazaTrackerFromFolder(returnPage){
+
+  if(!returnPage){
+    returnPage = "more";
+  }
+
+  localStorage.setItem("qazaReturnPage", returnPage);
+
+  window.location.href = "qazatracker/";
+
+}
+
+// =========================
+// OPEN QAZA TRACKER FROM HOME
+// =========================
+function openQazaTrackerFromHome(){
+
+  openQazaTrackerFromFolder("home");
+
+}
+
+// =========================
+// OPEN QAZA TRACKER FROM MORE
+// =========================
+function openQazaTrackerFromMore(){
+
+  openQazaTrackerFromFolder("more");
+
+}
+
+// =========================
+// OPEN RETURN PAGE AFTER FOLDER BACK
+// =========================
+function openReturnPageAfterFolderBack(){
+
+  let returnPage = localStorage.getItem("ibadahFolderReturnPage");
+
+  if(!returnPage) return;
+
+  localStorage.removeItem("ibadahFolderReturnPage");
+
+  setTimeout(function(){
+
+    if(returnPage === "home" && typeof openHomePage === "function"){
+      openHomePage();
+      return;
+    }
+
+    if(returnPage === "more" && typeof openMorePage === "function"){
+      openMorePage();
+      return;
+    }
+
+    if(returnPage === "tracker" && typeof openTrackerPage === "function"){
+      openTrackerPage();
+      return;
+    }
+
+  }, 300);
+
+}
+
+window.addEventListener("load", function(){
+  openReturnPageAfterFolderBack();
+});
+
+
+
+     
      
 
 // =========================
@@ -21174,7 +21247,7 @@ box-sizing:border-box;
     </div>
 
     <!-- QAZA TOP SHORTCUT -->
-    <div onclick="openQazaPage()" style="
+    <div onclick="openQazaTrackerFromHome()" style="
     width:30%;
     text-align:center;
     cursor:pointer;
@@ -21596,7 +21669,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
      
 
 <!-- QAZA TRACKER CARD -->
-<div onclick="openQazaPage()" style="
+<div onclick="openQazaTrackerFromHome()" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
