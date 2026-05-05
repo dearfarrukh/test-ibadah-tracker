@@ -753,24 +753,13 @@ function handleDuaBack(){
 
   let from = getDuaReturnSource();
 
-  if(from === "more"){
-    window.location.href = "../?page=more";
-    return;
-  }
+  localStorage.setItem("ibadahFolderReturnPage", from);
 
-  if(from === "tracker"){
-    window.location.href = "../?page=tracker";
-    return;
-  }
-
-  if(from === "salah"){
-    window.location.href = "../?page=salah";
-    return;
-  }
-
-  window.location.href = "../?page=home";
+  window.location.href = "../";
 }
 
+
+     
 /* =========================
    LOAD DUA PAGE
 ========================= */
