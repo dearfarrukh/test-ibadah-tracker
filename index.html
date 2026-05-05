@@ -12873,30 +12873,7 @@ setBottomNavVisibility(true);
 // =========================
 function openTasbihPage(){
 
-let tasbihPage = document.getElementById("tasbihPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-hideAllAppPages();
-
-if(tasbihPage) tasbihPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Tasbih");
-setAppTopBarBackButton(true, function(){
-  closeTasbihPage();
-});
-setAppTopBarRightButton(true, "⚙️", function(){
-  openTasbihSettings();
-});
-
-applySavedTasbihStyle();
-updateTasbihTopButton();
-
-window.scrollTo(0,0);
+  openTasbihPageFromHome();
 
 }
 
