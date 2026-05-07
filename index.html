@@ -12016,19 +12016,24 @@ setMainMenuHandleVisibility(true);
 else if(lastMainTab === "more"){
 if(morePage) morePage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
+setMainMenuHandleVisibility(false);
 }
 else{
 if(trackerPage) trackerPage.style.display = "block";
 if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
+setMainMenuHandleVisibility(true);
 }
 
 setBottomNavVisibility(true);
 
-  restoreTrackerMenuHandleAfterQuranShortcut();
+restoreTrackerMenuHandleAfterQuranShortcut();
 
-  window.scrollTo(0,0);
+window.scrollTo(0,0);
+
 }
 
+
+     
 // =========================
 // OPEN TASBIH PAGE
 // =========================
