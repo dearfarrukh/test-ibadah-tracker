@@ -3,7 +3,7 @@
 <head>
 
 <!-- =========================
-     NOORANI QAIDA FOLDER PAGE
+     NOORANI QAIDA PNG FOLDER PAGE
      File: books/noorani-qaida/index.html
 ========================= -->
 
@@ -14,11 +14,6 @@
 <meta name="theme-color" content="#e9e9ee">
 <link rel="apple-touch-icon" href="../../icon.png">
 <link rel="manifest" href="../../manifest.webmanifest">
-
-<!-- =========================
-     PDF.JS LIBRARY
-========================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <style>
 
@@ -80,8 +75,7 @@ body{
   margin-bottom:16px;
 }
 
-.roundBackBtn,
-.roundIconBtn{
+.roundBackBtn{
   width:44px;
   height:44px;
   border:none;
@@ -95,16 +89,9 @@ body{
   justify-content:center;
   position:absolute;
   top:7px;
+  left:0;
   box-shadow:0 6px 18px rgba(0,0,0,0.10);
   cursor:pointer;
-}
-
-.roundBackBtn{
-  left:0;
-}
-
-.roundIconBtn{
-  right:0;
 }
 
 .simpleTitle{
@@ -398,7 +385,7 @@ body{
 
 /* =========================
    READER CONTENT
-   Safe shrink like 15 Line Quran
+   FULL 100% SCREEN
 ========================= */
 #readerContent{
   position:absolute;
@@ -406,6 +393,8 @@ body{
   left:0;
   right:0;
   bottom:0;
+  width:100%;
+  height:100%;
   background:#000;
   overflow:hidden;
   transition:top 0.28s ease, transform 0.28s ease, border-radius 0.28s ease;
@@ -515,24 +504,7 @@ body{
   z-index:5020;
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
-}
-
-/* =========================
-   LOADING TEXT
-========================= */
-#loadingText{
-  display:none;
-  position:fixed;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(17,17,17,0.78);
-  color:white;
-  font-size:15px;
-  font-weight:800;
-  padding:12px 16px;
-  border-radius:999px;
-  z-index:5030;
+  pointer-events:none;
 }
 
 /* =========================
@@ -727,8 +699,7 @@ body{
 
   </div>
 
-  <div id="pageFloat">Page 1</div>
-  <div id="loadingText">Loading page...</div>
+  <div id="pageFloat">Page 1 / 30</div>
 
 </div>
 
@@ -748,16 +719,8 @@ let currentQaidaPage = 1;
 let totalQaidaPages = 30;
 let qaidaReadingBackPage = "home";
 let qaidaReaderTopBarVisible = false;
-
-/* =========================
-   PDF.JS WORKER SETUP
-========================= */
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-/* =========================
-   PDF PAGE IMAGE CACHE
-========================= */
-let qaidaPdfImageCache = {};
+let qaidaIsPageTurning = false;
+let qaidaLastTapTime = 0;
 
 /* =========================
    HIDE ALL QAIDA PAGES
@@ -808,19 +771,6 @@ function goBackToBooksPage(){
 }
 
 /* =========================
-   FORMAT QAIDA PDF FILE NAME
-   full function name: formatQaidaPdfFileName
-========================= */
-function formatQaidaPdfFileName(page){
-
-  let safePage = getSafeQaidaPage(page);
-  let paddedPage = String(safePage).padStart(3, "0");
-
-  return "page-" + paddedPage + ".pdf";
-
-}
-
-/* =========================
    GET SAFE QAIDA PAGE
    full function name: getSafeQaidaPage
 ========================= */
@@ -841,110 +791,42 @@ function getSafeQaidaPage(page){
 }
 
 /* =========================
-   SHOW QAIDA LOADING
-   full function name: showQaidaLoading
+   BUILD QAIDA IMAGE PATH
+   full function name: buildQaidaImagePath
 ========================= */
-function showQaidaLoading(message){
+function buildQaidaImagePath(page){
 
-  let loadingText = document.getElementById("loadingText");
-  if(!loadingText) return;
+  let safePage = getSafeQaidaPage(page);
+  let paddedPage = String(safePage).padStart(3, "0");
 
-  loadingText.innerText = message || "Loading page...";
-  loadingText.style.display = "block";
+  return "page-" + paddedPage + ".png";
 
 }
 
 /* =========================
-   HIDE QAIDA LOADING
-   full function name: hideQaidaLoading
+   PRELOAD QAIDA IMAGE
+   full function name: preloadQaidaImage
 ========================= */
-function hideQaidaLoading(){
-
-  let loadingText = document.getElementById("loadingText");
-  if(!loadingText) return;
-
-  loadingText.style.display = "none";
-
-}
-
-/* =========================
-   GET QAIDA PAGE IMAGE SRC
-   Converts PDF page into image once.
-   full function name: getQaidaPageImageSrc
-========================= */
-async function getQaidaPageImageSrc(page){
+function preloadQaidaImage(page){
 
   page = getSafeQaidaPage(page);
 
-  if(qaidaPdfImageCache[page]){
-    return qaidaPdfImageCache[page];
-  }
-
-  let fileName = formatQaidaPdfFileName(page);
-
-  let pdfDocument = await pdfjsLib.getDocument(fileName).promise;
-  let pdfPage = await pdfDocument.getPage(1);
-
-  let viewportOriginal = pdfPage.getViewport({ scale:1 });
-
-  let screenWidth = window.innerWidth || 390;
-  let screenHeight = window.innerHeight || 760;
-
-  let widthScale = screenWidth / viewportOriginal.width;
-  let heightScale = screenHeight / viewportOriginal.height;
-
-  let finalScale = Math.min(widthScale, heightScale) * 2.3;
-
-  if(finalScale < 1.8){
-    finalScale = 1.8;
-  }
-
-  if(finalScale > 3.2){
-    finalScale = 3.2;
-  }
-
-  let viewport = pdfPage.getViewport({ scale:finalScale });
-
-  let canvas = document.createElement("canvas");
-  let context = canvas.getContext("2d");
-
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
-
-  await pdfPage.render({
-    canvasContext:context,
-    viewport:viewport
-  }).promise;
-
-  let imageSrc = canvas.toDataURL("image/png");
-
-  qaidaPdfImageCache[page] = imageSrc;
-
-  return imageSrc;
+  let image = new Image();
+  image.src = buildQaidaImagePath(page);
 
 }
 
 /* =========================
-   SET QAIDA IMAGE SRC
-   full function name: setQaidaImageSrc
+   PRELOAD NEARBY QAIDA PAGES
+   full function name: preloadNearbyQaidaPages
 ========================= */
-async function setQaidaImageSrc(imageElement, page){
+function preloadNearbyQaidaPages(page){
 
-  if(!imageElement) return;
+  let nextPage = getSafeQaidaPage(page + 1);
+  let previousPage = getSafeQaidaPage(page - 1);
 
-  page = getSafeQaidaPage(page);
-
-  try{
-
-    let imageSrc = await getQaidaPageImageSrc(page);
-    imageElement.src = imageSrc;
-
-  }catch(error){
-
-    console.log("Noorani Qaida PDF load error:", error);
-    showQaidaLoading("Could not load page " + page);
-
-  }
+  preloadQaidaImage(nextPage);
+  preloadQaidaImage(previousPage);
 
 }
 
@@ -1099,7 +981,7 @@ function openQaidaGoToPagePrompt(){
    OPEN QAIDA READING PAGE
    full function name: openQaidaReadingPage
 ========================= */
-async function openQaidaReadingPage(page, backPage){
+function openQaidaReadingPage(page, backPage){
 
   page = getSafeQaidaPage(page);
 
@@ -1114,7 +996,7 @@ async function openQaidaReadingPage(page, backPage){
   }
 
   resetQaidaReaderTopBar();
-  await loadQaidaPage(page);
+  loadQaidaPage(page);
 
   setTimeout(function(){
     setupInteractiveQaidaFlip({
@@ -1156,6 +1038,10 @@ function closeQaidaReadingPage(event){
     event.stopPropagation();
   }
 
+  if(qaidaIsPageTurning){
+    return;
+  }
+
   let readingPage = document.getElementById("readingPage");
   if(readingPage){
     readingPage.style.display = "none";
@@ -1175,7 +1061,7 @@ function closeQaidaReadingPage(event){
    LOAD QAIDA PAGE
    full function name: loadQaidaPage
 ========================= */
-async function loadQaidaPage(page){
+function loadQaidaPage(page){
 
   page = getSafeQaidaPage(page);
 
@@ -1186,9 +1072,9 @@ async function loadQaidaPage(page){
   let readerTopTitle = document.getElementById("readerTopTitle");
   let readerTopSubTitle = document.getElementById("readerTopSubTitle");
 
-  showQaidaLoading("Loading page...");
-
-  await setQaidaImageSrc(img, page);
+  if(img){
+    img.src = buildQaidaImagePath(page);
+  }
 
   if(pageFloat){
     pageFloat.innerText = "Page " + page + " / " + totalQaidaPages;
@@ -1204,23 +1090,7 @@ async function loadQaidaPage(page){
 
   localStorage.setItem("nooraniQaidaLastPage", String(page));
 
-  hideQaidaLoading();
-
   preloadNearbyQaidaPages(page);
-
-}
-
-/* =========================
-   PRELOAD NEARBY QAIDA PAGES
-   full function name: preloadNearbyQaidaPages
-========================= */
-function preloadNearbyQaidaPages(page){
-
-  let nextPage = getSafeQaidaPage(page + 1);
-  let previousPageNumber = getSafeQaidaPage(page - 1);
-
-  getQaidaPageImageSrc(nextPage).catch(function(){});
-  getQaidaPageImageSrc(previousPageNumber).catch(function(){});
 
 }
 
@@ -1250,12 +1120,12 @@ function previousQaidaPage(){
    GET NEXT QAIDA IMAGE SRC
    full function name: getNextQaidaImageSrc
 ========================= */
-async function getNextQaidaImageSrc(){
+function getNextQaidaImageSrc(){
 
   let next = currentQaidaPage + 1;
   if(next > totalQaidaPages) next = totalQaidaPages;
 
-  return await getQaidaPageImageSrc(next);
+  return buildQaidaImagePath(next);
 
 }
 
@@ -1263,12 +1133,12 @@ async function getNextQaidaImageSrc(){
    GET PREVIOUS QAIDA IMAGE SRC
    full function name: getPreviousQaidaImageSrc
 ========================= */
-async function getPreviousQaidaImageSrc(){
+function getPreviousQaidaImageSrc(){
 
   let previous = currentQaidaPage - 1;
   if(previous < 1) previous = 1;
 
-  return await getQaidaPageImageSrc(previous);
+  return buildQaidaImagePath(previous);
 
 }
 
@@ -1328,6 +1198,18 @@ function toggleQaidaReaderTopBar(event){
     }
   }
 
+  if(qaidaIsPageTurning){
+    return;
+  }
+
+  let now = Date.now();
+
+  if(now - qaidaLastTapTime < 280){
+    return;
+  }
+
+  qaidaLastTapTime = now;
+
   let topBar = document.getElementById("readerTopBar");
   let content = document.getElementById("readerContent");
 
@@ -1374,6 +1256,10 @@ function saveCurrentQaidaBookmark(event){
 
   if(event){
     event.stopPropagation();
+  }
+
+  if(qaidaIsPageTurning){
+    return;
   }
 
   let bookmarks = getAllQaidaBookmarks();
@@ -1437,9 +1323,13 @@ let qaidaFlipState = {
   underImage:null,
   shadow:null,
   startX:0,
+  startY:0,
   currentX:0,
+  currentY:0,
   deltaX:0,
+  deltaY:0,
   dragging:false,
+  didMove:false,
   threshold:12,
   maxDragPercent:62,
   onNext:null,
@@ -1489,13 +1379,18 @@ function setupInteractiveQaidaFlip(config){
 function handleQaidaFlipStart(e){
 
   if(!qaidaFlipState.enabled) return;
+  if(qaidaIsPageTurning) return;
 
   let point = e.touches ? e.touches[0] : e;
 
   qaidaFlipState.startX = point.clientX;
+  qaidaFlipState.startY = point.clientY;
   qaidaFlipState.currentX = point.clientX;
+  qaidaFlipState.currentY = point.clientY;
   qaidaFlipState.deltaX = 0;
+  qaidaFlipState.deltaY = 0;
   qaidaFlipState.dragging = true;
+  qaidaFlipState.didMove = false;
 
   if(qaidaFlipState.sheet){
     qaidaFlipState.sheet.classList.add("dragging");
@@ -1511,14 +1406,29 @@ function handleQaidaFlipStart(e){
    HANDLE QAIDA FLIP MOVE
    full function name: handleQaidaFlipMove
 ========================= */
-async function handleQaidaFlipMove(e){
+function handleQaidaFlipMove(e){
 
   if(!qaidaFlipState.enabled) return;
   if(!qaidaFlipState.dragging) return;
+  if(qaidaIsPageTurning) return;
 
   let point = e.touches ? e.touches[0] : e;
+
   qaidaFlipState.currentX = point.clientX;
+  qaidaFlipState.currentY = point.clientY;
+
   qaidaFlipState.deltaX = qaidaFlipState.currentX - qaidaFlipState.startX;
+  qaidaFlipState.deltaY = qaidaFlipState.currentY - qaidaFlipState.startY;
+
+  let absX = Math.abs(qaidaFlipState.deltaX);
+  let absY = Math.abs(qaidaFlipState.deltaY);
+
+  if(absX > 6 && absX > absY){
+    qaidaFlipState.didMove = true;
+    e.preventDefault();
+  }else{
+    return;
+  }
 
   let stageWidth = qaidaFlipState.stage ? qaidaFlipState.stage.offsetWidth : 1;
   if(stageWidth < 1) stageWidth = 1;
@@ -1533,17 +1443,13 @@ async function handleQaidaFlipMove(e){
     dragPercent = -qaidaFlipState.maxDragPercent;
   }
 
-  if(Math.abs(qaidaFlipState.deltaX) > 6){
-    e.preventDefault();
-  }
-
   /* Arabic / Urdu style:
      drag right = next page
      drag left = previous page
   */
   if(qaidaFlipState.deltaX > 0){
     if(currentQaidaPage < totalQaidaPages){
-      let nextSrc = await qaidaFlipState.getNextImageSrc();
+      let nextSrc = qaidaFlipState.getNextImageSrc ? qaidaFlipState.getNextImageSrc() : "";
       if(nextSrc && qaidaFlipState.underImage){
         qaidaFlipState.underImage.src = nextSrc;
         if(qaidaFlipState.underPage){
@@ -1555,7 +1461,7 @@ async function handleQaidaFlipMove(e){
 
   if(qaidaFlipState.deltaX < 0){
     if(currentQaidaPage > 1){
-      let prevSrc = await qaidaFlipState.getPrevImageSrc();
+      let prevSrc = qaidaFlipState.getPrevImageSrc ? qaidaFlipState.getPrevImageSrc() : "";
       if(prevSrc && qaidaFlipState.underImage){
         qaidaFlipState.underImage.src = prevSrc;
         if(qaidaFlipState.underPage){
@@ -1589,6 +1495,11 @@ function handleQaidaFlipEnd(){
 
   if(qaidaFlipState.sheet){
     qaidaFlipState.sheet.classList.remove("dragging");
+  }
+
+  if(!qaidaFlipState.didMove){
+    resetQaidaFlipPosition();
+    return;
   }
 
   /* Arabic / Urdu style:
@@ -1643,10 +1554,16 @@ function animateQaidaFlipNext(){
 
   if(!qaidaFlipState.sheet) return;
 
+  if(qaidaIsPageTurning){
+    return;
+  }
+
   if(currentQaidaPage >= totalQaidaPages){
     resetQaidaFlipPosition();
     return;
   }
+
+  qaidaIsPageTurning = true;
 
   qaidaFlipState.sheet.style.transform = "translateX(100%)";
 
@@ -1669,7 +1586,9 @@ function animateQaidaFlipNext(){
       if(qaidaFlipState.sheet){
         qaidaFlipState.sheet.style.transition = "transform 0.24s ease";
       }
-    }, 30);
+
+      qaidaIsPageTurning = false;
+    }, 40);
 
   }, 240);
 
@@ -1683,10 +1602,16 @@ function animateQaidaFlipPrev(){
 
   if(!qaidaFlipState.sheet) return;
 
+  if(qaidaIsPageTurning){
+    return;
+  }
+
   if(currentQaidaPage <= 1){
     resetQaidaFlipPosition();
     return;
   }
+
+  qaidaIsPageTurning = true;
 
   qaidaFlipState.sheet.style.transform = "translateX(-100%)";
 
@@ -1709,7 +1634,9 @@ function animateQaidaFlipPrev(){
       if(qaidaFlipState.sheet){
         qaidaFlipState.sheet.style.transition = "transform 0.24s ease";
       }
-    }, 30);
+
+      qaidaIsPageTurning = false;
+    }, 40);
 
   }, 240);
 
