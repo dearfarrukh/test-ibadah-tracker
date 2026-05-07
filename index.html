@@ -5801,12 +5801,17 @@ function getDefaultPage(){
 // =========================
 function openSelectedDefaultPage(){
 
-  // FIRST CHECK: Did user come back from a folder page like Qaza, Dua, Dhikr, or Tasbih?
+  // FIRST CHECK: Did user come back from a folder page like Qaza, Dua, Dhikr, Tasbih, or Arabic Quran?
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
   if(folderReturnPage){
 
     localStorage.removeItem("ibadahFolderReturnPage");
+
+    if(folderReturnPage === "quran" && typeof openQuranPage === "function"){
+      openQuranPage();
+      return;
+    }
 
     if(folderReturnPage === "more" && typeof openMorePage === "function"){
       openMorePage();
@@ -10735,8 +10740,10 @@ openQuranPage();
 // =========================
 function openArabicQuranPage(){
 
-  // Open the new separate Arabic Quran folder page.
-  // This same code works in test app and real app.
+  // Remember to return back to Quran page after Arabic Quran folder closes
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+
+  // Open the new separate Arabic Quran folder page
   window.location.href = "arabic-quran/";
 
 }
