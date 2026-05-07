@@ -10959,18 +10959,13 @@ loadSurahIndexList();
 // =========================
 function openQuran15Page(){
 
-let quran15Page = document.getElementById("quran15Page");
-
-
-hideAllAppPages();
-
-if(quran15Page) quran15Page.style.display = "block";
-setBottomNavVisibility(true);
-
-window.scrollTo(0,0);
+  // Open the new separate 15 Line Quran folder page.
+  // This same code works in test app and real app.
+  window.location.href = "QuranPages/";
 
 }
 
+     
 // =========================
 // CLOSE 15 LINE QURAN PAGE
 // =========================
