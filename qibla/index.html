@@ -1,1 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Qibla Direction</title>
 
+<style>
+/* =========================
+   QIBLA FOLDER PAGE
+========================= */
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#e9e9ee;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:#111;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+/* =========================
+   PAGE WRAP
+========================= */
+
+#qiblaFolderPage{
+  width:100%;
+  min-height:100vh;
+  background:#e9e9ee;
+  padding:calc(18px + env(safe-area-inset-top)) 5% calc(32px + env(safe-area-inset-bottom)) 5%;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.qiblaTopBar{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.qiblaBackBtn{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  color:#111;
+  font-size:26px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.10);
+  cursor:pointer;
+}
+
+.qiblaTopTitleWrap{
+  flex:1;
+  min-width:0;
+}
+
+.qiblaTopSmall{
+  font-size:13px;
+  font-weight:800;
+  color:#777;
+  margin-bottom:2px;
+}
+
+.qiblaTopTitle{
+  font-size:28px;
+  font-weight:950;
+  color:#111;
+  letter-spacing:-0.5px;
+}
+
+.qiblaIconBubble{
+  width:48px;
+  height:48px;
+  border-radius:18px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.10);
+}
+
+/* =========================
+   HERO CARD
+========================= */
+
+.qiblaHeroCard{
+  width:100%;
+  background:linear-gradient(135deg,#ffffff,#f7f7fa);
+  border-radius:30px;
+  padding:22px 5%;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+  margin-bottom:18px;
+}
+
+.qiblaHeroTitle{
+  font-size:22px;
+  font-weight:950;
+  color:#111;
+  margin-bottom:8px;
+}
+
+.qiblaHeroText{
+  font-size:14px;
+  font-weight:700;
+  line-height:1.55;
+  color:#555;
+}
+
+/* =========================
+   COMPASS CARD
+========================= */
+
+.qiblaCompassCard{
+  width:100%;
+  background:white;
+  border-radius:34px;
+  padding:24px 5% 26px 5%;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+  text-align:center;
+}
+
+/* =========================
+   COMPASS CIRCLE
+========================= */
+
+.qiblaCompassCircle{
+  width:78%;
+  max-width:310px;
+  aspect-ratio:1/1;
+  margin:10px auto 20px auto;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at center,#ffffff 0%,#ffffff 48%,#f2f2f6 49%,#e9e9ee 100%);
+  border:10px solid #f7f7fa;
+  box-shadow:
+    inset 0 0 22px rgba(0,0,0,0.06),
+    0 12px 30px rgba(0,0,0,0.10);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.qiblaKaabaMarker{
+  position:absolute;
+  top:7%;
+  left:50%;
+  transform:translateX(-50%);
+  width:58px;
+  height:58px;
+  border-radius:21px;
+  background:#111;
+  color:#f7d36b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:27px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.22);
+}
+
+.qiblaNeedle{
+  width:8px;
+  height:36%;
+  border-radius:999px;
+  background:linear-gradient(to bottom,#111,#555);
+  transform-origin:center bottom;
+  position:absolute;
+  bottom:50%;
+  left:50%;
+  margin-left:-4px;
+}
+
+.qiblaCenterDot{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#111;
+  border:5px solid white;
+  box-shadow:0 4px 12px rgba(0,0,0,0.22);
+  z-index:2;
+}
+
+.qiblaDirectionText{
+  font-size:24px;
+  font-weight:950;
+  color:#111;
+  margin-bottom:6px;
+}
+
+.qiblaStatusText{
+  font-size:14px;
+  font-weight:750;
+  color:#666;
+  line-height:1.45;
+  max-width:92%;
+  margin:0 auto 18px auto;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.qiblaMainBtn{
+  width:100%;
+  height:56px;
+  border:none;
+  border-radius:999px;
+  background:#111;
+  color:white;
+  font-size:16px;
+  font-weight:950;
+  box-shadow:0 10px 22px rgba(0,0,0,0.18);
+  cursor:pointer;
+}
+
+.qiblaMainBtn:active,
+.qiblaBackBtn:active{
+  transform:scale(0.97);
+}
+
+/* =========================
+   NOTE CARD
+========================= */
+
+.qiblaNoteCard{
+  width:100%;
+  margin-top:16px;
+  background:rgba(255,255,255,0.72);
+  border-radius:26px;
+  padding:18px 5%;
+  border:1px solid rgba(0,0,0,0.04);
+  color:#666;
+  font-size:14px;
+  font-weight:750;
+  line-height:1.5;
+}
+
+/* =========================
+   SMALL PHONE FIX
+========================= */
+
+@media (max-width:380px){
+  #qiblaFolderPage{
+    padding-left:4%;
+    padding-right:4%;
+  }
+
+  .qiblaTopTitle{
+    font-size:25px;
+  }
+
+  .qiblaCompassCircle{
+    width:84%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     QIBLA FOLDER PAGE
+========================= -->
+<div id="qiblaFolderPage">
+
+  <!-- =========================
+       QIBLA TOP BAR
+  ========================= -->
+  <div class="qiblaTopBar">
+
+    <button class="qiblaBackBtn" onclick="goBackToMainApp()">‹</button>
+
+    <div class="qiblaTopTitleWrap">
+      <div class="qiblaTopSmall">Ibadah App</div>
+      <div class="qiblaTopTitle">Qibla</div>
+    </div>
+
+    <div class="qiblaIconBubble">🧭</div>
+
+  </div>
+
+  <!-- =========================
+       QIBLA HERO CARD
+  ========================= -->
+  <div class="qiblaHeroCard">
+    <div class="qiblaHeroTitle">Qibla Direction</div>
+    <div class="qiblaHeroText">
+      This separate Qibla page is ready. Later we will connect the real compass and location direction.
+    </div>
+  </div>
+
+  <!-- =========================
+       QIBLA COMPASS CARD
+  ========================= -->
+  <div class="qiblaCompassCard">
+
+    <div class="qiblaCompassCircle">
+      <div class="qiblaKaabaMarker">🕋</div>
+      <div class="qiblaNeedle"></div>
+      <div class="qiblaCenterDot"></div>
+    </div>
+
+    <div class="qiblaDirectionText">Ready</div>
+
+    <div class="qiblaStatusText">
+      Compass design is ready. We will add the working Qibla direction logic later.
+    </div>
+
+    <button class="qiblaMainBtn" onclick="showQiblaComingSoonMessage()">
+      Start Qibla Direction
+    </button>
+
+  </div>
+
+  <!-- =========================
+       QIBLA NOTE CARD
+  ========================= -->
+  <div class="qiblaNoteCard">
+    Next step later: we will link this page from Home or More, then add real compass permission and Qibla calculation.
+  </div>
+
+</div>
+
+<script>
+/* =========================
+   SHOW QIBLA COMING SOON MESSAGE
+   full function name: showQiblaComingSoonMessage
+========================= */
+function showQiblaComingSoonMessage(){
+
+  alert("Qibla page design is ready. We will connect the real compass later.");
+
+}
+
+/* =========================
+   GO BACK TO MAIN APP
+   full function name: goBackToMainApp
+========================= */
+function goBackToMainApp(){
+
+  localStorage.setItem("ibadahFolderReturnPage", "more");
+  window.location.href = "../";
+
+}
+</script>
+
+</body>
+</html>
