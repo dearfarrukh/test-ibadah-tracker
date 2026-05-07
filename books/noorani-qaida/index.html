@@ -5,9 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Noorani Qaida</title>
 
+<!-- =========================
+     PDF.JS LIBRARY
+========================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <style>
 /* =========================
-   NOORANI QAIDA READER PAGE
+   NOORANI QAIDA PDF CANVAS READER
 ========================= */
 
 *{
@@ -30,7 +35,7 @@ body{
 }
 
 /* =========================
-   FULL SCREEN READER
+   FULL SCREEN READER PAGE
 ========================= */
 
 #qaidaReaderPage{
@@ -55,7 +60,7 @@ body{
   left:0;
   right:0;
   height:92px;
-  z-index:20;
+  z-index:30;
   background:rgba(233,233,238,0.96);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
@@ -78,8 +83,8 @@ body{
   border:none;
   background:white;
   color:#111;
-  font-size:24px;
-  font-weight:800;
+  font-size:26px;
+  font-weight:900;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -111,7 +116,7 @@ body{
 }
 
 .qaidaPageBadge{
-  min-width:76px;
+  min-width:78px;
   height:38px;
   border-radius:999px;
   background:white;
@@ -125,10 +130,10 @@ body{
 }
 
 /* =========================
-   PDF AREA
+   CANVAS PAGE AREA
 ========================= */
 
-#qaidaPdfShell{
+#qaidaCanvasShell{
   position:absolute;
   top:0;
   left:0;
@@ -137,22 +142,38 @@ body{
   width:100%;
   height:100%;
   background:#111;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   transition:transform 0.28s ease, padding-top 0.28s ease;
   transform-origin:center center;
-  overflow:hidden;
 }
 
-#qaidaPdfShell.shrink{
+#qaidaCanvasShell.shrink{
   padding-top:92px;
   transform:scale(0.94);
 }
 
-#qaidaPdfFrame{
-  width:100%;
-  height:100%;
-  border:none;
-  background:#111;
+#qaidaCanvas{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  background:white;
   display:block;
+  box-shadow:0 0 22px rgba(0,0,0,0.45);
+}
+
+#qaidaLoadingText{
+  position:absolute;
+  z-index:5;
+  color:white;
+  font-size:15px;
+  font-weight:800;
+  background:rgba(0,0,0,0.45);
+  padding:12px 18px;
+  border-radius:999px;
 }
 
 /* =========================
@@ -165,12 +186,12 @@ body{
   left:0;
   right:0;
   bottom:0;
-  z-index:10;
+  z-index:15;
   background:transparent;
 }
 
 /* =========================
-   BOTTOM PAGE CONTROLS
+   BOTTOM CONTROLS
 ========================= */
 
 #qaidaBottomControls{
@@ -178,7 +199,7 @@ body{
   left:0;
   right:0;
   bottom:calc(18px + env(safe-area-inset-bottom));
-  z-index:22;
+  z-index:35;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -227,7 +248,7 @@ body{
     padding:0 4% 12px 4%;
   }
 
-  #qaidaPdfShell.shrink{
+  #qaidaCanvasShell.shrink{
     padding-top:86px;
     transform:scale(0.94);
   }
@@ -276,10 +297,11 @@ body{
   </div>
 
   <!-- =========================
-       PDF PAGE AREA
+       CANVAS PAGE AREA
   ========================= -->
-  <div id="qaidaPdfShell">
-    <iframe id="qaidaPdfFrame" src="page-001.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"></iframe>
+  <div id="qaidaCanvasShell">
+    <div id="qaidaLoadingText">Loading page...</div>
+    <canvas id="qaidaCanvas"></canvas>
   </div>
 
   <!-- =========================
@@ -309,6 +331,14 @@ body{
 
 let currentQaidaPage = 1;
 const totalQaidaPages = 30;
+let qaidaPdfDocument = null;
+let qaidaIsRendering = false;
+
+/* =========================
+   PDF.JS WORKER SETUP
+========================= */
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 /* =========================
    FORMAT PAGE FILE NAME
@@ -317,7 +347,95 @@ const totalQaidaPages = 30;
 function formatQaidaPageFileName(pageNumber){
 
   let paddedNumber = String(pageNumber).padStart(3, "0");
-  return "page-" + paddedNumber + ".pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH";
+  return "page-" + paddedNumber + ".pdf";
+
+}
+
+/* =========================
+   LOAD QAIDA PDF DOCUMENT
+   full function name: loadQaidaPdfDocument
+========================= */
+async function loadQaidaPdfDocument(pageNumber){
+
+  let loadingText = document.getElementById("qaidaLoadingText");
+  loadingText.style.display = "block";
+  loadingText.innerHTML = "Loading page...";
+
+  let fileName = formatQaidaPageFileName(pageNumber);
+
+  try{
+
+    qaidaPdfDocument = await pdfjsLib.getDocument(fileName).promise;
+    await renderQaidaPdfPage();
+
+  }catch(error){
+
+    loadingText.style.display = "block";
+    loadingText.innerHTML = "Could not load PDF page";
+    console.log("Noorani Qaida PDF load error:", error);
+
+  }
+
+}
+
+/* =========================
+   RENDER QAIDA PDF PAGE
+   full function name: renderQaidaPdfPage
+========================= */
+async function renderQaidaPdfPage(){
+
+  if(!qaidaPdfDocument || qaidaIsRendering){
+    return;
+  }
+
+  qaidaIsRendering = true;
+
+  let loadingText = document.getElementById("qaidaLoadingText");
+  let canvas = document.getElementById("qaidaCanvas");
+  let context = canvas.getContext("2d");
+
+  loadingText.style.display = "block";
+  loadingText.innerHTML = "Loading page...";
+
+  try{
+
+    let page = await qaidaPdfDocument.getPage(1);
+
+    let shell = document.getElementById("qaidaCanvasShell");
+    let shellWidth = shell.clientWidth;
+    let shellHeight = shell.clientHeight;
+
+    let viewportOriginal = page.getViewport({ scale:1 });
+
+    let widthScale = shellWidth / viewportOriginal.width;
+    let heightScale = shellHeight / viewportOriginal.height;
+
+    let finalScale = Math.min(widthScale, heightScale) * 1.02;
+
+    let viewport = page.getViewport({ scale:finalScale });
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    canvas.style.width = viewport.width + "px";
+    canvas.style.height = viewport.height + "px";
+
+    await page.render({
+      canvasContext:context,
+      viewport:viewport
+    }).promise;
+
+    loadingText.style.display = "none";
+
+  }catch(error){
+
+    loadingText.style.display = "block";
+    loadingText.innerHTML = "Could not show page";
+    console.log("Noorani Qaida render error:", error);
+
+  }
+
+  qaidaIsRendering = false;
 
 }
 
@@ -337,12 +455,9 @@ function loadQaidaPage(pageNumber){
 
   currentQaidaPage = pageNumber;
 
-  let frame = document.getElementById("qaidaPdfFrame");
   let badge = document.getElementById("qaidaPageBadge");
   let prevBtn = document.getElementById("qaidaPrevBtn");
   let nextBtn = document.getElementById("qaidaNextBtn");
-
-  frame.src = formatQaidaPageFileName(currentQaidaPage);
 
   badge.innerHTML = currentQaidaPage + " / " + totalQaidaPages;
 
@@ -350,6 +465,8 @@ function loadQaidaPage(pageNumber){
   nextBtn.disabled = currentQaidaPage === totalQaidaPages;
 
   localStorage.setItem("nooraniQaidaLastPage", currentQaidaPage);
+
+  loadQaidaPdfDocument(currentQaidaPage);
 
 }
 
@@ -384,12 +501,16 @@ function previousQaidaPage(){
 function toggleQaidaTopBar(){
 
   let topBar = document.getElementById("qaidaTopBar");
-  let pdfShell = document.getElementById("qaidaPdfShell");
+  let canvasShell = document.getElementById("qaidaCanvasShell");
   let bottomControls = document.getElementById("qaidaBottomControls");
 
   topBar.classList.toggle("show");
-  pdfShell.classList.toggle("shrink");
+  canvasShell.classList.toggle("shrink");
   bottomControls.classList.toggle("show");
+
+  setTimeout(function(){
+    renderQaidaPdfPage();
+  }, 320);
 
 }
 
@@ -440,10 +561,25 @@ function loadLastSavedQaidaPage(){
 }
 
 /* =========================
+   HANDLE SCREEN RESIZE
+   full function name: handleQaidaScreenResize
+========================= */
+function handleQaidaScreenResize(){
+
+  setTimeout(function(){
+    renderQaidaPdfPage();
+  }, 250);
+
+}
+
+/* =========================
    PAGE START
 ========================= */
 
 document.addEventListener("keydown", handleQaidaKeyboardControls);
+window.addEventListener("resize", handleQaidaScreenResize);
+window.addEventListener("orientationchange", handleQaidaScreenResize);
+
 loadLastSavedQaidaPage();
 </script>
 
