@@ -5807,6 +5807,10 @@ function openSelectedDefaultPage(){
   if(folderReturnPage){
 
     localStorage.removeItem("ibadahFolderReturnPage");
+           if(folderReturnPage === "quran" && typeof openQuranPage === "function"){
+      openQuranPage();
+      return;
+    }
 
     if(folderReturnPage === "more" && typeof openMorePage === "function"){
       openMorePage();
