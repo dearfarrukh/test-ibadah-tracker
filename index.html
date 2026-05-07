@@ -10735,14 +10735,9 @@ openQuranPage();
 // =========================
 function openArabicQuranPage(){
 
-let quranPage = document.getElementById("quranPage");
-let arabicQuranPage = document.getElementById("arabicQuranPage");
-
-
-if(quranPage) quranPage.style.display = "none";
-if(arabicQuranPage) arabicQuranPage.style.display = "block";
-setBottomNavVisibility(true);
-window.scrollTo(0,0);
+  // Open the new separate Arabic Quran folder page.
+  // This same code works in test app and real app.
+  window.location.href = "arabic-quran/";
 
 }
 
