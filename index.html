@@ -5807,10 +5807,17 @@ function openSelectedDefaultPage(){
   if(folderReturnPage){
 
     localStorage.removeItem("ibadahFolderReturnPage");
-           if(folderReturnPage === "quran" && typeof openQuranPage === "function"){
-      openQuranPage();
-      return;
-    }
+         if(folderReturnPage === "quran" && typeof openQuranPage === "function"){
+
+  let savedQuranBackPage = localStorage.getItem("ibadahQuranBackPage");
+
+  if(savedQuranBackPage){
+    lastMainTab = savedQuranBackPage;
+  }
+
+  openQuranPage();
+  return;
+}
 
     if(folderReturnPage === "more" && typeof openMorePage === "function"){
       openMorePage();
@@ -10958,6 +10965,9 @@ loadSurahIndexList();
 // OPEN 15 LINE QURAN PAGE
 // =========================
 function openQuran15Page(){
+
+  // Save where Quran page should go back after returning from 15 Line Quran folder
+  localStorage.setItem("ibadahQuranBackPage", lastMainTab || "tracker");
 
   // Open the new separate 15 Line Quran folder page.
   // This same code works in test app and real app.
