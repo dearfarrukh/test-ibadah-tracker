@@ -7,7 +7,7 @@
 
 <style>
 /* =========================
-   QIBLA DIRECT COMPASS PAGE
+   QIBLA DIRECT COMPASS PAGE WITH MOVING KAABA MARKER
 ========================= */
 
 *{
@@ -78,6 +78,10 @@ body{
   align-items:center;
   justify-content:center;
   cursor:pointer;
+}
+
+.qiblaBackBtn:active{
+  transform:scale(0.96);
 }
 
 .qiblaTopCenter{
@@ -300,7 +304,7 @@ body{
 }
 
 /* =========================
-   NEEDLE
+   NORTH / SOUTH NEEDLE
 ========================= */
 
 #qiblaNeedle{
@@ -369,18 +373,19 @@ body{
 }
 
 /* =========================
-   KAABA MARKER
+   MOVING QIBLA MARKER
 ========================= */
 
 #qiblaKaabaMarker{
   position:absolute;
-  left:-11%;
-  bottom:-8%;
+  left:50%;
+  top:50%;
   width:76px;
   height:76px;
   z-index:9;
-  transform:rotate(-12deg);
-  transition:transform 0.2s ease;
+  transform:translate(-50%,-50%) rotate(0deg) translateY(-43%);
+  transform-origin:center center;
+  transition:transform 0.18s linear;
 }
 
 .kaabaBody{
@@ -573,6 +578,10 @@ body{
   font-size:15px;
   font-weight:950;
   cursor:pointer;
+}
+
+.qiblaPermissionBtn:active{
+  transform:scale(0.98);
 }
 
 /* =========================
@@ -805,26 +814,38 @@ function updateQiblaText(){
   }
 
   degreeText.innerHTML = Math.round(qiblaBearing) + "° to Qibla";
-  statusText.innerHTML = "Turn your phone until the needle points toward the Kaaba.";
+  statusText.innerHTML = "Move your phone. The Kaaba marker points toward Qibla.";
 
 }
 
 /* =========================
-   UPDATE COMPASS NEEDLE
+   UPDATE QIBLA COMPASS ROTATION
    full function name: updateCompassNeedle
 ========================= */
 function updateCompassNeedle(){
 
   let needle = document.getElementById("qiblaNeedle");
+  let kaabaMarker = document.getElementById("qiblaKaabaMarker");
 
   if(qiblaBearing === null){
     needle.style.transform = "translate(-50%,-50%) rotate(0deg)";
+    kaabaMarker.style.transform = "translate(-50%,-50%) rotate(0deg) translateY(-43%)";
     return;
   }
 
-  let rotation = normalizeDegree(qiblaBearing - currentHeading);
+  /*
+    currentHeading changes when user moves phone.
+    qiblaRotation makes Kaaba marker move live toward Qibla.
+  */
+  let qiblaRotation = normalizeDegree(qiblaBearing - currentHeading);
 
-  needle.style.transform = "translate(-50%,-50%) rotate(" + rotation + "deg)";
+  /*
+    northRotation keeps N/S compass needle showing phone north/south.
+  */
+  let northRotation = normalizeDegree(0 - currentHeading);
+
+  needle.style.transform = "translate(-50%,-50%) rotate(" + northRotation + "deg)";
+  kaabaMarker.style.transform = "translate(-50%,-50%) rotate(" + qiblaRotation + "deg) translateY(-43%)";
 
 }
 
@@ -879,7 +900,7 @@ function requestQiblaCompassPermission(){
         if(permissionState === "granted"){
           permissionCard.style.display = "none";
           startCompassListener();
-          document.getElementById("qiblaStatusText").innerHTML = "Compass is active.";
+          document.getElementById("qiblaStatusText").innerHTML = "Compass is active. Move your phone.";
         }else{
           document.getElementById("qiblaStatusText").innerHTML = "Compass permission was not allowed.";
         }
