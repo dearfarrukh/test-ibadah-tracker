@@ -495,9 +495,14 @@ async function renderAllVisibleQaidaPages(){
   loadingText.style.display = "block";
   loadingText.innerHTML = "Loading page...";
 
-  await renderQaidaPdfToCanvas(currentQaidaPage - 1, "qaidaPrevCanvas");
+  /* Arabic / Urdu book style:
+     left side canvas shows NEXT page
+     middle canvas shows CURRENT page
+     right side canvas shows PREVIOUS page
+  */
+  await renderQaidaPdfToCanvas(currentQaidaPage + 1, "qaidaPrevCanvas");
   await renderQaidaPdfToCanvas(currentQaidaPage, "qaidaCurrentCanvas");
-  await renderQaidaPdfToCanvas(currentQaidaPage + 1, "qaidaNextCanvas");
+  await renderQaidaPdfToCanvas(currentQaidaPage - 1, "qaidaNextCanvas");
 
   loadingText.style.display = "none";
 
@@ -564,8 +569,11 @@ function animateQaidaToNextPage(){
 
   let track = document.getElementById("qaidaSlideTrack");
 
+  /* Arabic / Urdu book style:
+     next page is on the LEFT side, so track moves right
+  */
   track.style.transition = "transform 0.28s ease";
-  track.style.transform = "translateX(-66.6666%)";
+  track.style.transform = "translateX(0%)";
 
   setTimeout(async function(){
 
@@ -596,8 +604,11 @@ function animateQaidaToPreviousPage(){
 
   let track = document.getElementById("qaidaSlideTrack");
 
+  /* Arabic / Urdu book style:
+     previous page is on the RIGHT side, so track moves left
+  */
   track.style.transition = "transform 0.28s ease";
-  track.style.transform = "translateX(0%)";
+  track.style.transform = "translateX(-66.6666%)";
 
   setTimeout(async function(){
 
@@ -612,7 +623,6 @@ function animateQaidaToPreviousPage(){
   }, 290);
 
 }
-
 /* =========================
    SNAP BACK TO CURRENT PAGE
    full function name: snapQaidaBackToCurrentPage
@@ -670,11 +680,15 @@ function moveQaidaSlideTrackWithFinger(moveX){
   let baseMove = -screenWidth;
   let finalMove = baseMove + moveX;
 
-  if(currentQaidaPage === 1 && moveX > 0){
+   /* Arabic / Urdu book style:
+     page 1 cannot go previous, so left swipe is resisted
+     last page cannot go next, so right swipe is resisted
+  */
+  if(currentQaidaPage === 1 && moveX < 0){
     finalMove = baseMove + (moveX * 0.22);
   }
 
-  if(currentQaidaPage === totalQaidaPages && moveX < 0){
+  if(currentQaidaPage === totalQaidaPages && moveX > 0){
     finalMove = baseMove + (moveX * 0.22);
   }
 
@@ -751,7 +765,11 @@ function handleQaidaTouchEnd(event){
 
   if(qaidaDidDrag && Math.abs(moveX) > Math.abs(moveY) && Math.abs(moveX) > triggerDistance){
 
-    if(moveX < 0){
+     /* Arabic / Urdu book style:
+       swipe right = next page
+       swipe left = previous page
+    */
+    if(moveX > 0){
       animateQaidaToNextPage();
     }else{
       animateQaidaToPreviousPage();
