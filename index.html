@@ -7079,13 +7079,7 @@ setAppTopBarTitle("");
     "salahPage",
     "trackerPage",
     "morePage",
-    "tasbihPage",
-    "duaPage",
-    "ayatulKursiPage",
     "qiblaPage",
-    "zikrPage",
-    "zikrDetailPage",
-    "qazaPage",
     "appSettingsPage",
     "juzIndexPage"
   ];
@@ -7104,41 +7098,11 @@ setAppTopBarTitle("");
 
 
 // =========================
-// OPEN QAZA PAGE
+// OPEN QAZA PAGE (FOLDER REDIRECT)
 // =========================
 function openQazaPage(){
 
-hideAllAppPages();
-
-let qazaPage = document.getElementById("qazaPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(qazaPage) qazaPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Qaza Tracker");
-setAppTopBarBackButton(true, function(){
-  closeQazaPage();
-});
-setAppTopBarRightButton(true, "🔒", function(){
-  toggleQazaLockState();
-});
-
-showQazaPrayerTab();
-loadFajrData();
-loadDhuhrData();
-loadAsrData();
-loadMaghribData();
-loadIshaData();
-loadWitrData();
-updateQazaProgressTabUI();
-updateQazaLockButtonUI();
-
-window.scrollTo(0,0);
+  openQazaTrackerFromFolder(lastMainTab || "more");
 
 }
 
@@ -7537,124 +7501,40 @@ function openQazaTrackerFromMore(){
 
 
 // =========================
-// OPEN FARGHI RIZQ PAGE
+// OPEN FARGHI RIZQ PAGE (NOW INSIDE DUA FOLDER)
 // =========================
 function openFarghiRizqPage(){
 
-let duaPage = document.getElementById("duaPage");
-let farghiRizqPage = document.getElementById("farghiRizqPage");
-let bottomNav = document.getElementById("bottomNav");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-// hide all main app pages first
-if(typeof hideAllAppPages === "function"){
-hideAllAppPages();
-}
-
-// keep dua page hidden
-if(duaPage) duaPage.style.display = "none";
-
-// show only Farghi Rizq page
-if(farghiRizqPage) farghiRizqPage.style.display = "block";
-
-// no bottom bar inside dua detail page
-if(bottomNav) bottomNav.style.display = "none";
-
-// no menu button inside dua detail page
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
-
-
-     
 
 // =========================
-// OPEN IMAN PAGE
+// OPEN IMAN PAGE (NOW INSIDE DUA FOLDER)
 // =========================
 function openImanPage(){
 
-let duaPage = document.getElementById("duaPage");
-let imanPage = document.getElementById("imanPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(duaPage) duaPage.style.display = "none";
-if(imanPage) imanPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(false);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Iman Mujmal & Mufassal");
-setAppTopBarBackButton(true, function(){
-  closeImanPage();
-});
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
 
 // =========================
-// CLOSE FARGHI RIZQ PAGE
+// CLOSE FARGHI RIZQ PAGE (OLD PAGE REMOVED)
 // =========================
 function closeFarghiRizqPage(){
 
-let farghiRizqPage = document.getElementById("farghiRizqPage");
-
-// hide Farghi Rizq page first
-if(farghiRizqPage) farghiRizqPage.style.display = "none";
-
-// open Dua page using the real Dua page function
-// this brings back the same top bar correctly
-if(typeof openDuaPage === "function"){
-openDuaPage();
-return;
-}
-
-// backup only, if openDuaPage is not found
-let duaPage = document.getElementById("duaPage");
-let bottomNav = document.getElementById("bottomNav");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(duaPage) duaPage.style.display = "block";
-if(bottomNav) bottomNav.style.display = "none";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
-
 
 // =========================
-// CLOSE IMAN PAGE
+// CLOSE IMAN PAGE (OLD PAGE REMOVED)
 // =========================
 function closeImanPage(){
 
-let duaPage = document.getElementById("duaPage");
-let imanPage = document.getElementById("imanPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(imanPage) imanPage.style.display = "none";
-if(duaPage) duaPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-// RESTORE DUA PAGE TOP BAR
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Dua");
-setAppTopBarBackButton(true, function(){
-  closeDuaPage();
-});
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
-
-
 
 // =========================
 // OPEN DUA PAGE FROM FOLDER
@@ -7679,169 +7559,43 @@ let sourcePage = fromPage || "home";
 window.location.href = "dailyazkar/?from=" + sourcePage + "&v=" + Date.now();
 
 }
-     
-  
+
 // =========================
-// OPEN DUA PAGE
+// OPEN DUA PAGE (FOLDER REDIRECT)
 // =========================
 function openDuaPage(){
 
-duaOpenedFromPage = getCurrentMainPageForDua();
-
-hideAllAppPages();
-
-let duaPage = document.getElementById("duaPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(duaPage) duaPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Masnoon Duas");
-setAppTopBarBackButton(true, function(){
-  closeDuaPage();
-});
-
-if(typeof setAppTopBarRightButton === "function"){
-  setAppTopBarRightButton(false, "", null);
-}
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
 
-
-     
 // =========================
-// CLOSE DUA PAGE
+// CLOSE DUA PAGE (OLD PAGE REMOVED)
 // =========================
 function closeDuaPage(){
 
-let duaPage = document.getElementById("duaPage");
-let homePage = document.getElementById("homePage");
-let salahPage = document.getElementById("salahPage");
-let trackerPage = document.getElementById("trackerPage");
-let morePage = document.getElementById("morePage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(duaPage) duaPage.style.display = "none";
-
-setAppTopBarVisibility(false);
-setAppTopBarBackButton(false, null);
-
-if(homePage) homePage.style.display = "none";
-if(salahPage) salahPage.style.display = "none";
-if(trackerPage) trackerPage.style.display = "none";
-if(morePage) morePage.style.display = "none";
-
-if(duaOpenedFromPage === "home"){
-
-  if(homePage) homePage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  lastMainTab = "home";
-
-}else if(duaOpenedFromPage === "salah"){
-
-  if(salahPage) salahPage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  lastMainTab = "salah";
-
-}else if(duaOpenedFromPage === "more"){
-
-  if(morePage) morePage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  lastMainTab = "more";
-
-}else{
-
-  if(trackerPage) trackerPage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  lastMainTab = "tracker";
+  returnToDefaultPage();
 
 }
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(true);
-
-if(duaOpenedFromPage === "more"){
-  setMainMenuHandleVisibility(false);
-}
-
-window.scrollTo(0,0);
-
-}
-
 
 // =========================
-// OPEN AYATUL KURSI PAGE
+// OPEN AYATUL KURSI PAGE (NOW INSIDE DUA FOLDER)
 // =========================
 function openAyatulKursiPage(){
 
-hideAllAppPages();
-
-let ayatulKursiPage = document.getElementById("ayatulKursiPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(ayatulKursiPage) ayatulKursiPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Ayatul Kursi");
-setAppTopBarBackButton(true, function(){
-  closeAyatulKursiPage();
-});
-
-if(typeof setAppTopBarRightButton === "function"){
-  setAppTopBarRightButton(false, "", null);
-}
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
-
 
 // =========================
-// CLOSE AYATUL KURSI PAGE
+// CLOSE AYATUL KURSI PAGE (OLD PAGE REMOVED)
 // =========================
 function closeAyatulKursiPage(){
 
-let ayatulKursiPage = document.getElementById("ayatulKursiPage");
-let duaPage = document.getElementById("duaPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(ayatulKursiPage) ayatulKursiPage.style.display = "none";
-if(duaPage) duaPage.style.display = "block";
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Dua");
-setAppTopBarBackButton(true, function(){
-  closeDuaPage();
-});
-
-if(typeof setAppTopBarRightButton === "function"){
-  setAppTopBarRightButton(false, "", null);
-}
-
-window.scrollTo(0,0);
+  openDuaPageFromFolder(lastMainTab || "home");
 
 }
 
-
-
-
-
-
-     
 // =========================
 // OPEN QIBLA PAGE
 // =========================
@@ -9079,116 +8833,42 @@ function updateAllZikrCardUI(){
 }
 
 
-  // =========================
+// =========================
 // OPEN ZIKR PAGE FROM HOME
 // =========================
 function openHomeZikrPage(){
 
-lastMainTab = "home";
-openZikrPage();
+  openDailyAzkarPageFromFolder("home");
 
 }
 
-
-  // =========================
+// =========================
 // OPEN ZIKR PAGE FROM MORE
 // =========================
 function openMoreZikrPage(){
 
-lastMainTab = "more";
-openZikrPage();
+  openDailyAzkarPageFromFolder("more");
 
 }
 
-  
-  
 // =========================
-// OPEN ZIKR PAGE
+// OPEN ZIKR PAGE (FOLDER REDIRECT)
 // =========================
 function openZikrPage(){
 
-let zikrPage = document.getElementById("zikrPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-hideAllAppPages();
-
-if(zikrPage) zikrPage.style.display = "block";
-
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(false);
-
-setAppTopBarVisibility(true);
-setAppTopBarTitle("Daily Dhikr");
-setAppTopBarBackButton(true, function(){
-  closeZikrPage();
-});
-
-renderCustomZikrCards();
-updateAllZikrCardUI();
-
-window.scrollTo(0,0);
+  openDailyAzkarPageFromFolder(lastMainTab || "home");
 
 }
-  
 
 // =========================
-// CLOSE ZIKR PAGE
+// CLOSE ZIKR PAGE (OLD PAGE REMOVED)
 // =========================
 function closeZikrPage(){
 
-let homePage = document.getElementById("homePage");
-let trackerPage = document.getElementById("trackerPage");
-let salahPage = document.getElementById("salahPage");
-let zikrPage = document.getElementById("zikrPage");
-let morePage = document.getElementById("morePage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-if(zikrPage) zikrPage.style.display = "none";
-
-setAppTopBarVisibility(false);
-setAppTopBarBackButton(false, null);
-
-if(homePage) homePage.style.display = "none";
-if(trackerPage) trackerPage.style.display = "none";
-if(salahPage) salahPage.style.display = "none";
-if(morePage) morePage.style.display = "none";
-
-if(lastMainTab === "home"){
-
-  if(homePage) homePage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  setMainMenuHandleVisibility(true);
-
-}else if(lastMainTab === "more"){
-
-  if(morePage) morePage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  setMainMenuHandleVisibility(false);
-
-}else if(lastMainTab === "salah"){
-
-  if(salahPage) salahPage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  setMainMenuHandleVisibility(true);
-
-}else{
-
-  if(trackerPage) trackerPage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  setMainMenuHandleVisibility(true);
-  lastMainTab = "tracker";
+  returnToDefaultPage();
 
 }
 
-setBottomNavVisibility(true);
-
-window.scrollTo(0,0);
-
-}
-  
-  
 // =========================
 // OPEN ZIKR DETAIL
 // =========================
@@ -9444,25 +9124,22 @@ closeTasbihPage();
 
 
 // =========================
-// OPEN TASBIH FROM HOME
+// OPEN TASBIH PAGE FROM HOME
 // =========================
 function openHomeTasbihPage(){
 
-lastMainTab = "home";
-openTasbihPageFromHome();
+  openTasbihPageFromHome();
 
 }
 
 // =========================
-// OPEN TASBIH FROM MORE
+// OPEN TASBIH PAGE FROM MORE
 // =========================
 function openMoreTasbihPage(){
 
-lastMainTab = "more";
-openTasbihPageFromMore();
+  openTasbihPageFromMore();
 
 }
-  
 
 // =========================
 // OPEN QURAN FROM MORE
@@ -10776,9 +10453,8 @@ window.scrollTo(0,0);
 }
 
 
-     
 // =========================
-// OPEN TASBIH PAGE
+// OPEN TASBIH PAGE (FOLDER REDIRECT)
 // =========================
 function openTasbihPage(){
 
@@ -10786,75 +10462,15 @@ function openTasbihPage(){
 
 }
 
-
-  
 // =========================
-// CLOSE TASBIH PAGE
+// CLOSE TASBIH PAGE (OLD PAGE REMOVED)
 // =========================
 function closeTasbihPage(){
 
-let tasbihPage = document.getElementById("tasbihPage");
-let homePage = document.getElementById("homePage");
-let trackerPage = document.getElementById("trackerPage");
-let salahPage = document.getElementById("salahPage");
-let morePage = document.getElementById("morePage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-closeTasbihSettings();
-closeDarkTargetMenu();
-
-if(tasbihPage) tasbihPage.style.display = "none";
-
-setAppTopBarVisibility(false);
-setAppTopBarBackButton(false, null);
-setAppTopBarRightButton(false, "", null);
-
-if(homePage) homePage.style.display = "none";
-if(trackerPage) trackerPage.style.display = "none";
-if(salahPage) salahPage.style.display = "none";
-if(morePage) morePage.style.display = "none";
-
-if(lastMainTab === "home"){
-
-  if(homePage) homePage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  setMainMenuHandleVisibility(true);
-
-}else if(lastMainTab === "more"){
-
-  if(morePage) morePage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-  setMainMenuHandleVisibility(false);
-
-}else if(lastMainTab === "salah"){
-
-  if(salahPage) salahPage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  setMainMenuHandleVisibility(true);
-
-}else{
-
-  if(trackerPage) trackerPage.style.display = "block";
-  if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-  setMainMenuHandleVisibility(true);
-  lastMainTab = "tracker";
+  returnToDefaultPage();
 
 }
 
-setBottomNavVisibility(true);
-
-window.scrollTo(0,0);
-
-}
-
-
-
-
-
-
-
-
-  
 let salahSource = "location";
 let salahDayOffset = 0;
 let salahSliding = false;
@@ -15660,22 +15276,6 @@ arrow.textContent = "▼";
 }
 
 }
-
-  // =========================
-// OPEN TASBIH PAGE FROM HOME
-// =========================
-function openHomeTasbihPage(){
-
-let homePage = document.getElementById("homePage");
-
-if(homePage) homePage.style.display = "none";
-
-lastMainTab = "home";
-
-openTasbihPage();
-
-}
-
 
 /* =========================
    SALAH WEATHER BACKGROUND
