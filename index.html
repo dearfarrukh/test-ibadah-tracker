@@ -7560,6 +7560,19 @@ function openBooksPageFromMore(){
 }
 
 
+/* =========================
+   OPEN QIBLA FOLDER PAGE FROM MORE
+   full function name: openQiblaPageFromMoreFolder
+========================= */
+function openQiblaPageFromMoreFolder(){
+
+  localStorage.setItem("ibadahFolderReturnPage", "more");
+  window.location.href = "qibla/";
+
+}
+
+     
+
      
 // =========================
 // OPEN DAILY AZKAR PAGE FROM FOLDER
@@ -17401,8 +17414,10 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 </div>
      
 
-<!-- Open Qibla Page Card -->
-<div onclick="document.getElementById('morePage').style.display='none'; openQiblaPage();" style="
+<!-- =========================
+     QIBLA FOLDER CARD - MORE PAGE
+========================= -->
+<div onclick="openQiblaPageFromMoreFolder()" style="
 background:white;
 border-radius:22px;
 padding:18px 10px;
