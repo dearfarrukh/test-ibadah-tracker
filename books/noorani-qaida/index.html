@@ -12,7 +12,7 @@
 
 <style>
 /* =========================
-   NOORANI QAIDA PDF CANVAS READER
+   NOORANI QAIDA SLIDING READER
 ========================= */
 
 *{
@@ -29,13 +29,13 @@ body{
   overflow:hidden;
   background:#111;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  touch-action:manipulation;
+  touch-action:none;
   user-select:none;
   -webkit-user-select:none;
 }
 
 /* =========================
-   FULL SCREEN READER PAGE
+   FULL SCREEN PAGE
 ========================= */
 
 #qaidaReaderPage{
@@ -60,7 +60,7 @@ body{
   left:0;
   right:0;
   height:92px;
-  z-index:30;
+  z-index:50;
   background:rgba(233,233,238,0.96);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
@@ -130,10 +130,10 @@ body{
 }
 
 /* =========================
-   CANVAS PAGE AREA
+   SLIDING READER SHELL
 ========================= */
 
-#qaidaCanvasShell{
+#qaidaSlideShell{
   position:absolute;
   top:0;
   left:0;
@@ -143,19 +143,42 @@ body{
   height:100%;
   background:#111;
   overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   transition:transform 0.28s ease, padding-top 0.28s ease;
   transform-origin:center center;
 }
 
-#qaidaCanvasShell.shrink{
+#qaidaSlideShell.shrink{
   padding-top:92px;
   transform:scale(0.94);
 }
 
-#qaidaCanvas{
+/* =========================
+   SLIDE TRACK
+========================= */
+
+#qaidaSlideTrack{
+  position:absolute;
+  top:0;
+  left:0;
+  width:300%;
+  height:100%;
+  display:flex;
+  transform:translateX(-33.3333%);
+  will-change:transform;
+}
+
+.qaidaSlidePane{
+  width:33.3333%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:#111;
+  padding:0;
+}
+
+.qaidaCanvas{
   max-width:100%;
   max-height:100%;
   width:auto;
@@ -165,28 +188,36 @@ body{
   box-shadow:0 0 22px rgba(0,0,0,0.45);
 }
 
+/* =========================
+   LOADING TEXT
+========================= */
+
 #qaidaLoadingText{
   position:absolute;
-  z-index:5;
+  z-index:20;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   color:white;
   font-size:15px;
   font-weight:800;
-  background:rgba(0,0,0,0.45);
+  background:rgba(0,0,0,0.55);
   padding:12px 18px;
   border-radius:999px;
+  pointer-events:none;
 }
 
 /* =========================
-   TAP LAYER
+   TOUCH LAYER
 ========================= */
 
-#qaidaTapLayer{
+#qaidaTouchLayer{
   position:absolute;
   top:0;
   left:0;
   right:0;
   bottom:0;
-  z-index:15;
+  z-index:25;
   background:transparent;
 }
 
@@ -199,7 +230,7 @@ body{
   left:0;
   right:0;
   bottom:calc(18px + env(safe-area-inset-bottom));
-  z-index:35;
+  z-index:55;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -248,7 +279,7 @@ body{
     padding:0 4% 12px 4%;
   }
 
-  #qaidaCanvasShell.shrink{
+  #qaidaSlideShell.shrink{
     padding-top:86px;
     transform:scale(0.94);
   }
@@ -290,24 +321,47 @@ body{
 
     <div class="qaidaTitleWrap">
       <div class="qaidaTitle">Noorani Qaida</div>
-      <div class="qaidaSubtitle">Tap screen to show / hide controls</div>
+      <div class="qaidaSubtitle">Swipe page or tap screen for controls</div>
     </div>
 
     <div class="qaidaPageBadge" id="qaidaPageBadge">1 / 30</div>
   </div>
 
   <!-- =========================
-       CANVAS PAGE AREA
+       SLIDING CANVAS READER
   ========================= -->
-  <div id="qaidaCanvasShell">
+  <div id="qaidaSlideShell">
+
+    <div id="qaidaSlideTrack">
+
+      <div class="qaidaSlidePane">
+        <canvas id="qaidaPrevCanvas" class="qaidaCanvas"></canvas>
+      </div>
+
+      <div class="qaidaSlidePane">
+        <canvas id="qaidaCurrentCanvas" class="qaidaCanvas"></canvas>
+      </div>
+
+      <div class="qaidaSlidePane">
+        <canvas id="qaidaNextCanvas" class="qaidaCanvas"></canvas>
+      </div>
+
+    </div>
+
     <div id="qaidaLoadingText">Loading page...</div>
-    <canvas id="qaidaCanvas"></canvas>
+
   </div>
 
   <!-- =========================
-       TAP LAYER
+       TOUCH LAYER
   ========================= -->
-  <div id="qaidaTapLayer" onclick="toggleQaidaTopBar()"></div>
+  <div
+    id="qaidaTouchLayer"
+    ontouchstart="handleQaidaTouchStart(event)"
+    ontouchmove="handleQaidaTouchMove(event)"
+    ontouchend="handleQaidaTouchEnd(event)"
+    onmousedown="handleQaidaMouseStart(event)"
+  ></div>
 
   <!-- =========================
        BOTTOM CONTROLS
@@ -331,8 +385,18 @@ body{
 
 let currentQaidaPage = 1;
 const totalQaidaPages = 30;
-let qaidaPdfDocument = null;
-let qaidaIsRendering = false;
+
+let qaidaTouchStartX = 0;
+let qaidaTouchStartY = 0;
+let qaidaTouchCurrentX = 0;
+let qaidaTouchCurrentY = 0;
+let qaidaIsDragging = false;
+let qaidaDidDrag = false;
+let qaidaIsAnimating = false;
+
+let qaidaMouseIsDown = false;
+
+const qaidaSwipeTriggerPercent = 0.22;
 
 /* =========================
    PDF.JS WORKER SETUP
@@ -352,58 +416,44 @@ function formatQaidaPageFileName(pageNumber){
 }
 
 /* =========================
-   LOAD QAIDA PDF DOCUMENT
-   full function name: loadQaidaPdfDocument
+   GET SAFE QAIDA PAGE NUMBER
+   full function name: getSafeQaidaPageNumber
 ========================= */
-async function loadQaidaPdfDocument(pageNumber){
+function getSafeQaidaPageNumber(pageNumber){
 
-  let loadingText = document.getElementById("qaidaLoadingText");
-  loadingText.style.display = "block";
-  loadingText.innerHTML = "Loading page...";
+  if(pageNumber < 1){
+    return 1;
+  }
+
+  if(pageNumber > totalQaidaPages){
+    return totalQaidaPages;
+  }
+
+  return pageNumber;
+
+}
+
+/* =========================
+   RENDER PDF PAGE TO CANVAS
+   full function name: renderQaidaPdfToCanvas
+========================= */
+async function renderQaidaPdfToCanvas(pageNumber, canvasId){
+
+  pageNumber = getSafeQaidaPageNumber(pageNumber);
+
+  let canvas = document.getElementById(canvasId);
+  let context = canvas.getContext("2d");
 
   let fileName = formatQaidaPageFileName(pageNumber);
 
   try{
 
-    qaidaPdfDocument = await pdfjsLib.getDocument(fileName).promise;
-    await renderQaidaPdfPage();
+    let pdfDocument = await pdfjsLib.getDocument(fileName).promise;
+    let page = await pdfDocument.getPage(1);
 
-  }catch(error){
-
-    loadingText.style.display = "block";
-    loadingText.innerHTML = "Could not load PDF page";
-    console.log("Noorani Qaida PDF load error:", error);
-
-  }
-
-}
-
-/* =========================
-   RENDER QAIDA PDF PAGE
-   full function name: renderQaidaPdfPage
-========================= */
-async function renderQaidaPdfPage(){
-
-  if(!qaidaPdfDocument || qaidaIsRendering){
-    return;
-  }
-
-  qaidaIsRendering = true;
-
-  let loadingText = document.getElementById("qaidaLoadingText");
-  let canvas = document.getElementById("qaidaCanvas");
-  let context = canvas.getContext("2d");
-
-  loadingText.style.display = "block";
-  loadingText.innerHTML = "Loading page...";
-
-  try{
-
-    let page = await qaidaPdfDocument.getPage(1);
-
-    let shell = document.getElementById("qaidaCanvasShell");
-    let shellWidth = shell.clientWidth;
-    let shellHeight = shell.clientHeight;
+    let slideShell = document.getElementById("qaidaSlideShell");
+    let shellWidth = slideShell.clientWidth;
+    let shellHeight = slideShell.clientHeight;
 
     let viewportOriginal = page.getViewport({ scale:1 });
 
@@ -420,40 +470,56 @@ async function renderQaidaPdfPage(){
     canvas.style.width = viewport.width + "px";
     canvas.style.height = viewport.height + "px";
 
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
     await page.render({
       canvasContext:context,
       viewport:viewport
     }).promise;
 
-    loadingText.style.display = "none";
-
   }catch(error){
 
-    loadingText.style.display = "block";
-    loadingText.innerHTML = "Could not show page";
-    console.log("Noorani Qaida render error:", error);
+    console.log("Noorani Qaida render error for page " + pageNumber + ":", error);
 
   }
-
-  qaidaIsRendering = false;
 
 }
 
 /* =========================
-   LOAD QAIDA PAGE
-   full function name: loadQaidaPage
+   RENDER ALL VISIBLE QAIDA PAGES
+   full function name: renderAllVisibleQaidaPages
 ========================= */
-function loadQaidaPage(pageNumber){
+async function renderAllVisibleQaidaPages(){
 
-  if(pageNumber < 1){
-    pageNumber = 1;
-  }
+  let loadingText = document.getElementById("qaidaLoadingText");
+  loadingText.style.display = "block";
+  loadingText.innerHTML = "Loading page...";
 
-  if(pageNumber > totalQaidaPages){
-    pageNumber = totalQaidaPages;
-  }
+  await renderQaidaPdfToCanvas(currentQaidaPage - 1, "qaidaPrevCanvas");
+  await renderQaidaPdfToCanvas(currentQaidaPage, "qaidaCurrentCanvas");
+  await renderQaidaPdfToCanvas(currentQaidaPage + 1, "qaidaNextCanvas");
 
-  currentQaidaPage = pageNumber;
+  loadingText.style.display = "none";
+
+}
+
+/* =========================
+   RESET SLIDE TRACK POSITION
+   full function name: resetQaidaSlideTrackPosition
+========================= */
+function resetQaidaSlideTrackPosition(){
+
+  let track = document.getElementById("qaidaSlideTrack");
+  track.style.transition = "none";
+  track.style.transform = "translateX(-33.3333%)";
+
+}
+
+/* =========================
+   UPDATE QAIDA PAGE UI
+   full function name: updateQaidaPageUi
+========================= */
+function updateQaidaPageUi(){
 
   let badge = document.getElementById("qaidaPageBadge");
   let prevBtn = document.getElementById("qaidaPrevBtn");
@@ -466,7 +532,101 @@ function loadQaidaPage(pageNumber){
 
   localStorage.setItem("nooraniQaidaLastPage", currentQaidaPage);
 
-  loadQaidaPdfDocument(currentQaidaPage);
+}
+
+/* =========================
+   LOAD QAIDA PAGE
+   full function name: loadQaidaPage
+========================= */
+async function loadQaidaPage(pageNumber){
+
+  currentQaidaPage = getSafeQaidaPageNumber(pageNumber);
+
+  updateQaidaPageUi();
+  resetQaidaSlideTrackPosition();
+
+  await renderAllVisibleQaidaPages();
+
+}
+
+/* =========================
+   ANIMATE TO NEXT PAGE
+   full function name: animateQaidaToNextPage
+========================= */
+function animateQaidaToNextPage(){
+
+  if(currentQaidaPage >= totalQaidaPages || qaidaIsAnimating){
+    snapQaidaBackToCurrentPage();
+    return;
+  }
+
+  qaidaIsAnimating = true;
+
+  let track = document.getElementById("qaidaSlideTrack");
+
+  track.style.transition = "transform 0.28s ease";
+  track.style.transform = "translateX(-66.6666%)";
+
+  setTimeout(async function(){
+
+    currentQaidaPage = currentQaidaPage + 1;
+    updateQaidaPageUi();
+
+    resetQaidaSlideTrackPosition();
+    await renderAllVisibleQaidaPages();
+
+    qaidaIsAnimating = false;
+
+  }, 290);
+
+}
+
+/* =========================
+   ANIMATE TO PREVIOUS PAGE
+   full function name: animateQaidaToPreviousPage
+========================= */
+function animateQaidaToPreviousPage(){
+
+  if(currentQaidaPage <= 1 || qaidaIsAnimating){
+    snapQaidaBackToCurrentPage();
+    return;
+  }
+
+  qaidaIsAnimating = true;
+
+  let track = document.getElementById("qaidaSlideTrack");
+
+  track.style.transition = "transform 0.28s ease";
+  track.style.transform = "translateX(0%)";
+
+  setTimeout(async function(){
+
+    currentQaidaPage = currentQaidaPage - 1;
+    updateQaidaPageUi();
+
+    resetQaidaSlideTrackPosition();
+    await renderAllVisibleQaidaPages();
+
+    qaidaIsAnimating = false;
+
+  }, 290);
+
+}
+
+/* =========================
+   SNAP BACK TO CURRENT PAGE
+   full function name: snapQaidaBackToCurrentPage
+========================= */
+function snapQaidaBackToCurrentPage(){
+
+  let track = document.getElementById("qaidaSlideTrack");
+
+  track.style.transition = "transform 0.25s ease";
+  track.style.transform = "translateX(-33.3333%)";
+
+  setTimeout(function(){
+    track.style.transition = "none";
+  }, 260);
 
 }
 
@@ -476,9 +636,11 @@ function loadQaidaPage(pageNumber){
 ========================= */
 function nextQaidaPage(){
 
-  if(currentQaidaPage < totalQaidaPages){
-    loadQaidaPage(currentQaidaPage + 1);
+  if(qaidaIsAnimating){
+    return;
   }
+
+  animateQaidaToNextPage();
 
 }
 
@@ -488,9 +650,185 @@ function nextQaidaPage(){
 ========================= */
 function previousQaidaPage(){
 
-  if(currentQaidaPage > 1){
-    loadQaidaPage(currentQaidaPage - 1);
+  if(qaidaIsAnimating){
+    return;
   }
+
+  animateQaidaToPreviousPage();
+
+}
+
+/* =========================
+   MOVE SLIDE TRACK WITH FINGER
+   full function name: moveQaidaSlideTrackWithFinger
+========================= */
+function moveQaidaSlideTrackWithFinger(moveX){
+
+  let track = document.getElementById("qaidaSlideTrack");
+  let screenWidth = window.innerWidth;
+
+  let baseMove = -screenWidth;
+  let finalMove = baseMove + moveX;
+
+  if(currentQaidaPage === 1 && moveX > 0){
+    finalMove = baseMove + (moveX * 0.22);
+  }
+
+  if(currentQaidaPage === totalQaidaPages && moveX < 0){
+    finalMove = baseMove + (moveX * 0.22);
+  }
+
+  track.style.transition = "none";
+  track.style.transform = "translateX(" + finalMove + "px)";
+
+}
+
+/* =========================
+   HANDLE QAIDA TOUCH START
+   full function name: handleQaidaTouchStart
+========================= */
+function handleQaidaTouchStart(event){
+
+  if(qaidaIsAnimating){
+    return;
+  }
+
+  let touch = event.touches[0];
+
+  qaidaTouchStartX = touch.clientX;
+  qaidaTouchStartY = touch.clientY;
+  qaidaTouchCurrentX = touch.clientX;
+  qaidaTouchCurrentY = touch.clientY;
+
+  qaidaIsDragging = true;
+  qaidaDidDrag = false;
+
+}
+
+/* =========================
+   HANDLE QAIDA TOUCH MOVE
+   full function name: handleQaidaTouchMove
+========================= */
+function handleQaidaTouchMove(event){
+
+  if(!qaidaIsDragging || qaidaIsAnimating){
+    return;
+  }
+
+  event.preventDefault();
+
+  let touch = event.touches[0];
+
+  qaidaTouchCurrentX = touch.clientX;
+  qaidaTouchCurrentY = touch.clientY;
+
+  let moveX = qaidaTouchCurrentX - qaidaTouchStartX;
+  let moveY = qaidaTouchCurrentY - qaidaTouchStartY;
+
+  if(Math.abs(moveX) > 8 && Math.abs(moveX) > Math.abs(moveY)){
+    qaidaDidDrag = true;
+    moveQaidaSlideTrackWithFinger(moveX);
+  }
+
+}
+
+/* =========================
+   HANDLE QAIDA TOUCH END
+   full function name: handleQaidaTouchEnd
+========================= */
+function handleQaidaTouchEnd(event){
+
+  if(!qaidaIsDragging || qaidaIsAnimating){
+    return;
+  }
+
+  qaidaIsDragging = false;
+
+  let moveX = qaidaTouchCurrentX - qaidaTouchStartX;
+  let moveY = qaidaTouchCurrentY - qaidaTouchStartY;
+
+  let triggerDistance = window.innerWidth * qaidaSwipeTriggerPercent;
+
+  if(qaidaDidDrag && Math.abs(moveX) > Math.abs(moveY) && Math.abs(moveX) > triggerDistance){
+
+    if(moveX < 0){
+      animateQaidaToNextPage();
+    }else{
+      animateQaidaToPreviousPage();
+    }
+
+  }else if(qaidaDidDrag){
+
+    snapQaidaBackToCurrentPage();
+
+  }else{
+
+    toggleQaidaTopBar();
+
+  }
+
+}
+
+/* =========================
+   HANDLE QAIDA MOUSE START
+   full function name: handleQaidaMouseStart
+========================= */
+function handleQaidaMouseStart(event){
+
+  if(qaidaIsAnimating){
+    return;
+  }
+
+  qaidaMouseIsDown = true;
+
+  qaidaTouchStartX = event.clientX;
+  qaidaTouchStartY = event.clientY;
+  qaidaTouchCurrentX = event.clientX;
+  qaidaTouchCurrentY = event.clientY;
+
+  qaidaIsDragging = true;
+  qaidaDidDrag = false;
+
+  document.addEventListener("mousemove", handleQaidaMouseMove);
+  document.addEventListener("mouseup", handleQaidaMouseEnd);
+
+}
+
+/* =========================
+   HANDLE QAIDA MOUSE MOVE
+   full function name: handleQaidaMouseMove
+========================= */
+function handleQaidaMouseMove(event){
+
+  if(!qaidaMouseIsDown || !qaidaIsDragging || qaidaIsAnimating){
+    return;
+  }
+
+  qaidaTouchCurrentX = event.clientX;
+  qaidaTouchCurrentY = event.clientY;
+
+  let moveX = qaidaTouchCurrentX - qaidaTouchStartX;
+  let moveY = qaidaTouchCurrentY - qaidaTouchStartY;
+
+  if(Math.abs(moveX) > 8 && Math.abs(moveX) > Math.abs(moveY)){
+    qaidaDidDrag = true;
+    moveQaidaSlideTrackWithFinger(moveX);
+  }
+
+}
+
+/* =========================
+   HANDLE QAIDA MOUSE END
+   full function name: handleQaidaMouseEnd
+========================= */
+function handleQaidaMouseEnd(event){
+
+  qaidaMouseIsDown = false;
+
+  document.removeEventListener("mousemove", handleQaidaMouseMove);
+  document.removeEventListener("mouseup", handleQaidaMouseEnd);
+
+  handleQaidaTouchEnd(event);
 
 }
 
@@ -501,15 +839,15 @@ function previousQaidaPage(){
 function toggleQaidaTopBar(){
 
   let topBar = document.getElementById("qaidaTopBar");
-  let canvasShell = document.getElementById("qaidaCanvasShell");
+  let slideShell = document.getElementById("qaidaSlideShell");
   let bottomControls = document.getElementById("qaidaBottomControls");
 
   topBar.classList.toggle("show");
-  canvasShell.classList.toggle("shrink");
+  slideShell.classList.toggle("shrink");
   bottomControls.classList.toggle("show");
 
-  setTimeout(function(){
-    renderQaidaPdfPage();
+  setTimeout(async function(){
+    await renderAllVisibleQaidaPages();
   }, 320);
 
 }
@@ -566,9 +904,10 @@ function loadLastSavedQaidaPage(){
 ========================= */
 function handleQaidaScreenResize(){
 
-  setTimeout(function(){
-    renderQaidaPdfPage();
-  }, 250);
+  setTimeout(async function(){
+    resetQaidaSlideTrackPosition();
+    await renderAllVisibleQaidaPages();
+  }, 300);
 
 }
 
