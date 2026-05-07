@@ -941,10 +941,13 @@ function openArabicHomePage(){
 ========================= */
 function goBackToMainApp(){
 
+  // Tell main app to open Quran page after coming back
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+
+  // Go back to main Ibadah app
   window.location.href = "../";
 
 }
-
 
 /* =========================
    OPEN SURAH INDEX PAGE
