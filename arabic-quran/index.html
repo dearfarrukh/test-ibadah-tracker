@@ -941,14 +941,10 @@ function openArabicHomePage(){
 ========================= */
 function goBackToMainApp(){
 
-  // Go back to the exact page user came from.
-  // If user opened Arabic Quran from Quran page, it will go back to Quran page.
-  if(window.history.length > 1){
-    window.history.back();
-    return;
-  }
+  // Tell main app to open Quran page
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
 
-  // Fallback if Arabic Quran was opened directly
+  // Go back to main Ibadah app
   window.location.href = "../";
 
 }
