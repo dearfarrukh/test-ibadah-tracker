@@ -2,7 +2,7 @@
 // IBADAH OFFLINE SERVICE WORKER
 // =========================
 
-const IBADAH_STATIC_CACHE = "ibadah-static-v2";
+const IBADAH_STATIC_CACHE = "ibadah-static-v3";
 const IBADAH_RUNTIME_CACHE = "ibadah-runtime-v1";
 
 // =========================
@@ -27,34 +27,43 @@ const APP_SHELL_FILES = [
 // INSTALL
 // =========================
 self.addEventListener("install", function(event){
+
   event.waitUntil(
     caches.open(IBADAH_STATIC_CACHE).then(function(cache){
       return cache.addAll(APP_SHELL_FILES);
     })
   );
+
   self.skipWaiting();
+
 });
 
 // =========================
 // ACTIVATE
 // =========================
 self.addEventListener("activate", function(event){
+
   event.waitUntil(
     caches.keys().then(function(keys){
+
       return Promise.all(
         keys.map(function(key){
+
           if(
             key !== IBADAH_STATIC_CACHE &&
             key !== IBADAH_RUNTIME_CACHE
           ){
             return caches.delete(key);
           }
+
         })
       );
+
     }).then(function(){
       return self.clients.claim();
     })
   );
+
 });
 
 // =========================
@@ -72,50 +81,80 @@ self.addEventListener("fetch", function(event){
   // only cache same-origin files
   if(url.origin !== self.location.origin) return;
 
- // 1) HTML PAGES
-if(
-  request.mode === "navigate" ||
-  url.pathname.endsWith(".html") ||
-  url.pathname.endsWith("/")
-){
-
-  // Folder pages must load their own index.html
+  // =========================
+  // 1) HTML PAGES
+  // =========================
   if(
-    url.pathname.includes("/duapage/") ||
-    url.pathname.includes("/dailyazkar/")
+    request.mode === "navigate" ||
+    url.pathname.endsWith(".html") ||
+    url.pathname.endsWith("/")
   ){
+
+    // =========================
+    // FOLDER PAGES MUST LOAD THEIR OWN INDEX.HTML
+    // full protected folder list
+    // =========================
+    if(
+      url.pathname.includes("/duapage/") ||
+      url.pathname.includes("/dailyazkar/") ||
+      url.pathname.includes("/tasbih/") ||
+      url.pathname.includes("/qazatracker/") ||
+      url.pathname.includes("/arabic-quran/") ||
+      url.pathname.includes("/QuranPages/") ||
+      url.pathname.includes("/books/") ||
+      url.pathname.includes("/books/AsanNamaz/") ||
+      url.pathname.includes("/books/noorani-qaida/")
+    ){
+
+      event.respondWith(
+        fetch(request).catch(function(){
+          return caches.match(request);
+        })
+      );
+
+      return;
+
+    }
+
+    // =========================
+    // MAIN APP PAGE CAN USE CACHED APP SHELL
+    // =========================
     event.respondWith(
-      fetch(request).catch(function(){
-        return caches.match(request);
+      caches.match("./index.html").then(function(cachedPage){
+        return cachedPage || fetch(request);
       })
     );
+
     return;
+
   }
 
-  // Main app page can use cached app shell
-  event.respondWith(
-    caches.match("./index.html").then(function(cachedPage){
-      return cachedPage || fetch(request);
-    })
-  );
-  return;
-}
-
+  // =========================
   // 2) STATIC FILES / IMAGES / PDF / JSON / JS / CSS
+  // =========================
   event.respondWith(
     caches.match(request).then(function(cachedResponse){
+
       if(cachedResponse){
         return cachedResponse;
       }
 
       return fetch(request).then(function(networkResponse){
+
         return caches.open(IBADAH_RUNTIME_CACHE).then(function(cache){
+
           cache.put(request, networkResponse.clone());
           return networkResponse;
+
         });
+
       }).catch(function(){
+
         return caches.match("./index.html");
+
       });
+
     })
   );
+
 });
