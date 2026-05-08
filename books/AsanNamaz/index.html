@@ -1,1 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+<!-- =========================
+     ASAN NAMAZ FOLDER PAGE
+     File: books/AsanNamaz/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>Asan Namaz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="theme-color" content="#e9e9ee">
+
+<style>
+
+/* =========================
+   GLOBAL STYLE
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+  overflow:hidden;
+  touch-action:manipulation;
+}
+
+body{
+  position:fixed;
+  inset:0;
+}
+
+/* =========================
+   READING PAGE
+========================= */
+#readingPage{
+  display:block;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  overflow:hidden;
+  z-index:5000;
+}
+
+/* =========================
+   READER TOP BAR
+========================= */
+#readerTopBar{
+  position:fixed;
+  top:-86px;
+  left:0;
+  right:0;
+  height:86px;
+  padding:env(safe-area-inset-top) 4% 0 4%;
+  background:rgba(233,233,238,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:5010;
+  transition:top 0.28s ease;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  box-shadow:0 8px 24px rgba(0,0,0,0.14);
+}
+
+#readerTopBar.show{
+  top:0;
+}
+
+.readerTopBarInner{
+  width:100%;
+  height:62px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.readerBackBtn,
+.readerHomeBtn{
+  position:absolute;
+  bottom:10px;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#111;
+  font-size:22px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+  cursor:pointer;
+}
+
+.readerBackBtn{
+  left:0;
+}
+
+.readerHomeBtn{
+  right:0;
+}
+
+.readerTitleWrap{
+  max-width:66%;
+  text-align:center;
+  padding-bottom:11px;
+}
+
+.readerTitle{
+  font-size:18px;
+  font-weight:900;
+  color:#111;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  letter-spacing:-0.3px;
+}
+
+.readerSubTitle{
+  font-size:12px;
+  font-weight:700;
+  color:#666;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* =========================
+   READER CONTENT
+========================= */
+#readerContent{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  overflow:hidden;
+  transition:top 0.28s ease, transform 0.28s ease, border-radius 0.28s ease;
+  transform-origin:center top;
+}
+
+#readerContent.shrink{
+  top:86px;
+  transform:scale(0.94);
+  border-radius:28px 28px 0 0;
+  box-shadow:0 -2px 30px rgba(0,0,0,0.22);
+}
+
+/* =========================
+   ASAN NAMAZ PAGE FLIP
+========================= */
+.asanFlipStage{
+  position:relative;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  touch-action:pan-y;
+  background:#000;
+}
+
+.asanFlipTrack{
+  position:relative;
+  width:100%;
+  height:100%;
+  background:#000;
+}
+
+.asanFlipSheet{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  transform:translateX(0%);
+  transition:transform 0.24s ease;
+  will-change:transform;
+  background:#000;
+}
+
+.asanFlipSheet.dragging{
+  transition:none;
+}
+
+/* =========================
+   PNG IMAGE FIT
+   full function/page image style
+========================= */
+.asanFlipSheet img,
+.asanFlipUnderPage img{
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  object-fit:fill;
+  object-position:center top;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+  background:#fff;
+}
+
+.asanFlipUnderPage{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  transition:opacity 0.18s ease;
+  pointer-events:none;
+}
+
+.asanFlipUnderPage.show{
+  opacity:1;
+}
+
+.asanFlipShadow{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:18%;
+  right:0;
+  opacity:0;
+  pointer-events:none;
+  background:linear-gradient(to left, rgba(0,0,0,0.28), rgba(0,0,0,0));
+  transition:opacity 0.18s ease;
+}
+
+.asanFlipSheet.dragging .asanFlipShadow{
+  opacity:1;
+}
+
+/* =========================
+   PAGE NUMBER FLOAT
+========================= */
+#pageFloat{
+  position:fixed;
+  left:50%;
+  bottom:calc(18px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.72);
+  color:white;
+  font-size:14px;
+  font-weight:800;
+  padding:10px 14px;
+  border-radius:999px;
+  z-index:5020;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+/* =========================
+   TOAST
+========================= */
+#toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:calc(72px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.94);
+  color:white;
+  padding:14px 18px;
+  border-radius:18px;
+  font-size:16px;
+  font-weight:800;
+  z-index:9000;
+  box-shadow:0 10px 30px rgba(0,0,0,0.22);
+  max-width:88%;
+  text-align:center;
+}
+
+/* =========================
+   SMALL PHONE FIX
+========================= */
+@media(max-width:390px){
+  .readerTitle{
+    font-size:17px;
+  }
+
+  .readerSubTitle{
+    font-size:11px;
+  }
+
+  .readerBackBtn,
+  .readerHomeBtn{
+    width:40px;
+    height:40px;
+    font-size:21px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     ASAN NAMAZ READING PAGE
+========================= -->
+<div id="readingPage">
+
+  <!-- =========================
+       READER TOP BAR
+  ========================= -->
+  <div id="readerTopBar">
+    <div class="readerTopBarInner">
+
+      <button class="readerBackBtn" onclick="goBackToBooksPage(event)">←</button>
+
+      <div class="readerTitleWrap">
+        <div id="readerTopTitle" class="readerTitle">Asan Namaz</div>
+        <div id="readerTopSubTitle" class="readerSubTitle">Tap page to hide bar</div>
+      </div>
+
+      <button class="readerHomeBtn" onclick="goBackToBooksPage(event)">📚</button>
+
+    </div>
+  </div>
+
+  <!-- =========================
+       READER CONTENT
+  ========================= -->
+  <div id="readerContent" onclick="toggleReaderTopBar(event)">
+
+    <div id="asanFlipStage" class="asanFlipStage">
+      <div class="asanFlipTrack">
+
+        <div id="asanFlipUnderPage" class="asanFlipUnderPage">
+          <img id="asanUnderImage" src="" alt="">
+        </div>
+
+        <div id="asanFlipSheet" class="asanFlipSheet">
+          <img id="pageImage" src="" alt="Asan Namaz Page">
+          <div class="asanFlipShadow"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div id="pageFloat">Page 1</div>
+
+</div>
+
+<!-- =========================
+     TOAST
+========================= -->
+<div id="toast">Saved</div>
+
+<script>
+
+/* =========================
+   ASAN NAMAZ GLOBAL VARIABLES
+========================= */
+let currentPage = 1;
+let totalPages = 68;
+let readerTopBarVisible = false;
+
+/* =========================
+   GO BACK TO BOOKS PAGE
+   full function name: goBackToBooksPage
+========================= */
+function goBackToBooksPage(event){
+
+  if(event){
+    event.stopPropagation();
+  }
+
+  window.location.href = "../";
+
+}
+
+/* =========================
+   BUILD ASAN NAMAZ IMAGE PATH
+   full function name: buildAsanNamazImagePath
+========================= */
+function buildAsanNamazImagePath(page){
+
+  return "AsanNamaz-" + page + ".png";
+
+}
+
+/* =========================
+   LOAD ASAN NAMAZ PAGE
+   full function name: loadAsanNamazPage
+========================= */
+function loadAsanNamazPage(page){
+
+  if(page < 1) page = 1;
+  if(page > totalPages) page = totalPages;
+
+  currentPage = page;
+
+  let img = document.getElementById("pageImage");
+  let pageFloat = document.getElementById("pageFloat");
+  let readerTopSubTitle = document.getElementById("readerTopSubTitle");
+
+  if(img){
+    img.src = buildAsanNamazImagePath(page);
+  }
+
+  if(pageFloat){
+    pageFloat.innerText = "Page " + page + " / " + totalPages;
+  }
+
+  if(readerTopSubTitle){
+    readerTopSubTitle.innerText = "Page " + page + " / " + totalPages;
+  }
+
+  localStorage.setItem("lastAsanNamazPage", String(page));
+
+}
+
+/* =========================
+   NEXT ASAN NAMAZ PAGE
+   full function name: nextAsanNamazPage
+========================= */
+function nextAsanNamazPage(){
+
+  if(currentPage >= totalPages){
+    showToast("Last page");
+    return;
+  }
+
+  loadAsanNamazPage(currentPage + 1);
+
+}
+
+/* =========================
+   PREVIOUS ASAN NAMAZ PAGE
+   full function name: previousAsanNamazPage
+========================= */
+function previousAsanNamazPage(){
+
+  if(currentPage <= 1){
+    showToast("First page");
+    return;
+  }
+
+  loadAsanNamazPage(currentPage - 1);
+
+}
+
+/* =========================
+   GET NEXT ASAN NAMAZ IMAGE SRC
+   full function name: getNextAsanNamazImageSrc
+========================= */
+function getNextAsanNamazImageSrc(){
+
+  let next = currentPage + 1;
+  if(next > totalPages) next = totalPages;
+
+  return buildAsanNamazImagePath(next);
+
+}
+
+/* =========================
+   GET PREVIOUS ASAN NAMAZ IMAGE SRC
+   full function name: getPreviousAsanNamazImageSrc
+========================= */
+function getPreviousAsanNamazImageSrc(){
+
+  let prev = currentPage - 1;
+  if(prev < 1) prev = 1;
+
+  return buildAsanNamazImagePath(prev);
+
+}
+
+/* =========================
+   TOGGLE READER TOP BAR
+   full function name: toggleReaderTopBar
+========================= */
+function toggleReaderTopBar(event){
+
+  if(event){
+    let target = event.target;
+
+    if(
+      target &&
+      (
+        target.closest(".readerBackBtn") ||
+        target.closest(".readerHomeBtn")
+      )
+    ){
+      return;
+    }
+  }
+
+  let topBar = document.getElementById("readerTopBar");
+  let content = document.getElementById("readerContent");
+
+  if(!topBar || !content) return;
+
+  readerTopBarVisible = !readerTopBarVisible;
+
+  if(readerTopBarVisible){
+    topBar.classList.add("show");
+    content.classList.add("shrink");
+  }else{
+    topBar.classList.remove("show");
+    content.classList.remove("shrink");
+  }
+
+}
+
+/* =========================
+   RESET READER TOP BAR
+   full function name: resetReaderTopBar
+========================= */
+function resetReaderTopBar(){
+
+  readerTopBarVisible = false;
+
+  let topBar = document.getElementById("readerTopBar");
+  let content = document.getElementById("readerContent");
+
+  if(topBar){
+    topBar.classList.remove("show");
+  }
+
+  if(content){
+    content.classList.remove("shrink");
+  }
+
+}
+
+/* =========================
+   SHOW TOAST
+   full function name: showToast
+========================= */
+function showToast(message){
+
+  let toast = document.getElementById("toast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.asanToastTimer);
+
+  window.asanToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 1400);
+
+}
+
+/* =========================
+   ASAN NAMAZ PAGE FLIP SYSTEM
+========================= */
+let asanFlipState = {
+  enabled:false,
+  stage:null,
+  sheet:null,
+  underPage:null,
+  frontImage:null,
+  underImage:null,
+  shadow:null,
+  startX:0,
+  currentX:0,
+  deltaX:0,
+  dragging:false,
+  threshold:12,
+  maxDragPercent:62,
+  onNext:null,
+  onPrev:null,
+  getNextImageSrc:null,
+  getPrevImageSrc:null
+};
+
+/* =========================
+   SETUP INTERACTIVE ASAN NAMAZ FLIP
+   full function name: setupInteractiveAsanNamazFlip
+========================= */
+function setupInteractiveAsanNamazFlip(config){
+
+  asanFlipState.stage = config.stage;
+  asanFlipState.sheet = config.sheet;
+  asanFlipState.underPage = config.underPage;
+  asanFlipState.frontImage = config.frontImage;
+  asanFlipState.underImage = config.underImage;
+  asanFlipState.shadow = config.shadow;
+  asanFlipState.onNext = config.onNext;
+  asanFlipState.onPrev = config.onPrev;
+  asanFlipState.getNextImageSrc = config.getNextImageSrc;
+  asanFlipState.getPrevImageSrc = config.getPrevImageSrc;
+  asanFlipState.enabled = true;
+
+  if(!asanFlipState.stage) return;
+
+  if(asanFlipState.stage.dataset.flipReady === "yes") return;
+
+  asanFlipState.stage.addEventListener("touchstart", handleAsanNamazFlipStart, {passive:true});
+  asanFlipState.stage.addEventListener("touchmove", handleAsanNamazFlipMove, {passive:false});
+  asanFlipState.stage.addEventListener("touchend", handleAsanNamazFlipEnd, {passive:true});
+
+  asanFlipState.stage.addEventListener("mousedown", handleAsanNamazFlipMouseStart);
+  window.addEventListener("mousemove", handleAsanNamazFlipMouseMove);
+  window.addEventListener("mouseup", handleAsanNamazFlipMouseEnd);
+
+  asanFlipState.stage.dataset.flipReady = "yes";
+
+}
+
+/* =========================
+   HANDLE ASAN NAMAZ FLIP START
+   full function name: handleAsanNamazFlipStart
+========================= */
+function handleAsanNamazFlipStart(e){
+
+  if(!asanFlipState.enabled) return;
+
+  let point = e.touches ? e.touches[0] : e;
+
+  asanFlipState.startX = point.clientX;
+  asanFlipState.currentX = point.clientX;
+  asanFlipState.deltaX = 0;
+  asanFlipState.dragging = true;
+
+  if(asanFlipState.sheet){
+    asanFlipState.sheet.classList.add("dragging");
+  }
+
+  if(asanFlipState.underPage){
+    asanFlipState.underPage.classList.remove("show");
+  }
+
+}
+
+/* =========================
+   HANDLE ASAN NAMAZ FLIP MOVE
+   full function name: handleAsanNamazFlipMove
+========================= */
+function handleAsanNamazFlipMove(e){
+
+  if(!asanFlipState.enabled) return;
+  if(!asanFlipState.dragging) return;
+
+  let point = e.touches ? e.touches[0] : e;
+  asanFlipState.currentX = point.clientX;
+  asanFlipState.deltaX = asanFlipState.currentX - asanFlipState.startX;
+
+  let stageWidth = asanFlipState.stage ? asanFlipState.stage.offsetWidth : 1;
+  if(stageWidth < 1) stageWidth = 1;
+
+  let dragPercent = (asanFlipState.deltaX / stageWidth) * 100;
+
+  if(dragPercent > asanFlipState.maxDragPercent){
+    dragPercent = asanFlipState.maxDragPercent;
+  }
+
+  if(dragPercent < -asanFlipState.maxDragPercent){
+    dragPercent = -asanFlipState.maxDragPercent;
+  }
+
+  if(Math.abs(asanFlipState.deltaX) > 6){
+    e.preventDefault();
+  }
+
+  if(asanFlipState.deltaX < 0){
+    let nextSrc = asanFlipState.getNextImageSrc ? asanFlipState.getNextImageSrc() : "";
+    if(nextSrc && asanFlipState.underImage){
+      asanFlipState.underImage.src = nextSrc;
+      if(asanFlipState.underPage){
+        asanFlipState.underPage.classList.add("show");
+      }
+    }
+  }
+
+  if(asanFlipState.deltaX > 0){
+    let prevSrc = asanFlipState.getPrevImageSrc ? asanFlipState.getPrevImageSrc() : "";
+    if(prevSrc && asanFlipState.underImage){
+      asanFlipState.underImage.src = prevSrc;
+      if(asanFlipState.underPage){
+        asanFlipState.underPage.classList.add("show");
+      }
+    }
+  }
+
+  if(asanFlipState.sheet){
+    asanFlipState.sheet.style.transform = "translateX(" + dragPercent + "%)";
+  }
+
+}
+
+/* =========================
+   HANDLE ASAN NAMAZ FLIP END
+   full function name: handleAsanNamazFlipEnd
+========================= */
+function handleAsanNamazFlipEnd(){
+
+  if(!asanFlipState.enabled) return;
+  if(!asanFlipState.dragging) return;
+
+  asanFlipState.dragging = false;
+
+  let stageWidth = asanFlipState.stage ? asanFlipState.stage.offsetWidth : 1;
+  if(stageWidth < 1) stageWidth = 1;
+
+  let dragPercent = (asanFlipState.deltaX / stageWidth) * 100;
+
+  if(asanFlipState.sheet){
+    asanFlipState.sheet.classList.remove("dragging");
+  }
+
+  if(dragPercent <= -asanFlipState.threshold){
+    animateAsanNamazFlipNext();
+    return;
+  }
+
+  if(dragPercent >= asanFlipState.threshold){
+    animateAsanNamazFlipPrev();
+    return;
+  }
+
+  resetAsanNamazFlipPosition();
+
+}
+
+/* =========================
+   HANDLE ASAN NAMAZ FLIP MOUSE START
+   full function name: handleAsanNamazFlipMouseStart
+========================= */
+function handleAsanNamazFlipMouseStart(e){
+  handleAsanNamazFlipStart(e);
+}
+
+/* =========================
+   HANDLE ASAN NAMAZ FLIP MOUSE MOVE
+   full function name: handleAsanNamazFlipMouseMove
+========================= */
+function handleAsanNamazFlipMouseMove(e){
+  if(!asanFlipState.dragging) return;
+  handleAsanNamazFlipMove(e);
+}
+
+/* =========================
+   HANDLE ASAN NAMAZ FLIP MOUSE END
+   full function name: handleAsanNamazFlipMouseEnd
+========================= */
+function handleAsanNamazFlipMouseEnd(){
+  if(!asanFlipState.dragging) return;
+  handleAsanNamazFlipEnd();
+}
+
+/* =========================
+   ANIMATE ASAN NAMAZ FLIP NEXT
+   full function name: animateAsanNamazFlipNext
+========================= */
+function animateAsanNamazFlipNext(){
+
+  if(currentPage >= totalPages){
+    resetAsanNamazFlipPosition();
+    showToast("Last page");
+    return;
+  }
+
+  if(!asanFlipState.sheet) return;
+
+  asanFlipState.sheet.style.transform = "translateX(-100%)";
+
+  setTimeout(function(){
+
+    if(asanFlipState.onNext){
+      asanFlipState.onNext();
+    }
+
+    if(asanFlipState.sheet){
+      asanFlipState.sheet.style.transition = "none";
+      asanFlipState.sheet.style.transform = "translateX(0%)";
+    }
+
+    if(asanFlipState.underPage){
+      asanFlipState.underPage.classList.remove("show");
+    }
+
+    setTimeout(function(){
+      if(asanFlipState.sheet){
+        asanFlipState.sheet.style.transition = "transform 0.24s ease";
+      }
+    }, 30);
+
+  }, 240);
+
+}
+
+/* =========================
+   ANIMATE ASAN NAMAZ FLIP PREV
+   full function name: animateAsanNamazFlipPrev
+========================= */
+function animateAsanNamazFlipPrev(){
+
+  if(currentPage <= 1){
+    resetAsanNamazFlipPosition();
+    showToast("First page");
+    return;
+  }
+
+  if(!asanFlipState.sheet) return;
+
+  asanFlipState.sheet.style.transform = "translateX(100%)";
+
+  setTimeout(function(){
+
+    if(asanFlipState.onPrev){
+      asanFlipState.onPrev();
+    }
+
+    if(asanFlipState.sheet){
+      asanFlipState.sheet.style.transition = "none";
+      asanFlipState.sheet.style.transform = "translateX(0%)";
+    }
+
+    if(asanFlipState.underPage){
+      asanFlipState.underPage.classList.remove("show");
+    }
+
+    setTimeout(function(){
+      if(asanFlipState.sheet){
+        asanFlipState.sheet.style.transition = "transform 0.24s ease";
+      }
+    }, 30);
+
+  }, 240);
+
+}
+
+/* =========================
+   RESET ASAN NAMAZ FLIP POSITION
+   full function name: resetAsanNamazFlipPosition
+========================= */
+function resetAsanNamazFlipPosition(){
+
+  if(asanFlipState.sheet){
+    asanFlipState.sheet.style.transform = "translateX(0%)";
+  }
+
+  if(asanFlipState.underPage){
+    setTimeout(function(){
+      if(asanFlipState.underPage){
+        asanFlipState.underPage.classList.remove("show");
+      }
+    }, 180);
+  }
+
+}
+
+/* =========================
+   START ASAN NAMAZ APP
+   full function name: startAsanNamazApp
+========================= */
+function startAsanNamazApp(){
+
+  let savedPage = parseInt(localStorage.getItem("lastAsanNamazPage") || "1", 10);
+
+  if(!savedPage || savedPage < 1 || savedPage > totalPages){
+    savedPage = 1;
+  }
+
+  resetReaderTopBar();
+  loadAsanNamazPage(savedPage);
+
+  setTimeout(function(){
+    setupInteractiveAsanNamazFlip({
+      stage: document.getElementById("asanFlipStage"),
+      sheet: document.getElementById("asanFlipSheet"),
+      underPage: document.getElementById("asanFlipUnderPage"),
+      frontImage: document.getElementById("pageImage"),
+      underImage: document.getElementById("asanUnderImage"),
+      shadow: document.querySelector("#asanFlipSheet .asanFlipShadow"),
+
+      onNext: function(){
+        nextAsanNamazPage();
+      },
+
+      onPrev: function(){
+        previousAsanNamazPage();
+      },
+
+      getNextImageSrc: function(){
+        return getNextAsanNamazImageSrc();
+      },
+
+      getPrevImageSrc: function(){
+        return getPreviousAsanNamazImageSrc();
+      }
+    });
+  }, 100);
+
+}
+
+/* =========================
+   START WHEN PAGE LOADS
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+  startAsanNamazApp();
+});
+
+</script>
+
+</body>
+</html>
