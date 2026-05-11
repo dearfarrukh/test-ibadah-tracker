@@ -468,7 +468,7 @@ body{
   width:100%;
   height:100%;
   transform:translateX(0%);
-  transition:transform 0.24s ease;
+ transition:transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
   will-change:transform;
   background:#000;
 }
@@ -499,7 +499,7 @@ body{
   width:100%;
   height:100%;
   opacity:0;
-  transition:opacity 0.18s ease;
+  transition:opacity 0.28s ease;
   pointer-events:none;
 }
 
@@ -1859,7 +1859,7 @@ let quranFlipState = {
   deltaX:0,
   dragging:false,
   threshold:12,
-  maxDragPercent:62,
+  maxDragPercent:100,
   onNext:null,
   onPrev:null,
   getNextImageSrc:null,
@@ -1948,9 +1948,9 @@ function handleQuranFlipMove(e){
     dragPercent = -quranFlipState.maxDragPercent;
   }
 
-  if(Math.abs(quranFlipState.deltaX) > 6){
-    e.preventDefault();
-  }
+ if(Math.abs(quranFlipState.deltaX) > 2){
+  e.preventDefault();
+}
 
   if(quranFlipState.deltaX < 0){
     let nextSrc = quranFlipState.getNextImageSrc ? quranFlipState.getNextImageSrc() : "";
@@ -2064,7 +2064,7 @@ function animateQuranFlipNext(){
       }
     }, 30);
 
-  }, 240);
+ }, 380);
 
 }
 
@@ -2098,7 +2098,7 @@ function animateQuranFlipPrev(){
       }
     }, 30);
 
-  }, 240);
+ }, 380);
 
 }
 
