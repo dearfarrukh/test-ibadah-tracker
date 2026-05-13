@@ -1229,6 +1229,70 @@ const questions = [
 ];
 
 /* =========================
+   GET RULE EXTRA DETAIL
+   full function name: getRuleExtraDetail
+========================= */
+function getRuleExtraDetail(rule){
+
+  if(!rule){
+    return "";
+  }
+
+  if(rule.includes("اظہار")){
+    return `
+      <div class="infoLine">مزید تفصیل: <span>اظہار کا مطلب ہے نون کو صاف پڑھنا۔ نون ساکن یا تنوین کے بعد حلقی حروف آئیں تو اظہار ہوتا ہے۔</span></div>
+      <div class="infoLine">مثال 1: <span>مِنْ خَيْرٍ — یہاں نْ کے بعد خ ہے، اس لئے اظہار ہوگا۔</span></div>
+      <div class="infoLine">مثال 2: <span>مِنْ عِلْمٍ — یہاں نْ کے بعد ع ہے، اس لئے نون صاف پڑھیں گے۔</span></div>
+    `;
+  }
+
+  if(rule.includes("اقلاب")){
+    return `
+      <div class="infoLine">مزید تفصیل: <span>اقلاب کا مطلب ہے نون کو میم کی آواز میں بدل کر غنہ کرنا۔ نون ساکن یا تنوین کے بعد ب آئے تو اقلاب ہوتا ہے۔</span></div>
+      <div class="infoLine">مثال 1: <span>مِنْ بَعْدِ — یہاں نْ کے بعد ب ہے، اس لئے اقلاب ہوگا۔</span></div>
+      <div class="infoLine">مثال 2: <span>سَمِيعٌ بَصِيرٌ — یہاں تنوین کے بعد ب ہے، اس لئے اقلاب ہوگا۔</span></div>
+    `;
+  }
+
+  if(rule.includes("ادغام")){
+    return `
+      <div class="infoLine">مزید تفصیل: <span>ادغام کا مطلب ہے نون کو اگلے حرف میں ملا دینا۔ نون ساکن یا تنوین کے بعد یرملون آئے تو ادغام ہوتا ہے۔</span></div>
+      <div class="infoLine">مثال 1: <span>مَنْ يَقُولُ — یہاں نْ کے بعد ی ہے، اس لئے ادغام بغنہ ہوگا۔</span></div>
+      <div class="infoLine">مثال 2: <span>مِنْ رَبِّهِمْ — یہاں نْ کے بعد ر ہے، اس لئے ادغام بلا غنہ ہوگا۔</span></div>
+    `;
+  }
+
+  if(rule.includes("اخفاء")){
+    return `
+      <div class="infoLine">مزید تفصیل: <span>اخفاء کا مطلب ہے نون کو چھپا کر غنہ کرنا۔ نون صاف بھی نہیں پڑھتے، میم بھی نہیں بناتے، بلکہ غنہ کے ساتھ چھپا کر پڑھتے ہیں۔</span></div>
+      <div class="infoLine">مثال 1: <span>مِنْ تَحْتِهَا — یہاں نْ کے بعد ت ہے، اس لئے اخفاء ہوگا۔</span></div>
+      <div class="infoLine">مثال 2: <span>أَنْفُسَكُمْ — یہاں نْ کے بعد ف ہے، اس لئے اخفاء ہوگا۔</span></div>
+    `;
+  }
+
+  if(rule.includes("قلقله")){
+    return `
+      <div class="infoLine">مزید تفصیل: <span>قلقله کا مطلب ہے ساکن حرف پر ہلکا جھٹکا دینا۔ یہ صرف ق ط ب ج د میں ہوتا ہے جب یہ ساکن ہوں۔</span></div>
+      <div class="infoLine">مثال 1: <span>اَبْ — بْ ساکن ہے، اس لئے قلقله ہوگا۔</span></div>
+      <div class="infoLine">مثال 2: <span>اَقْ — قْ ساکن ہے، اس لئے قلقله ہوگا۔</span></div>
+    `;
+  }
+
+  if(rule.includes("غنہ")){
+    return `
+      <div class="infoLine">مزید تفصیل: <span>غنہ ناک سے آواز نکالنے کو کہتے ہیں۔ نّ، مّ، اقلاب، اخفاء، اور ادغام بغنہ میں غنہ ہوتا ہے۔</span></div>
+      <div class="infoLine">مثال 1: <span>إِنَّ — نّ پر غنہ ہوگا۔</span></div>
+      <div class="infoLine">مثال 2: <span>ثُمَّ — مّ پر غنہ ہوگا۔</span></div>
+    `;
+  }
+
+  return "";
+
+}
+
+
+   
+/* =========================
    STATE
 ========================= */
 let currentLesson = "mixed";
@@ -1445,12 +1509,13 @@ function checkAnswer(selected, clickedBtn){
     clickedBtn.classList.add("correct");
 
     explainCard.className = "explainCard show good";
-    explainCard.innerHTML = `
+        explainCard.innerHTML = `
       <div class="resultLine">درست جواب ✅</div>
       <div class="infoLine">صحیح جواب: <span>${q.a}</span></div>
       <div class="infoLine">Rule: <span>${q.rule}</span></div>
       <div class="infoLine">کیوں صحیح ہے: <span>${q.why}</span></div>
       <div class="infoLine">ہدایات: <span>${q.hidayat}</span></div>
+      ${getRuleExtraDetail(q.rule)}
     `;
 
   }else{
@@ -1464,6 +1529,7 @@ function checkAnswer(selected, clickedBtn){
       <div class="infoLine">Rule: <span>${q.rule}</span></div>
       <div class="infoLine">کیوں صحیح ہے: <span>${q.why}</span></div>
       <div class="infoLine">ہدایات: <span>${q.hidayat}</span></div>
+      ${getRuleExtraDetail(q.rule)}
     `;
 
   }
