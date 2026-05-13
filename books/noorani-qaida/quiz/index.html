@@ -1,1 +1,1601 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+<title>Noorani Qaida Complete Quiz</title>
+
+<style>
+/* =========================
+   BASIC RESET
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:#e9e9ee;
+  overflow-x:hidden;
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+button,input,select{
+  font-family:inherit;
+}
+
+/* =========================
+   APP
+========================= */
+.app{
+  width:100%;
+  min-height:100vh;
+  padding:14px;
+  padding-bottom:34px;
+  background:
+    radial-gradient(circle at top,#ffffff 0%,#f6f6fa 38%,#e9e9ee 100%);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+.topBar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.roundBtn{
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:50%;
+  background:#fff;
+  color:#111827;
+  font-size:22px;
+  font-weight:900;
+  box-shadow:0 5px 16px rgba(0,0,0,0.14);
+}
+
+.topTitleBox{
+  flex:1;
+  text-align:center;
+}
+
+.topTitle{
+  font-size:22px;
+  font-weight:1000;
+  color:#111827;
+  line-height:1.15;
+}
+
+.topSub{
+  font-size:13px;
+  font-weight:700;
+  color:#6b7280;
+  margin-top:3px;
+}
+
+/* =========================
+   HERO
+========================= */
+.hero{
+  border-radius:30px;
+  padding:18px;
+  color:#fff;
+  margin-bottom:14px;
+  background:linear-gradient(135deg,#064e3b,#16a34a);
+  box-shadow:0 14px 30px rgba(6,78,59,0.28);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.13);
+  top:-75px;
+  left:-70px;
+}
+
+.bismillah{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  font-size:25px;
+  font-weight:1000;
+  margin-bottom:8px;
+}
+
+.heroText{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  font-size:15px;
+  line-height:1.7;
+  font-weight:700;
+}
+
+.lessonBadge{
+  width:max-content;
+  max-width:100%;
+  margin:14px auto 0;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.18);
+  border:1px solid rgba(255,255,255,0.36);
+  font-size:14px;
+  font-weight:900;
+  position:relative;
+  z-index:2;
+}
+
+/* =========================
+   LESSON MENU
+========================= */
+.lessonMenu{
+  display:none;
+  background:#fff;
+  border-radius:28px;
+  padding:15px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.12);
+  margin-bottom:14px;
+}
+
+.lessonMenu.show{
+  display:block;
+}
+
+.menuTitle{
+  text-align:center;
+  font-size:21px;
+  font-weight:1000;
+  color:#111827;
+  margin-bottom:12px;
+}
+
+.lessonGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+.lessonBtn{
+  width:100%;
+  border:1px solid #e5e7eb;
+  border-radius:22px;
+  background:#f9fafb;
+  padding:13px;
+  text-align:right;
+}
+
+.lessonBtn.active{
+  border-color:#16a34a;
+  background:#ecfdf5;
+}
+
+.lessonName{
+  font-size:17px;
+  font-weight:1000;
+  color:#111827;
+}
+
+.lessonDesc{
+  margin-top:4px;
+  font-size:13px;
+  line-height:1.5;
+  color:#6b7280;
+}
+
+/* =========================
+   STATS
+========================= */
+.statsRow{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:9px;
+  margin-bottom:14px;
+}
+
+.stat{
+  background:#fff;
+  border-radius:20px;
+  padding:11px 7px;
+  text-align:center;
+  box-shadow:0 5px 18px rgba(0,0,0,0.08);
+}
+
+.statLabel{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+}
+
+.statValue{
+  margin-top:4px;
+  font-size:20px;
+  font-weight:1000;
+  color:#111827;
+}
+
+/* =========================
+   QUESTION CARD
+========================= */
+.questionCard{
+  background:#fff;
+  border-radius:30px;
+  padding:17px;
+  margin-bottom:14px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.12);
+}
+
+.questionTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:13px;
+}
+
+.pill{
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:900;
+}
+
+.bluePill{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+.greenPill{
+  background:#ecfdf5;
+  color:#047857;
+}
+
+.questionText{
+  text-align:center;
+  color:#111827;
+  font-size:20px;
+  font-weight:1000;
+  line-height:1.45;
+  margin-bottom:15px;
+}
+
+.arabicBox{
+  min-height:150px;
+  border-radius:28px;
+  background:linear-gradient(180deg,#fff7ed,#ffffff);
+  border:2px solid #fed7aa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:12px;
+  margin-bottom:16px;
+  position:relative;
+}
+
+.bigArabic{
+  direction:rtl;
+  font-family:"Times New Roman","Amiri","Scheherazade New",serif;
+  font-size:72px;
+  font-weight:1000;
+  color:#111827;
+  line-height:1.15;
+}
+
+.bigArabic.small{
+  font-size:46px;
+  line-height:1.45;
+}
+
+.hintMini{
+  position:absolute;
+  left:12px;
+  bottom:10px;
+  background:#ffedd5;
+  color:#9a3412;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  font-weight:900;
+}
+
+/* =========================
+   OPTIONS
+========================= */
+.optionsGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.optionBtn{
+  border:none;
+  border-radius:20px;
+  background:#f3f4f6;
+  min-height:58px;
+  padding:8px;
+  color:#111827;
+  font-size:18px;
+  font-weight:1000;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,0.06);
+}
+
+.optionBtn:active{
+  transform:scale(0.97);
+}
+
+.optionBtn.correct{
+  background:#dcfce7;
+  color:#166534;
+  border:2px solid #22c55e;
+}
+
+.optionBtn.wrong{
+  background:#fee2e2;
+  color:#991b1b;
+  border:2px solid #ef4444;
+}
+
+.optionBtn.disabled{
+  pointer-events:none;
+  opacity:0.88;
+}
+
+/* =========================
+   EXPLANATION
+========================= */
+.explainCard{
+  display:none;
+  border-radius:24px;
+  padding:15px;
+  margin-bottom:14px;
+  line-height:1.65;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.explainCard.show{
+  display:block;
+}
+
+.explainCard.good{
+  background:#dcfce7;
+  border:1px solid #86efac;
+  color:#14532d;
+}
+
+.explainCard.bad{
+  background:#fff7ed;
+  border:1px solid #fdba74;
+  color:#7c2d12;
+}
+
+.resultLine{
+  font-size:19px;
+  font-weight:1000;
+  margin-bottom:8px;
+  text-align:center;
+}
+
+.correctLine,
+.whyLine,
+.takhtiLine{
+  font-size:14px;
+  font-weight:800;
+  margin-top:6px;
+}
+
+.correctLine span,
+.whyLine span,
+.takhtiLine span{
+  font-weight:1000;
+  color:#111827;
+}
+
+/* =========================
+   BUTTON ROW
+========================= */
+.actionRow{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.actionBtn{
+  border:none;
+  border-radius:20px;
+  min-height:56px;
+  font-size:17px;
+  font-weight:1000;
+}
+
+.primary{
+  background:#16a34a;
+  color:#fff;
+  box-shadow:0 8px 18px rgba(22,163,74,0.24);
+}
+
+.secondary{
+  background:#fff;
+  color:#111827;
+  box-shadow:0 5px 16px rgba(0,0,0,0.10);
+}
+
+/* =========================
+   NOTE
+========================= */
+.note{
+  margin-top:15px;
+  border-radius:22px;
+  padding:13px;
+  background:#fffbeb;
+  border:1px solid #fde68a;
+  color:#92400e;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.65;
+}
+
+/* =========================
+   FINISH POPUP
+========================= */
+.finishOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:50;
+  background:rgba(0,0,0,0.45);
+  padding:18px;
+  align-items:center;
+  justify-content:center;
+}
+
+.finishOverlay.show{
+  display:flex;
+}
+
+.finishCard{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:32px;
+  padding:22px;
+  text-align:center;
+  box-shadow:0 18px 40px rgba(0,0,0,0.25);
+}
+
+.finishIcon{
+  font-size:54px;
+  margin-bottom:8px;
+}
+
+.finishTitle{
+  font-size:25px;
+  font-weight:1000;
+  color:#111827;
+}
+
+.finishScore{
+  font-size:42px;
+  font-weight:1000;
+  color:#16a34a;
+  margin:10px 0;
+}
+
+.finishMsg{
+  color:#4b5563;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.65;
+  margin-bottom:16px;
+}
+
+@media(max-width:380px){
+  .bigArabic{
+    font-size:60px;
+  }
+
+  .bigArabic.small{
+    font-size:38px;
+  }
+
+  .questionText{
+    font-size:18px;
+  }
+
+  .optionBtn{
+    font-size:16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       TOP BAR
+  ========================= -->
+  <div class="topBar">
+    <button class="roundBtn" onclick="goBack()">‹</button>
+
+    <div class="topTitleBox">
+      <div class="topTitle">نورانی قاعدہ کوئز</div>
+      <div class="topSub">Complete Rules Guess Game</div>
+    </div>
+
+    <button class="roundBtn" onclick="toggleLessonMenu()">☰</button>
+  </div>
+
+  <!-- =========================
+       HERO
+  ========================= -->
+  <div class="hero">
+    <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+    <div class="heroText">
+      پورے قاعدے کے اصولوں کی مشق کریں۔ غلط جواب پر صحیح جواب، وجہ، اور تختی بھی نظر آئے گی۔
+    </div>
+    <div class="lessonBadge" id="lessonBadge">مکمل ملا جلا ٹیسٹ</div>
+  </div>
+
+  <!-- =========================
+       LESSON MENU
+  ========================= -->
+  <div class="lessonMenu" id="lessonMenu">
+    <div class="menuTitle">سبق / Level منتخب کریں</div>
+
+    <div class="lessonGrid" id="lessonGrid"></div>
+  </div>
+
+  <!-- =========================
+       STATS
+  ========================= -->
+  <div class="statsRow">
+    <div class="stat">
+      <div class="statLabel">Score</div>
+      <div class="statValue" id="scoreText">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="statLabel">Question</div>
+      <div class="statValue" id="countText">1/10</div>
+    </div>
+
+    <div class="stat">
+      <div class="statLabel">Best</div>
+      <div class="statValue" id="bestText">0</div>
+    </div>
+  </div>
+
+  <!-- =========================
+       QUESTION CARD
+  ========================= -->
+  <div class="questionCard">
+    <div class="questionTop">
+      <div class="pill bluePill" id="questionNo">سوال 1</div>
+      <div class="pill greenPill" id="questionLevel">Rule</div>
+    </div>
+
+    <div class="questionText" id="questionText">سوال یہاں آئے گا</div>
+
+    <div class="arabicBox">
+      <div class="bigArabic" id="bigArabic">ا</div>
+      <div class="hintMini" id="hintMini">Choose answer</div>
+    </div>
+
+    <div class="optionsGrid" id="optionsGrid"></div>
+  </div>
+
+  <!-- =========================
+       EXPLANATION
+  ========================= -->
+  <div class="explainCard" id="explainCard"></div>
+
+  <!-- =========================
+       ACTION BUTTONS
+  ========================= -->
+  <div class="actionRow">
+    <button class="actionBtn secondary" onclick="restartQuiz()">Restart</button>
+    <button class="actionBtn primary" onclick="nextQuestion()">Next</button>
+  </div>
+
+  <div class="note">
+    نوٹ: یہ Version 1 ہے۔ آپ کھیل کر جہاں rule غلط لگے یا آپ کے قاعدے کی تختی سے match نہ کرے،
+    اس کا screenshot بھیج دیں۔ میں اسی level ka data فوراً درست کر دوں گا۔
+  </div>
+
+</div>
+
+<!-- =========================
+     FINISH POPUP
+========================= -->
+<div class="finishOverlay" id="finishOverlay">
+  <div class="finishCard">
+    <div class="finishIcon">🌟</div>
+    <div class="finishTitle">Mashallah!</div>
+    <div class="finishScore" id="finishScore">0/10</div>
+    <div class="finishMsg" id="finishMsg">آپ نے quiz complete کر لیا۔</div>
+
+    <div class="actionRow">
+      <button class="actionBtn secondary" onclick="closeFinish()">Close</button>
+      <button class="actionBtn primary" onclick="restartQuiz()">Practice Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   LESSON LIST
+========================= */
+const lessons = [
+  {
+    id:"mixed",
+    name:"مکمل ملا جلا ٹیسٹ",
+    desc:"پورے قاعدے کے rules se random sawal.",
+    badge:"مکمل ملا جلا ٹیسٹ"
+  },
+  {
+    id:"letters",
+    name:"تختی 1 — حروف کی پہچان",
+    desc:"ا ب ت ث ج... single letters.",
+    badge:"تختی 1: مفردات"
+  },
+  {
+    id:"page1rules",
+    name:"تختی 1 — نیچے والے rules",
+    desc:"نرم، سیٹی، قلقله، حلقی، موٹے، یرملون.",
+    badge:"تختی 1: حروف کے گروپ"
+  },
+  {
+    id:"joined",
+    name:"مرکب حروف",
+    desc:"Joined letters aur milakar parhna.",
+    badge:"تختی 2/3: مرکبات"
+  },
+  {
+    id:"harakat",
+    name:"حرکات",
+    desc:"زبر، زیر، پیش.",
+    badge:"حرکات: زبر زیر پیش"
+  },
+  {
+    id:"tanween",
+    name:"تنوین",
+    desc:"دو زبر، دو زیر، دو پیش.",
+    badge:"تنوین"
+  },
+  {
+    id:"madd",
+    name:"مد / لمبی آواز",
+    desc:"کھڑی زبر، کھڑی زیر، الٹی پیش، مد.",
+    badge:"مد اور لمبی آواز"
+  },
+  {
+    id:"sukoon",
+    name:"سکون / جزم",
+    desc:"ساکن حرف ko pehle harakat wale hurf ke sath milana.",
+    badge:"سکون / جزم"
+  },
+  {
+    id:"tashdeed",
+    name:"تشدید",
+    desc:"حرف کو double / strong پڑھنا.",
+    badge:"تشدید"
+  },
+  {
+    id:"nunRules",
+    name:"نون ساکن / تنوین rules",
+    desc:"اظہار، ادغام، اقلاب، اخفاء.",
+    badge:"نون ساکن اور تنوین"
+  },
+  {
+    id:"meemRules",
+    name:"میم ساکن rules",
+    desc:"اخفاء شفوی، ادغام شفوی، اظہار شفوی.",
+    badge:"میم ساکن"
+  },
+  {
+    id:"lamRaWaqf",
+    name:"لام، ر، وقف",
+    desc:"اللہ کا لام، ر موٹی/باریک، وقف.",
+    badge:"لام، ر، وقف"
+  }
+];
+
+/* =========================
+   QUESTION DATA
+   q = question
+   a = answer
+   o = options
+   why = explanation
+   takhti = lesson/page
+========================= */
+const allQuestions = [
+  /* =========================
+     LETTERS
+  ========================= */
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ا",
+    a:"Alif",
+    o:["Alif","Bay","Tay","Jeem"],
+    why:"یہ حرف ا ہے، اس کو Alif کہتے ہیں۔",
+    takhti:"تختی 1 — مفرد حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ب",
+    a:"Bay",
+    o:["Bay","Tay","Say","Noon"],
+    why:"یہ ب ہے۔ نیچے ایک نقطہ ہوتا ہے، اس لئے Bay.",
+    takhti:"تختی 1 — مفرد حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ت",
+    a:"Tay",
+    o:["Tay","Bay","Say","Jeem"],
+    why:"ت کے اوپر دو نقطے ہوتے ہیں۔",
+    takhti:"تختی 1 — مفرد حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ث",
+    a:"Say",
+    o:["Say","Tay","Bay","Seen"],
+    why:"ث کے اوپر تین نقطے ہوتے ہیں۔ یہ نرم حروف میں بھی آتا ہے۔",
+    takhti:"تختی 1 — مفرد حروف / نرم حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ج",
+    a:"Jeem",
+    o:["Jeem","Hay","Khay","Daal"],
+    why:"ج کے اندر/نیچے نقطہ ہوتا ہے۔",
+    takhti:"تختی 1 — مفرد حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ح",
+    a:"Hay",
+    o:["Hay","Jeem","Khay","Ain"],
+    why:"ح بغیر نقطہ کے ہوتا ہے اور حلق سے ادا ہوتا ہے۔",
+    takhti:"تختی 1 — مفرد حروف / حلقی حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"خ",
+    a:"Khay",
+    o:["Khay","Hay","Jeem","Ghain"],
+    why:"خ کے اوپر نقطہ ہوتا ہے۔ یہ حلقی اور موٹے حروف میں آتا ہے۔",
+    takhti:"تختی 1 — مفرد حروف / حلقی / موٹے حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"د",
+    a:"Daal",
+    o:["Daal","Zaal","Ray","Zay"],
+    why:"د Daal ہے۔ یہ قلقله حروف میں بھی آتا ہے۔",
+    takhti:"تختی 1 — مفرد حروف / قلقله"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ذ",
+    a:"Zaal",
+    o:["Zaal","Daal","Zay","Say"],
+    why:"ذ کے اوپر نقطہ ہے۔ یہ نرم حروف میں شامل ہے۔",
+    takhti:"تختی 1 — نرم حروف"
+  },
+  {
+    lesson:"letters",
+    type:"حروف",
+    q:"یہ کون سا حرف ہے؟",
+    display:"ز",
+    a:"Zay",
+    o:["Zay","Ray","Seen","Sheen"],
+    why:"ز Zay ہے اور سیٹی والے حروف میں بھی آتا ہے۔",
+    takhti:"تختی 1 — سیٹی والے حروف"
+  },
+
+  /* =========================
+     PAGE 1 RULE GROUPS
+  ========================= */
+  {
+    lesson:"page1rules",
+    type:"Group",
+    q:"نرم حروف کون سے ہیں؟",
+    display:"نرم حروف",
+    a:"ظ ذ ث",
+    o:["ظ ذ ث","ص س ز","ق ط ب ج د","ء ہ ع ح غ خ"],
+    why:"نرم حروف وہ ہیں جن کی ادائیگی نرم انداز سے کی جاتی ہے۔ اس group میں ظ، ذ، ث ہیں۔",
+    takhti:"تختی 1 — نیچے والا حصہ"
+  },
+  {
+    lesson:"page1rules",
+    type:"Group",
+    q:"سیٹی والے حروف کون سے ہیں؟",
+    display:"سیٹی والے حروف",
+    a:"ص س ز",
+    o:["ص س ز","ظ ذ ث","ی ر م ل و ن","ق ط ب ج د"],
+    why:"ص، س، ز کی آواز میں سیٹی جیسی صفت ہوتی ہے، اس لئے انہیں سیٹی والے حروف کہتے ہیں۔",
+    takhti:"تختی 1 — نیچے والا حصہ"
+  },
+  {
+    lesson:"page1rules",
+    type:"Group",
+    q:"حروفِ قلقله کون سے ہیں؟",
+    display:"قلقله",
+    a:"ق ط ب ج د",
+    o:["ق ط ب ج د","ء ہ ع ح غ خ","ص ض ط ظ خ غ ق","ص س ز"],
+    why:"ق، ط، ب، ج، د کو قلقله حروف کہتے ہیں۔ ساکن ہوں تو ان میں ہلکی bounce / جھٹکے والی آواز آتی ہے۔",
+    takhti:"تختی 1 — حروف قلقله"
+  },
+  {
+    lesson:"page1rules",
+    type:"Group",
+    q:"حلقی حروف کون سے ہیں؟",
+    display:"حلقی حروف",
+    a:"ء ہ ع ح غ خ",
+    o:["ء ہ ع ح غ خ","ق ط ب ج د","ص س ز","ی ر م ل و ن"],
+    why:"یہ حروف حلق سے ادا ہوتے ہیں: ء، ہ، ع، ح، غ، خ۔",
+    takhti:"تختی 1 — حلقی حروف"
+  },
+  {
+    lesson:"page1rules",
+    type:"Group",
+    q:"موٹے حروف کون سے ہیں؟",
+    display:"موٹے حروف",
+    a:"ص ض ط ظ خ غ ق",
+    o:["ص ض ط ظ خ غ ق","ص س ز","ظ ذ ث","ی ر م ل و ن"],
+    why:"یہ حروف پُر/موٹی آواز سے پڑھے جاتے ہیں: ص، ض، ط، ظ، خ، غ، ق۔",
+    takhti:"تختی 1 — موٹے حروف"
+  },
+  {
+    lesson:"page1rules",
+    type:"Group",
+    q:"حروفِ یرملون کون سے ہیں؟",
+    display:"یرملون",
+    a:"ی ر م ل و ن",
+    o:["ی ر م ل و ن","ء ہ ع ح غ خ","ق ط ب ج د","ص ض ط ظ خ غ ق"],
+    why:"یرملون کے حروف ہیں: ی، ر، م، ل، و، ن۔ نون ساکن/تنوین کے ادغام rule میں یہ آتے ہیں۔",
+    takhti:"تختی 1 — یرملون"
+  },
+  {
+    lesson:"page1rules",
+    type:"Choose",
+    q:"ان میں سے سیٹی والا حرف کون سا ہے؟",
+    display:"؟",
+    a:"ز",
+    o:["ز","ب","م","ل"],
+    why:"ز، ص، س کے ساتھ سیٹی والے حروف میں شامل ہے۔",
+    takhti:"تختی 1 — سیٹی والے حروف"
+  },
+  {
+    lesson:"page1rules",
+    type:"Choose",
+    q:"ان میں سے حلقی حرف کون سا ہے؟",
+    display:"؟",
+    a:"ع",
+    o:["ع","ب","ل","ن"],
+    why:"ع حلق سے ادا ہوتا ہے، اس لئے حلقی حرف ہے۔",
+    takhti:"تختی 1 — حلقی حروف"
+  },
+  {
+    lesson:"page1rules",
+    type:"Choose",
+    q:"ان میں سے موٹا حرف کون سا ہے؟",
+    display:"؟",
+    a:"ق",
+    o:["ق","ب","م","ن"],
+    why:"ق موٹے حروف میں شامل ہے۔",
+    takhti:"تختی 1 — موٹے حروف"
+  },
+  {
+    lesson:"page1rules",
+    type:"Choose",
+    q:"ان میں سے قلقله حرف کون سا ہے؟",
+    display:"؟",
+    a:"ط",
+    o:["ط","س","ر","ل"],
+    why:"ط قلقله حروف ق، ط، ب، ج، د میں شامل ہے۔",
+    takhti:"تختی 1 — قلقله"
+  },
+
+  /* =========================
+     JOINED LETTERS
+  ========================= */
+  {
+    lesson:"joined",
+    type:"مرکبات",
+    q:"یہ جوڑ کیسے پہچانا جائے گا؟",
+    display:"با",
+    a:"Bay + Alif",
+    o:["Bay + Alif","Noon + Alif","Tay + Alif","Jeem + Alif"],
+    why:"با میں پہلے ب ہے اور اس کے ساتھ ا ملا ہوا ہے۔",
+    takhti:"مرکبات — ابتدائی تختیاں"
+  },
+  {
+    lesson:"joined",
+    type:"مرکبات",
+    q:"یہ جوڑ کیسے پہچانا جائے گا؟",
+    display:"تا",
+    a:"Tay + Alif",
+    o:["Tay + Alif","Bay + Alif","Say + Alif","Noon + Alif"],
+    why:"تا میں ت کے اوپر دو نقطے ہیں، پھر ا ہے۔",
+    takhti:"مرکبات — ابتدائی تختیاں"
+  },
+  {
+    lesson:"joined",
+    type:"مرکبات",
+    q:"یہ جوڑ کیسے پہچانا جائے گا؟",
+    display:"ثا",
+    a:"Say + Alif",
+    o:["Say + Alif","Tay + Alif","Bay + Alif","Seen + Alif"],
+    why:"ثا میں ث کے اوپر تین نقطے ہیں، پھر ا ہے۔",
+    takhti:"مرکبات — ابتدائی تختیاں"
+  },
+
+  /* =========================
+     HARAKAT
+  ========================= */
+  {
+    lesson:"harakat",
+    type:"حرکات",
+    q:"زبر کے ساتھ یہ کیسے پڑھیں گے؟",
+    display:"بَ",
+    a:"Ba",
+    o:["Ba","Bi","Bu","Bay"],
+    why:"زبر اوپر آتی ہے، اس سے آواز 'a' بنتی ہے: بَ = Ba.",
+    takhti:"حرکات — زبر"
+  },
+  {
+    lesson:"harakat",
+    type:"حرکات",
+    q:"زیر کے ساتھ یہ کیسے پڑھیں گے؟",
+    display:"بِ",
+    a:"Bi",
+    o:["Bi","Ba","Bu","Baa"],
+    why:"زیر نیچے آتی ہے، اس سے آواز 'i' بنتی ہے: بِ = Bi.",
+    takhti:"حرکات — زیر"
+  },
+  {
+    lesson:"harakat",
+    type:"حرکات",
+    q:"پیش کے ساتھ یہ کیسے پڑھیں گے؟",
+    display:"بُ",
+    a:"Bu",
+    o:["Bu","Ba","Bi","Bay"],
+    why:"پیش اوپر آتی ہے، اس سے آواز 'u' بنتی ہے: بُ = Bu.",
+    takhti:"حرکات — پیش"
+  },
+  {
+    lesson:"harakat",
+    type:"حرکات",
+    q:"اس کو کیسے پڑھیں گے؟",
+    display:"قَ",
+    a:"Qa",
+    o:["Qa","Qi","Qu","Ka"],
+    why:"ق پر زبر ہے، اس لئے Qa پڑھا جائے گا۔ ق موٹا بھی پڑھا جاتا ہے۔",
+    takhti:"حرکات + موٹے حروف"
+  },
+
+  /* =========================
+     TANWEEN
+  ========================= */
+  {
+    lesson:"tanween",
+    type:"تنوین",
+    q:"دو زبر کے ساتھ یہ کیسے پڑھیں گے؟",
+    display:"بً",
+    a:"Ban",
+    o:["Ban","Bin","Bun","Ba"],
+    why:"دو زبر سے آخر میں نون کی آواز آتی ہے: بً = Ban.",
+    takhti:"تنوین — دو زبر"
+  },
+  {
+    lesson:"tanween",
+    type:"تنوین",
+    q:"دو زیر کے ساتھ یہ کیسے پڑھیں گے؟",
+    display:"بٍ",
+    a:"Bin",
+    o:["Bin","Ban","Bun","Bi"],
+    why:"دو زیر سے 'in' کی آواز آتی ہے: بٍ = Bin.",
+    takhti:"تنوین — دو زیر"
+  },
+  {
+    lesson:"tanween",
+    type:"تنوین",
+    q:"دو پیش کے ساتھ یہ کیسے پڑھیں گے؟",
+    display:"بٌ",
+    a:"Bun",
+    o:["Bun","Ban","Bin","Bu"],
+    why:"دو پیش سے 'un' کی آواز آتی ہے: بٌ = Bun.",
+    takhti:"تنوین — دو پیش"
+  },
+
+  /* =========================
+     MADD / LONG SOUND
+  ========================= */
+  {
+    lesson:"madd",
+    type:"مد",
+    q:"الف مد کے ساتھ آواز کیسی ہوگی؟",
+    display:"بَا",
+    a:"Baa",
+    o:["Baa","Ba","Bi","Bu"],
+    why:"زبر کے بعد الف آئے تو آواز لمبی ہو جاتی ہے: بَا = Baa.",
+    takhti:"مد — الف مد"
+  },
+  {
+    lesson:"madd",
+    type:"مد",
+    q:"ی مد کے ساتھ آواز کیسی ہوگی؟",
+    display:"بِی",
+    a:"Bee",
+    o:["Bee","Bi","Baa","Boo"],
+    why:"زیر کے بعد ی آئے تو آواز لمبی ہو جاتی ہے: بِی = Bee.",
+    takhti:"مد — ی مد"
+  },
+  {
+    lesson:"madd",
+    type:"مد",
+    q:"واو مد کے ساتھ آواز کیسی ہوگی؟",
+    display:"بُو",
+    a:"Boo",
+    o:["Boo","Bu","Bee","Baa"],
+    why:"پیش کے بعد واو آئے تو آواز لمبی ہو جاتی ہے: بُو = Boo.",
+    takhti:"مد — واو مد"
+  },
+  {
+    lesson:"madd",
+    type:"مد",
+    q:"کھڑی زبر کا rule کیا ہے؟",
+    display:"بٰ",
+    a:"آواز لمبی ہوگی",
+    o:["آواز لمبی ہوگی","آواز چھوٹی ہوگی","حرف ساکن ہوگا","غنہ ہوگا"],
+    why:"کھڑی زبر عام زبر سے لمبی آواز دیتی ہے۔",
+    takhti:"کھڑی زبر"
+  },
+
+  /* =========================
+     SUKOON
+  ========================= */
+  {
+    lesson:"sukoon",
+    type:"سکون",
+    q:"جس حرف پر سکون ہو اسے کیسے پڑھتے ہیں؟",
+    display:"بْ",
+    a:"پچھلے حرف کے ساتھ ملا کر",
+    o:["پچھلے حرف کے ساتھ ملا کر","اکیلا لمبا کر کے","نون کی آواز سے","دو بار"],
+    why:"ساکن حرف اکیلا نہیں پڑھا جاتا، اسے پہلے حرکت والے حرف کے ساتھ ملایا جاتا ہے۔",
+    takhti:"سکون / جزم"
+  },
+  {
+    lesson:"sukoon",
+    type:"سکون",
+    q:"اس کو کیسے پڑھیں گے؟",
+    display:"اَبْ",
+    a:"Ab",
+    o:["Ab","Aba","Abi","Abu"],
+    why:"ب پر سکون ہے، اس لئے اسے پہلے حرف کے ساتھ ملا کر Ab پڑھیں گے۔",
+    takhti:"سکون / جزم"
+  },
+  {
+    lesson:"sukoon",
+    type:"سکون",
+    q:"قلقله کب ظاہر ہوتا ہے؟",
+    display:"قْ طْ بْ جْ دْ",
+    a:"جب قلقله حرف ساکن ہو",
+    o:["جب قلقله حرف ساکن ہو","جب زبر ہو","جب زیر ہو","جب مد ہو"],
+    why:"ق، ط، ب، ج، د ساکن ہوں تو ہلکی bounce والی آواز آتی ہے۔",
+    takhti:"قلقله + سکون"
+  },
+
+  /* =========================
+     TASHDEED
+  ========================= */
+  {
+    lesson:"tashdeed",
+    type:"تشدید",
+    q:"تشدید کا مطلب کیا ہے؟",
+    display:"بّ",
+    a:"حرف کو double/strong پڑھنا",
+    o:["حرف کو double/strong پڑھنا","حرف کو چھوڑ دینا","حرف کو لمبا کرنا","حرف کو نرم کرنا"],
+    why:"تشدید میں حرف کو زور دے کر دو حصوں کی طرح پڑھتے ہیں۔",
+    takhti:"تشدید"
+  },
+  {
+    lesson:"tashdeed",
+    type:"تشدید",
+    q:"اس میں کون سا rule ہے؟",
+    display:"رَبَّ",
+    a:"تشدید",
+    o:["تشدید","مد","تنوین","سکون نہیں"],
+    why:"ب پر شَدّہ ہے، اس لئے ب کو strong/double پڑھا جائے گا۔",
+    takhti:"تشدید"
+  },
+  {
+    lesson:"tashdeed",
+    type:"تشدید",
+    q:"نون یا میم پر تشدید ہو تو کیا ہوگا؟",
+    display:"نّ  مّ",
+    a:"غنہ ہوگا",
+    o:["غنہ ہوگا","قلقله ہوگا","مد ہوگا","حلقی آواز ہوگی"],
+    why:"نّ اور مّ پر تشدید ہو تو ناک سے غنہ کیا جاتا ہے۔",
+    takhti:"غنہ / تشدید"
+  },
+
+  /* =========================
+     NUN SAKIN / TANWEEN RULES
+  ========================= */
+  {
+    lesson:"nunRules",
+    type:"نون ساکن",
+    q:"اظہار کے حروف کون سے ہیں؟",
+    display:"اظہار",
+    a:"ء ہ ع ح غ خ",
+    o:["ء ہ ع ح غ خ","ی ر م ل و ن","ب","ت ث ج د ذ ز س ش ص ض ط ظ ف ق ک"],
+    why:"نون ساکن یا تنوین کے بعد حلقی حروف آئیں تو نون کو صاف ظاہر پڑھتے ہیں۔",
+    takhti:"نون ساکن / تنوین — اظہار"
+  },
+  {
+    lesson:"nunRules",
+    type:"نون ساکن",
+    q:"ادغام کے حروف کون سے ہیں؟",
+    display:"ادغام",
+    a:"ی ر م ل و ن",
+    o:["ی ر م ل و ن","ء ہ ع ح غ خ","ب","ق ط ب ج د"],
+    why:"یرملون کے حروف کے ساتھ نون ساکن/تنوین مل جاتا ہے، اسے ادغام کہتے ہیں۔",
+    takhti:"نون ساکن / تنوین — ادغام"
+  },
+  {
+    lesson:"nunRules",
+    type:"نون ساکن",
+    q:"اقلاب کس حرف سے ہوتا ہے؟",
+    display:"اقلاب",
+    a:"ب",
+    o:["ب","م","ن","ق"],
+    why:"نون ساکن یا تنوین کے بعد ب آئے تو نون کی آواز میم میں بدلتی ہے اور غنہ ہوتا ہے۔",
+    takhti:"نون ساکن / تنوین — اقلاب"
+  },
+  {
+    lesson:"nunRules",
+    type:"نون ساکن",
+    q:"اخفاء میں کیا ہوتا ہے؟",
+    display:"اخفاء",
+    a:"نون کی آواز چھپا کر غنہ",
+    o:["نون کی آواز چھپا کر غنہ","نون صاف ظاہر","نون میم میں بدلتا ہے","حرف کو double پڑھتے ہیں"],
+    why:"اخفاء میں نون ساکن/تنوین کو مکمل ظاہر نہیں کرتے، بلکہ چھپا کر غنہ کرتے ہیں۔",
+    takhti:"نون ساکن / تنوین — اخفاء"
+  },
+
+  /* =========================
+     MEEM SAKIN RULES
+  ========================= */
+  {
+    lesson:"meemRules",
+    type:"میم ساکن",
+    q:"میم ساکن کے بعد ب آئے تو کیا rule ہوگا؟",
+    display:"مْ + ب",
+    a:"اخفاء شفوی",
+    o:["اخفاء شفوی","ادغام شفوی","اظہار شفوی","قلقله"],
+    why:"میم ساکن کے بعد ب آئے تو ہونٹوں سے غنہ کے ساتھ اخفاء شفوی ہوتا ہے۔",
+    takhti:"میم ساکن — اخفاء شفوی"
+  },
+  {
+    lesson:"meemRules",
+    type:"میم ساکن",
+    q:"میم ساکن کے بعد م آئے تو کیا rule ہوگا؟",
+    display:"مْ + م",
+    a:"ادغام شفوی",
+    o:["ادغام شفوی","اخفاء شفوی","اظہار شفوی","مد"],
+    why:"میم ساکن کے بعد میم آئے تو دونوں میم مل جاتے ہیں اور غنہ ہوتا ہے۔",
+    takhti:"میم ساکن — ادغام شفوی"
+  },
+  {
+    lesson:"meemRules",
+    type:"میم ساکن",
+    q:"میم ساکن کے بعد ب اور م کے علاوہ حرف آئے تو کیا rule ہوگا؟",
+    display:"مْ + باقی حروف",
+    a:"اظہار شفوی",
+    o:["اظہار شفوی","ادغام شفوی","اخفاء شفوی","اقلاب"],
+    why:"میم ساکن کے بعد ب یا م نہ آئے تو عام طور پر میم کو صاف ظاہر پڑھتے ہیں۔",
+    takhti:"میم ساکن — اظہار شفوی"
+  },
+
+  /* =========================
+     LAM / RA / WAQF
+  ========================= */
+  {
+    lesson:"lamRaWaqf",
+    type:"لام جلالہ",
+    q:"لفظ اللہ سے پہلے زبر یا پیش ہو تو لام کیسے پڑھیں گے؟",
+    display:"قَالَ اللّٰهُ",
+    a:"موٹا",
+    o:["موٹا","باریک","نہیں پڑھیں گے","غنہ کریں گے"],
+    why:"اللہ سے پہلے زبر یا پیش ہو تو لفظ اللہ کا لام موٹا پڑھا جاتا ہے۔",
+    takhti:"لام جلالہ"
+  },
+  {
+    lesson:"lamRaWaqf",
+    type:"لام جلالہ",
+    q:"لفظ اللہ سے پہلے زیر ہو تو لام کیسے پڑھیں گے؟",
+    display:"بِاللّٰهِ",
+    a:"باریک",
+    o:["باریک","موٹا","قلقله","غنہ"],
+    why:"اللہ سے پہلے زیر ہو تو لفظ اللہ کا لام باریک پڑھا جاتا ہے۔",
+    takhti:"لام جلالہ"
+  },
+  {
+    lesson:"lamRaWaqf",
+    type:"ر",
+    q:"ر پر زبر یا پیش ہو تو عموماً ر کیسے پڑھی جاتی ہے؟",
+    display:"رَ  رُ",
+    a:"موٹی",
+    o:["موٹی","باریک","غنہ","نہیں پڑھی جاتی"],
+    why:"ر پر زبر یا پیش ہو تو عموماً ر موٹی پڑھی جاتی ہے۔",
+    takhti:"ر کے قواعد"
+  },
+  {
+    lesson:"lamRaWaqf",
+    type:"وقف",
+    q:"وقف کا مطلب کیا ہے؟",
+    display:"وقف",
+    a:"رکنا",
+    o:["رکنا","لمبا کرنا","غنہ کرنا","double پڑھنا"],
+    why:"وقف کا مطلب ہے پڑھتے ہوئے رکنا۔ رکنے پر آخر کی حرکت عموماً نہیں پڑھی جاتی۔",
+    takhti:"وقف کے قواعد"
+  }
+];
+
+/* =========================
+   APP STATE
+========================= */
+let currentLesson = "mixed";
+let quizQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let totalQuestions = 10;
+
+/* =========================
+   LOAD
+========================= */
+window.addEventListener("load", function(){
+  buildLessonMenu();
+  startQuiz();
+});
+
+/* =========================
+   GO BACK
+========================= */
+function goBack(){
+  if(window.history.length > 1){
+    window.history.back();
+  }else{
+    window.location.href = "../";
+  }
+}
+
+/* =========================
+   BUILD LESSON MENU
+========================= */
+function buildLessonMenu(){
+  const lessonGrid = document.getElementById("lessonGrid");
+  lessonGrid.innerHTML = "";
+
+  lessons.forEach(function(lesson){
+    const btn = document.createElement("button");
+    btn.className = "lessonBtn";
+    btn.id = "lessonBtn_" + lesson.id;
+    btn.onclick = function(){
+      selectLesson(lesson.id);
+    };
+
+    btn.innerHTML =
+      "<div class='lessonName'>" + lesson.name + "</div>" +
+      "<div class='lessonDesc'>" + lesson.desc + "</div>";
+
+    lessonGrid.appendChild(btn);
+  });
+
+  updateActiveLessonButton();
+}
+
+/* =========================
+   TOGGLE LESSON MENU
+========================= */
+function toggleLessonMenu(){
+  document.getElementById("lessonMenu").classList.toggle("show");
+}
+
+/* =========================
+   SELECT LESSON
+========================= */
+function selectLesson(id){
+  currentLesson = id;
+
+  const lesson = lessons.find(function(item){
+    return item.id === id;
+  });
+
+  if(lesson){
+    document.getElementById("lessonBadge").innerText = lesson.badge;
+  }
+
+  document.getElementById("lessonMenu").classList.remove("show");
+  updateActiveLessonButton();
+  restartQuiz();
+}
+
+/* =========================
+   UPDATE ACTIVE LESSON BUTTON
+========================= */
+function updateActiveLessonButton(){
+  lessons.forEach(function(lesson){
+    const btn = document.getElementById("lessonBtn_" + lesson.id);
+    if(!btn) return;
+
+    if(lesson.id === currentLesson){
+      btn.classList.add("active");
+    }else{
+      btn.classList.remove("active");
+    }
+  });
+}
+
+/* =========================
+   START QUIZ
+========================= */
+function startQuiz(){
+  score = 0;
+  currentIndex = 0;
+  answered = false;
+
+  let baseData = [];
+
+  if(currentLesson === "mixed"){
+    baseData = allQuestions.slice();
+  }else{
+    baseData = allQuestions.filter(function(item){
+      return item.lesson === currentLesson;
+    });
+  }
+
+  if(baseData.length === 0){
+    baseData = allQuestions.slice();
+  }
+
+  quizQuestions = shuffleArray(baseData).slice(0, Math.min(totalQuestions, baseData.length));
+
+  loadBestScore();
+  updateStats();
+  showQuestion();
+}
+
+/* =========================
+   SHOW QUESTION
+========================= */
+function showQuestion(){
+  answered = false;
+
+  const explainCard = document.getElementById("explainCard");
+  explainCard.className = "explainCard";
+  explainCard.innerHTML = "";
+
+  const q = quizQuestions[currentIndex];
+
+  document.getElementById("questionNo").innerText = "سوال " + (currentIndex + 1);
+  document.getElementById("questionLevel").innerText = q.type;
+  document.getElementById("questionText").innerText = q.q;
+  document.getElementById("bigArabic").innerText = q.display;
+  document.getElementById("hintMini").innerText = "Choose correct answer";
+
+  const bigArabic = document.getElementById("bigArabic");
+  if(String(q.display).length > 5){
+    bigArabic.classList.add("small");
+  }else{
+    bigArabic.classList.remove("small");
+  }
+
+  const optionsGrid = document.getElementById("optionsGrid");
+  optionsGrid.innerHTML = "";
+
+  const shuffledOptions = shuffleArray(q.o);
+
+  shuffledOptions.forEach(function(option){
+    const btn = document.createElement("button");
+    btn.className = "optionBtn";
+    btn.innerText = option;
+    btn.onclick = function(){
+      checkAnswer(option, btn);
+    };
+    optionsGrid.appendChild(btn);
+  });
+
+  updateStats();
+}
+
+/* =========================
+   CHECK ANSWER
+========================= */
+function checkAnswer(selected, clickedBtn){
+  if(answered) return;
+
+  answered = true;
+
+  const q = quizQuestions[currentIndex];
+  const allBtns = document.querySelectorAll(".optionBtn");
+  const explainCard = document.getElementById("explainCard");
+
+  allBtns.forEach(function(btn){
+    btn.classList.add("disabled");
+
+    if(btn.innerText === q.a){
+      btn.classList.add("correct");
+    }
+  });
+
+  if(selected === q.a){
+    score++;
+    clickedBtn.classList.add("correct");
+
+    explainCard.className = "explainCard show good";
+    explainCard.innerHTML =
+      "<div class='resultLine'>درست جواب ✅</div>" +
+      "<div class='correctLine'>صحیح جواب: <span>" + q.a + "</span></div>" +
+      "<div class='whyLine'>وجہ: <span>" + q.why + "</span></div>" +
+      "<div class='takhtiLine'>تختی / Lesson: <span>" + q.takhti + "</span></div>";
+  }else{
+    clickedBtn.classList.add("wrong");
+
+    explainCard.className = "explainCard show bad";
+    explainCard.innerHTML =
+      "<div class='resultLine'>غلط جواب ❌</div>" +
+      "<div class='correctLine'>صحیح جواب: <span>" + q.a + "</span></div>" +
+      "<div class='whyLine'>کیوں صحیح ہے: <span>" + q.why + "</span></div>" +
+      "<div class='takhtiLine'>یہ rule یہاں سے ہے: <span>" + q.takhti + "</span></div>";
+  }
+
+  updateStats();
+}
+
+/* =========================
+   NEXT QUESTION
+========================= */
+function nextQuestion(){
+  if(!answered){
+    const explainCard = document.getElementById("explainCard");
+    explainCard.className = "explainCard show bad";
+    explainCard.innerHTML =
+      "<div class='resultLine'>پہلے answer choose کریں</div>" +
+      "<div class='whyLine'>بغیر answer select کیے Next نہیں ہوگا۔</div>";
+    return;
+  }
+
+  if(currentIndex < quizQuestions.length - 1){
+    currentIndex++;
+    showQuestion();
+  }else{
+    finishQuiz();
+  }
+}
+
+/* =========================
+   FINISH QUIZ
+========================= */
+function finishQuiz(){
+  const bestKey = getBestKey();
+  const oldBest = Number(localStorage.getItem(bestKey) || "0");
+
+  if(score > oldBest){
+    localStorage.setItem(bestKey, String(score));
+  }
+
+  loadBestScore();
+
+  document.getElementById("finishScore").innerText = score + "/" + quizQuestions.length;
+
+  let msg = "آپ نے quiz complete کر لیا۔";
+
+  if(score === quizQuestions.length){
+    msg = "Excellent! سب answers درست ہیں۔";
+  }else if(score >= Math.ceil(quizQuestions.length * 0.7)){
+    msg = "بہت اچھا! تھوڑی practice اور کریں۔";
+  }else{
+    msg = "کوئی بات نہیں۔ غلط answer ke neeche hidayat read kar ke dobara practice karein.";
+  }
+
+  document.getElementById("finishMsg").innerText = msg;
+  document.getElementById("finishOverlay").classList.add("show");
+}
+
+/* =========================
+   RESTART QUIZ
+========================= */
+function restartQuiz(){
+  document.getElementById("finishOverlay").classList.remove("show");
+  startQuiz();
+}
+
+/* =========================
+   CLOSE FINISH
+========================= */
+function closeFinish(){
+  document.getElementById("finishOverlay").classList.remove("show");
+}
+
+/* =========================
+   UPDATE STATS
+========================= */
+function updateStats(){
+  document.getElementById("scoreText").innerText = score;
+  document.getElementById("countText").innerText = (currentIndex + 1) + "/" + quizQuestions.length;
+}
+
+/* =========================
+   BEST SCORE
+========================= */
+function getBestKey(){
+  return "nooraniQaidaCompleteQuizBest_" + currentLesson;
+}
+
+function loadBestScore(){
+  const best = Number(localStorage.getItem(getBestKey()) || "0");
+  document.getElementById("bestText").innerText = best;
+}
+
+/* =========================
+   SHUFFLE
+========================= */
+function shuffleArray(array){
+  const copied = array.slice();
+
+  for(let i = copied.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = copied[i];
+    copied[i] = copied[j];
+    copied[j] = temp;
+  }
+
+  return copied;
+}
+</script>
+
+</body>
+</html>
