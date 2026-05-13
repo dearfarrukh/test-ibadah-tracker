@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Noorani Qaida Quiz</title>
+<title>Noorani Qaida Rule Quiz</title>
 
 <style>
 /* =========================
-   NOORANI QAIDA QUIZ
+   NOORANI QAIDA RULE QUIZ
    File: books/noorani-qaida/quiz/index.html
 ========================= */
 
@@ -320,7 +320,7 @@ button{
 .bigArabic{
   direction:rtl;
   font-family:"Times New Roman","Amiri","Scheherazade New",serif;
-  font-size:74px;
+  font-size:72px;
   font-weight:900;
   line-height:1.18;
   color:#111;
@@ -533,11 +533,11 @@ button{
 
 @media(max-width:390px){
   .bigArabic{
-    font-size:62px;
+    font-size:58px;
   }
 
   .bigArabic.small{
-    font-size:35px;
+    font-size:34px;
   }
 
   .questionText{
@@ -562,8 +562,8 @@ button{
     <button class="roundBtn backBtn" onclick="goBackToQaida()">←</button>
 
     <div class="topTitleWrap">
-      <div class="topTitle">Qaida Quiz</div>
-      <div class="topSub">Only this Noorani Qaida rules</div>
+      <div class="topTitle">Rule Quiz</div>
+      <div class="topSub">Ghunna • Qalqala • Izhar • Idgham</div>
     </div>
 
     <button class="roundBtn menuBtn" onclick="toggleLessonMenu()">☰</button>
@@ -575,16 +575,16 @@ button{
   <div class="heroCard">
     <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
     <div class="heroText">
-      اسی نورانی قاعدہ کی تختیوں کے مطابق quiz۔ غلط جواب پر صحیح جواب، وجہ، ہدایت، اور page/takhti دکھائی جائے گی۔
+      Rule-based Noorani Qaida quiz: کہاں غنہ ہوگا، کہاں قلقله ہوگا، کہاں اظہار، ادغام، اقلاب، اخفاء ہوگا۔
     </div>
-    <div class="lessonBadge" id="lessonBadge">مکمل ملا جلا ٹیسٹ</div>
+    <div class="lessonBadge" id="lessonBadge">ملا جلا Rules Test</div>
   </div>
 
   <!-- =========================
        LESSON MENU
   ========================= -->
   <div class="lessonMenu" id="lessonMenu">
-    <div class="menuTitle">Lesson منتخب کریں</div>
+    <div class="menuTitle">Rule منتخب کریں</div>
     <div class="lessonGrid" id="lessonGrid"></div>
   </div>
 
@@ -622,7 +622,7 @@ button{
 
     <div class="displayBox">
       <div class="bigArabic" id="bigArabic">ا</div>
-      <div class="hintPill" id="hintPill">Choose answer</div>
+      <div class="hintPill" id="hintPill">Choose rule</div>
     </div>
 
     <div class="optionsGrid" id="optionsGrid"></div>
@@ -643,8 +643,8 @@ button{
   </div>
 
   <div class="noteCard">
-    یہ Version 2 ہے: data isi uploaded Noorani Qaida ke visible pages/takhti headings ke mutabiq rakha gaya hai.
-    Agar koi lafz, group, ya hidayat aapke qaida se different lage, screenshot bhej dein — usi question ko fix kar denge.
+    Yeh quiz ab takhti-name test nahi hai. Yeh sirf rules practice hai:
+    Tanween/Noon Sakin, Ghunna, Qalqala, Izhar, Idgham, Iqlab, Ikhfa, Halqi, Mota, Naram, Seeti letters.
   </div>
 
 </div>
@@ -668,984 +668,724 @@ button{
 
 <script>
 /* =========================
-   LESSONS BASED ON THIS QAIDA
+   LESSONS / RULE FILTERS
 ========================= */
 const lessons = [
   {
     id:"mixed",
-    name:"مکمل ملا جلا ٹیسٹ",
-    desc:"پورے قاعدہ se random sawal.",
-    badge:"مکمل ملا جلا ٹیسٹ"
+    name:"ملا جلا Rules Test",
+    desc:"Ghunna, Qalqala, Izhar, Idgham, Iqlab, Ikhfa mixed.",
+    badge:"ملا جلا Rules Test"
   },
   {
-    id:"takhti1",
-    name:"تختی 1 — مفردات اور groups",
-    desc:"Single huroof + نرم، سیٹی، قلقله، حلقی، موٹے، یرملون.",
-    badge:"تختی 1 — مفردات"
+    id:"page1groups",
+    name:"Page 1 Groups",
+    desc:"نرم، سیٹی، قلقله، حلقی، موٹے، یرملون.",
+    badge:"Page 1 Huroof Groups"
   },
   {
-    id:"takhti2",
-    name:"تختی 2 — مرکبات",
-    desc:"Joined letters aur milakar pehchan.",
-    badge:"تختی 2 — مرکبات"
+    id:"tanweenNoon",
+    name:"Tanween / Noon Sakin",
+    desc:"نون ساکن اور تنوین کے rules.",
+    badge:"Tanween / Noon Sakin Rules"
   },
   {
-    id:"takhti3",
-    name:"تختی 3 — حروف مقطعات",
-    desc:"Qurani separate letters / muqattaat style.",
-    badge:"تختی 3 — حروف مقطعات"
+    id:"izhar",
+    name:"Izhar",
+    desc:"حلقی حروف کے ساتھ نون صاف پڑھنا.",
+    badge:"Izhar Rules"
   },
   {
-    id:"takhti4",
-    name:"تختی 4 — حرکات",
-    desc:"زبر، زیر، پیش.",
-    badge:"تختی 4 — حرکات"
+    id:"idgham",
+    name:"Idgham / Yarmaloon",
+    desc:"یرملون کے ساتھ ادغام / غنہ.",
+    badge:"Idgham / Yarmaloon"
   },
   {
-    id:"takhti5",
-    name:"تختی 5 — تنوین",
-    desc:"دو زبر، دو زیر، دو پیش.",
-    badge:"تختی 5 — تنوین"
+    id:"iqlab",
+    name:"Iqlab",
+    desc:"ب کے ساتھ نون/تنوین میم میں بدلنا.",
+    badge:"Iqlab Rule"
   },
   {
-    id:"takhti6",
-    name:"تختی 6 — مشق حرکات و تنوین",
-    desc:"Harakat aur tanween ki mixed practice.",
-    badge:"تختی 6 — مشق حرکات و تنوین"
+    id:"ikhfa",
+    name:"Ikhfa",
+    desc:"نون/تنوین کو چھپا کر غنہ کرنا.",
+    badge:"Ikhfa Rule"
   },
   {
-    id:"takhti7",
-    name:"تختی 7 — کھڑی زبر، کھڑی زیر، الٹی پیش",
-    desc:"Long signs aur unki awaaz.",
-    badge:"تختی 7 — کھڑی زبر / زیر / الٹی پیش"
+    id:"qalqala",
+    name:"Qalqala",
+    desc:"ق ط ب ج د ساکن ہوں تو bounce.",
+    badge:"Qalqala Rule"
   },
   {
-    id:"takhti8",
-    name:"تختی 8 — مدہ و لین",
-    desc:"Madd aur leen huroof.",
-    badge:"تختی 8 — مدہ و لین"
+    id:"ghunna",
+    name:"Ghunna",
+    desc:"نّ، مّ، اخفاء، اقلاب، ادغام بغنہ.",
+    badge:"Ghunna Rules"
   },
   {
-    id:"takhti9",
-    name:"تختی 9 — مشقی حرکات",
-    desc:"Long examples aur reading practice.",
-    badge:"تختی 9 — مشقی حرکات"
-  },
-  {
-    id:"takhti10",
-    name:"تختی 10 — سکون یعنی جزم",
-    desc:"Sakin letter ko milakar parhna.",
-    badge:"تختی 10 — سکون یعنی جزم"
-  },
-  {
-    id:"takhti11",
-    name:"تختی 11 — مشق سکون",
-    desc:"Sukoon examples.",
-    badge:"تختی 11 — مشق سکون"
-  },
-  {
-    id:"takhti12",
-    name:"تختی 12 — تشدید",
-    desc:"Shaddah / double sound.",
-    badge:"تختی 12 — تشدید"
-  },
-  {
-    id:"takhti13",
-    name:"تختی 13 — مشق تشدید",
-    desc:"Tashdeed practice.",
-    badge:"تختی 13 — مشق تشدید"
-  },
-  {
-    id:"takhti14",
-    name:"تختی 14 — مشق تشدید مع سکون",
-    desc:"Tashdeed + sukoon practice.",
-    badge:"تختی 14 — مشق تشدید مع سکون"
-  },
-  {
-    id:"takhti15",
-    name:"تختی 15 — تشدید مع تشدید",
-    desc:"Two tashdeed style practice.",
-    badge:"تختی 15 — تشدید مع تشدید"
-  },
-  {
-    id:"takhti16",
-    name:"تختی 16 — تشدید بعد حروف مدہ",
-    desc:"Maddah ke baad tashdeed aur last rules.",
-    badge:"تختی 16 — تشدید بعد حروف مدہ"
+    id:"motaSeetiNaram",
+    name:"Mota / Seeti / Naram",
+    desc:"موٹے، سیٹی والے، نرم حروف.",
+    badge:"Mota / Seeti / Naram"
   }
 ];
 
 /* =========================
-   QUIZ DATA
-   Only based on this Qaida structure
+   RULE QUIZ DATA
 ========================= */
 const questions = [
 
   /* =========================
-     TAKHTI 1: MUFRADAT + GROUPS
+     PAGE 1 GROUPS
   ========================= */
   {
-    lesson:"takhti1",
-    type:"حروف",
-    q:"یہ کون سا حرف ہے؟",
-    display:"ا",
-    a:"الف",
-    o:["الف","ب","ت","ج"],
-    why:"یہ ا ہے، اسے الف کہتے ہیں۔",
-    hidayat:"تختی 1 میں پہلے مفرد حروف کی پہچان کروائی گئی ہے۔",
-    source:"Page 1 / تختی 1 — مفردات"
-  },
-  {
-    lesson:"takhti1",
-    type:"حروف",
-    q:"یہ کون سا حرف ہے؟",
-    display:"ب",
-    a:"ب",
-    o:["ب","ت","ث","ن"],
-    why:"ب کے نیچے ایک نقطہ ہوتا ہے۔",
-    hidayat:"مفرد حرف کو پہلے اس کی شکل اور نقطوں سے پہچانیں۔",
-    source:"Page 1 / تختی 1 — مفردات"
-  },
-  {
-    lesson:"takhti1",
-    type:"حروف",
-    q:"یہ کون سا حرف ہے؟",
-    display:"ت",
-    a:"ت",
-    o:["ت","ب","ث","ی"],
-    why:"ت کے اوپر دو نقطے ہوتے ہیں۔",
-    hidayat:"نقطوں کی تعداد سے حروف الگ پہچانے جاتے ہیں۔",
-    source:"Page 1 / تختی 1 — مفردات"
-  },
-  {
-    lesson:"takhti1",
-    type:"حروف",
-    q:"یہ کون سا حرف ہے؟",
-    display:"ث",
-    a:"ث",
-    o:["ث","ت","ب","س"],
-    why:"ث کے اوپر تین نقطے ہوتے ہیں۔",
-    hidayat:"ث نرم حروف میں بھی شامل ہے۔",
-    source:"Page 1 / تختی 1 — مفردات / نرم حروف"
-  },
-  {
-    lesson:"takhti1",
+    lesson:"page1groups",
     type:"Group",
     q:"نرم حروف کون سے ہیں؟",
     display:"نرم حروف",
     a:"ظ ذ ث",
-    o:["ظ ذ ث","ص س ز","ق ط ب ج د","ء ہ ع ح غ خ"],
-    why:"اس Qaida کے page 1 کے bottom par نرم حروف: ظ، ذ، ث دیے گئے ہیں۔",
-    hidayat:"Group ka naam dekh kar uske huroof yaad karein.",
-    source:"Page 1 / bottom rules"
+    o:["ظ ذ ث","ص س ز","ق ط ب ج د","ی ر م ل و ن"],
+    why:"نرم حروف کا group ظ، ذ، ث ہے۔",
+    hidayat:"In letters ko naram adaigi ke group mein yaad karein."
   },
   {
-    lesson:"takhti1",
+    lesson:"page1groups",
     type:"Group",
     q:"سیٹی والے حروف کون سے ہیں؟",
     display:"سیٹی والے حروف",
     a:"ص س ز",
-    o:["ص س ز","ظ ذ ث","ی ر م ل و ن","ق ط ب ج د"],
-    why:"اس Qaida میں سیٹی والے حروف: ص، س، ز ہیں۔",
-    hidayat:"سیٹی والے حروف mein seeti jaisi awaaz ka asar hota hai.",
-    source:"Page 1 / bottom rules"
+    o:["ص س ز","ظ ذ ث","ص ض ط ظ خ غ ق","ء ہ ع ح غ خ"],
+    why:"سیٹی والے حروف ص، س، ز ہیں۔ In ki awaaz mein seeti wali sifat hoti hai.",
+    hidayat:"Seeti letters ko ص س ز ke group mein yaad karein."
   },
   {
-    lesson:"takhti1",
+    lesson:"page1groups",
     type:"Group",
     q:"حروف قلقله کون سے ہیں؟",
-    display:"حروف قلقله",
+    display:"قلقله",
     a:"ق ط ب ج د",
     o:["ق ط ب ج د","ص س ز","ظ ذ ث","ی ر م ل و ن"],
-    why:"اس Qaida کے bottom group mein قلقله حروف: ق، ط، ب، ج، د دیے گئے ہیں۔",
-    hidayat:"قلقله huroof ko group ki surat mein yaad karein.",
-    source:"Page 1 / bottom rules"
+    why:"قلقله letters ق، ط، ب، ج، د ہیں۔ Jab ye ساکن ہوں تو bounce/جھٹکہ آتا ہے۔",
+    hidayat:"Qalqala tab hoga jab ق ط ب ج د mein se koi letter sakin ho."
   },
   {
-    lesson:"takhti1",
+    lesson:"page1groups",
     type:"Group",
     q:"حلقی حروف کون سے ہیں؟",
     display:"حلقی حروف",
     a:"ء ہ ع ح غ خ",
-    o:["ء ہ ع ح غ خ","ق ط ب ج د","ص ض ط ظ خ غ ق","ص س ز"],
-    why:"Qaida کے bottom par حلقی حروف: ء، ہ، ع، ح، غ، خ ہیں۔",
-    hidayat:"حلقی حروف galay/halaq se ada kiye jate hain.",
-    source:"Page 1 / bottom rules"
+    o:["ء ہ ع ح غ خ","ق ط ب ج د","ص س ز","ص ض ط ظ خ غ ق"],
+    why:"حلقی حروف ء، ہ، ع، ح، غ، خ ہیں۔",
+    hidayat:"Noon sakin/tanween ke baad halqi letter aaye to Izhar hota hai."
   },
   {
-    lesson:"takhti1",
+    lesson:"page1groups",
     type:"Group",
     q:"موٹے حروف کون سے ہیں؟",
     display:"موٹے حروف",
     a:"ص ض ط ظ خ غ ق",
     o:["ص ض ط ظ خ غ ق","ص س ز","ظ ذ ث","ی ر م ل و ن"],
-    why:"اس Qaida میں موٹے حروف: ص، ض، ط، ظ، خ، غ، ق ہیں۔",
-    hidayat:"موٹے حروف ko pur/strong awaaz ke sath parhna hota hai.",
-    source:"Page 1 / bottom rules"
+    why:"موٹے حروف ص، ض، ط، ظ، خ، غ، ق ہیں۔",
+    hidayat:"In huroof ko patla nahi, pur/mota sound ke sath parhna hota hai."
   },
   {
-    lesson:"takhti1",
+    lesson:"page1groups",
     type:"Group",
     q:"حروف یرملون کون سے ہیں؟",
     display:"یرملون",
     a:"ی ر م ل و ن",
-    o:["ی ر م ل و ن","ء ہ ع ح غ خ","ق ط ب ج د","ص س ز"],
-    why:"Page 1 ke bottom mein حروف یرملون: ی، ر، م، ل، و، ن دیے گئے ہیں۔",
-    hidayat:"یرملون group ko isi tartib se yaad karna asan hota hai.",
-    source:"Page 1 / bottom rules"
+    o:["ی ر م ل و ن","ء ہ ع ح غ خ","ق ط ب ج د","ص ض ط ظ خ غ ق"],
+    why:"یرملون کے حروف ی، ر، م، ل، و، ن ہیں۔",
+    hidayat:"Noon sakin/tanween ke baad yarmaloon aaye to Idgham ka rule lagta hai."
   },
+
+  /* =========================
+     LETTER CATEGORY QUESTIONS
+  ========================= */
   {
-    lesson:"takhti1",
+    lesson:"motaSeetiNaram",
     type:"Choose",
     q:"ان میں سے نرم حرف کون سا ہے؟",
     display:"؟",
     a:"ذ",
     o:["ذ","ب","ق","س"],
     why:"ذ نرم حروف ظ، ذ، ث میں شامل ہے۔",
-    hidayat:"نرم حروف ka group: ظ ذ ث.",
-    source:"Page 1 / نرم حروف"
+    hidayat:"Naram huroof: ظ ذ ث."
   },
   {
-    lesson:"takhti1",
+    lesson:"motaSeetiNaram",
     type:"Choose",
     q:"ان میں سے سیٹی والا حرف کون سا ہے؟",
     display:"؟",
     a:"ز",
-    o:["ز","ب","م","ل"],
+    o:["ز","م","ل","ب"],
     why:"ز سیٹی والے حروف ص، س، ز میں شامل ہے۔",
-    hidayat:"سیٹی والے حروف: ص س ز.",
-    source:"Page 1 / سیٹی والے حروف"
+    hidayat:"Seeti wale huroof: ص س ز."
   },
   {
-    lesson:"takhti1",
+    lesson:"motaSeetiNaram",
+    type:"Choose",
+    q:"ان میں سے موٹا حرف کون سا ہے؟",
+    display:"؟",
+    a:"ق",
+    o:["ق","ب","ن","م"],
+    why:"ق موٹے حروف ص، ض، ط، ظ، خ، غ، ق میں شامل ہے۔",
+    hidayat:"Mote huroof ko full/mota sound se parhna hota hai."
+  },
+  {
+    lesson:"motaSeetiNaram",
+    type:"Choose",
+    q:"ان میں سے حلقی حرف کون سا ہے؟",
+    display:"؟",
+    a:"ع",
+    o:["ع","ب","ن","ل"],
+    why:"ع حلقی حروف ء، ہ، ع، ح، غ، خ میں شامل ہے۔",
+    hidayat:"Halqi huroof halaq/gala se ada hote hain."
+  },
+  {
+    lesson:"motaSeetiNaram",
     type:"Choose",
     q:"ان میں سے قلقله حرف کون سا ہے؟",
     display:"؟",
     a:"ط",
     o:["ط","س","ر","ل"],
-    why:"ط حروف قلقله ق، ط، ب، ج، د میں شامل ہے۔",
-    hidayat:"قلقله group: ق ط ب ج د.",
-    source:"Page 1 / حروف قلقله"
-  },
-  {
-    lesson:"takhti1",
-    type:"Choose",
-    q:"ان میں سے حلقی حرف کون سا ہے؟",
-    display:"؟",
-    a:"ع",
-    o:["ع","ب","ل","ن"],
-    why:"ع حلقی حروف ء، ہ، ع، ح، غ، خ میں شامل ہے۔",
-    hidayat:"حلقی حروف galay se ada hote hain.",
-    source:"Page 1 / حلقی حروف"
-  },
-  {
-    lesson:"takhti1",
-    type:"Choose",
-    q:"ان میں سے موٹا حرف کون سا ہے؟",
-    display:"؟",
-    a:"ق",
-    o:["ق","ب","م","ن"],
-    why:"ق موٹے حروف ص، ض، ط، ظ، خ، غ، ق میں شامل ہے۔",
-    hidayat:"موٹے حروف ko halka ya patla nahi parhna.",
-    source:"Page 1 / موٹے حروف"
+    why:"ط قلقله حروف ق، ط، ب، ج، د میں شامل ہے۔",
+    hidayat:"Qalqala letters sakin hon to bounce hota hai."
   },
 
   /* =========================
-     TAKHTI 2: MURAKKABAT
+     TANWEEN / NOON SAKIN CORE
   ========================= */
   {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کن حروف سے بنا ہے؟",
-    display:"با",
-    a:"ب + ا",
-    o:["ب + ا","ت + ا","ن + ا","ج + ا"],
-    why:"با میں ب کے ساتھ ا ملا ہوا ہے۔",
-    hidayat:"مرکبات میں joined letters ko alag alag pehchanna hota hai.",
-    source:"Page 2 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کن حروف سے بنا ہے؟",
-    display:"تا",
-    a:"ت + ا",
-    o:["ت + ا","ب + ا","ث + ا","ی + ا"],
-    why:"تا میں ت ke oopar do nuqtay hain, phir ا ہے۔",
-    hidayat:"Joined shape mein bhi nuqtay se letter pehchanain.",
-    source:"Page 2 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کن حروف سے بنا ہے؟",
-    display:"ثا",
-    a:"ث + ا",
-    o:["ث + ا","ت + ا","ب + ا","س + ا"],
-    why:"ثا میں ث ke oopar teen nuqtay hain, phir ا ہے۔",
-    hidayat:"ث ko ت se nuqtay ki wajah se alag pehchanain.",
-    source:"Page 2 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کن حروف سے بنا ہے؟",
-    display:"جا",
-    a:"ج + ا",
-    o:["ج + ا","ح + ا","خ + ا","ب + ا"],
-    why:"جا میں ج ke sath ا hai.",
-    hidayat:"ج، ح، خ ki shape milti hai; nuqta se pehchan hoti hai.",
-    source:"Page 2 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کن حروف سے بنا ہے؟",
-    display:"خا",
-    a:"خ + ا",
-    o:["خ + ا","ح + ا","ج + ا","د + ا"],
-    why:"خا میں خ ke oopar nuqta hai, phir ا hai.",
-    hidayat:"خ حلقی aur موٹا حرف bhi hai, lekin yahan joined form pehchanni hai.",
-    source:"Page 2-3 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کیسے پہچانیں گے؟",
-    display:"بل",
-    a:"ب + ل",
-    o:["ب + ل","ت + ل","ن + ل","ی + ل"],
-    why:"بل میں pehla letter ب ہے aur doosra ل.",
-    hidayat:"مرکبات ko jaldi nahi, pehle letters tod kar parhain.",
-    source:"Page 2-3 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کیسے پہچانیں گے؟",
-    display:"تم",
-    a:"ت + م",
-    o:["ت + م","ث + م","ب + م","ن + م"],
-    why:"تم میں ت aur م mil kar aaye hain.",
-    hidayat:"Joined letter ke start, middle, end shapes alag ho sakti hain.",
-    source:"Page 3 / تختی 2 — مرکبات"
-  },
-  {
-    lesson:"takhti2",
-    type:"مرکبات",
-    q:"یہ مرکب کیسے پہچانیں گے؟",
-    display:"خم",
-    a:"خ + م",
-    o:["خ + م","ح + م","ج + م","غ + م"],
-    why:"خم میں خ ke oopar nuqta hai, phir م.",
-    hidayat:"Jis shape mein nuqta upar ho woh خ hai.",
-    source:"Page 3 / تختی 2 — مرکبات"
-  },
-
-  /* =========================
-     TAKHTI 3: HUROOF MUQATTAAT
-  ========================= */
-  {
-    lesson:"takhti3",
-    type:"مقطعات",
-    q:"حروف مقطعات میں حروف کو کیسے پڑھا جاتا ہے؟",
-    display:"الٓمٓ",
-    a:"الگ الگ نام سے",
-    o:["الگ الگ نام سے","ملا کر لفظ بنا کر","صرف حرکت سے","نہیں پڑھتے"],
-    why:"حروف مقطعات کو جدا جدا حروف کے نام سے پڑھا جاتا ہے۔",
-    hidayat:"Qaida page 5 پر حروف مقطعات کا سبق ہے۔",
-    source:"Page 5 / تختی 3 — حروف مقطعات"
-  },
-  {
-    lesson:"takhti3",
-    type:"مقطعات",
-    q:"یہ حروف مقطعات کس طرح پڑھے جائیں گے؟",
-    display:"الٓمٓ",
-    a:"الف لام میم",
-    o:["الف لام میم","اَلَم","اِلْم","لام میم الف"],
-    why:"الٓمٓ کو ملا کر لفظ نہیں بناتے، الگ الگ نام پڑھتے ہیں: الف لام میم۔",
-    hidayat:"حروف مقطعات ko letter names se read karein.",
-    source:"Page 5 / تختی 3 — حروف مقطعات"
-  },
-  {
-    lesson:"takhti3",
-    type:"مقطعات",
-    q:"یہ کیسے پڑھا جائے گا؟",
-    display:"طٰسٓ",
-    a:"طا سین",
-    o:["طا سین","طَس","طِس","طُس"],
-    why:"طٰسٓ حروف مقطعات ہیں، ان کو جدا جدا نام سے پڑھتے ہیں۔",
-    hidayat:"مقطعات mein har حرف ka naam bola jata hai.",
-    source:"Page 5 / تختی 3 — حروف مقطعات"
-  },
-
-  /* =========================
-     TAKHTI 4: HARAKAT
-  ========================= */
-  {
-    lesson:"takhti4",
-    type:"حرکات",
-    q:"زبر کے ساتھ یہ کیسے پڑھیں گے؟",
-    display:"اَ",
-    a:"اَ",
-    o:["اَ","اِ","اُ","آ"],
-    why:"اوپر والی حرکت زبر ہے، is se 'a' wali chhoti awaaz banti hai.",
-    hidayat:"تختی 4 میں زبر، زیر، پیش کی مشق ہے۔",
-    source:"Page 5-6 / تختی 4 — حرکات"
-  },
-  {
-    lesson:"takhti4",
-    type:"حرکات",
-    q:"زیر کے ساتھ یہ کیسے پڑھیں گے؟",
-    display:"اِ",
-    a:"اِ",
-    o:["اِ","اَ","اُ","آ"],
-    why:"نیچے والی حرکت زیر ہے، is se 'i' wali awaaz banti hai.",
-    hidayat:"زیر hamesha letter ke neeche hoti hai.",
-    source:"Page 5-6 / تختی 4 — حرکات"
-  },
-  {
-    lesson:"takhti4",
-    type:"حرکات",
-    q:"پیش کے ساتھ یہ کیسے پڑھیں گے؟",
-    display:"اُ",
-    a:"اُ",
-    o:["اُ","اَ","اِ","آ"],
-    why:"پیش letter ke oopar hoti hai aur 'u' wali awaaz deti hai.",
-    hidayat:"زبر، زیر، پیش teen basic حرکات hain.",
-    source:"Page 5-6 / تختی 4 — حرکات"
-  },
-  {
-    lesson:"takhti4",
-    type:"حرکات",
-    q:"اس کو کیسے پڑھیں گے؟",
-    display:"بَ",
-    a:"بَ / Ba",
-    o:["بَ / Ba","بِ / Bi","بُ / Bu","با / Baa"],
-    why:"ب پر زبر ہے، isliye بَ / Ba.",
-    hidayat:"زبر se chhoti 'a' awaaz nikalti hai.",
-    source:"Page 6 / تختی 4 — حرکات"
-  },
-  {
-    lesson:"takhti4",
-    type:"حرکات",
-    q:"اس کو کیسے پڑھیں گے؟",
-    display:"بِ",
-    a:"بِ / Bi",
-    o:["بِ / Bi","بَ / Ba","بُ / Bu","بے"],
-    why:"ب ke neeche زیر hai, isliye بِ / Bi.",
-    hidayat:"زیر neeche hoti hai aur 'i' awaaz deti hai.",
-    source:"Page 6 / تختی 4 — حرکات"
-  },
-  {
-    lesson:"takhti4",
-    type:"حرکات",
-    q:"اس کو کیسے پڑھیں گے؟",
-    display:"بُ",
-    a:"بُ / Bu",
-    o:["بُ / Bu","بَ / Ba","بِ / Bi","بو"],
-    why:"ب par پیش hai, isliye بُ / Bu.",
-    hidayat:"پیش se chhoti 'u' awaaz hoti hai.",
-    source:"Page 6 / تختی 4 — حرکات"
-  },
-
-  /* =========================
-     TAKHTI 5: TANWEEN
-  ========================= */
-  {
-    lesson:"takhti5",
-    type:"تنوین",
-    q:"دو زبر کے ساتھ یہ کیسے پڑھیں گے؟",
-    display:"بً",
-    a:"بَنْ / Ban",
-    o:["بَنْ / Ban","بِنْ / Bin","بُنْ / Bun","بَ / Ba"],
-    why:"دو زبر mein noon sakin ki awaaz shamil hoti hai.",
-    hidayat:"تنوین کا مطلب دو حرکتیں: دو زبر، دو زیر، دو پیش۔",
-    source:"Page 7-8 / تختی 5 — تنوین"
-  },
-  {
-    lesson:"takhti5",
-    type:"تنوین",
-    q:"دو زیر کے ساتھ یہ کیسے پڑھیں گے؟",
-    display:"بٍ",
-    a:"بِنْ / Bin",
-    o:["بِنْ / Bin","بَنْ / Ban","بُنْ / Bun","بِ / Bi"],
-    why:"دو زیر se 'in' wali awaaz aati hai.",
-    hidayat:"دو زیر mein akhir par ن ki awaaz hoti hai.",
-    source:"Page 7-8 / تختی 5 — تنوین"
-  },
-  {
-    lesson:"takhti5",
-    type:"تنوین",
-    q:"دو پیش کے ساتھ یہ کیسے پڑھیں گے؟",
-    display:"بٌ",
-    a:"بُنْ / Bun",
-    o:["بُنْ / Bun","بَنْ / Ban","بِنْ / Bin","بُ / Bu"],
-    why:"دو پیش se 'un' wali awaaz aati hai.",
-    hidayat:"تنوین mein noon sound likha nahi hota magar padha jata hai.",
-    source:"Page 7-8 / تختی 5 — تنوین"
-  },
-  {
-    lesson:"takhti5",
-    type:"تنوین",
-    q:"تنوین میں کون سی آواز شامل ہوتی ہے؟",
+    lesson:"tanweenNoon",
+    type:"Noon/Tanween",
+    q:"تنوین میں کون سی hidden آواز ہوتی ہے؟",
     display:"ــً ــٍ ــٌ",
     a:"نون ساکن کی آواز",
-    o:["نون ساکن کی آواز","میم کی آواز","الف مد","تشدید"],
-    why:"تنوین mein hidden نون ساکن ki awaaz hoti hai.",
-    hidayat:"دو حرکتوں ko tanween kehte hain.",
-    source:"Page 7-8 / تختی 5 — تنوین"
+    o:["نون ساکن کی آواز","میم کی آواز","الف مد","قلقله"],
+    why:"تنوین mein نون ساکن ki awaaz hidden hoti hai.",
+    hidayat:"Tanween ke baad jo next letter aaye, us ke mutabiq rule lagta hai."
+  },
+  {
+    lesson:"tanweenNoon",
+    type:"Noon/Tanween",
+    q:"نون ساکن یا تنوین کے بعد حلقی حرف آئے تو کیا ہوگا؟",
+    display:"نْ / ــً + ء ہ ع ح غ خ",
+    a:"اظہار",
+    o:["اظہار","ادغام","اقلاب","قلقله"],
+    why:"حلقی حروف کے ساتھ نون صاف ظاہر پڑھا جاتا ہے، isliye Izhar hota hai.",
+    hidayat:"Izhar = نون کی آواز clear/readable."
+  },
+  {
+    lesson:"tanweenNoon",
+    type:"Noon/Tanween",
+    q:"نون ساکن یا تنوین کے بعد یرملون آئے تو کیا rule لگے گا؟",
+    display:"نْ / ــً + ی ر م ل و ن",
+    a:"ادغام",
+    o:["ادغام","اظہار","قلقله","مد"],
+    why:"یرملون ke huroof ke sath Idgham ka rule lagta hai.",
+    hidayat:"Yarmaloon: ی ر م ل و ن."
+  },
+  {
+    lesson:"tanweenNoon",
+    type:"Noon/Tanween",
+    q:"نون ساکن یا تنوین کے بعد ب آئے تو کیا ہوگا؟",
+    display:"نْ / ــً + ب",
+    a:"اقلاب",
+    o:["اقلاب","اظہار","ادغام","قلقله"],
+    why:"ب ke sath نون ki awaaz میم mein badalti hai. Is rule ko Iqlab kehte hain.",
+    hidayat:"Iqlab mein ghunna bhi hota hai."
+  },
+  {
+    lesson:"tanweenNoon",
+    type:"Noon/Tanween",
+    q:"نون ساکن یا تنوین کے بعد اخفاء والے letters آئیں تو کیا ہوگا؟",
+    display:"نْ / ــً + اخفاء letters",
+    a:"اخفاء",
+    o:["اخفاء","اظہار","قلقله","مد"],
+    why:"اخفاء mein نون ki awaaz poori clear nahi hoti, balkay chhupa kar ghunna hota hai.",
+    hidayat:"Ikhfa = hide + ghunna."
   },
 
   /* =========================
-     TAKHTI 6: MASHQ HARAKAT WA TANWEEN
+     IZHAR
   ========================= */
   {
-    lesson:"takhti6",
-    type:"مشق",
-    q:"یہ لفظ کس rule ki practice hai؟",
-    display:"أَبَدًا",
-    a:"حرکات و تنوین",
-    o:["حرکات و تنوین","صرف سکون","صرف تشدید","حروف مقطعات"],
-    why:"اس میں حرکات بھی ہیں aur آخر میں تنوین بھی ہے۔",
-    hidayat:"تختی 6 میں harakat aur tanween dono ki practice hoti hai.",
-    source:"Page 9 / تختی 6 — مشق حرکات و تنوین"
+    lesson:"izhar",
+    type:"Izhar",
+    q:"اظہار کس group کے ساتھ ہوتا ہے؟",
+    display:"اظہار",
+    a:"حلقی حروف",
+    o:["حلقی حروف","حروف قلقله","سیٹی والے حروف","موٹے حروف"],
+    why:"Noon sakin/tanween ke baad halqi letters آئیں تو Izhar hota hai.",
+    hidayat:"Halqi letters: ء ہ ع ح غ خ."
   },
   {
-    lesson:"takhti6",
-    type:"مشق",
-    q:"آخر کی دو زبر کیا بتا رہی ہے؟",
-    display:"أَحَدٌ",
-    a:"تنوین",
-    o:["تنوین","سکون","تشدید","مد"],
-    why:"دو حرکتیں tanween hoti hain aur noon ki awaaz deti hain.",
-    hidayat:"دو زبر، دو زیر، دو پیش = تنوین.",
-    source:"Page 9-10 / تختی 6 — مشق حرکات و تنوین"
+    lesson:"izhar",
+    type:"Izhar",
+    q:"اس مثال میں کیا rule ہوگا؟",
+    display:"مِنْ خَيْرٍ",
+    a:"اظہار",
+    o:["اظہار","ادغام","اقلاب","قلقله"],
+    why:"نْ کے بعد خ آیا ہے، اور خ حلقی حرف ہے۔ Isliye Izhar hoga.",
+    hidayat:"Izhar mein نون صاف پڑھنا ہے، ghunna mein chhupana nahi."
   },
   {
-    lesson:"takhti6",
-    type:"مشق",
-    q:"یہ پڑھائی کس cheez ki mixed practice hai؟",
-    display:"حَسَنًا",
-    a:"حرکت + تنوین",
-    o:["حرکت + تنوین","سکون + مد","تشدید + سکون","صرف مقطعات"],
-    why:"حروف par حرکات hain aur آخر par tanween hai.",
-    hidayat:"Mushq mein pehle letters, phir harakat, phir tanween check karein.",
-    source:"Page 9-10 / تختی 6"
+    lesson:"izhar",
+    type:"Izhar",
+    q:"اس مثال میں نون ساکن کے بعد کون سا letter ہے؟",
+    display:"مِنْ عِلْمٍ",
+    a:"ع، اس لئے اظہار",
+    o:["ع، اس لئے اظہار","ب، اس لئے اقلاب","ی، اس لئے ادغام","ق، اس لئے قلقله"],
+    why:"نْ ke baad ع hai. ع halqi letter hai. Isliye Izhar.",
+    hidayat:"Halqi letter ke sath noon clear hota hai."
+  },
+  {
+    lesson:"izhar",
+    type:"Izhar",
+    q:"ان میں سے کون سا Izhar example ہے؟",
+    display:"اختیار کریں",
+    a:"نْ + ح",
+    o:["نْ + ح","نْ + ب","نْ + ی","قْ"],
+    why:"ح halqi letter hai, isliye نْ + ح mein Izhar hoga.",
+    hidayat:"Izhar letters: ء ہ ع ح غ خ."
+  },
+  {
+    lesson:"izhar",
+    type:"Izhar",
+    q:"اظہار میں نون کیسے پڑھتے ہیں؟",
+    display:"اظہار",
+    a:"صاف / clear",
+    o:["صاف / clear","چھپا کر","میم بنا کر","bounce دے کر"],
+    why:"Izhar ka matlab hi zahir/clear karna hai.",
+    hidayat:"Izhar mein noon ki awaaz chupani nahi."
   },
 
   /* =========================
-     TAKHTI 7: KHARI ZABAR / ZER / ULTI PESH
+     IDGHAM / YARMALOON
   ========================= */
   {
-    lesson:"takhti7",
-    type:"لمبی آواز",
-    q:"کھڑی زبر کیا کرتی ہے؟",
-    display:"ٰ",
-    a:"آواز لمبی کرتی ہے",
-    o:["آواز لمبی کرتی ہے","آواز ختم کرتی ہے","حرف double کرتی ہے","نون بناتی ہے"],
-    why:"کھڑی زبر chhoti zabar se lambi awaaz deti hai.",
-    hidayat:"تختی 7 میں کھڑی زبر، کھڑی زیر، الٹی پیش ki practice hai.",
-    source:"Page 10 / تختی 7"
+    lesson:"idgham",
+    type:"Idgham",
+    q:"یرملون کے حروف کون سے ہیں؟",
+    display:"یرملون",
+    a:"ی ر م ل و ن",
+    o:["ی ر م ل و ن","ء ہ ع ح غ خ","ق ط ب ج د","ص س ز"],
+    why:"Yarmaloon group mein ی، ر، م، ل، و، ن aate hain.",
+    hidayat:"Noon sakin/tanween ke baad yarmaloon aaye to Idgham."
   },
   {
-    lesson:"takhti7",
-    type:"لمبی آواز",
-    q:"کھڑی زیر کیا کرتی ہے؟",
-    display:"ٖ",
-    a:"زیر کی آواز لمبی کرتی ہے",
-    o:["زیر کی آواز لمبی کرتی ہے","زبر بناتی ہے","تنوین بناتی ہے","سکون بناتی ہے"],
-    why:"کھڑی زیر mein 'ee' jaisi lambi awaaz hoti hai.",
-    hidayat:"کھڑی زیر ko chhoti زیر ki tarah chhota nahi parhna.",
-    source:"Page 10 / تختی 7"
+    lesson:"idgham",
+    type:"Idgham",
+    q:"نون ساکن کے بعد ی آئے تو کیا ہوگا؟",
+    display:"نْ + ی",
+    a:"ادغام بغنہ",
+    o:["ادغام بغنہ","اظہار","اقلاب","قلقله"],
+    why:"ی yarmaloon mein hai aur ghunna wale idgham letters mein bhi aata hai.",
+    hidayat:"ادغام بغنہ letters: ی ن م و."
   },
   {
-    lesson:"takhti7",
-    type:"لمبی آواز",
-    q:"الٹی پیش کیا کرتی ہے؟",
-    display:"ٗ",
-    a:"پیش کی آواز لمبی کرتی ہے",
-    o:["پیش کی آواز لمبی کرتی ہے","زیر کرتی ہے","تشدید کرتی ہے","قلقله کرتی ہے"],
-    why:"الٹی پیش mein 'oo' jaisi lambi awaaz hoti hai.",
-    hidayat:"الٹی پیش ko normal پیش se lamba parhna hota hai.",
-    source:"Page 10 / تختی 7"
+    lesson:"idgham",
+    type:"Idgham",
+    q:"نون ساکن کے بعد م آئے تو کیا ہوگا؟",
+    display:"نْ + م",
+    a:"ادغام بغنہ",
+    o:["ادغام بغنہ","ادغام بلا غنہ","اظہار","قلقله"],
+    why:"م yarmaloon mein hai aur ghunna ke sath Idgham hota hai.",
+    hidayat:"ی ن م و ke sath ghunna wala Idgham."
   },
   {
-    lesson:"takhti7",
-    type:"لمبی آواز",
-    q:"اس میں کون سا sign hai؟",
-    display:"مٰ",
-    a:"کھڑی زبر",
-    o:["کھڑی زبر","زیر","الٹی پیش","تنوین"],
-    why:"م ke oopar vertical zabar jaisi sign hai.",
-    hidayat:"کھڑی زبر awaaz ko lamba karti hai.",
-    source:"Page 10-11 / تختی 7"
+    lesson:"idgham",
+    type:"Idgham",
+    q:"نون ساکن کے بعد ل آئے تو کیا ہوگا؟",
+    display:"نْ + ل",
+    a:"ادغام بلا غنہ",
+    o:["ادغام بلا غنہ","ادغام بغنہ","اظہار","اقلاب"],
+    why:"ل yarmaloon mein hai, lekin ل aur ر ke sath ghunna nahi hota.",
+    hidayat:"ادغام بلا غنہ letters: ل ر."
+  },
+  {
+    lesson:"idgham",
+    type:"Idgham",
+    q:"نون ساکن کے بعد ر آئے تو کیا ہوگا؟",
+    display:"نْ + ر",
+    a:"ادغام بلا غنہ",
+    o:["ادغام بلا غنہ","ادغام بغنہ","اخفاء","قلقله"],
+    why:"ر ke sath Idgham hota hai lekin ghunna nahi.",
+    hidayat:"ل ر = Idgham without ghunna."
+  },
+  {
+    lesson:"idgham",
+    type:"Idgham",
+    q:"ادغام بغنہ کے حروف کون سے ہیں؟",
+    display:"غنہ والا ادغام",
+    a:"ی ن م و",
+    o:["ی ن م و","ل ر","ء ہ ع ح غ خ","ق ط ب ج د"],
+    why:"Idgham with ghunna letters: ی، ن، م، و.",
+    hidayat:"Yarmaloon mein se ی ن م و ghunna wale hain."
+  },
+  {
+    lesson:"idgham",
+    type:"Idgham",
+    q:"ادغام بلا غنہ کے حروف کون سے ہیں؟",
+    display:"بلا غنہ",
+    a:"ل ر",
+    o:["ل ر","ی ن م و","ب","ء ہ"],
+    why:"ل اور ر ke sath Idgham hota hai magar ghunna nahi hota.",
+    hidayat:"ل ر = no ghunna."
   },
 
   /* =========================
-     TAKHTI 8: MADDAH WA LEEN
+     IQLAB
   ========================= */
   {
-    lesson:"takhti8",
-    type:"مدہ و لین",
-    q:"مدہ کا مطلب kya hai؟",
-    display:"مدہ",
-    a:"آواز کو کھینچنا",
-    o:["آواز کو کھینچنا","آواز کاٹنا","حرف چھپانا","حرف double کرنا"],
-    why:"مد میں آواز کو lamba khainch kar padha jata hai.",
-    hidayat:"تختی 8 مدہ و لین ka lesson hai.",
-    source:"Page 11 / تختی 8 — مدہ و لین"
+    lesson:"iqlab",
+    type:"Iqlab",
+    q:"اقلاب کس حرف کے ساتھ ہوتا ہے؟",
+    display:"اقلاب",
+    a:"ب",
+    o:["ب","م","ن","ق"],
+    why:"Noon sakin/tanween ke baad ب aaye to Iqlab hota hai.",
+    hidayat:"Iqlab mein نون ki awaaz میم mein badalti hai."
   },
   {
-    lesson:"takhti8",
-    type:"مدہ",
-    q:"زبر کے بعد الف آئے تو آواز کیسی ہوگی؟",
-    display:"بَا",
-    a:"لمبی / Baa",
-    o:["لمبی / Baa","چھوٹی / Ba","Bin","Bun"],
-    why:"زبر ke baad الف aaye to madd hota hai aur awaaz lambi hoti hai.",
-    hidayat:"الف مد se pehle zabar hoti hai.",
-    source:"Page 11-12 / تختی 8"
+    lesson:"iqlab",
+    type:"Iqlab",
+    q:"نون ساکن کے بعد ب آئے تو کیا ہوگا؟",
+    display:"نْ + ب",
+    a:"اقلاب + غنہ",
+    o:["اقلاب + غنہ","اظہار","قلقله","مد"],
+    why:"ب ke sath noon meem ki awaaz mein badalti hai aur ghunna hota hai.",
+    hidayat:"Iqlab = change into meem sound with ghunna."
   },
   {
-    lesson:"takhti8",
-    type:"مدہ",
-    q:"زیر کے بعد ی آئے تو آواز کیسی ہوگی؟",
-    display:"بِی",
-    a:"لمبی / Bee",
-    o:["لمبی / Bee","چھوٹی / Bi","Boo","Ban"],
-    why:"زیر ke baad ی aaye to 'ee' wali lambi awaaz hoti hai.",
-    hidayat:"ی مد se pehle زیر hoti hai.",
-    source:"Page 11-12 / تختی 8"
+    lesson:"iqlab",
+    type:"Iqlab",
+    q:"تنوین کے بعد ب آئے تو کیا ہوگا؟",
+    display:"ــً + ب",
+    a:"اقلاب",
+    o:["اقلاب","اظہار","ادغام بلا غنہ","قلقله"],
+    why:"Tanween mein hidden noon hota hai. ب ke sath Iqlab lagega.",
+    hidayat:"Tanween + ب = Iqlab."
   },
   {
-    lesson:"takhti8",
-    type:"مدہ",
-    q:"پیش کے بعد و آئے تو آواز کیسی ہوگی؟",
-    display:"بُو",
-    a:"لمبی / Boo",
-    o:["لمبی / Boo","چھوٹی / Bu","Bee","Baa"],
-    why:"پیش ke baad واو aaye to 'oo' wali lambi awaaz hoti hai.",
-    hidayat:"واو مد se pehle پیش hoti hai.",
-    source:"Page 11-12 / تختی 8"
-  },
-  {
-    lesson:"takhti8",
-    type:"حروف لین",
-    q:"حروف لین kis halat mein aate hain؟",
-    display:"وْ  یْ",
-    a:"جب پہلے زبر ہو",
-    o:["جب پہلے زبر ہو","جب پہلے پیش ہو","جب پہلے زیر ہو","جب تشدید ہو"],
-    why:"Qaida ke لین examples mein ساکن و/ی se pehle zabar hoti hai.",
-    hidayat:"حروف لین ko نرم and smooth awaaz ke sath parhte hain.",
-    source:"Page 13 / حروف لین"
+    lesson:"iqlab",
+    type:"Iqlab",
+    q:"اقلاب میں آواز کس میں بدلتی ہے؟",
+    display:"اقلاب",
+    a:"میم کی آواز",
+    o:["میم کی آواز","لام کی آواز","ر کی آواز","ق کی آواز"],
+    why:"Iqlab mein نون/تنوین ki awaaz میم ki taraf badalti hai.",
+    hidayat:"Is mein ghunna bhi hota hai."
   },
 
   /* =========================
-     TAKHTI 9: MASHQI HARAKAT
+     IKHFA
   ========================= */
   {
-    lesson:"takhti9",
-    type:"مشق",
-    q:"یہ کس قسم کی practice ہے؟",
-    display:"أَمَنَ",
-    a:"مشقی حرکات",
-    o:["مشقی حرکات","تشدید مع سکون","صرف مقطعات","وقف"],
-    why:"اس میں حروف پر حرکات ki reading practice hai.",
-    hidayat:"تختی 9 mein harakat wali examples ko flow mein parhna hota hai.",
-    source:"Page 14-16 / تختی 9"
+    lesson:"ikhfa",
+    type:"Ikhfa",
+    q:"اخفاء میں نون کی آواز کیسے پڑھتے ہیں؟",
+    display:"اخفاء",
+    a:"چھپا کر غنہ کے ساتھ",
+    o:["چھپا کر غنہ کے ساتھ","صاف clear","میم بنا کر","bounce دے کر"],
+    why:"Ikhfa ka matlab chhupana hai. Noon clear nahi hota, ghunna hota hai.",
+    hidayat:"Ikhfa = hide + ghunna."
   },
   {
-    lesson:"takhti9",
-    type:"مشق",
-    q:"اس لفظ میں pehle kya check karein؟",
-    display:"جَاءَ",
-    a:"حروف اور حرکات",
-    o:["حروف اور حرکات","صرف تشدید","صرف سکون","صرف قلقله"],
-    why:"Mushq mein pehle har حرف aur uski حرکت pehchani jati hai.",
-    hidayat:"Har word ko jaldi nahi; har letter aur sign check karein.",
-    source:"Page 14-16 / تختی 9"
+    lesson:"ikhfa",
+    type:"Ikhfa",
+    q:"نون ساکن کے بعد ت آئے تو کیا rule ہوگا؟",
+    display:"نْ + ت",
+    a:"اخفاء",
+    o:["اخفاء","اظہار","اقلاب","ادغام بلا غنہ"],
+    why:"ت halqi, yarmaloon, ya ب nahi hai; ikhfa letters mein aata hai.",
+    hidayat:"نْ + ت mein noon ko chhupa kar ghunna karein."
   },
   {
-    lesson:"takhti9",
-    type:"مشق",
-    q:"مشقی حرکات ka maqsad kya hai؟",
-    display:"Practice",
-    a:"حرکات کے ساتھ روانی",
-    o:["حرکات کے ساتھ روانی","صرف حروف یاد کرنا","صرف وقف","صرف مد"],
-    why:"Is takhti ka maqsad harakat wale words ko theek flow mein parhna hai.",
-    hidayat:"Harakat: zabar, zer, pesh ko miss na karein.",
-    source:"Page 14-16 / تختی 9"
+    lesson:"ikhfa",
+    type:"Ikhfa",
+    q:"نون ساکن کے بعد ص آئے تو کیا ہوگا؟",
+    display:"نْ + ص",
+    a:"اخفاء",
+    o:["اخفاء","اظہار","اقلاب","قلقله"],
+    why:"ص ikhfa letters mein aata hai. Noon clear nahi, ghunna ke sath chhupa kar.",
+    hidayat:"ص khud seeti/mota letter bhi hai, lekin noon rule yahan Ikhfa hai."
+  },
+  {
+    lesson:"ikhfa",
+    type:"Ikhfa",
+    q:"تنوین کے بعد ک آئے تو کیا rule ہوگا؟",
+    display:"ــً + ک",
+    a:"اخفاء",
+    o:["اخفاء","اظہار","اقلاب","ادغام"],
+    why:"Tanween mein hidden noon hai. ک ke sath Ikhfa hota hai.",
+    hidayat:"Tanween + ikhfa letter = ghunna with hidden noon."
+  },
+  {
+    lesson:"ikhfa",
+    type:"Ikhfa",
+    q:"ان میں سے کون سا اخفاء example ہے؟",
+    display:"اختیار کریں",
+    a:"نْ + ت",
+    o:["نْ + ت","نْ + ع","نْ + ب","نْ + ل"],
+    why:"ت ikhfa letter hai. ع Izhar, ب Iqlab, ل Idgham بلا غنہ hai.",
+    hidayat:"Rule next letter se decide hota hai."
   },
 
   /* =========================
-     TAKHTI 10: SUKOON / JAZM
+     QALQALA
   ========================= */
   {
-    lesson:"takhti10",
-    type:"سکون",
-    q:"سکون یعنی جزم کا نشان kya karta hai؟",
-    display:"بْ",
-    a:"حرف کو ساکن کرتا ہے",
-    o:["حرف کو ساکن کرتا ہے","حرف کو لمبا کرتا ہے","حرف کو double کرتا ہے","تنوین بناتا ہے"],
-    why:"سکون/jazm wale حرف par movement nahi hoti.",
-    hidayat:"تختی 10 سکون یعنی جزم ka lesson hai.",
-    source:"Page 17 / تختی 10"
+    lesson:"qalqala",
+    type:"Qalqala",
+    q:"قلقله کب ہوگا؟",
+    display:"ق ط ب ج د",
+    a:"جب یہ letters ساکن ہوں",
+    o:["جب یہ letters ساکن ہوں","جب ان پر زبر ہو","جب ان پر زیر ہو","جب ان کے بعد الف ہو"],
+    why:"Qalqala letters ق، ط، ب، ج، د jab sakin hon to bounce/جھٹکہ hota hai.",
+    hidayat:"Qalqala ka rule sukoon ke sath apply hota hai."
   },
   {
-    lesson:"takhti10",
-    type:"سکون",
-    q:"ساکن حرف کو کیسے پڑھتے ہیں؟",
+    lesson:"qalqala",
+    type:"Qalqala",
+    q:"اس میں کیا rule ہوگا؟",
     display:"اَبْ",
-    a:"پچھلے حرف سے ملا کر",
-    o:["پچھلے حرف سے ملا کر","اکیلا لمبا کر کے","چھوڑ کر","دو بار"],
-    why:"ساکن حرف اکیلا nahi padha jata, pehle حرکت wale حرف ke sath milta hai.",
-    hidayat:"اَبْ mein ب ساکن hai, isliye Ab.",
-    source:"Page 17 / تختی 10"
+    a:"قلقله",
+    o:["قلقله","اظہار","اقلاب","مد"],
+    why:"ب قلقله letter hai aur yahan ب ساکن hai.",
+    hidayat:"بْ par halki bounce hogi."
   },
   {
-    lesson:"takhti10",
-    type:"سکون",
-    q:"اس کو کیسے پڑھیں گے؟",
-    display:"اَتْ",
-    a:"At",
-    o:["At","Ata","Ati","Atoo"],
-    why:"ت par سکون hai, isliye pehle اَ ke sath mil kar At.",
-    hidayat:"سکون par rukne jaisi band awaaz aati hai.",
-    source:"Page 17 / تختی 10"
+    lesson:"qalqala",
+    type:"Qalqala",
+    q:"اس میں کیا rule ہوگا؟",
+    display:"اَقْ",
+    a:"قلقله",
+    o:["قلقله","اخفاء","ادغام","تنوین"],
+    why:"ق قلقله letter hai aur ساکن hai.",
+    hidayat:"قْ par bounce/قلقله hoga."
   },
   {
-    lesson:"takhti10",
-    type:"سکون",
-    q:"قلقله huroof par سکون ho to kya hoga؟",
-    display:"قْ طْ بْ جْ دْ",
-    a:"ہلکی bounce / قلقله",
-    o:["ہلکی bounce / قلقله","مد","تنوین","اخفاء"],
-    why:"Page 1 ke قلقله huroof jab ساکن hon to قلقله ki awaaz hoti hai.",
-    hidayat:"قلقله letters: ق ط ب ج د.",
-    source:"Page 1 + Page 17 / قلقله with سکون"
-  },
-
-  /* =========================
-     TAKHTI 11: MASHQ SUKOON
-  ========================= */
-  {
-    lesson:"takhti11",
-    type:"مشق سکون",
-    q:"یہ کس rule ki practice hai؟",
-    display:"أَنْتَ",
-    a:"سکون",
-    o:["سکون","تشدید","تنوین","مقطعات"],
-    why:"ن par سکون hai, isliye ye سکون ki practice hai.",
-    hidayat:"تختی 11 mein سکون wale words ki مشق hai.",
-    source:"Page 18-22 / تختی 11 — مشق سکون"
+    lesson:"qalqala",
+    type:"Qalqala",
+    q:"ان میں سے کون سا قلقله letter ہے؟",
+    display:"؟",
+    a:"ج",
+    o:["ج","س","م","ل"],
+    why:"ج قلقله group ق ط ب ج د mein aata hai.",
+    hidayat:"Qalqala huroof: ق ط ب ج د."
   },
   {
-    lesson:"takhti11",
-    type:"مشق سکون",
-    q:"اس میں ساکن حرف کون سا ہے؟",
-    display:"لَسْتَ",
-    a:"سْ",
-    o:["سْ","لَ","تَ","None"],
-    why:"س ke oopar سکون hai.",
-    hidayat:"Sakin sign ko pehchan kar us حرف ko pehle se milayen.",
-    source:"Page 18-20 / مشق سکون"
-  },
-  {
-    lesson:"takhti11",
-    type:"مشق سکون",
-    q:"سکون wali مشق mein sab se pehle kya dekhna hai؟",
-    display:"سکون",
-    a:"کون سا حرف ساکن ہے",
-    o:["کون سا حرف ساکن ہے","کون سا حرف رنگین ہے","لفظ کتنا بڑا ہے","صفحہ نمبر"],
-    why:"Sahi reading ke liye sakin letter pehchanna zaroori hai.",
-    hidayat:"سکون ko previous harakat wale letter ke sath milana hota hai.",
-    source:"Page 18-22 / تختی 11"
+    lesson:"qalqala",
+    type:"Qalqala",
+    q:"کیا ہر قلقله letter پر ہمیشہ قلقله ہوگا؟",
+    display:"ق ط ب ج د",
+    a:"نہیں، جب ساکن ہو",
+    o:["نہیں، جب ساکن ہو","ہاں، ہمیشہ","صرف زبر پر","صرف مد پر"],
+    why:"Qalqala tab hota hai jab qalqala letter sakin ho.",
+    hidayat:"Letter group yaad karna enough nahi; sukoon bhi dekhna hai."
   },
 
   /* =========================
-     TAKHTI 12: TASHDEED
+     GHUNNA
   ========================= */
   {
-    lesson:"takhti12",
-    type:"تشدید",
-    q:"تشدید ka matlab kya hai؟",
-    display:"بّ",
-    a:"حرف کو زور/double سے پڑھنا",
-    o:["حرف کو زور/double سے پڑھنا","حرف کو چھوڑنا","حرف کو لمبا کرنا","تنوین کرنا"],
-    why:"تشدید mein حرف strong/double sound se padha jata hai.",
-    hidayat:"تختی 12 تشدید ka lesson hai.",
-    source:"Page 23 / تختی 12 — تشدید"
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"غنہ کہاں ہوگا؟",
+    display:"نّ  مّ",
+    a:"نون/میم مشدد پر",
+    o:["نون/میم مشدد پر","ہر زبر پر","ہر قلقله پر","ہر حلقی حرف پر"],
+    why:"نّ اور مّ پر ghunna hota hai.",
+    hidayat:"Ghunna naak se hota hai."
   },
   {
-    lesson:"takhti12",
-    type:"تشدید",
-    q:"اس میں کون سا نشان ہے؟",
-    display:"اَبَّ",
-    a:"تشدید",
-    o:["تشدید","سکون","زیر","دو زبر"],
-    why:"ب par شَدّہ/tashdeed ka sign hai.",
-    hidayat:"Tashdeed wale حرف ko halka nahi parhna.",
-    source:"Page 23 / تختی 12"
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"اس میں کیا ہوگا؟",
+    display:"إِنَّ",
+    a:"غنہ",
+    o:["غنہ","قلقله","اظہار","مد نہیں"],
+    why:"ن پر تشدید ہے، isliye ghunna hoga.",
+    hidayat:"نّ = ghunna."
   },
   {
-    lesson:"takhti12",
-    type:"تشدید",
-    q:"تشدید والے حرف کو کیسے پڑھیں گے؟",
-    display:"رَبَّ",
-    a:"زور دے کر",
-    o:["زور دے کر","چھوڑ کر","صرف لمبا کر کے","نون بنا کر"],
-    why:"Tashdeed حرف ki awaaz ko mazboot karti hai.",
-    hidayat:"Tashdeed ko double/strong sound samjhein.",
-    source:"Page 23 / تختی 12"
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"اس میں کیا ہوگا؟",
+    display:"ثُمَّ",
+    a:"غنہ",
+    o:["غنہ","قلقله","اقلاب","اظہار"],
+    why:"م پر تشدید ہے، isliye ghunna hoga.",
+    hidayat:"مّ = ghunna."
+  },
+  {
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"ادغام بغنہ میں کون سے letters ہیں؟",
+    display:"غنہ والا ادغام",
+    a:"ی ن م و",
+    o:["ی ن م و","ل ر","ء ہ ع ح غ خ","ق ط ب ج د"],
+    why:"ی، ن، م، و ke sath idgham mein ghunna hota hai.",
+    hidayat:"ل، ر ke sath ghunna nahi hota."
+  },
+  {
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"اقلاب میں غنہ ہوگا؟",
+    display:"نْ + ب",
+    a:"ہاں",
+    o:["ہاں","نہیں","صرف قلقله","صرف مد"],
+    why:"Iqlab mein noon meem sound mein badalta hai aur ghunna hota hai.",
+    hidayat:"نْ/تنوین + ب = Iqlab with ghunna."
+  },
+  {
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"اخفاء میں غنہ ہوگا؟",
+    display:"نْ + ت",
+    a:"ہاں",
+    o:["ہاں","نہیں","صرف قلقله","صرف Izhar"],
+    why:"Ikhfa mein noon hidden hota hai aur ghunna ke sath parha jata hai.",
+    hidayat:"Ikhfa = hidden noon + ghunna."
+  },
+  {
+    lesson:"ghunna",
+    type:"Ghunna",
+    q:"اظہار میں غنہ chhupa kar karna hai؟",
+    display:"نْ + ع",
+    a:"نہیں، نون صاف پڑھنا ہے",
+    o:["نہیں، نون صاف پڑھنا ہے","ہاں، لازمی غنہ","میم بنا دیں","bounce دیں"],
+    why:"ع halqi letter hai. Halqi letter ke sath Izhar hota hai.",
+    hidayat:"Izhar mein noon clear hota hai."
   },
 
   /* =========================
-     TAKHTI 13: MASHQ TASHDEED
+     COMPARISON QUESTIONS
   ========================= */
   {
-    lesson:"takhti13",
-    type:"مشق تشدید",
-    q:"یہ کس takhti ki practice hai؟",
-    display:"بِسْمِ صَدّی",
-    a:"مشق تشدید",
-    o:["مشق تشدید","مشق سکون","حروف مقطعات","تنوین"],
-    why:"اس میں تشدید wale letters ki reading practice hai.",
-    hidayat:"تختی 13 مشق تشدید hai.",
-    source:"Page 24-26 / تختی 13"
+    lesson:"mixed",
+    type:"Compare",
+    q:"نْ + ب میں کیا rule ہے؟",
+    display:"نْ + ب",
+    a:"اقلاب",
+    o:["اقلاب","اظہار","ادغام","قلقله"],
+    why:"ب ke sath Iqlab hota hai.",
+    hidayat:"Iqlab = noon to meem sound + ghunna."
   },
   {
-    lesson:"takhti13",
-    type:"مشق تشدید",
-    q:"تشدید والی مشق mein kya zaroori hai؟",
-    display:"ّ",
-    a:"حرف کو مضبوط پڑھنا",
-    o:["حرف کو مضبوط پڑھنا","حرف کو چھوڑنا","حرف کو ہمیشہ مد کرنا","حرف کو نون بنانا"],
-    why:"Tashdeed ka مقصد حرف ko strong/double read karwana hai.",
-    hidayat:"Jis حرف par shaddah ho use clear aur strong parhain.",
-    source:"Page 24-26 / تختی 13"
+    lesson:"mixed",
+    type:"Compare",
+    q:"نْ + خ میں کیا rule ہے؟",
+    display:"نْ + خ",
+    a:"اظہار",
+    o:["اظہار","اقلاب","ادغام","قلقله"],
+    why:"خ halqi letter hai. Isliye Izhar.",
+    hidayat:"Halqi letters: ء ہ ع ح غ خ."
   },
   {
-    lesson:"takhti13",
-    type:"مشق تشدید",
-    q:"اس word mein rule kya hai؟",
-    display:"قُلْ مَتِّعْ",
-    a:"تشدید",
-    o:["تشدید","صرف مد","صرف تنوین","حروف مقطعات"],
-    why:"ت par tashdeed ka sign hai.",
-    hidayat:"Tashdeed ko nazarandaz karne se reading ghalat hoti hai.",
-    source:"Page 25 / مشق تشدید"
-  },
-
-  /* =========================
-     TAKHTI 14: TASHDEED MA SUKOON
-  ========================= */
-  {
-    lesson:"takhti14",
-    type:"تشدید مع سکون",
-    q:"یہ lesson kis cheez ki practice hai؟",
-    display:"مشق تشدید مع سکون",
-    a:"تشدید اور سکون دونوں",
-    o:["تشدید اور سکون دونوں","صرف مد","صرف حروف","صرف تنوین"],
-    why:"اس takhti mein tashdeed aur sukoon dono ke examples diye gaye hain.",
-    hidayat:"Pehle tashdeed identify karein, phir sakin حرف ko milayen.",
-    source:"Page 26 / تختی 14"
+    lesson:"mixed",
+    type:"Compare",
+    q:"نْ + و میں کیا rule ہے؟",
+    display:"نْ + و",
+    a:"ادغام بغنہ",
+    o:["ادغام بغنہ","ادغام بلا غنہ","اظہار","اقلاب"],
+    why:"و yarmaloon mein hai aur ghunna wale idgham letters mein hai.",
+    hidayat:"ی ن م و = ghunna wala idgham."
   },
   {
-    lesson:"takhti14",
-    type:"تشدید مع سکون",
-    q:"اگر word mein تشدید aur سکون dono hon to kya karein؟",
-    display:"ّ  ْ",
-    a:"دونوں signs کا حق ادا کریں",
-    o:["دونوں signs کا حق ادا کریں","ایک sign چھوڑ دیں","صرف مد پڑھیں","صرف تنوین پڑھیں"],
-    why:"Qaida ki مشق ka maqsad signs ko sahi pehchan kar padhna hai.",
-    hidayat:"Har sign ki apni hidayat hoti hai.",
-    source:"Page 26 / تختی 14"
+    lesson:"mixed",
+    type:"Compare",
+    q:"نْ + ر میں کیا rule ہے؟",
+    display:"نْ + ر",
+    a:"ادغام بلا غنہ",
+    o:["ادغام بلا غنہ","ادغام بغنہ","اقلاب","اخفاء"],
+    why:"ر yarmaloon mein hai, lekin ل ر mein ghunna nahi hota.",
+    hidayat:"ل ر = Idgham without ghunna."
   },
   {
-    lesson:"takhti14",
-    type:"تشدید مع سکون",
-    q:"اس میں کیا check karna zaroori hai؟",
-    display:"تَخَبَّتْ",
-    a:"تشدید + سکون",
-    o:["تشدید + سکون","صرف تنوین","صرف مد","صرف مقطعات"],
-    why:"Word mein shaddah aur sukoon dono signs aa sakte hain.",
-    hidayat:"Reading se pehle har sign dekh kar parhain.",
-    source:"Page 26 / مشق تشدید مع سکون"
-  },
-
-  /* =========================
-     TAKHTI 15: TASHDEED MA TASHDEED
-  ========================= */
-  {
-    lesson:"takhti15",
-    type:"تشدید مع تشدید",
-    q:"تختی 15 mein kis cheez ki practice hai؟",
-    display:"تشدید مع تشدید",
-    a:"دو تشدید والی مشق",
-    o:["دو تشدید والی مشق","صرف سکون","صرف تنوین","صرف حروف لین"],
-    why:"تختی 15 ka heading تشدید مع تشدید hai.",
-    hidayat:"Jahan do tashdeed hon, dono ko sahi strong sound se parhna hai.",
-    source:"Page 27 / تختی 15"
+    lesson:"mixed",
+    type:"Compare",
+    q:"قْ میں کیا rule ہوگا؟",
+    display:"قْ",
+    a:"قلقله",
+    o:["قلقله","اظہار","اقلاب","ادغام"],
+    why:"ق قلقله letter hai aur sakin hai.",
+    hidayat:"Qalqala letters: ق ط ب ج د."
   },
   {
-    lesson:"takhti15",
-    type:"تشدید مع تشدید",
-    q:"دو تشدید ho to kya karna hai؟",
-    display:"ّ  ّ",
-    a:"دونوں کو الگ الگ مضبوط پڑھنا",
-    o:["دونوں کو الگ الگ مضبوط پڑھنا","ایک کو چھوڑنا","صرف pehle ko parhna","sirf last ko parhna"],
-    why:"Har tashdeed wale حرف ka حق ادا کرنا hota hai.",
-    hidayat:"Tashdeed ko miss karna reading ki ghalti hai.",
-    source:"Page 27 / تختی 15"
+    lesson:"mixed",
+    type:"Compare",
+    q:"ص کس group میں آتا ہے؟",
+    display:"ص",
+    a:"سیٹی والا + موٹا حرف",
+    o:["سیٹی والا + موٹا حرف","نرم حرف","صرف حلقی","یرملون"],
+    why:"ص seeti wale huroof mein bhi hai aur mote huroof mein bhi.",
+    hidayat:"Ek letter multiple groups mein aa sakta hai."
   },
   {
-    lesson:"takhti15",
-    type:"تشدید مع تشدید",
-    q:"یہ kis lesson se related hai؟",
-    display:"يَتَوَلَّ",
-    a:"تشدید مع تشدید / مشق تشدید",
-    o:["تشدید مع تشدید / مشق تشدید","حروف مقطعات","تنوین","صرف حرکات"],
-    why:"اس section mein multiple tashdeed style examples hain.",
-    hidayat:"Tashdeed signs ko carefully dekh kar padhna hai.",
-    source:"Page 27 / تختی 15"
-  },
-
-  /* =========================
-     TAKHTI 16: TASHDEED BAAD HUROOF MADDAH
-  ========================= */
-  {
-    lesson:"takhti16",
-    type:"تشدید بعد حروف مدہ",
-    q:"تختی 16 mein kis cheez ki practice hai؟",
-    display:"تشدید بعد حروف مدہ",
-    a:"مد کے بعد تشدید",
-    o:["مد کے بعد تشدید","صرف سکون","صرف مفردات","صرف تنوین"],
-    why:"Heading mein تشدید بعد حروف مدہ likha hai.",
-    hidayat:"Pehle mad ko ada karein, phir tashdeed ko strong parhain.",
-    source:"Page 28 / تختی 16"
+    lesson:"mixed",
+    type:"Compare",
+    q:"خ کس group میں آتا ہے؟",
+    display:"خ",
+    a:"حلقی + موٹا حرف",
+    o:["حلقی + موٹا حرف","سیٹی والا","یرملون","قلقله"],
+    why:"خ halqi huroof mein bhi hai aur mote huroof mein bhi.",
+    hidayat:"خ ko halaq se aur pur/mota sound ke sath ada karein."
   },
   {
-    lesson:"takhti16",
-    type:"تشدید بعد حروف مدہ",
-    q:"مد کے بعد تشدید آئے تو kya dhyan rakhein؟",
-    display:"مد + ّ",
-    a:"مد بھی پڑھیں، تشدید بھی",
-    o:["مد بھی پڑھیں، تشدید بھی","مد چھوڑ دیں","تشدید چھوڑ دیں","دونوں نہ پڑھیں"],
-    why:"Dono signs ka حق alag alag ادا کرنا hota hai.",
-    hidayat:"Mad ke baad tashdeed aaye to dono rules combine hote hain.",
-    source:"Page 28 / تختی 16"
+    lesson:"mixed",
+    type:"Compare",
+    q:"ل کس rule میں خاص ہے؟",
+    display:"نْ + ل",
+    a:"ادغام بلا غنہ",
+    o:["ادغام بلا غنہ","ادغام بغنہ","اقلاب","اظہار"],
+    why:"ل yarmaloon mein hai, lekin ghunna ke baghair idgham hota hai.",
+    hidayat:"ل ر = no ghunna."
   },
   {
-    lesson:"takhti16",
-    type:"خاتمہ",
-    q:"آخری صفحات ka maqsad kya hai؟",
-    display:"قرآنی مشق",
-    a:"پچھلے rules ko reading mein lagana",
-    o:["پچھلے rules ko reading mein lagana","نئے حروف بنانا","صرف pictures dekhna","sirf page number yaad karna"],
-    why:"Last pages mein Quranic reading practice di gayi hai jahan pehle rules apply hote hain.",
-    hidayat:"Qaida ka maqsad rules ko actual reading mein apply karna hai.",
-    source:"Page 28-30 / خاتمہ / reading practice"
+    lesson:"mixed",
+    type:"Compare",
+    q:"مّ میں کیا ہوگا؟",
+    display:"مّ",
+    a:"غنہ",
+    o:["غنہ","قلقله","اظہار","مد"],
+    why:"میم مشدد par ghunna hota hai.",
+    hidayat:"نّ اور مّ par ghunna."
+  },
+  {
+    lesson:"mixed",
+    type:"Compare",
+    q:"تنوین + ع میں کیا rule ہوگا؟",
+    display:"ــً + ع",
+    a:"اظہار",
+    o:["اظہار","اقلاب","ادغام","قلقله"],
+    why:"ع halqi letter hai. Tanween mein hidden noon hota hai. Isliye Izhar.",
+    hidayat:"Tanween + halqi letter = Izhar."
+  },
+  {
+    lesson:"mixed",
+    type:"Compare",
+    q:"تنوین + ب میں کیا rule ہوگا؟",
+    display:"ــً + ب",
+    a:"اقلاب",
+    o:["اقلاب","اظہار","ادغام بلا غنہ","قلقله"],
+    why:"Tanween ke baad ب aaye to Iqlab hota hai.",
+    hidayat:"Iqlab mein ghunna bhi hota hai."
+  },
+  {
+    lesson:"mixed",
+    type:"Compare",
+    q:"تنوین + م میں کیا rule ہوگا؟",
+    display:"ــً + م",
+    a:"ادغام بغنہ",
+    o:["ادغام بغنہ","اظہار","اقلاب","قلقله"],
+    why:"م yarmaloon aur ghunna wale idgham letters mein hai.",
+    hidayat:"ی ن م و = Idgham with ghunna."
   }
 
 ];
@@ -1771,7 +1511,7 @@ function startQuiz(){
     baseData = questions.slice();
   }else{
     baseData = questions.filter(function(item){
-      return item.lesson === currentLesson;
+      return item.lesson === currentLesson || item.lesson === "mixed";
     });
   }
 
@@ -1804,7 +1544,7 @@ function showQuestion(){
   document.getElementById("questionType").innerText = q.type;
   document.getElementById("questionText").innerText = q.q;
   document.getElementById("bigArabic").innerText = q.display;
-  document.getElementById("hintPill").innerText = "Choose answer";
+  document.getElementById("hintPill").innerText = "Choose rule";
 
   const bigArabic = document.getElementById("bigArabic");
 
@@ -1871,7 +1611,6 @@ function checkAnswer(selected, clickedBtn){
       <div class="infoLine">صحیح جواب: <span>${q.a}</span></div>
       <div class="infoLine">کیوں صحیح ہے: <span>${q.why}</span></div>
       <div class="infoLine">ہدایات: <span>${q.hidayat}</span></div>
-      <div class="infoLine">تختی / Page: <span>${q.source}</span></div>
     `;
 
   }else{
@@ -1884,7 +1623,6 @@ function checkAnswer(selected, clickedBtn){
       <div class="infoLine">صحیح جواب: <span>${q.a}</span></div>
       <div class="infoLine">کیوں صحیح ہے: <span>${q.why}</span></div>
       <div class="infoLine">ہدایات: <span>${q.hidayat}</span></div>
-      <div class="infoLine">تختی / Page: <span>${q.source}</span></div>
     `;
 
   }
@@ -1939,9 +1677,9 @@ function finishQuiz(){
   let msg = "Aap ne quiz complete kar liya.";
 
   if(score === quizQuestions.length){
-    msg = "Excellent! Sab answers correct hain.";
+    msg = "Excellent! Sab rules correct hain.";
   }else if(score >= Math.ceil(quizQuestions.length * 0.7)){
-    msg = "Bohat acha! Jo wrong answers thay unki hidayat dobara read karein.";
+    msg = "Bohat acha! Jo wrong rules thay unki hidayat dobara read karein.";
   }else{
     msg = "Koi baat nahi. Wrong answers ke neeche hidayat read kar ke dobara practice karein.";
   }
@@ -1985,7 +1723,7 @@ function updateStats(){
    BEST SCORE
 ========================= */
 function getBestKey(){
-  return "nooraniQaidaQuizBest_" + currentLesson;
+  return "nooraniQaidaRuleQuizBest_" + currentLesson;
 }
 
 function loadBestScore(){
