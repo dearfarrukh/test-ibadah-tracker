@@ -298,12 +298,16 @@ button{
 }
 
 .surahArabic{
-  font-family:"IndoPakQuran", "Scheherazade New", "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
+  font-family:"IndoPakQuran", "Scheherazade New", "Amiri", "Noto Naskh Arabic", serif;
   direction:rtl;
-  font-size:24px;
+  font-size:25px;
   font-weight:700;
-  color:#555;
-  line-height:1.55;
+  color:#333;
+  line-height:1.75;
+  letter-spacing:0;
+  word-spacing:2px;
+  font-feature-settings:"liga" 1, "calt" 1;
+  text-rendering:optimizeLegibility;
 }
 
 .surahMeta{
@@ -574,13 +578,17 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .readingArabicTitle{
-  font-family:"IndoPakQuran", "Scheherazade New", "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
+  font-family:"IndoPakQuran", "Scheherazade New", "Amiri", "Noto Naskh Arabic", serif;
   direction:rtl;
-  font-size:36px;
+  font-size:38px;
   font-weight:700;
   color:#111;
-  line-height:1.7;
+  line-height:1.9;
   margin-bottom:6px;
+  letter-spacing:0;
+  word-spacing:3px;
+  font-feature-settings:"liga" 1, "calt" 1;
+  text-rendering:optimizeLegibility;
 }
 
 .readingEnglishTitle{
@@ -779,13 +787,17 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .ayahArabic{
-  font-family:"IndoPakQuran", "Scheherazade New", "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
+  font-family:"IndoPakQuran", "Scheherazade New", "Amiri", "Noto Naskh Arabic", serif;
   direction:rtl;
   text-align:right;
-  font-size:33px;
-  line-height:2.15;
-  color:#111;
+  font-size:36px;
+  line-height:2.35;
+  color:#050505;
   font-weight:700;
+  letter-spacing:0;
+  word-spacing:4px;
+  font-feature-settings:"liga" 1, "calt" 1, "kern" 1;
+  text-rendering:optimizeLegibility;
 }
 
 .ayahUrdu{
@@ -833,8 +845,8 @@ body.urdu-on .ayahUrdu{
 @media(max-width:390px){
   .heroTitle{ font-size:28px; }
   .optionTitle{ font-size:19px; }
-  .ayahArabic{ font-size:29px; line-height:2.1; }
-  .readingArabicTitle{ font-size:32px; }
+  .ayahArabic{ font-size:32px; line-height:2.3; }
+  .readingArabicTitle{ font-size:34px; line-height:1.85; }
   .ayahUrdu{ font-size:17px; line-height:2.05; }
   .compactAudioTitle{ font-size:13px; }
   .compactAudioBtn{ min-width:40px; padding:0 10px; }
