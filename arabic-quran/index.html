@@ -994,17 +994,25 @@ body.urdu-on .ayahUrdu{
         <select id="quranReciterSelect" class="audioSelect" onchange="changeQuranReciter()">
           <option value="afs">Mishary Rashid Alafasy</option>
           <option value="sds">Abdurrahman As-Sudais</option>
+          <option value="basit_murattal">Abdul Basit Murattal</option>
+          <option value="basit_mujawwad">Abdul Basit Mujawwad</option>
+          <option value="minshawi">Muhammad Siddiq Al-Minshawi</option>
+          <option value="husary">Mahmoud Khalil Al-Husary</option>
+          <option value="maher">Maher Al-Muaiqly</option>
+          <option value="shuraim">Saud Al-Shuraim</option>
+          <option value="shatri">Abu Bakr Al-Shatri</option>
+          <option value="ajmi">Ahmed Al-Ajmi</option>
+          <option value="huthaify">Ali Al-Hudhaify</option>
+          <option value="basfar">Abdullah Basfar</option>
         </select>
 
         <div class="audioBtns">
-          <button class="audioBtn" onclick="playCurrentSurahAudio()">▶ Full Surah</button>
-          <button class="audioBtn pauseBtn" onclick="toggleCurrentAudioPlayback()">⏯ Play/Pause</button>
-          <button class="audioBtn stopBtn" onclick="stopCurrentSurahAudio()">■ Stop</button>
+          <button id="surahPlayPauseBtn" class="audioBtn" onclick="toggleSurahAudioMainButton()">▶ Play Surah</button>
         </div>
       </div>
 
       <audio id="quranAudioPlayer" class="audioPlayer" controls playsinline></audio>
-      <div id="audioStatus" class="audioStatus">Choose a reciter, then press Play.</div>
+      <div id="audioStatus" class="audioStatus">Choose a Qari, then press Play Surah.</div>
 
       <div class="urduToggleRow">
         <div>
@@ -1168,19 +1176,58 @@ let repeatAyahIndex = -1;
 let autoContinueAyahs = false;
 let audioWithTranslationMode = false;
 let audioPaused = true;
+let ayahAudioUrlCache = {};
 
 const QURAN_API_BASE = "https://api.alquran.cloud/v1";
 
 const audioReciters = {
   afs: {
     name: "Mishary Rashid Alafasy",
-    ayahEdition: "ar.alafasy",
-    url: function(num){ return "https://server8.mp3quran.net/afs/" + padSurahNumber(num) + ".mp3"; }
+    ayahEdition: "ar.alafasy"
   },
   sds: {
     name: "Abdurrahman As-Sudais",
-    ayahEdition: "ar.abdurrahmaansudais",
-    url: function(num){ return "https://server11.mp3quran.net/sds/" + padSurahNumber(num) + ".mp3"; }
+    ayahEdition: "ar.abdurrahmaansudais"
+  },
+  basit_murattal: {
+    name: "Abdul Basit Murattal",
+    ayahEdition: "ar.abdulbasitmurattal"
+  },
+  basit_mujawwad: {
+    name: "Abdul Basit Mujawwad",
+    ayahEdition: "ar.abdulbasitmujawwad"
+  },
+  minshawi: {
+    name: "Muhammad Siddiq Al-Minshawi",
+    ayahEdition: "ar.minshawi"
+  },
+  husary: {
+    name: "Mahmoud Khalil Al-Husary",
+    ayahEdition: "ar.husary"
+  },
+  maher: {
+    name: "Maher Al-Muaiqly",
+    ayahEdition: "ar.mahermuaiqly"
+  },
+  shuraim: {
+    name: "Saud Al-Shuraim",
+    ayahEdition: "ar.saoodshuraym"
+  },
+  shatri: {
+    name: "Abu Bakr Al-Shatri",
+    ayahEdition: "ar.shaatree"
+  },
+  ajmi: {
+    name: "Ahmed Al-Ajmi",
+    ayahEdition: "ar.ahmedajamy"
+  },
+  huthaify: {
+    name: "Ali Al-Hudhaify",
+    ayahEdition: "ar.hudhaify"
+  },
+  basfar: {
+    name: "Abdullah Basfar",
+    ayahEdition: "ar.abdullahbasfar"
   }
 };
 
@@ -1434,7 +1481,7 @@ async function openArabicReadingPage(surahNumber, backPage){
   autoContinueAyahs = false;
   audioWithTranslationMode = false;
   updateUrduToggleUI();
-  updateAudioStatus("Choose a reciter, then press Play.");
+  updateAudioStatus("Choose a Qari, then press Play Surah.");
   setupReaderScrollAudioShrink();
 
   let readerTopTitle = document.getElementById("readerTopTitle");
@@ -1709,7 +1756,7 @@ function changeQuranReciter(){
   let key = getSelectedReciterKey();
   localStorage.setItem("arabicQuranReciter", key);
   stopCurrentSurahAudio();
-  updateAudioStatus("Reciter changed. Press Play.");
+  updateAudioStatus("Qari changed. Press Play Surah or tap any ayah speaker.");
 }
 
 function loadSavedReciter(){
@@ -1722,37 +1769,53 @@ function loadSavedReciter(){
 }
 
 function playCurrentSurahAudio(){
-  let audio = document.getElementById("quranAudioPlayer");
-  if(!audio) return;
+  startSurahAudioFromBeginning();
+}
 
-  let reciter = getSelectedReciter();
-  let url = reciter.url(currentArabicSurahNumber);
-
-  currentAudioMode = "surah";
-  currentPlayingAyahIndex = -1;
+function startSurahAudioFromBeginning(){
   repeatAyahIndex = -1;
-  autoContinueAyahs = false;
+  autoContinueAyahs = true;
   audioWithTranslationMode = false;
   clearAyahAudioButtonStates();
   refreshAyahRepeatButtons();
-
-  if(audio.src !== url){
-    audio.src = url;
-  }
-
-  audio.style.display = "block";
-
-  audio.play().then(function(){
-    audioPaused = false;
-    updateAudioStatus("Playing full Surah: " + reciter.name + " • " + currentArabicSurahEnglish);
-    updateCompactAudioUI();
-  }).catch(function(){
-    audioPaused = true;
-    updateAudioStatus("Audio could not start. Tap Play again or check internet.");
-    updateCompactAudioUI();
-  });
+  updateAudioStatus("Starting Surah " + currentArabicSurahEnglish + "...");
+  playAyahAudioByIndex(0);
 }
 
+function toggleSurahAudioMainButton(){
+  let audio = document.getElementById("quranAudioPlayer");
+  if(!audio) return;
+
+  if(!audio.src){
+    startSurahAudioFromBeginning();
+    return;
+  }
+
+  toggleCurrentAudioPlayback();
+}
+
+async function getAyahAudioUrl(ayahNumber, reciter){
+  let edition = reciter.ayahEdition || "ar.alafasy";
+  let cacheKey = edition + "_" + ayahNumber;
+
+  if(ayahAudioUrlCache[cacheKey]){
+    return ayahAudioUrlCache[cacheKey];
+  }
+
+  try{
+    let response = await fetch(QURAN_API_BASE + "/ayah/" + ayahNumber + "/" + edition);
+    let result = await response.json();
+
+    if(result && result.data && result.data.audio){
+      ayahAudioUrlCache[cacheKey] = result.data.audio;
+      return result.data.audio;
+    }
+  }catch(error){
+    return "";
+  }
+
+  return "";
+}
 
 function toggleAyahAudio(event, index){
   if(event){
@@ -1785,7 +1848,7 @@ function toggleAyahAudio(event, index){
   playAyahAudioByIndex(index);
 }
 
-function playAyahAudioByIndex(index){
+async function playAyahAudioByIndex(index){
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
 
@@ -1802,7 +1865,14 @@ function playAyahAudioByIndex(index){
   }
 
   let reciter = getSelectedReciter();
-  let url = "https://cdn.islamic.network/quran/audio/128/" + reciter.ayahEdition + "/" + ayah.number + ".mp3";
+  let url = await getAyahAudioUrl(ayah.number, reciter);
+
+  if(!url){
+    audioPaused = true;
+    updateAudioStatus("Ayah audio not available for this reciter. Please choose another Qari.");
+    updateCompactAudioUI();
+    return;
+  }
 
   currentAudioMode = "ayah";
   currentPlayingAyahIndex = index;
@@ -1871,7 +1941,7 @@ function toggleCurrentAudioPlayback(){
   if(!audio) return;
 
   if(!audio.src){
-    playCurrentSurahAudio();
+    startSurahAudioFromBeginning();
     return;
   }
 
@@ -1936,10 +2006,23 @@ function updateAudioStatus(text){
 
 function updateCompactAudioUI(){
   let compactPlayPauseBtn = document.getElementById("compactPlayPauseBtn");
+  let surahPlayPauseBtn = document.getElementById("surahPlayPauseBtn");
   let audio = document.getElementById("quranAudioPlayer");
+  let isPlaying = audio && !audio.paused && audio.src;
+  let hasAudio = audio && audio.src;
 
   if(compactPlayPauseBtn){
-    compactPlayPauseBtn.innerText = audio && !audio.paused && audio.src ? "⏸" : "▶";
+    compactPlayPauseBtn.innerText = isPlaying ? "⏸" : "▶";
+  }
+
+  if(surahPlayPauseBtn){
+    if(isPlaying){
+      surahPlayPauseBtn.innerText = "⏸ Pause";
+    }else if(hasAudio){
+      surahPlayPauseBtn.innerText = "▶ Resume";
+    }else{
+      surahPlayPauseBtn.innerText = "▶ Play Surah";
+    }
   }
 
   let compactTitle = document.getElementById("compactAudioTitle");
