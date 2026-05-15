@@ -1325,8 +1325,8 @@ async function loadOnlineSurahList(){
 }
 
 /* =========================
-   FETCH QURAN.COM INDOPAK ARABIC TEXT
-   This gives a better Indo-Pak style than quran-uthmani.
+   FETCH QURAN.COM DIRECT INDOPAK ARABIC TEXT
+   Simple test: use only text_indopak, no fallback switching.
 ========================= */
 async function fetchQuranComIndopakAyahs(chapterNumber){
   let allVerses = [];
@@ -1337,22 +1337,20 @@ async function fetchQuranComIndopakAyahs(chapterNumber){
     let url = QURAN_COM_API_BASE +
       "/verses/by_chapter/" + chapterNumber +
       "?language=en&words=false&per_page=50&page=" + page +
-      "&fields=text_indopak_nastaleeq,text_indopak,text_qpc_nastaleeq,text_uthmani";
+      "&fields=text_indopak";
 
     let response = await fetch(url);
     let result = await response.json();
 
     if(!result || !Array.isArray(result.verses)){
-      throw new Error("Quran.com Indo-Pak text not found");
+      throw new Error("Quran.com direct Indo-Pak text not found");
     }
 
     result.verses.forEach(function(verse){
-      let arabicText = getPreferredQuranComArabicText(verse);
-
       allVerses.push({
         number: verse.id,
         numberInSurah: verse.verse_number,
-        text: arabicText,
+        text: verse.text_indopak || "",
         verseKey: verse.verse_key || (chapterNumber + ":" + verse.verse_number)
       });
     });
@@ -1362,19 +1360,6 @@ async function fetchQuranComIndopakAyahs(chapterNumber){
   }
 
   return allVerses;
-}
-
-/* =========================
-   CHOOSE BEST QURAN.COM ARABIC TEXT FIELD
-========================= */
-function getPreferredQuranComArabicText(verse){
-  return (
-    verse.text_indopak_nastaleeq ||
-    verse.text_indopak ||
-    verse.text_qpc_nastaleeq ||
-    verse.text_uthmani ||
-    ""
-  );
 }
 
 /* =========================
@@ -1580,7 +1565,7 @@ async function openArabicReadingPage(surahNumber, backPage){
     let urduResult = results[1];
 
     if(!arabicAyahs || !arabicAyahs.length){
-      throw new Error("Quran.com Indo-Pak Arabic Surah data not found");
+      throw new Error("Quran.com direct Indo-Pak Arabic Surah data not found");
     }
 
     currentArabicAyahs = arabicAyahs;
