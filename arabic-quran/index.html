@@ -519,44 +519,43 @@ button{
 .compactAudioRow{
   display:none;
   align-items:center;
-  justify-content:space-between;
-  gap:10px;
+  justify-content:center;
+  gap:8px;
   width:100%;
 }
 
 .compactAudioTitle{
-  min-width:0;
-  flex:1;
-  font-size:14px;
-  font-weight:900;
-  color:#111;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  text-align:left;
+  display:none;
 }
 
 .compactAudioButtons{
-  display:flex;
-  align-items:center;
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
   gap:8px;
-  flex-shrink:0;
 }
 
 .compactAudioBtn{
   height:38px;
-  min-width:44px;
   border:none;
   border-radius:999px;
   background:#111827;
   color:white;
-  font-size:14px;
+  font-size:13px;
   font-weight:900;
-  padding:0 12px;
+  padding:0 8px;
 }
 
-.compactAudioBtn.urduMiniOn{
+.compactAudioBtn.urduMiniOn,
+.compactAudioBtn.englishMiniOn{
   background:#16a34a;
+  color:white;
+}
+
+.compactAudioBtn.urduMiniOff,
+.compactAudioBtn.englishMiniOff{
+  background:#d1d5db;
+  color:#111;
 }
 
 body.quran-audio-compact .audioCard{
@@ -568,8 +567,7 @@ body.quran-audio-compact .audioCard{
 body.quran-audio-compact .audioTitle,
 body.quran-audio-compact .audioGrid,
 body.quran-audio-compact .audioPlayer,
-body.quran-audio-compact .audioStatus,
-body.quran-audio-compact .urduToggleRow{
+body.quran-audio-compact .audioStatus{
   display:none !important;
 }
 
@@ -632,8 +630,8 @@ body.quran-audio-compact .compactAudioRow{
 
 .audioBtns{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+  grid-template-columns:1.2fr 1fr 1fr;
+  gap:8px;
 }
 
 .audioBtn{
@@ -642,56 +640,23 @@ body.quran-audio-compact .compactAudioRow{
   border-radius:17px;
   background:#111827;
   color:white;
-  font-size:15px;
+  font-size:14px;
   font-weight:900;
+  padding:0 8px;
 }
 
-.audioBtn.pauseBtn{
-  background:#f59e0b;
-}
-
-.audioBtn.stopBtn{
-  background:#ef4444;
-}
-
-
-.urduToggleRow{
-  margin-top:12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:12px 14px;
-  border-radius:20px;
-  background:#f8fafc;
-  text-align:left;
-}
-
-.urduToggleText{
-  font-size:15px;
-  font-weight:900;
-  color:#111;
-}
-
-.urduToggleSub{
-  font-size:12px;
-  font-weight:700;
-  color:#666;
-  margin-top:2px;
-}
-
-.urduToggleBtn{
-  min-width:78px;
-  height:42px;
+.translationToggleBtn{
+  height:48px;
   border:none;
-  border-radius:999px;
+  border-radius:17px;
   background:#d1d5db;
   color:#111;
   font-size:14px;
   font-weight:900;
+  padding:0 8px;
 }
 
-.urduToggleBtn.on{
+.translationToggleBtn.on{
   background:#16a34a;
   color:white;
 }
@@ -825,6 +790,7 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .ayahEnglish{
+  display:none;
   margin-top:18px;
   padding-top:16px;
   border-top:1px solid #ececf1;
@@ -836,11 +802,17 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .ayahEnglishSource{
+  display:none;
   margin-top:6px;
   color:#6b7280;
   font-size:14px;
   font-weight:800;
   text-align:left;
+}
+
+body.english-on .ayahEnglish,
+body.english-on .ayahEnglishSource{
+  display:block;
 }
 
 .ayahUrdu{
@@ -1040,7 +1012,8 @@ body.urdu-on .ayahUrdu{
         <div id="compactAudioTitle" class="compactAudioTitle">Quran Audio</div>
         <div class="compactAudioButtons">
           <button id="compactPlayPauseBtn" class="compactAudioBtn" onclick="toggleCurrentAudioPlayback()">▶</button>
-          <button id="compactUrduBtn" class="compactAudioBtn" onclick="toggleUrduTranslation()">Urdu</button>
+          <button id="compactUrduBtn" class="compactAudioBtn" onclick="toggleUrduTranslation()">Urdu OFF</button>
+          <button id="compactEnglishBtn" class="compactAudioBtn" onclick="toggleEnglishTranslation()">English OFF</button>
         </div>
       </div>
 
@@ -1064,19 +1037,13 @@ body.urdu-on .ayahUrdu{
 
         <div class="audioBtns">
           <button id="surahPlayPauseBtn" class="audioBtn" onclick="toggleSurahAudioMainButton()">▶ Play Surah</button>
+          <button id="urduToggleBtn" class="translationToggleBtn" onclick="toggleUrduTranslation()">Urdu OFF</button>
+          <button id="englishToggleBtn" class="translationToggleBtn" onclick="toggleEnglishTranslation()">English OFF</button>
         </div>
       </div>
 
       <audio id="quranAudioPlayer" class="audioPlayer" controls playsinline></audio>
       <div id="audioStatus" class="audioStatus">Choose a Qari, then press Play Surah.</div>
-
-      <div class="urduToggleRow">
-        <div>
-          <div class="urduToggleText">Urdu Translation</div>
-          <div class="urduToggleSub">Show or hide Urdu under every ayah</div>
-        </div>
-        <button id="urduToggleBtn" class="urduToggleBtn" onclick="toggleUrduTranslation()">OFF</button>
-      </div>
     </div>
 
     <div id="ayahList" class="ayahList">
@@ -1226,6 +1193,7 @@ let arabicReadingBackPage = "home";
 let currentArabicAyahs = [];
 let currentUrduAyahs = [];
 let urduTranslationOn = localStorage.getItem("arabicQuranUrduTranslation") === "on";
+let englishTranslationOn = localStorage.getItem("arabicQuranEnglishTranslation") === "on";
 let currentAudioMode = "none";
 let currentPlayingAyahIndex = -1;
 let repeatAyahIndex = -1;
@@ -1940,28 +1908,53 @@ function updateResumeText(){
 }
 
 /* =========================
-   URDU TRANSLATION TOGGLE
+   TRANSLATION TOGGLE BUTTONS
 ========================= */
 function toggleUrduTranslation(){
   urduTranslationOn = !urduTranslationOn;
   localStorage.setItem("arabicQuranUrduTranslation", urduTranslationOn ? "on" : "off");
-  updateUrduToggleUI();
+  updateTranslationToggleUI();
+}
+
+function toggleEnglishTranslation(){
+  englishTranslationOn = !englishTranslationOn;
+  localStorage.setItem("arabicQuranEnglishTranslation", englishTranslationOn ? "on" : "off");
+  updateTranslationToggleUI();
 }
 
 function updateUrduToggleUI(){
-  let btn = document.getElementById("urduToggleBtn");
-  let compactBtn = document.getElementById("compactUrduBtn");
+  updateTranslationToggleUI();
+}
+
+function updateTranslationToggleUI(){
+  let urduBtn = document.getElementById("urduToggleBtn");
+  let compactUrduBtn = document.getElementById("compactUrduBtn");
+  let englishBtn = document.getElementById("englishToggleBtn");
+  let compactEnglishBtn = document.getElementById("compactEnglishBtn");
 
   document.body.classList.toggle("urdu-on", urduTranslationOn);
+  document.body.classList.toggle("english-on", englishTranslationOn);
 
-  if(btn){
-    btn.innerText = urduTranslationOn ? "ON" : "OFF";
-    btn.classList.toggle("on", urduTranslationOn);
+  if(urduBtn){
+    urduBtn.innerText = urduTranslationOn ? "Urdu ON" : "Urdu OFF";
+    urduBtn.classList.toggle("on", urduTranslationOn);
   }
 
-  if(compactBtn){
-    compactBtn.innerText = urduTranslationOn ? "Urdu ON" : "Urdu";
-    compactBtn.classList.toggle("urduMiniOn", urduTranslationOn);
+  if(compactUrduBtn){
+    compactUrduBtn.innerText = urduTranslationOn ? "Urdu ON" : "Urdu OFF";
+    compactUrduBtn.classList.toggle("urduMiniOn", urduTranslationOn);
+    compactUrduBtn.classList.toggle("urduMiniOff", !urduTranslationOn);
+  }
+
+  if(englishBtn){
+    englishBtn.innerText = englishTranslationOn ? "English ON" : "English OFF";
+    englishBtn.classList.toggle("on", englishTranslationOn);
+  }
+
+  if(compactEnglishBtn){
+    compactEnglishBtn.innerText = englishTranslationOn ? "English ON" : "English OFF";
+    compactEnglishBtn.classList.toggle("englishMiniOn", englishTranslationOn);
+    compactEnglishBtn.classList.toggle("englishMiniOff", !englishTranslationOn);
   }
 }
 
