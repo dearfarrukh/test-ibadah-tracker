@@ -5,7 +5,7 @@
 <!-- =========================
      QURAN WITH AUDIO & URDU FOLDER PAGE
      File: arabic-quran/index.html
-     Features: Indo-Pak font support, reader audio, optional Urdu translation
+     Features: Quran.com Indo-Pak Arabic text, reader audio, optional Urdu translation
 ========================= -->
 
 <meta charset="UTF-8">
@@ -298,15 +298,15 @@ button{
 }
 
 .surahArabic{
-  font-family:"Scheherazade New", "Amiri", "Noto Naskh Arabic", serif;
+  font-family:"IndoPakQuran", "Noto Naskh Arabic", "Scheherazade New", "Amiri", serif;
   direction:rtl;
-  font-size:24px;
+  font-size:25px;
   font-weight:700;
   color:#333;
-  line-height:1.65;
+  line-height:1.7;
   letter-spacing:0;
   word-spacing:2px;
-  font-feature-settings:"liga" 1, "calt" 1;
+  font-feature-settings:"liga" 1, "calt" 1, "kern" 1;
   text-rendering:optimizeLegibility;
 }
 
@@ -578,16 +578,16 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .readingArabicTitle{
-  font-family:"Scheherazade New", "Amiri", "Noto Naskh Arabic", serif;
+  font-family:"IndoPakQuran", "Noto Naskh Arabic", "Scheherazade New", "Amiri", serif;
   direction:rtl;
-  font-size:36px;
+  font-size:37px;
   font-weight:700;
   color:#111;
-  line-height:1.75;
+  line-height:1.85;
   margin-bottom:6px;
   letter-spacing:0;
   word-spacing:3px;
-  font-feature-settings:"liga" 1, "calt" 1;
+  font-feature-settings:"liga" 1, "calt" 1, "kern" 1;
   text-rendering:optimizeLegibility;
 }
 
@@ -787,11 +787,11 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .ayahArabic{
-  font-family:"Scheherazade New", "Amiri", "Noto Naskh Arabic", serif;
+  font-family:"IndoPakQuran", "Noto Naskh Arabic", "Scheherazade New", "Amiri", serif;
   direction:rtl;
   text-align:right;
   font-size:34px;
-  line-height:2.15;
+  line-height:2.2;
   color:#050505;
   font-weight:700;
   letter-spacing:0;
@@ -845,8 +845,8 @@ body.urdu-on .ayahUrdu{
 @media(max-width:390px){
   .heroTitle{ font-size:28px; }
   .optionTitle{ font-size:19px; }
-  .ayahArabic{ font-size:32px; line-height:2.3; }
-  .readingArabicTitle{ font-size:34px; line-height:1.85; }
+  .ayahArabic{ font-size:29px; line-height:2.1; }
+  .readingArabicTitle{ font-size:32px; }
   .ayahUrdu{ font-size:17px; line-height:2.05; }
   .compactAudioTitle{ font-size:13px; }
   .compactAudioBtn{ min-width:40px; padding:0 10px; }
@@ -1191,6 +1191,7 @@ let audioPaused = true;
 let ayahAudioUrlCache = {};
 
 const QURAN_API_BASE = "https://api.alquran.cloud/v1";
+const QURAN_COM_API_BASE = "https://api.quran.com/api/v4";
 
 const audioReciters = {
   afs: {
@@ -1321,6 +1322,59 @@ async function loadOnlineSurahList(){
   }catch(error){
     renderSurahList();
   }
+}
+
+/* =========================
+   FETCH QURAN.COM INDOPAK ARABIC TEXT
+   This gives a better Indo-Pak style than quran-uthmani.
+========================= */
+async function fetchQuranComIndopakAyahs(chapterNumber){
+  let allVerses = [];
+  let page = 1;
+  let totalPages = 1;
+
+  while(page <= totalPages){
+    let url = QURAN_COM_API_BASE +
+      "/verses/by_chapter/" + chapterNumber +
+      "?language=en&words=false&per_page=50&page=" + page +
+      "&fields=text_indopak_nastaleeq,text_indopak,text_qpc_nastaleeq,text_uthmani";
+
+    let response = await fetch(url);
+    let result = await response.json();
+
+    if(!result || !Array.isArray(result.verses)){
+      throw new Error("Quran.com Indo-Pak text not found");
+    }
+
+    result.verses.forEach(function(verse){
+      let arabicText = getPreferredQuranComArabicText(verse);
+
+      allVerses.push({
+        number: verse.id,
+        numberInSurah: verse.verse_number,
+        text: arabicText,
+        verseKey: verse.verse_key || (chapterNumber + ":" + verse.verse_number)
+      });
+    });
+
+    totalPages = result.pagination && result.pagination.total_pages ? Number(result.pagination.total_pages) : 1;
+    page++;
+  }
+
+  return allVerses;
+}
+
+/* =========================
+   CHOOSE BEST QURAN.COM ARABIC TEXT FIELD
+========================= */
+function getPreferredQuranComArabicText(verse){
+  return (
+    verse.text_indopak_nastaleeq ||
+    verse.text_indopak ||
+    verse.text_qpc_nastaleeq ||
+    verse.text_uthmani ||
+    ""
+  );
 }
 
 /* =========================
@@ -1514,20 +1568,22 @@ async function openArabicReadingPage(surahNumber, backPage){
   }
 
   try{
-    let arabicUrl = QURAN_API_BASE + "/surah/" + surah.num + "/quran-simple";
     let urduUrl = QURAN_API_BASE + "/surah/" + surah.num + "/ur.jalandhry";
 
-    let arabicResponse = await fetch(arabicUrl);
-    let urduResponse = await fetch(urduUrl);
+    let arabicPromise = fetchQuranComIndopakAyahs(surah.num);
+    let urduPromise = fetch(urduUrl).then(function(response){
+      return response.json();
+    });
 
-    let arabicResult = await arabicResponse.json();
-    let urduResult = await urduResponse.json();
+    let results = await Promise.all([arabicPromise, urduPromise]);
+    let arabicAyahs = results[0];
+    let urduResult = results[1];
 
-    if(!arabicResult || !arabicResult.data || !arabicResult.data.ayahs){
-      throw new Error("Arabic Surah data not found");
+    if(!arabicAyahs || !arabicAyahs.length){
+      throw new Error("Quran.com Indo-Pak Arabic Surah data not found");
     }
 
-    currentArabicAyahs = arabicResult.data.ayahs || [];
+    currentArabicAyahs = arabicAyahs;
     currentUrduAyahs = (urduResult && urduResult.data && urduResult.data.ayahs) ? urduResult.data.ayahs : [];
 
     renderArabicAyahs();
