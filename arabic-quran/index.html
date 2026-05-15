@@ -3,13 +3,13 @@
 <head>
 
 <!-- =========================
-     ARABIC QURAN FOLDER PAGE
+     QURAN WITH AUDIO & URDU FOLDER PAGE
      File: arabic-quran/index.html
      Features: Indo-Pak font support, reader audio, optional Urdu translation
 ========================= -->
 
 <meta charset="UTF-8">
-<title>Arabic Quran</title>
+<title>Quran with Audio & Urdu</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#e9e9ee">
 <link rel="apple-touch-icon" href="../icon.png">
@@ -646,10 +646,6 @@ body.quran-audio-compact .compactAudioRow{
   background:#ef4444;
 }
 
-.audioBtn.translationBtn{
-  background:#0ea5e9;
-  grid-column:1 / -1;
-}
 
 .urduToggleRow{
   margin-top:12px;
@@ -856,14 +852,14 @@ body.urdu-on .ayahUrdu{
 
   <div class="simpleTopBar">
     <button class="roundBackBtn" onclick="goBackToMainApp()">←</button>
-    <div class="simpleTitle">Arabic Quran</div>
+    <div class="simpleTitle">Quran with Audio & Urdu</div>
   </div>
 
   <div class="heroCard">
     <div class="heroIcon">📖</div>
-    <div class="heroTitle">Arabic Quran</div>
+    <div class="heroTitle">Quran with Audio & Urdu</div>
     <div class="heroSub">
-      Read Quran in Arabic, listen to recitation, resume reading, and turn Urdu translation on when needed.
+      Read Quran in Arabic, listen to recitation, and turn Urdu translation on or off anytime.
     </div>
   </div>
 
@@ -938,7 +934,7 @@ body.urdu-on .ayahUrdu{
     <div class="heroIcon">🔖</div>
     <div class="heroTitle">Bookmarks</div>
     <div class="heroSub">
-      Your saved Arabic Quran reading places.
+      Your saved Quran reading places.
     </div>
   </div>
 
@@ -960,7 +956,7 @@ body.urdu-on .ayahUrdu{
       <button class="readerBackBtn" onclick="closeArabicReadingPage(event)">←</button>
 
       <div class="readerTitleWrap">
-        <div id="readerTopTitle" class="readerTitle">Arabic Quran</div>
+        <div id="readerTopTitle" class="readerTitle">Quran with Audio & Urdu</div>
         <div id="readerTopSubTitle" class="readerSubTitle">Tap page to hide bar</div>
       </div>
 
@@ -1004,7 +1000,6 @@ body.urdu-on .ayahUrdu{
           <button class="audioBtn" onclick="playCurrentSurahAudio()">▶ Full Surah</button>
           <button class="audioBtn pauseBtn" onclick="toggleCurrentAudioPlayback()">⏯ Play/Pause</button>
           <button class="audioBtn stopBtn" onclick="stopCurrentSurahAudio()">■ Stop</button>
-          <button class="audioBtn translationBtn" onclick="playSurahAudioWithTranslationMode()">▶ Audio + Urdu Translation</button>
         </div>
       </div>
 
@@ -1360,7 +1355,7 @@ function loadArabicBookmarks(){
   container.innerHTML = "";
 
   if(!bookmarks.length){
-    container.innerHTML = `<div class="emptyCard">No Arabic Quran bookmarks saved yet.</div>`;
+    container.innerHTML = `<div class="emptyCard">No Quran bookmarks saved yet.</div>`;
     return;
   }
 
@@ -1375,7 +1370,7 @@ function loadArabicBookmarks(){
     card.innerHTML = `
       <div style="min-width:0;flex:1;">
         <div class="bookmarkTitle">${escapeHtml(bookmark.name || bookmark.surah || "Bookmark")}</div>
-        <div class="bookmarkSub">${escapeHtml(bookmark.surah || "Arabic Quran")}</div>
+        <div class="bookmarkSub">${escapeHtml(bookmark.surah || "Quran with Audio & Urdu")}</div>
         <div class="bookmarkSub">${escapeHtml(bookmark.createdAtText || "")}</div>
       </div>
       <button class="deleteBookmarkBtn" onclick="deleteArabicBookmark(event, '${escapeHtml(bookmark.id)}')">🗑</button>
@@ -1647,7 +1642,7 @@ function resumeArabicReading(){
   let lastSurah = parseInt(localStorage.getItem("lastArabicQuranSurahNumber") || "0", 10);
 
   if(!lastSurah || lastSurah < 1 || lastSurah > 114){
-    alert("No previous Arabic Quran reading found");
+    alert("No previous Quran reading found");
     return;
   }
 
@@ -1758,18 +1753,6 @@ function playCurrentSurahAudio(){
   });
 }
 
-function playSurahAudioWithTranslationMode(){
-  urduTranslationOn = true;
-  localStorage.setItem("arabicQuranUrduTranslation", "on");
-  updateUrduToggleUI();
-
-  audioWithTranslationMode = true;
-  autoContinueAyahs = true;
-  repeatAyahIndex = -1;
-
-  playAyahAudioByIndex(0);
-  updateAudioStatus("Audio + Urdu mode: playing ayah by ayah. Urdu text is ON.");
-}
 
 function toggleAyahAudio(event, index){
   if(event){
