@@ -757,7 +757,8 @@ body.quran-audio-compact .compactAudioRow{
 }
 
 .ayahAudioBtn,
-.ayahRepeatBtn{
+.ayahRepeatBtn,
+.ayahBookmarkBtn{
   width:36px;
   height:36px;
   border:none;
@@ -778,6 +779,11 @@ body.quran-audio-compact .compactAudioRow{
 
 .ayahRepeatBtn.active{
   background:#16a34a;
+  color:white;
+}
+
+.ayahBookmarkBtn.active{
+  background:#f59e0b;
   color:white;
 }
 
@@ -1501,7 +1507,7 @@ function loadArabicBookmarks(){
 
   let allBookmarks = getAllQuranBookmarks();
   let bookmarks = allBookmarks.filter(function(item){
-    return item.type === "arabic";
+    return item.type === "arabic" || item.type === "arabic-ayah";
   });
 
   container.innerHTML = "";
@@ -1516,13 +1522,25 @@ function loadArabicBookmarks(){
     card.className = "bookmarkCard";
 
     card.onclick = function(){
-      openArabicReadingPage(Number(bookmark.surahNumber), "bookmark");
+      if(bookmark.type === "arabic-ayah"){
+        openArabicReadingPage(Number(bookmark.surahNumber), "bookmark", Number(bookmark.ayahNumber));
+      }else{
+        openArabicReadingPage(Number(bookmark.surahNumber), "bookmark");
+      }
     };
+
+    let bookmarkTitle = bookmark.type === "arabic-ayah"
+      ? ((bookmark.surah || "Quran") + " — Ayah " + bookmark.ayahNumber)
+      : (bookmark.name || bookmark.surah || "Bookmark");
+
+    let bookmarkSub = bookmark.type === "arabic-ayah"
+      ? (bookmark.arabicText || "Ayah bookmark")
+      : (bookmark.surah || "Quran with Audio & Urdu");
 
     card.innerHTML = `
       <div style="min-width:0;flex:1;">
-        <div class="bookmarkTitle">${escapeHtml(bookmark.name || bookmark.surah || "Bookmark")}</div>
-        <div class="bookmarkSub">${escapeHtml(bookmark.surah || "Quran with Audio & Urdu")}</div>
+        <div class="bookmarkTitle">${escapeHtml(bookmarkTitle)}</div>
+        <div class="bookmarkSub" style="direction:${bookmark.type === "arabic-ayah" ? "rtl" : "ltr"};text-align:${bookmark.type === "arabic-ayah" ? "right" : "left"};font-family:${bookmark.type === "arabic-ayah" ? "'Amiri','Scheherazade New','Noto Naskh Arabic',serif" : "inherit"};">${escapeHtml(bookmarkSub)}</div>
         <div class="bookmarkSub">${escapeHtml(bookmark.createdAtText || "")}</div>
       </div>
       <button class="deleteBookmarkBtn" onclick="deleteArabicBookmark(event, '${escapeHtml(bookmark.id)}')">🗑</button>
@@ -1548,13 +1566,14 @@ function deleteArabicBookmark(event, bookmarkId){
 
   saveAllQuranBookmarks(allBookmarks);
   loadArabicBookmarks();
+  refreshAyahBookmarkButtons();
   showToast("Bookmark deleted");
 }
 
 /* =========================
    OPEN ARABIC READING PAGE
 ========================= */
-async function openArabicReadingPage(surahNumber, backPage){
+async function openArabicReadingPage(surahNumber, backPage, targetAyahNumber){
   let surah = surahData.find(function(item){
     return Number(item.num) === Number(surahNumber);
   });
@@ -1626,6 +1645,12 @@ async function openArabicReadingPage(surahNumber, backPage){
     currentUrduAyahs = (urduResult && urduResult.data && urduResult.data.ayahs) ? urduResult.data.ayahs : [];
 
     renderArabicAyahs();
+
+    if(targetAyahNumber){
+      setTimeout(function(){
+        scrollToBookmarkedAyah(Number(targetAyahNumber));
+      }, 350);
+    }
   }catch(error){
     if(ayahList){
       ayahList.innerHTML = `
@@ -1652,6 +1677,7 @@ function renderArabicAyahs(){
 
     let card = document.createElement("div");
     card.className = "ayahCard";
+    card.id = "ayahCard_" + ayah.numberInSurah;
 
     let verseTitle = getQuranComVerseTitle(ayah);
     let englishText = ayah.english || "";
@@ -1663,6 +1689,7 @@ function renderArabicAyahs(){
           <div class="ayahNumber">${ayah.numberInSurah}</div>
           <button id="ayahAudioBtn_${index}" class="ayahAudioBtn" onclick="toggleAyahAudio(event, ${index})" title="Play this ayah">🔊</button>
           <button id="ayahRepeatBtn_${index}" class="ayahRepeatBtn" onclick="toggleAyahRepeat(event, ${index})" title="Repeat this ayah">🔁</button>
+          <button id="ayahBookmarkBtn_${index}" class="ayahBookmarkBtn" onclick="toggleAyahBookmark(event, ${index})" title="Bookmark this ayah">🔖</button>
         </div>
         <div class="ayahTextWrap">
           <div class="ayahVerseTitle">${escapeHtml(verseTitle)}</div>
@@ -1676,6 +1703,91 @@ function renderArabicAyahs(){
 
     ayahList.appendChild(card);
   });
+
+  refreshAyahBookmarkButtons();
+}
+
+/* =========================
+   AYAH BOOKMARK FUNCTIONS
+========================= */
+function getAyahBookmarkId(surahNumber, ayahNumber){
+  return "arabic_ayah_" + surahNumber + "_" + ayahNumber;
+}
+
+function isAyahBookmarked(surahNumber, ayahNumber){
+  let bookmarkId = getAyahBookmarkId(surahNumber, ayahNumber);
+  return getAllQuranBookmarks().some(function(item){
+    return String(item.id) === String(bookmarkId);
+  });
+}
+
+function toggleAyahBookmark(event, index){
+  if(event){
+    event.stopPropagation();
+  }
+
+  let ayah = currentArabicAyahs[index];
+  if(!ayah) return;
+
+  let bookmarkId = getAyahBookmarkId(currentArabicSurahNumber, ayah.numberInSurah);
+  let allBookmarks = getAllQuranBookmarks();
+  let alreadySaved = allBookmarks.some(function(item){
+    return String(item.id) === String(bookmarkId);
+  });
+
+  if(alreadySaved){
+    let removeOk = confirm("Remove this ayah bookmark?");
+    if(!removeOk) return;
+
+    allBookmarks = allBookmarks.filter(function(item){
+      return String(item.id) !== String(bookmarkId);
+    });
+
+    saveAllQuranBookmarks(allBookmarks);
+    refreshAyahBookmarkButtons();
+    showToast("Ayah bookmark removed");
+    return;
+  }
+
+  let urduAyah = currentUrduAyahs[index] || {};
+  let now = new Date();
+
+  let bookmark = {
+    id:bookmarkId,
+    type:"arabic-ayah",
+    name:currentArabicSurahEnglish + " — Ayah " + ayah.numberInSurah,
+    surah:currentArabicSurahEnglish,
+    arabicName:currentArabicSurahArabic,
+    surahNumber:currentArabicSurahNumber,
+    ayahNumber:ayah.numberInSurah,
+    arabicText:ayah.text || "",
+    urduText:urduAyah.text || "",
+    createdAt:now.toISOString(),
+    createdAtText:now.toLocaleString()
+  };
+
+  allBookmarks.unshift(bookmark);
+  saveAllQuranBookmarks(allBookmarks);
+  refreshAyahBookmarkButtons();
+  showToast("Ayah bookmark saved");
+}
+
+function refreshAyahBookmarkButtons(){
+  currentArabicAyahs.forEach(function(ayah, index){
+    let btn = document.getElementById("ayahBookmarkBtn_" + index);
+    if(!btn) return;
+
+    let saved = isAyahBookmarked(currentArabicSurahNumber, ayah.numberInSurah);
+    btn.classList.toggle("active", saved);
+  });
+}
+
+function scrollToBookmarkedAyah(ayahNumber){
+  let card = document.getElementById("ayahCard_" + ayahNumber);
+  let content = document.getElementById("arabicReaderContent");
+  if(!card || !content) return;
+
+  card.scrollIntoView({ behavior:"smooth", block:"center" });
 }
 
 /* =========================
