@@ -505,6 +505,74 @@ button{
   box-shadow:0 10px 28px rgba(0,0,0,0.08);
 }
 
+.audioCard{
+  position:sticky;
+  top:10px;
+  z-index:5040;
+  transition:all 0.22s ease;
+}
+
+.compactAudioRow{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  width:100%;
+}
+
+.compactAudioTitle{
+  min-width:0;
+  flex:1;
+  font-size:14px;
+  font-weight:900;
+  color:#111;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-align:left;
+}
+
+.compactAudioButtons{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.compactAudioBtn{
+  height:38px;
+  min-width:44px;
+  border:none;
+  border-radius:999px;
+  background:#111827;
+  color:white;
+  font-size:14px;
+  font-weight:900;
+  padding:0 12px;
+}
+
+.compactAudioBtn.urduMiniOn{
+  background:#16a34a;
+}
+
+body.quran-audio-compact .audioCard{
+  padding:9px 4%;
+  border-radius:22px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.16);
+}
+
+body.quran-audio-compact .audioTitle,
+body.quran-audio-compact .audioGrid,
+body.quran-audio-compact .audioPlayer,
+body.quran-audio-compact .audioStatus,
+body.quran-audio-compact .urduToggleRow{
+  display:none !important;
+}
+
+body.quran-audio-compact .compactAudioRow{
+  display:flex;
+}
+
 .readingArabicTitle{
   font-family:"IndoPakQuran", "Scheherazade New", "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
   direction:rtl;
@@ -556,7 +624,7 @@ button{
 
 .audioBtns{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr;
   gap:10px;
 }
 
@@ -576,6 +644,11 @@ button{
 
 .audioBtn.stopBtn{
   background:#ef4444;
+}
+
+.audioBtn.translationBtn{
+  background:#0ea5e9;
+  grid-column:1 / -1;
 }
 
 .urduToggleRow{
@@ -649,6 +722,23 @@ button{
   border:1px solid rgba(0,0,0,0.03);
 }
 
+.ayahTopRow{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.ayahNumberTools{
+  width:46px;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+}
+
 .ayahNumber{
   width:36px;
   height:36px;
@@ -660,7 +750,36 @@ button{
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-bottom:12px;
+}
+
+.ayahAudioBtn,
+.ayahRepeatBtn{
+  width:36px;
+  height:36px;
+  border:none;
+  border-radius:50%;
+  background:#f2f2f7;
+  color:#111;
+  font-size:16px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ayahAudioBtn.playing{
+  background:#111827;
+  color:white;
+}
+
+.ayahRepeatBtn.active{
+  background:#16a34a;
+  color:white;
+}
+
+.ayahTextWrap{
+  min-width:0;
+  flex:1;
 }
 
 .ayahArabic{
@@ -721,6 +840,8 @@ body.urdu-on .ayahUrdu{
   .ayahArabic{ font-size:29px; line-height:2.1; }
   .readingArabicTitle{ font-size:32px; }
   .ayahUrdu{ font-size:17px; line-height:2.05; }
+  .compactAudioTitle{ font-size:13px; }
+  .compactAudioBtn{ min-width:40px; padding:0 10px; }
 }
 
 </style>
@@ -862,7 +983,15 @@ body.urdu-on .ayahUrdu{
     <!-- =========================
          AUDIO + URDU TOGGLE CARD
     ========================= -->
-    <div class="audioCard" onclick="event.stopPropagation()">
+    <div id="quranAudioCard" class="audioCard" onclick="event.stopPropagation()">
+      <div class="compactAudioRow">
+        <div id="compactAudioTitle" class="compactAudioTitle">Quran Audio</div>
+        <div class="compactAudioButtons">
+          <button id="compactPlayPauseBtn" class="compactAudioBtn" onclick="toggleCurrentAudioPlayback()">▶</button>
+          <button id="compactUrduBtn" class="compactAudioBtn" onclick="toggleUrduTranslation()">Urdu</button>
+        </div>
+      </div>
+
       <div class="audioTitle">🎧 Quran Audio</div>
 
       <div class="audioGrid">
@@ -872,9 +1001,10 @@ body.urdu-on .ayahUrdu{
         </select>
 
         <div class="audioBtns">
-          <button class="audioBtn" onclick="playCurrentSurahAudio()">▶ Play</button>
-          <button class="audioBtn pauseBtn" onclick="pauseCurrentSurahAudio()">⏸ Pause</button>
+          <button class="audioBtn" onclick="playCurrentSurahAudio()">▶ Full Surah</button>
+          <button class="audioBtn pauseBtn" onclick="toggleCurrentAudioPlayback()">⏯ Play/Pause</button>
           <button class="audioBtn stopBtn" onclick="stopCurrentSurahAudio()">■ Stop</button>
+          <button class="audioBtn translationBtn" onclick="playSurahAudioWithTranslationMode()">▶ Audio + Urdu Translation</button>
         </div>
       </div>
 
@@ -1037,16 +1167,24 @@ let arabicReadingBackPage = "home";
 let currentArabicAyahs = [];
 let currentUrduAyahs = [];
 let urduTranslationOn = localStorage.getItem("arabicQuranUrduTranslation") === "on";
+let currentAudioMode = "none";
+let currentPlayingAyahIndex = -1;
+let repeatAyahIndex = -1;
+let autoContinueAyahs = false;
+let audioWithTranslationMode = false;
+let audioPaused = true;
 
 const QURAN_API_BASE = "https://api.alquran.cloud/v1";
 
 const audioReciters = {
   afs: {
     name: "Mishary Rashid Alafasy",
+    ayahEdition: "ar.alafasy",
     url: function(num){ return "https://server8.mp3quran.net/afs/" + padSurahNumber(num) + ".mp3"; }
   },
   sds: {
     name: "Abdurrahman As-Sudais",
+    ayahEdition: "ar.abdurrahmaansudais",
     url: function(num){ return "https://server11.mp3quran.net/sds/" + padSurahNumber(num) + ".mp3"; }
   }
 };
@@ -1297,8 +1435,12 @@ async function openArabicReadingPage(surahNumber, backPage){
 
   resetArabicReaderTopBar();
   stopCurrentSurahAudio();
+  repeatAyahIndex = -1;
+  autoContinueAyahs = false;
+  audioWithTranslationMode = false;
   updateUrduToggleUI();
   updateAudioStatus("Choose a reciter, then press Play.");
+  setupReaderScrollAudioShrink();
 
   let readerTopTitle = document.getElementById("readerTopTitle");
   let readerTopSubTitle = document.getElementById("readerTopSubTitle");
@@ -1363,9 +1505,17 @@ function renderArabicAyahs(){
     card.className = "ayahCard";
 
     card.innerHTML = `
-      <div class="ayahNumber">${ayah.numberInSurah}</div>
-      <div class="ayahArabic">${escapeHtml(ayah.text)}</div>
-      <div class="ayahUrdu">${escapeHtml(urduText)}</div>
+      <div class="ayahTopRow">
+        <div class="ayahNumberTools">
+          <div class="ayahNumber">${ayah.numberInSurah}</div>
+          <button id="ayahAudioBtn_${index}" class="ayahAudioBtn" onclick="toggleAyahAudio(event, ${index})" title="Play this ayah">🔊</button>
+          <button id="ayahRepeatBtn_${index}" class="ayahRepeatBtn" onclick="toggleAyahRepeat(event, ${index})" title="Repeat this ayah">🔁</button>
+        </div>
+        <div class="ayahTextWrap">
+          <div class="ayahArabic">${escapeHtml(ayah.text)}</div>
+          <div class="ayahUrdu">${escapeHtml(urduText)}</div>
+        </div>
+      </div>
     `;
 
     ayahList.appendChild(card);
@@ -1388,6 +1538,7 @@ function closeArabicReadingPage(event){
   }
 
   resetArabicReaderTopBar();
+  document.body.classList.remove("quran-audio-compact");
 
   if(arabicReadingBackPage === "bookmark"){
     openBookmarkPage();
@@ -1531,12 +1682,18 @@ function toggleUrduTranslation(){
 
 function updateUrduToggleUI(){
   let btn = document.getElementById("urduToggleBtn");
+  let compactBtn = document.getElementById("compactUrduBtn");
 
   document.body.classList.toggle("urdu-on", urduTranslationOn);
 
   if(btn){
     btn.innerText = urduTranslationOn ? "ON" : "OFF";
     btn.classList.toggle("on", urduTranslationOn);
+  }
+
+  if(compactBtn){
+    compactBtn.innerText = urduTranslationOn ? "Urdu ON" : "Urdu";
+    compactBtn.classList.toggle("urduMiniOn", urduTranslationOn);
   }
 }
 
@@ -1546,6 +1703,11 @@ function updateUrduToggleUI(){
 function getSelectedReciterKey(){
   let select = document.getElementById("quranReciterSelect");
   return select ? select.value : "afs";
+}
+
+function getSelectedReciter(){
+  let key = getSelectedReciterKey();
+  return audioReciters[key] || audioReciters.afs;
 }
 
 function changeQuranReciter(){
@@ -1568,9 +1730,16 @@ function playCurrentSurahAudio(){
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
 
-  let key = getSelectedReciterKey();
-  let reciter = audioReciters[key] || audioReciters.afs;
+  let reciter = getSelectedReciter();
   let url = reciter.url(currentArabicSurahNumber);
+
+  currentAudioMode = "surah";
+  currentPlayingAyahIndex = -1;
+  repeatAyahIndex = -1;
+  autoContinueAyahs = false;
+  audioWithTranslationMode = false;
+  clearAyahAudioButtonStates();
+  refreshAyahRepeatButtons();
 
   if(audio.src !== url){
     audio.src = url;
@@ -1579,10 +1748,164 @@ function playCurrentSurahAudio(){
   audio.style.display = "block";
 
   audio.play().then(function(){
-    updateAudioStatus("Playing: " + reciter.name + " • Surah " + currentArabicSurahEnglish);
+    audioPaused = false;
+    updateAudioStatus("Playing full Surah: " + reciter.name + " • " + currentArabicSurahEnglish);
+    updateCompactAudioUI();
   }).catch(function(){
+    audioPaused = true;
     updateAudioStatus("Audio could not start. Tap Play again or check internet.");
+    updateCompactAudioUI();
   });
+}
+
+function playSurahAudioWithTranslationMode(){
+  urduTranslationOn = true;
+  localStorage.setItem("arabicQuranUrduTranslation", "on");
+  updateUrduToggleUI();
+
+  audioWithTranslationMode = true;
+  autoContinueAyahs = true;
+  repeatAyahIndex = -1;
+
+  playAyahAudioByIndex(0);
+  updateAudioStatus("Audio + Urdu mode: playing ayah by ayah. Urdu text is ON.");
+}
+
+function toggleAyahAudio(event, index){
+  if(event){
+    event.stopPropagation();
+  }
+
+  let audio = document.getElementById("quranAudioPlayer");
+  if(!audio) return;
+
+  if(currentAudioMode === "ayah" && currentPlayingAyahIndex === index){
+    if(audio.paused){
+      audio.play().then(function(){
+        audioPaused = false;
+        updateAudioStatus("Playing Ayah " + currentArabicAyahs[index].numberInSurah);
+        updateCompactAudioUI();
+        refreshAyahAudioButtons();
+      });
+    }else{
+      audio.pause();
+      audioPaused = true;
+      updateAudioStatus("Paused Ayah " + currentArabicAyahs[index].numberInSurah);
+      updateCompactAudioUI();
+      refreshAyahAudioButtons();
+    }
+    return;
+  }
+
+  audioWithTranslationMode = false;
+  autoContinueAyahs = true;
+  playAyahAudioByIndex(index);
+}
+
+function playAyahAudioByIndex(index){
+  let audio = document.getElementById("quranAudioPlayer");
+  if(!audio) return;
+
+  if(index < 0 || index >= currentArabicAyahs.length){
+    stopCurrentSurahAudio();
+    updateAudioStatus("Finished Surah " + currentArabicSurahEnglish + ".");
+    return;
+  }
+
+  let ayah = currentArabicAyahs[index];
+  if(!ayah || !ayah.number){
+    updateAudioStatus("Ayah audio not available.");
+    return;
+  }
+
+  let reciter = getSelectedReciter();
+  let url = "https://cdn.islamic.network/quran/audio/128/" + reciter.ayahEdition + "/" + ayah.number + ".mp3";
+
+  currentAudioMode = "ayah";
+  currentPlayingAyahIndex = index;
+  audio.src = url;
+  audio.style.display = "block";
+
+  audio.play().then(function(){
+    audioPaused = false;
+    updateAudioStatus("Playing Ayah " + ayah.numberInSurah + " • " + reciter.name);
+    scrollAyahNearMiddle(index);
+    refreshAyahAudioButtons();
+    refreshAyahRepeatButtons();
+    updateCompactAudioUI();
+  }).catch(function(){
+    audioPaused = true;
+    updateAudioStatus("Ayah audio could not start. Check internet or try again.");
+    updateCompactAudioUI();
+  });
+}
+
+function toggleAyahRepeat(event, index){
+  if(event){
+    event.stopPropagation();
+  }
+
+  if(repeatAyahIndex === index){
+    repeatAyahIndex = -1;
+    updateAudioStatus("Repeat OFF.");
+  }else{
+    repeatAyahIndex = index;
+    autoContinueAyahs = true;
+    updateAudioStatus("Repeat ON for Ayah " + currentArabicAyahs[index].numberInSurah + ".");
+
+    if(currentPlayingAyahIndex !== index){
+      playAyahAudioByIndex(index);
+    }
+  }
+
+  refreshAyahRepeatButtons();
+  updateCompactAudioUI();
+}
+
+function handleQuranAudioEnded(){
+  if(currentAudioMode !== "ayah"){
+    audioPaused = true;
+    updateCompactAudioUI();
+    return;
+  }
+
+  if(repeatAyahIndex === currentPlayingAyahIndex){
+    playAyahAudioByIndex(currentPlayingAyahIndex);
+    return;
+  }
+
+  if(autoContinueAyahs){
+    playAyahAudioByIndex(currentPlayingAyahIndex + 1);
+  }else{
+    audioPaused = true;
+    refreshAyahAudioButtons();
+    updateCompactAudioUI();
+  }
+}
+
+function toggleCurrentAudioPlayback(){
+  let audio = document.getElementById("quranAudioPlayer");
+  if(!audio) return;
+
+  if(!audio.src){
+    playCurrentSurahAudio();
+    return;
+  }
+
+  if(audio.paused){
+    audio.play().then(function(){
+      audioPaused = false;
+      updateAudioStatus("Playing.");
+      updateCompactAudioUI();
+      refreshAyahAudioButtons();
+    });
+  }else{
+    audio.pause();
+    audioPaused = true;
+    updateAudioStatus("Paused.");
+    updateCompactAudioUI();
+    refreshAyahAudioButtons();
+  }
 }
 
 function pauseCurrentSurahAudio(){
@@ -1590,7 +1913,10 @@ function pauseCurrentSurahAudio(){
   if(!audio) return;
 
   audio.pause();
+  audioPaused = true;
   updateAudioStatus("Paused.");
+  updateCompactAudioUI();
+  refreshAyahAudioButtons();
 }
 
 function stopCurrentSurahAudio(){
@@ -1602,6 +1928,15 @@ function stopCurrentSurahAudio(){
   audio.removeAttribute("src");
   audio.load();
   audio.style.display = "none";
+
+  currentAudioMode = "none";
+  currentPlayingAyahIndex = -1;
+  autoContinueAyahs = false;
+  audioWithTranslationMode = false;
+  audioPaused = true;
+
+  clearAyahAudioButtonStates();
+  updateCompactAudioUI();
 }
 
 function updateAudioStatus(text){
@@ -1609,6 +1944,128 @@ function updateAudioStatus(text){
   if(status){
     status.innerText = text;
   }
+
+  let compactTitle = document.getElementById("compactAudioTitle");
+  if(compactTitle){
+    compactTitle.innerText = text || "Quran Audio";
+  }
+}
+
+function updateCompactAudioUI(){
+  let compactPlayPauseBtn = document.getElementById("compactPlayPauseBtn");
+  let audio = document.getElementById("quranAudioPlayer");
+
+  if(compactPlayPauseBtn){
+    compactPlayPauseBtn.innerText = audio && !audio.paused && audio.src ? "⏸" : "▶";
+  }
+
+  let compactTitle = document.getElementById("compactAudioTitle");
+  if(compactTitle && currentAudioMode === "ayah" && currentPlayingAyahIndex >= 0){
+    let ayah = currentArabicAyahs[currentPlayingAyahIndex];
+    if(ayah){
+      compactTitle.innerText = "Ayah " + ayah.numberInSurah + (repeatAyahIndex === currentPlayingAyahIndex ? " • Repeat" : "");
+    }
+  }else if(compactTitle && currentAudioMode === "surah"){
+    compactTitle.innerText = "Full Surah • " + currentArabicSurahEnglish;
+  }else if(compactTitle && currentAudioMode === "none"){
+    compactTitle.innerText = "Quran Audio";
+  }
+
+  updateUrduToggleUI();
+}
+
+function refreshAyahAudioButtons(){
+  let buttons = document.querySelectorAll(".ayahAudioBtn");
+  buttons.forEach(function(btn){
+    btn.classList.remove("playing");
+    btn.innerText = "🔊";
+  });
+
+  if(currentAudioMode === "ayah" && currentPlayingAyahIndex >= 0){
+    let btn = document.getElementById("ayahAudioBtn_" + currentPlayingAyahIndex);
+    let audio = document.getElementById("quranAudioPlayer");
+    if(btn){
+      btn.classList.add("playing");
+      btn.innerText = audio && !audio.paused ? "⏸" : "▶";
+    }
+  }
+}
+
+function clearAyahAudioButtonStates(){
+  let buttons = document.querySelectorAll(".ayahAudioBtn");
+  buttons.forEach(function(btn){
+    btn.classList.remove("playing");
+    btn.innerText = "🔊";
+  });
+}
+
+function refreshAyahRepeatButtons(){
+  let buttons = document.querySelectorAll(".ayahRepeatBtn");
+  buttons.forEach(function(btn){
+    btn.classList.remove("active");
+  });
+
+  if(repeatAyahIndex >= 0){
+    let btn = document.getElementById("ayahRepeatBtn_" + repeatAyahIndex);
+    if(btn){
+      btn.classList.add("active");
+    }
+  }
+}
+
+function scrollAyahNearMiddle(index){
+  let btn = document.getElementById("ayahAudioBtn_" + index);
+  let content = document.getElementById("arabicReaderContent");
+  if(!btn || !content) return;
+
+  let card = btn.closest(".ayahCard");
+  if(!card) return;
+
+  let contentRect = content.getBoundingClientRect();
+  let cardRect = card.getBoundingClientRect();
+  let currentTop = content.scrollTop;
+  let wanted = currentTop + (cardRect.top - contentRect.top) - (content.clientHeight * 0.22);
+
+  content.scrollTo({ top:wanted, behavior:"smooth" });
+}
+
+function setupReaderScrollAudioShrink(){
+  let content = document.getElementById("arabicReaderContent");
+  if(!content) return;
+
+  content.removeEventListener("scroll", handleReaderAudioShrinkScroll);
+  content.addEventListener("scroll", handleReaderAudioShrinkScroll, { passive:true });
+  handleReaderAudioShrinkScroll();
+}
+
+function handleReaderAudioShrinkScroll(){
+  let content = document.getElementById("arabicReaderContent");
+  if(!content) return;
+
+  if(content.scrollTop > 170){
+    document.body.classList.add("quran-audio-compact");
+  }else{
+    document.body.classList.remove("quran-audio-compact");
+  }
+}
+
+function setupAudioEndedListener(){
+  let audio = document.getElementById("quranAudioPlayer");
+  if(!audio || audio.dataset.listenerAdded === "yes") return;
+
+  audio.addEventListener("ended", handleQuranAudioEnded);
+  audio.addEventListener("pause", function(){
+    audioPaused = true;
+    updateCompactAudioUI();
+    refreshAyahAudioButtons();
+  });
+  audio.addEventListener("play", function(){
+    audioPaused = false;
+    updateCompactAudioUI();
+    refreshAyahAudioButtons();
+  });
+
+  audio.dataset.listenerAdded = "yes";
 }
 
 function padSurahNumber(num){
@@ -1649,6 +2106,7 @@ function escapeHtml(value){
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
   loadSavedReciter();
+  setupAudioEndedListener();
   updateUrduToggleUI();
   updateResumeText();
   renderSurahList();
