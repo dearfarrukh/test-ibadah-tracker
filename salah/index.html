@@ -487,8 +487,9 @@ body{
 }
 
 .monthChoiceBtn.active{
-  background:#111;
+  background:#0a84ff;
   color:white;
+  box-shadow:0 10px 26px rgba(10,132,255,0.28);
 }
 
 /* =========================
@@ -499,18 +500,18 @@ body{
 }
 
 .monthPrintTitle{
-  font-size:24px;
+  font-size:20px;
   font-weight:900;
   text-align:center;
-  margin-bottom:8px;
+  margin-bottom:3px;
 }
 
 .monthPrintSub{
-  font-size:14px;
+  font-size:11px;
   font-weight:700;
   text-align:center;
-  color:#555;
-  margin-bottom:14px;
+  color:#333;
+  margin-bottom:5px;
 }
 
 /* =========================
@@ -574,52 +575,89 @@ body{
    PRINT STYLE
 ========================= */
 @media print{
+
+  @page{
+    size:landscape;
+    margin:0.18in;
+  }
+
+  html,
   body{
-    position:static;
-    overflow:visible;
-    background:white;
+    position:static !important;
+    overflow:visible !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    background:white !important;
   }
 
   body *{
-    visibility:hidden;
+    visibility:hidden !important;
   }
 
   #monthlyPrintArea,
   #monthlyPrintArea *{
-    visibility:visible;
+    visibility:visible !important;
   }
 
   #monthlyPrintArea{
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    background:white;
-    padding:20px;
+    position:absolute !important;
+    top:0 !important;
+    left:0 !important;
+    width:150% !important;
+    max-width:none !important;
+    background:white !important;
+    padding:0 !important;
+    margin:0 !important;
+    transform:scale(0.67);
+    transform-origin:top left;
   }
 
   .monthPrintHeader{
-    display:block;
+    display:block !important;
+    margin:0 0 3px 0 !important;
+    padding:0 !important;
+  }
+
+  .monthPrintTitle{
+    font-size:18px !important;
+    margin:0 0 2px 0 !important;
+    padding:0 !important;
+  }
+
+  .monthPrintSub{
+    font-size:10px !important;
+    margin:0 0 4px 0 !important;
+    padding:0 !important;
+    color:#111 !important;
   }
 
   .monthTable{
-    border-collapse:collapse;
-    border-spacing:0;
-    width:100%;
+    width:100% !important;
+    border-collapse:collapse !important;
+    border-spacing:0 !important;
+    margin:0 !important;
   }
 
   .monthTable th,
   .monthTable td{
-    border:1px solid #bbb;
+    border:1px solid #777 !important;
     background:white !important;
-    color:#111;
-    padding:7px;
-    font-size:12px;
+    color:#111 !important;
+    padding:3px 5px !important;
+    font-size:9.5px !important;
+    line-height:1.05 !important;
+    font-weight:700 !important;
+  }
+
+  .monthTable th{
+    font-size:9px !important;
+    font-weight:900 !important;
   }
 
   .monthTable td:first-child,
   .monthTable td:last-child{
-    border-radius:0;
+    border-radius:0 !important;
   }
 }
 </style>
@@ -824,7 +862,7 @@ body{
       <div id="monthlyPrintArea">
         <div class="monthPrintHeader">
           <div class="monthPrintTitle">Salah Monthly Timetable</div>
-          <div class="monthPrintSub" id="monthlyPrintSub">Loading...</div>
+          <div class="monthPrintSub" id="monthlyPrintSub">Load monthly timetable first.</div>
         </div>
         <div id="monthlyTableWrap"></div>
       </div>
@@ -903,10 +941,6 @@ function getSelectedSalahDate(){
   d.setDate(d.getDate() + salahDayOffset);
   d.setHours(0,0,0,0);
   return d;
-}
-
-function formatKey(d){
-  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
 }
 
 function formatSalahApiDate(dateObj){
@@ -1027,6 +1061,13 @@ function getCalculationMethodSourceLabel(placeText){
   return "Auto - MWL";
 }
 
+function getFullSettingsLabel(placeText){
+  let calc = getCalculationMethodSourceLabel(placeText);
+  let asr = getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi";
+  let fajr18 = getIsnaFajr18Enabled() ? "18° ON" : "18° OFF";
+  return calc + " • " + asr + " • ISNA Fajr " + fajr18;
+}
+
 function applyIsnaFajr18Override(baseTimings, overrideTimings){
   let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
 
@@ -1077,6 +1118,7 @@ function saveSettingsAndRefresh(){
   }
 
   salahLiveCache = {};
+  clearMonthlyTimetableBecauseSettingsChanged();
   reloadSalahTimes();
 }
 
@@ -1085,7 +1127,26 @@ function toggleIsnaFajr18(){
   localStorage.setItem("isnaFajr18", newValue ? "true" : "false");
   loadSettingsUI();
   salahLiveCache = {};
+  clearMonthlyTimetableBecauseSettingsChanged();
   reloadSalahTimes();
+}
+
+function clearMonthlyTimetableBecauseSettingsChanged(){
+  let status = document.getElementById("monthlyStatus");
+  let wrap = document.getElementById("monthlyTableWrap");
+  let printSub = document.getElementById("monthlyPrintSub");
+
+  if(status){
+    status.innerText = "Settings changed. Press Load Monthly Timetable again.";
+  }
+
+  if(wrap){
+    wrap.innerHTML = "";
+  }
+
+  if(printSub){
+    printSub.innerText = "Settings changed. Load monthly timetable again.";
+  }
 }
 
 /* =========================
@@ -1308,7 +1369,7 @@ async function fetchSalahForLocation(dateObj, locationObj){
 
   return {
     locationName: locationObj.name || locationObj.locationName || locationObj.city || "Salah Times",
-    sourceLabel: getCalculationMethodSourceLabel(locationObj.country || locationObj.name || locationObj.query || "") + " - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
+    sourceLabel: getFullSettingsLabel(locationObj.country || locationObj.name || locationObj.query || ""),
     fajr: to12Hour(t.Fajr),
     sunrise: to12Hour(t.Sunrise),
     dhuhr: to12Hour(t.Dhuhr),
@@ -1446,6 +1507,7 @@ async function searchEnteredLocation(){
 
     closeLocationSheet();
     reloadSalahTimes();
+    clearMonthlyTimetableBecauseSettingsChanged();
 
   }catch(error){
     showToast("Could not search location");
@@ -1576,6 +1638,7 @@ function selectSavedSalahLocation(index){
 
   closeLocationSheet();
   reloadSalahTimes();
+  clearMonthlyTimetableBecauseSettingsChanged();
 }
 
 /* =========================
@@ -1603,6 +1666,7 @@ function setupMonthlyOptionButtons(){
 function chooseMonthlyOption(option){
   selectedMonthlyOption = option || "current";
   updateMonthlyOptionButtons();
+  clearMonthlyTimetableBecauseSettingsChanged();
 }
 
 function updateMonthlyOptionButtons(){
@@ -1665,6 +1729,59 @@ async function getActiveMonthlyLocation(){
   };
 }
 
+/* =========================
+   FETCH MONTHLY CALENDAR WITH CURRENT SETTINGS
+   Full function name: fetchMonthlyCalendarWithCurrentSettings()
+========================= */
+async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
+
+  let method = getAladhanMethodNumber(loc.country || loc.name || "");
+  let school = getAsrMethod() === "hanafi" ? "1" : "0";
+
+  let url =
+    "https://api.aladhan.com/v1/calendar/" + year + "/" + month
+    + "?latitude=" + encodeURIComponent(loc.lat)
+    + "&longitude=" + encodeURIComponent(loc.lon)
+    + "&method=" + method
+    + "&school=" + school;
+
+  let res = await fetch(url);
+  let json = await res.json();
+
+  if(!json || !json.data || !Array.isArray(json.data)){
+    throw new Error("Monthly timetable not loaded");
+  }
+
+  if(
+    (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
+    getIsnaFajr18Enabled()
+  ){
+    let overrideUrl =
+      "https://api.aladhan.com/v1/calendar/" + year + "/" + month
+      + "?latitude=" + encodeURIComponent(loc.lat)
+      + "&longitude=" + encodeURIComponent(loc.lon)
+      + "&method=13"
+      + "&school=" + school;
+
+    let overrideRes = await fetch(overrideUrl);
+    let overrideJson = await overrideRes.json();
+
+    if(overrideJson && overrideJson.data && Array.isArray(overrideJson.data)){
+      json.data.forEach(function(day, index){
+        if(
+          overrideJson.data[index] &&
+          overrideJson.data[index].timings &&
+          overrideJson.data[index].timings.Fajr
+        ){
+          day.timings.Fajr = overrideJson.data[index].timings.Fajr;
+        }
+      });
+    }
+  }
+
+  return json.data;
+}
+
 async function loadMonthlyTimetable(){
   let status = document.getElementById("monthlyStatus");
   let wrap = document.getElementById("monthlyTableWrap");
@@ -1680,29 +1797,21 @@ async function loadMonthlyTimetable(){
     let year = pickedDate.getFullYear();
 
     let loc = await getActiveMonthlyLocation();
-    let method = getAladhanMethodNumber(loc.country || loc.name || "");
-    let school = getAsrMethod() === "hanafi" ? "1" : "0";
-
-    let url =
-      "https://api.aladhan.com/v1/calendar/" + year + "/" + month
-      + "?latitude=" + encodeURIComponent(loc.lat)
-      + "&longitude=" + encodeURIComponent(loc.lon)
-      + "&method=" + method
-      + "&school=" + school;
-
-    let res = await fetch(url);
-    let json = await res.json();
-
-    if(!json || !json.data || !Array.isArray(json.data)){
-      throw new Error("Monthly timetable not loaded");
-    }
+    let monthlyData = await fetchMonthlyCalendarWithCurrentSettings(year, month, loc);
 
     let monthName = pickedDate.toLocaleDateString("en-US", {
       month:"long",
       year:"numeric"
     });
 
-    let label = (loc.name || "Location") + " • " + monthName + " • " + getMonthOptionLabel();
+    let label =
+      (loc.name || "Location") +
+      " • " +
+      monthName +
+      " • " +
+      getMonthOptionLabel() +
+      " • " +
+      getFullSettingsLabel(loc.country || loc.name || "");
 
     if(status){
       status.innerText = label;
@@ -1712,7 +1821,7 @@ async function loadMonthlyTimetable(){
       printSub.innerText = label;
     }
 
-    let rows = json.data.map(function(day){
+    let rows = monthlyData.map(function(day){
       let t = day.timings;
       let date = day.date && day.date.gregorian ? day.date.gregorian.day : "";
       return `
