@@ -15,9 +15,6 @@
 <link rel="manifest" href="../manifest.webmanifest">
 
 <style>
-/* =========================
-   GLOBAL STYLE
-========================= */
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -40,9 +37,6 @@ body{
   inset:0;
 }
 
-/* =========================
-   PAGE
-========================= */
 #salahPage{
   position:fixed;
   inset:0;
@@ -54,9 +48,6 @@ body{
   padding:calc(env(safe-area-inset-top) + 12px) 4% calc(120px + env(safe-area-inset-bottom)) 4%;
 }
 
-/* =========================
-   TOP BAR
-========================= */
 .topBar{
   width:100%;
   height:56px;
@@ -93,15 +84,8 @@ body{
   font-size:22px;
   font-weight:900;
   letter-spacing:-0.4px;
-  max-width:68%;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
 }
 
-/* =========================
-   CARDS
-========================= */
 .heroCard,
 .infoCard{
   width:100%;
@@ -279,9 +263,6 @@ body{
   cursor:pointer;
 }
 
-/* =========================
-   BOTTOM SHEET
-========================= */
 .sheetOverlay{
   display:none;
   position:fixed;
@@ -461,9 +442,6 @@ body{
   transform:translateX(22px);
 }
 
-/* =========================
-   MONTH CHOICE BUTTONS
-========================= */
 .monthChoiceGrid{
   width:100%;
   display:grid;
@@ -492,9 +470,6 @@ body{
   box-shadow:0 10px 26px rgba(10,132,255,0.28);
 }
 
-/* =========================
-   MONTHLY PRINT AREA
-========================= */
 .monthPrintHeader{
   display:none;
 }
@@ -514,9 +489,6 @@ body{
   margin-bottom:5px;
 }
 
-/* =========================
-   MONTHLY TABLE
-========================= */
 .monthTable{
   width:100%;
   border-collapse:separate;
@@ -545,9 +517,6 @@ body{
   border-radius:0 14px 14px 0;
 }
 
-/* =========================
-   TOAST
-========================= */
 #toast{
   display:none;
   position:fixed;
@@ -571,14 +540,11 @@ body{
   .salahTime{font-size:17px;}
 }
 
-/* =========================
-   PRINT STYLE
-========================= */
 @media print{
 
   @page{
     size:landscape;
-    margin:0.18in;
+    margin:0.16in;
   }
 
   html,
@@ -620,13 +586,13 @@ body{
   }
 
   .monthPrintTitle{
-    font-size:18px !important;
+    font-size:17px !important;
     margin:0 0 2px 0 !important;
     padding:0 !important;
   }
 
   .monthPrintSub{
-    font-size:10px !important;
+    font-size:9.5px !important;
     margin:0 0 4px 0 !important;
     padding:0 !important;
     color:#111 !important;
@@ -645,13 +611,13 @@ body{
     background:white !important;
     color:#111 !important;
     padding:3px 5px !important;
-    font-size:9.5px !important;
-    line-height:1.05 !important;
+    font-size:9.3px !important;
+    line-height:1.04 !important;
     font-weight:700 !important;
   }
 
   .monthTable th{
-    font-size:9px !important;
+    font-size:8.8px !important;
     font-weight:900 !important;
   }
 
@@ -667,27 +633,17 @@ body{
 
 <div id="salahPage">
 
-  <!-- =========================
-       TOP BAR
-       Back button removed
-  ========================= -->
   <div class="topBar">
     <div class="topTitle">Salah</div>
     <button class="roundBtn settingsBtn" onclick="openSettingsSheet()">⚙️</button>
   </div>
 
-  <!-- =========================
-       HERO LOCATION CARD
-  ========================= -->
   <div class="heroCard" onclick="openLocationSheet()">
     <div id="salahCityName" class="cityName">Loading location...</div>
     <div class="cityHint">🔎 Tap to change location</div>
     <div id="salahSourceLabel" class="sourceLabel">Refreshing current city...</div>
   </div>
 
-  <!-- =========================
-       DATE CARD
-  ========================= -->
   <div class="dateCard">
     <button id="salahPrevDayBtn" class="dateBtn" onclick="changeSalahDay(-1)">‹</button>
     <div class="dateTextWrap">
@@ -697,9 +653,6 @@ body{
     <button id="salahNextDayBtn" class="dateBtn" onclick="changeSalahDay(1)">›</button>
   </div>
 
-  <!-- =========================
-       SALAH TIMES CARD
-  ========================= -->
   <div class="infoCard">
     <div class="timesTitle">Salah Times</div>
 
@@ -734,9 +687,6 @@ body{
     </div>
   </div>
 
-  <!-- =========================
-       ACTION BUTTONS
-  ========================= -->
   <div class="actionGrid">
     <button class="actionBtn" onclick="openMonthlySheet()">📅 Monthly</button>
     <button class="actionBtn" onclick="refreshCurrentLocationAndTimes()">🔄 Refresh</button>
@@ -744,9 +694,6 @@ body{
 
 </div>
 
-<!-- =========================
-     LOCATION SHEET
-========================= -->
 <div id="locationSheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'locationSheet')">
   <div class="bottomSheet" onclick="event.stopPropagation()">
     <div class="sheetTop">
@@ -780,9 +727,6 @@ body{
   </div>
 </div>
 
-<!-- =========================
-     SETTINGS SHEET
-========================= -->
 <div id="settingsSheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'settingsSheet')">
   <div class="bottomSheet" onclick="event.stopPropagation()">
     <div class="sheetTop">
@@ -832,9 +776,6 @@ body{
   </div>
 </div>
 
-<!-- =========================
-     MONTHLY SHEET
-========================= -->
 <div id="monthlySheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'monthlySheet')">
   <div class="bottomSheet" onclick="event.stopPropagation()">
     <div class="sheetTop">
@@ -874,12 +815,10 @@ body{
 <div id="toast">Saved</div>
 
 <script>
-/* =========================
-   GLOBAL VARIABLES
-========================= */
 let salahDayOffset = 0;
 let salahSource = localStorage.getItem("salahLocationMode") || "current";
 let selectedMonthlyOption = "current";
+let monthlyTableLoaded = false;
 
 let salahLocationData = {
   lat:null,
@@ -896,11 +835,6 @@ let salahEnteredLocation = JSON.parse(localStorage.getItem("salahEnteredLocation
   locationName:""
 };
 
-let salahLiveCache = {};
-
-/* =========================
-   START APP
-========================= */
 document.addEventListener("DOMContentLoaded", function(){
   setupMonthlyOptionButtons();
   loadSettingsUI();
@@ -914,9 +848,6 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 });
 
-/* =========================
-   NAVIGATION
-========================= */
 function goToHome(){
   window.location.href = "../home/";
 }
@@ -933,9 +864,6 @@ function goToMore(){
   window.location.href = "../more/";
 }
 
-/* =========================
-   DATE HELPERS
-========================= */
 function getSelectedSalahDate(){
   let d = new Date();
   d.setDate(d.getDate() + salahDayOffset);
@@ -983,9 +911,6 @@ function changeSalahDay(amount){
   reloadSalahTimes();
 }
 
-/* =========================
-   TIME HELPERS
-========================= */
 function to12Hour(time24){
   if(!time24) return "--:--";
 
@@ -1004,9 +929,6 @@ function to12Hour(time24){
   return hour + ":" + minute + " " + ampm;
 }
 
-/* =========================
-   SETTINGS
-========================= */
 function getAsrMethod(){
   let m = localStorage.getItem("asrMethod");
   if(!m){
@@ -1064,7 +986,13 @@ function getCalculationMethodSourceLabel(placeText){
 function getFullSettingsLabel(placeText){
   let calc = getCalculationMethodSourceLabel(placeText);
   let asr = getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi";
-  let fajr18 = getIsnaFajr18Enabled() ? "18° ON" : "18° OFF";
+  let method = localStorage.getItem("salahCalculationMethod") || "auto";
+  let fajr18 = "18° OFF";
+
+  if(method === "isna"){
+    fajr18 = getIsnaFajr18Enabled() ? "18° ON" : "18° OFF";
+  }
+
   return calc + " • " + asr + " • ISNA Fajr " + fajr18;
 }
 
@@ -1117,24 +1045,47 @@ function saveSettingsAndRefresh(){
     localStorage.setItem("asrMethod", asrSelect.value);
   }
 
-  salahLiveCache = {};
-  clearMonthlyTimetableBecauseSettingsChanged();
+  loadSettingsUI();
+  showToast("Settings changed");
+
   reloadSalahTimes();
+
+  if(monthlyTableLoaded){
+    loadMonthlyTimetable();
+  }else{
+    clearMonthlyTimetableBecauseSettingsChanged();
+  }
 }
 
 function toggleIsnaFajr18(){
+  let method = localStorage.getItem("salahCalculationMethod") || "auto";
+
+  if(method !== "isna"){
+    showToast("18° only works with ISNA method");
+    return;
+  }
+
   let newValue = !getIsnaFajr18Enabled();
   localStorage.setItem("isnaFajr18", newValue ? "true" : "false");
+
   loadSettingsUI();
-  salahLiveCache = {};
-  clearMonthlyTimetableBecauseSettingsChanged();
+  showToast("18° setting changed");
+
   reloadSalahTimes();
+
+  if(monthlyTableLoaded){
+    loadMonthlyTimetable();
+  }else{
+    clearMonthlyTimetableBecauseSettingsChanged();
+  }
 }
 
 function clearMonthlyTimetableBecauseSettingsChanged(){
   let status = document.getElementById("monthlyStatus");
   let wrap = document.getElementById("monthlyTableWrap");
   let printSub = document.getElementById("monthlyPrintSub");
+
+  monthlyTableLoaded = false;
 
   if(status){
     status.innerText = "Settings changed. Press Load Monthly Timetable again.";
@@ -1149,9 +1100,6 @@ function clearMonthlyTimetableBecauseSettingsChanged(){
   }
 }
 
-/* =========================
-   GEOLOCATION
-========================= */
 function getLocationPosition(){
   return new Promise(function(resolve, reject){
     if(!navigator.geolocation){
@@ -1196,10 +1144,6 @@ async function reverseGeocode(lat, lon){
   }
 }
 
-/* =========================
-   REFRESH CURRENT LOCATION EVERY OPEN
-   Full function name: refreshCurrentLocationAndTimes()
-========================= */
 async function refreshCurrentLocationAndTimes(){
 
   salahSource = "current";
@@ -1232,9 +1176,11 @@ async function refreshCurrentLocationAndTimes(){
     localStorage.setItem("userState", place.state || "");
     localStorage.setItem("userCountry", place.country || "");
 
-    salahLiveCache = {};
-
     await reloadSalahTimes();
+
+    if(monthlyTableLoaded){
+      loadMonthlyTimetable();
+    }
 
   }catch(error){
 
@@ -1295,9 +1241,6 @@ async function loadUserLocationData(){
   return salahLocationData;
 }
 
-/* =========================
-   LOAD SALAH TIMES
-========================= */
 function setSalahLoadingState(){
   ["fajrTime","sunriseTime","dhuhrTime","asrTime","maghribTime","ishaTime"].forEach(function(id){
     let el = document.getElementById(id);
@@ -1432,9 +1375,6 @@ async function reloadSalahTimes(){
   }
 }
 
-/* =========================
-   LOCATION SHEET
-========================= */
 function openLocationSheet(){
   renderSavedSalahLocationList();
   let sheet = document.getElementById("locationSheet");
@@ -1507,16 +1447,18 @@ async function searchEnteredLocation(){
 
     closeLocationSheet();
     reloadSalahTimes();
-    clearMonthlyTimetableBecauseSettingsChanged();
+
+    if(monthlyTableLoaded){
+      loadMonthlyTimetable();
+    }else{
+      clearMonthlyTimetableBecauseSettingsChanged();
+    }
 
   }catch(error){
     showToast("Could not search location");
   }
 }
 
-/* =========================
-   SAVED LOCATIONS
-========================= */
 function getSavedSalahLocations(){
   let saved = localStorage.getItem("savedSalahLocations");
 
@@ -1638,12 +1580,14 @@ function selectSavedSalahLocation(index){
 
   closeLocationSheet();
   reloadSalahTimes();
-  clearMonthlyTimetableBecauseSettingsChanged();
+
+  if(monthlyTableLoaded){
+    loadMonthlyTimetable();
+  }else{
+    clearMonthlyTimetableBecauseSettingsChanged();
+  }
 }
 
-/* =========================
-   SETTINGS SHEET
-========================= */
 function openSettingsSheet(){
   loadSettingsUI();
   let sheet = document.getElementById("settingsSheet");
@@ -1655,9 +1599,6 @@ function closeSettingsSheet(){
   if(sheet) sheet.classList.remove("show");
 }
 
-/* =========================
-   MONTHLY TIMETABLE OPTIONS
-========================= */
 function setupMonthlyOptionButtons(){
   selectedMonthlyOption = "current";
   updateMonthlyOptionButtons();
@@ -1666,7 +1607,12 @@ function setupMonthlyOptionButtons(){
 function chooseMonthlyOption(option){
   selectedMonthlyOption = option || "current";
   updateMonthlyOptionButtons();
-  clearMonthlyTimetableBecauseSettingsChanged();
+
+  if(monthlyTableLoaded){
+    loadMonthlyTimetable();
+  }else{
+    clearMonthlyTimetableBecauseSettingsChanged();
+  }
 }
 
 function updateMonthlyOptionButtons(){
@@ -1729,10 +1675,6 @@ async function getActiveMonthlyLocation(){
   };
 }
 
-/* =========================
-   FETCH MONTHLY CALENDAR WITH CURRENT SETTINGS
-   Full function name: fetchMonthlyCalendarWithCurrentSettings()
-========================= */
 async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
 
   let method = getAladhanMethodNumber(loc.country || loc.name || "");
@@ -1787,7 +1729,9 @@ async function loadMonthlyTimetable(){
   let wrap = document.getElementById("monthlyTableWrap");
   let printSub = document.getElementById("monthlyPrintSub");
 
-  if(status) status.innerText = "Loading monthly timetable...";
+  monthlyTableLoaded = false;
+
+  if(status) status.innerText = "Loading monthly timetable with current settings...";
   if(wrap) wrap.innerHTML = "";
   if(printSub) printSub.innerText = "Loading...";
 
@@ -1853,9 +1797,13 @@ async function loadMonthlyTimetable(){
         </table>
       `;
     }
+
+    monthlyTableLoaded = true;
+
   }catch(error){
     if(status) status.innerText = "Could not load monthly timetable.";
     if(printSub) printSub.innerText = "Could not load monthly timetable.";
+    monthlyTableLoaded = false;
   }
 }
 
@@ -1870,9 +1818,6 @@ function printMonthlyTimetable(){
   window.print();
 }
 
-/* =========================
-   TOAST
-========================= */
 function showToast(message){
   let toast = document.getElementById("toast");
   if(!toast) return;
@@ -1886,9 +1831,6 @@ function showToast(message){
   }, 1800);
 }
 
-/* =========================
-   SWIPE DAY CHANGE
-========================= */
 let salahTouchStartX = 0;
 
 document.addEventListener("touchstart", function(e){
@@ -1914,17 +1856,9 @@ document.addEventListener("touchend", function(e){
 }, {passive:true});
 </script>
 
-<!-- =========================
-     UNIVERSAL BOTTOM NAV SCRIPT
-     File used: shared/bottom-nav.js
-========================= -->
 <script src="../shared/bottom-nav.js"></script>
 
 <script>
-// =========================
-// START UNIVERSAL BOTTOM NAV - SALAH ACTIVE
-// Full function name: createUniversalBottomNav("salah")
-// =========================
 document.addEventListener("DOMContentLoaded", function(){
   if(typeof createUniversalBottomNav === "function"){
     createUniversalBottomNav("salah");
