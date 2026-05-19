@@ -104,8 +104,8 @@ function buildUniversalBottomNavItem(item){
         box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
         ">
           <img src="${item.icon}" style="
-          width:42px;
-          height:42px;
+          width:48px;
+          height:48px;
           object-fit:contain;
           display:block;
           ">
