@@ -221,7 +221,7 @@ html, body{
 <!-- =========================
      CLEAN LOADING SCREEN
 ========================= -->
-<div id="cleanLoadingPage" class="cleanAppShell">
+<div id="cleanLoadingPage" class="cleanAppShell" style="visibility:hidden;">
   <div class="cleanCard">
 
     <img class="cleanLogo" src="Images/Icons/QuranTracker.png" onerror="this.style.display='none'">
@@ -412,6 +412,81 @@ function openSelectedDefaultPage(){
     status.innerText = "Opening...";
   }
 
+  /*
+    If any old folder page still sends user to ../,
+    this will catch the return and send user directly
+    to the correct new folder page.
+  */
+  let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
+
+  if(folderReturnPage){
+    localStorage.removeItem("ibadahFolderReturnPage");
+
+    folderReturnPage = String(folderReturnPage).trim().toLowerCase();
+
+    if(folderReturnPage === "home"){
+      openHomePage();
+      return;
+    }
+
+    if(folderReturnPage === "more"){
+      openMorePage();
+      return;
+    }
+
+    if(folderReturnPage === "tracker"){
+      openTrackerPage();
+      return;
+    }
+
+    if(folderReturnPage === "salah"){
+      openSalahPage();
+      return;
+    }
+
+    if(folderReturnPage === "quran"){
+      openQuranPage();
+      return;
+    }
+  }
+
+  let qazaReturnPage = localStorage.getItem("qazaReturnPage");
+
+  if(qazaReturnPage){
+    qazaReturnPage = String(qazaReturnPage).trim().toLowerCase();
+
+    if(qazaReturnPage === "home"){
+      openHomePage();
+      return;
+    }
+
+    if(qazaReturnPage === "more"){
+      openMorePage();
+      return;
+    }
+
+    if(qazaReturnPage === "tracker"){
+      openTrackerPage();
+      return;
+    }
+  }
+
+  let tasbihReturnPage = localStorage.getItem("tasbihReturnPage");
+
+  if(tasbihReturnPage){
+    tasbihReturnPage = String(tasbihReturnPage).trim().toLowerCase();
+
+    if(tasbihReturnPage === "home"){
+      openHomePage();
+      return;
+    }
+
+    if(tasbihReturnPage === "more"){
+      openMorePage();
+      return;
+    }
+  }
+
   let defaultPage = getDefaultPage();
 
   if(defaultPage === "tracker"){
@@ -437,7 +512,6 @@ function openSelectedDefaultPage(){
   openHomePage();
 
 }
-
 
 /* =========================
    OPEN HOME PAGE
@@ -842,9 +916,12 @@ function cleanStartup(){
     return;
   }
 
-  setTimeout(function(){
-    openSelectedDefaultPage();
-  }, 500);
+  /*
+    Do not wait 500ms.
+    This stops the clean starter message from showing
+    when another page accidentally opens main index.html.
+  */
+  openSelectedDefaultPage();
 
 }
 
