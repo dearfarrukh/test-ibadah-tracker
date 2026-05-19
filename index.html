@@ -8547,25 +8547,12 @@ window.scrollTo(0,0);
   
 // =========================
 // OPEN QURAN PAGE
+// New Quran is now separate folder page
+// Full function name: openQuranPage()
 // =========================
 function openQuranPage(){
 
-closeBookmarkPopup();
-
-let quranPage = document.getElementById("quranPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-
-hideAllAppPages();
-
-// SHOW ONLY QURAN PAGE
-if(quranPage) quranPage.style.display = "block";
-
-if(floatingMenuBtn) floatingMenuBtn.style.display = "none";
-
-setBottomNavVisibility(true);
-
-window.scrollTo(0,0);
+  window.location.href = "quran/?from=main";
 
 }
 // =========================
