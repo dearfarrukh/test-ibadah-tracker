@@ -51,7 +51,7 @@ body{
   background:linear-gradient(180deg,#f8f8fb 0%,#e9e9ee 100%);
   overflow:auto;
   -webkit-overflow-scrolling:touch;
-  padding:calc(env(safe-area-inset-top) + 12px) 4% calc(100px + env(safe-area-inset-bottom)) 4%;
+  padding:calc(env(safe-area-inset-top) + 12px) 4% calc(120px + env(safe-area-inset-bottom)) 4%;
 }
 
 /* =========================
@@ -83,10 +83,6 @@ body{
   top:6px;
   box-shadow:0 6px 18px rgba(0,0,0,0.10);
   cursor:pointer;
-}
-
-.backBtn{
-  left:0;
 }
 
 .settingsBtn{
@@ -244,6 +240,7 @@ body{
   grid-template-columns:1fr 1fr;
   gap:12px;
   margin-top:14px;
+  margin-bottom:20px;
 }
 
 .actionBtn{
@@ -302,6 +299,7 @@ body{
 
 .bottomSheet{
   width:100%;
+  height:86%;
   max-height:86%;
   background:rgba(248,248,251,0.98);
   border-radius:34px 34px 0 0;
@@ -309,6 +307,8 @@ body{
   animation:slideUp 0.24s ease forwards;
   overflow:hidden;
   border-top:1px solid rgba(255,255,255,0.9);
+  display:flex;
+  flex-direction:column;
 }
 
 @keyframes slideUp{
@@ -317,9 +317,7 @@ body{
 }
 
 .sheetTop{
-  position:sticky;
-  top:0;
-  z-index:5;
+  flex-shrink:0;
   background:rgba(248,248,251,0.98);
   padding:12px 4% 12px 4%;
   border-bottom:1px solid rgba(0,0,0,0.06);
@@ -357,10 +355,10 @@ body{
 }
 
 .sheetBody{
-  max-height:calc(86vh - 88px);
+  flex:1;
   overflow:auto;
   -webkit-overflow-scrolling:touch;
-  padding:16px 4% calc(env(safe-area-inset-bottom) + 24px) 4%;
+  padding:16px 4% calc(120px + env(safe-area-inset-bottom)) 4%;
 }
 
 .inputBox{
@@ -464,6 +462,58 @@ body{
 }
 
 /* =========================
+   MONTH CHOICE BUTTONS
+========================= */
+.monthChoiceGrid{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.monthChoiceBtn{
+  width:100%;
+  border:none;
+  border-radius:22px;
+  background:white;
+  color:#111;
+  padding:17px 16px;
+  font-size:17px;
+  font-weight:900;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  cursor:pointer;
+  text-align:left;
+}
+
+.monthChoiceBtn.active{
+  background:#111;
+  color:white;
+}
+
+/* =========================
+   MONTHLY PRINT AREA
+========================= */
+.monthPrintHeader{
+  display:none;
+}
+
+.monthPrintTitle{
+  font-size:24px;
+  font-weight:900;
+  text-align:center;
+  margin-bottom:8px;
+}
+
+.monthPrintSub{
+  font-size:14px;
+  font-weight:700;
+  text-align:center;
+  color:#555;
+  margin-bottom:14px;
+}
+
+/* =========================
    MONTHLY TABLE
 ========================= */
 .monthTable{
@@ -519,6 +569,59 @@ body{
   .salahName{font-size:17px;}
   .salahTime{font-size:17px;}
 }
+
+/* =========================
+   PRINT STYLE
+========================= */
+@media print{
+  body{
+    position:static;
+    overflow:visible;
+    background:white;
+  }
+
+  body *{
+    visibility:hidden;
+  }
+
+  #monthlyPrintArea,
+  #monthlyPrintArea *{
+    visibility:visible;
+  }
+
+  #monthlyPrintArea{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    background:white;
+    padding:20px;
+  }
+
+  .monthPrintHeader{
+    display:block;
+  }
+
+  .monthTable{
+    border-collapse:collapse;
+    border-spacing:0;
+    width:100%;
+  }
+
+  .monthTable th,
+  .monthTable td{
+    border:1px solid #bbb;
+    background:white !important;
+    color:#111;
+    padding:7px;
+    font-size:12px;
+  }
+
+  .monthTable td:first-child,
+  .monthTable td:last-child{
+    border-radius:0;
+  }
+}
 </style>
 </head>
 
@@ -528,9 +631,9 @@ body{
 
   <!-- =========================
        TOP BAR
+       Back button removed
   ========================= -->
   <div class="topBar">
-    <button class="roundBtn backBtn" onclick="goBackToMainApp()">←</button>
     <div class="topTitle">Salah</div>
     <button class="roundBtn settingsBtn" onclick="openSettingsSheet()">⚙️</button>
   </div>
@@ -705,15 +808,27 @@ body{
     </div>
 
     <div class="sheetBody">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-        <select id="monthlyMonthSelect" class="selectBox"></select>
-        <select id="monthlyYearSelect" class="selectBox"></select>
+
+      <div class="monthChoiceGrid">
+        <button id="lastMonthBtn" class="monthChoiceBtn" onclick="chooseMonthlyOption('last')">Last Month</button>
+        <button id="currentMonthBtn" class="monthChoiceBtn active" onclick="chooseMonthlyOption('current')">Current Month</button>
+        <button id="nextMonthBtn" class="monthChoiceBtn" onclick="chooseMonthlyOption('next')">Next Month</button>
       </div>
 
       <button class="primaryBtn" onclick="loadMonthlyTimetable()">Load Monthly Timetable</button>
+      <div style="height:10px;"></div>
+      <button class="secondaryBtn" onclick="printMonthlyTimetable()">🖨️ Print Timetable</button>
 
-      <div id="monthlyStatus" class="sheetSub" style="margin:14px 4px;">Choose month and press load.</div>
-      <div id="monthlyTableWrap"></div>
+      <div id="monthlyStatus" class="sheetSub" style="margin:14px 4px;">Choose last, current, or next month.</div>
+
+      <div id="monthlyPrintArea">
+        <div class="monthPrintHeader">
+          <div class="monthPrintTitle">Salah Monthly Timetable</div>
+          <div class="monthPrintSub" id="monthlyPrintSub">Loading...</div>
+        </div>
+        <div id="monthlyTableWrap"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -726,6 +841,7 @@ body{
 ========================= */
 let salahDayOffset = 0;
 let salahSource = localStorage.getItem("salahLocationMode") || "current";
+let selectedMonthlyOption = "current";
 
 let salahLocationData = {
   lat:null,
@@ -748,16 +864,11 @@ let salahLiveCache = {};
    START APP
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
-  setupMonthlySelectors();
+  setupMonthlyOptionButtons();
   loadSettingsUI();
   updateSelectedDateText();
   renderSavedSalahLocationList();
 
-  /*
-    IMPORTANT:
-    If mode is current, refresh GPS/city every time Salah page opens.
-    If user selected saved location, keep saved location.
-  */
   if(salahSource === "current"){
     refreshCurrentLocationAndTimes();
   }else{
@@ -768,10 +879,6 @@ document.addEventListener("DOMContentLoaded", function(){
 /* =========================
    NAVIGATION
 ========================= */
-function goBackToMainApp(){
-  window.location.href = "../home/";
-}
-
 function goToHome(){
   window.location.href = "../home/";
 }
@@ -1486,37 +1593,50 @@ function closeSettingsSheet(){
 }
 
 /* =========================
-   MONTHLY TIMETABLE
+   MONTHLY TIMETABLE OPTIONS
 ========================= */
-function setupMonthlySelectors(){
-  let monthSelect = document.getElementById("monthlyMonthSelect");
-  let yearSelect = document.getElementById("monthlyYearSelect");
+function setupMonthlyOptionButtons(){
+  selectedMonthlyOption = "current";
+  updateMonthlyOptionButtons();
+}
 
-  if(!monthSelect || !yearSelect) return;
+function chooseMonthlyOption(option){
+  selectedMonthlyOption = option || "current";
+  updateMonthlyOptionButtons();
+}
 
-  let now = new Date();
-  let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function updateMonthlyOptionButtons(){
+  let lastBtn = document.getElementById("lastMonthBtn");
+  let currentBtn = document.getElementById("currentMonthBtn");
+  let nextBtn = document.getElementById("nextMonthBtn");
 
-  monthSelect.innerHTML = "";
-  monthNames.forEach(function(name, index){
-    let opt = document.createElement("option");
-    opt.value = String(index + 1);
-    opt.innerText = name;
-    if(index === now.getMonth()) opt.selected = true;
-    monthSelect.appendChild(opt);
-  });
+  if(lastBtn) lastBtn.classList.toggle("active", selectedMonthlyOption === "last");
+  if(currentBtn) currentBtn.classList.toggle("active", selectedMonthlyOption === "current");
+  if(nextBtn) nextBtn.classList.toggle("active", selectedMonthlyOption === "next");
+}
 
-  yearSelect.innerHTML = "";
-  for(let y = now.getFullYear() - 1; y <= now.getFullYear() + 2; y++){
-    let opt = document.createElement("option");
-    opt.value = String(y);
-    opt.innerText = String(y);
-    if(y === now.getFullYear()) opt.selected = true;
-    yearSelect.appendChild(opt);
+function getSelectedMonthlyDate(){
+  let d = new Date();
+
+  if(selectedMonthlyOption === "last"){
+    d.setMonth(d.getMonth() - 1);
   }
+
+  if(selectedMonthlyOption === "next"){
+    d.setMonth(d.getMonth() + 1);
+  }
+
+  return d;
+}
+
+function getMonthOptionLabel(){
+  if(selectedMonthlyOption === "last") return "Last Month";
+  if(selectedMonthlyOption === "next") return "Next Month";
+  return "Current Month";
 }
 
 function openMonthlySheet(){
+  updateMonthlyOptionButtons();
   let sheet = document.getElementById("monthlySheet");
   if(sheet) sheet.classList.add("show");
 }
@@ -1548,15 +1668,17 @@ async function getActiveMonthlyLocation(){
 async function loadMonthlyTimetable(){
   let status = document.getElementById("monthlyStatus");
   let wrap = document.getElementById("monthlyTableWrap");
-  let monthSelect = document.getElementById("monthlyMonthSelect");
-  let yearSelect = document.getElementById("monthlyYearSelect");
+  let printSub = document.getElementById("monthlyPrintSub");
 
   if(status) status.innerText = "Loading monthly timetable...";
   if(wrap) wrap.innerHTML = "";
+  if(printSub) printSub.innerText = "Loading...";
 
   try{
-    let month = Number(monthSelect.value);
-    let year = Number(yearSelect.value);
+    let pickedDate = getSelectedMonthlyDate();
+    let month = pickedDate.getMonth() + 1;
+    let year = pickedDate.getFullYear();
+
     let loc = await getActiveMonthlyLocation();
     let method = getAladhanMethodNumber(loc.country || loc.name || "");
     let school = getAsrMethod() === "hanafi" ? "1" : "0";
@@ -1575,8 +1697,19 @@ async function loadMonthlyTimetable(){
       throw new Error("Monthly timetable not loaded");
     }
 
+    let monthName = pickedDate.toLocaleDateString("en-US", {
+      month:"long",
+      year:"numeric"
+    });
+
+    let label = (loc.name || "Location") + " • " + monthName + " • " + getMonthOptionLabel();
+
     if(status){
-      status.innerText = (loc.name || "Location") + " • " + month + "/" + year;
+      status.innerText = label;
+    }
+
+    if(printSub){
+      printSub.innerText = label;
     }
 
     let rows = json.data.map(function(day){
@@ -1613,7 +1746,19 @@ async function loadMonthlyTimetable(){
     }
   }catch(error){
     if(status) status.innerText = "Could not load monthly timetable.";
+    if(printSub) printSub.innerText = "Could not load monthly timetable.";
   }
+}
+
+function printMonthlyTimetable(){
+  let wrap = document.getElementById("monthlyTableWrap");
+
+  if(!wrap || !wrap.innerHTML.trim()){
+    showToast("Load monthly timetable first");
+    return;
+  }
+
+  window.print();
 }
 
 /* =========================
