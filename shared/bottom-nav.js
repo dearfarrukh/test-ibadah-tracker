@@ -158,8 +158,7 @@ function buildUniversalBottomNavItem(item){
 // =========================
 function goUniversalBottomHome(){
 
-  localStorage.setItem("ibadahFolderReturnPage", "home");
-  window.location.href = "../";
+  window.location.href = "../home/";
 
 }
 
