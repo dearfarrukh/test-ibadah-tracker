@@ -4849,33 +4849,19 @@ setMainMenuHandleVisibility(false);
 
 }
      
-
 // =========================
 // OPEN TRACKER PAGE
 // =========================
 function openTrackerPage(){
 
-if(isSideMenuOpen) return;
-     
-closeBookmarkPopup();
-
-lastMainTab = "tracker";
-
-let trackerPage = document.getElementById("trackerPage");
-let floatingMenuBtn = document.getElementById("floatingMenuBtn");
-
-
-hideAllAppPages();
-
-// OPEN TRACKER
-if(trackerPage) trackerPage.style.display = "block";
-
-if(floatingMenuBtn) floatingMenuBtn.style.display = "flex";
-setBottomNavVisibility(true);
-setMainMenuHandleVisibility(true);
-window.scrollTo(0,0);
+  localStorage.setItem("ibadahFolderReturnPage", "tracker");
+  window.location.href = "tracker/";
 
 }
+
+
+     
+
 // ==============================
 // MAIN PAGE NAVIGATION FUNCTION
 // ==============================
