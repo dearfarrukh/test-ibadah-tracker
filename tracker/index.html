@@ -35,38 +35,36 @@ body{
 }
 
 body{
-  padding:18px 4% 106px 4%;
-  background:
-    linear-gradient(rgba(233,233,238,0.50), rgba(233,233,238,0.82)),
-    url("../wallpaper.jpg") center/cover fixed no-repeat;
+  padding:0 0 106px 0;
+  background:linear-gradient(170deg, #0d1b3e 0%, #1a3a6b 45%, #0d2744 100%);
 }
 
 /* =========================
-   HEADER
+   TRACKER TOP HEADER
 ========================= */
 .trackerHeader{
   width:100%;
+  min-height:118px;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:12px;
-  margin-bottom:16px;
-  padding-top:4px;
+  padding:calc(env(safe-area-inset-top) + 18px) 4% 20px 4%;
 }
 
 .trackerLogo{
-  width:17%;
-  max-width:68px;
-  min-width:50px;
+  width:13%;
+  max-width:58px;
+  min-width:42px;
   aspect-ratio:1/1;
   object-fit:contain;
-  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.24));
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.28));
 }
 
 .trackerTitle{
   margin:0;
-  font-size:31px;
-  font-weight:900;
+  font-size:29px;
+  font-weight:950;
   color:white;
   text-shadow:0 3px 10px rgba(0,0,0,0.28);
   letter-spacing:-0.7px;
@@ -74,25 +72,38 @@ body{
 }
 
 /* =========================
+   WHITE ROUNDED BODY PANEL
+========================= */
+.trackerBody{
+  width:100%;
+  min-height:calc(100vh - 118px);
+  background:#e9e9ee;
+  border-radius:30px 30px 0 0;
+  padding:18px 4% 24px 4%;
+  box-shadow:0 -10px 30px rgba(0,0,0,0.16);
+}
+
+/* =========================
    iOS CARDS
 ========================= */
 .card{
   width:100%;
-  background:rgba(255,255,255,0.78);
-  backdrop-filter:blur(22px);
-  -webkit-backdrop-filter:blur(22px);
+  background:white;
   border-radius:26px;
   padding:18px 5%;
-  margin-bottom:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.10);
-  border:1px solid rgba(255,255,255,0.55);
+  margin-bottom:15px;
+  box-shadow:0 9px 24px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
 }
 
 .cardTitle{
-  font-size:21px;
+  font-size:18px;
   font-weight:900;
   margin-bottom:14px;
-  letter-spacing:-0.3px;
+  letter-spacing:-0.2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
 .smallText{
@@ -112,22 +123,26 @@ body{
 }
 
 .dateArrowBtn{
-  width:42px;
-  height:42px;
+  width:44px;
+  height:44px;
   border:none;
   border-radius:50%;
-  background:white;
-  box-shadow:0 4px 12px rgba(0,0,0,0.09);
-  font-size:20px;
+  background:#f2f2f7;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  font-size:26px;
   font-weight:900;
   cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#111;
 }
 
 .dateCenter{
   flex:1;
   text-align:center;
   position:relative;
-  min-height:46px;
+  min-height:48px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -135,7 +150,7 @@ body{
 }
 
 #displayDate{
-  font-size:18px;
+  font-size:17px;
   font-weight:900;
   color:#111;
   letter-spacing:-0.2px;
@@ -169,22 +184,22 @@ body{
 }
 
 .salahItem{
-  background:white;
+  background:#f7f7fa;
   border-radius:20px;
   padding:12px 4px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.06);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
 }
 
 .salahName{
   font-size:12px;
-  font-weight:800;
-  color:#333;
+  font-weight:850;
+  color:#555;
   margin-bottom:8px;
 }
 
 .roundCheck{
-  width:24px;
-  height:24px;
+  width:27px;
+  height:27px;
   accent-color:#34c759;
   cursor:pointer;
 }
@@ -195,14 +210,27 @@ body{
 #taskContainer{
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:0;
 }
 
 .task{
   background:white;
-  border-radius:22px;
-  padding:14px 14px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.06);
+  border-radius:0;
+  padding:0;
+  box-shadow:none;
+  border-bottom:1px solid #ededf2;
+  transition:all 0.2s ease;
+}
+
+.task:first-child{
+  border-top-left-radius:18px;
+  border-top-right-radius:18px;
+}
+
+.task:last-child{
+  border-bottom:none;
+  border-bottom-left-radius:18px;
+  border-bottom-right-radius:18px;
 }
 
 .taskInner{
@@ -210,6 +238,7 @@ body{
   align-items:center;
   justify-content:space-between;
   gap:10px;
+  padding:14px 0;
 }
 
 .taskLeft{
@@ -225,8 +254,24 @@ body{
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  font-size:17px;
+  font-size:16px;
   font-weight:800;
+  color:#111;
+  transition:all 0.2s ease;
+}
+
+/* =========================
+   COMPLETED TASK STYLE
+   This makes selected task strike and dim
+========================= */
+.task.completed{
+  opacity:0.58;
+}
+
+.task.completed .taskName{
+  color:#777;
+  text-decoration:line-through;
+  text-decoration-thickness:2px;
 }
 
 .taskShortcutWrap{
@@ -238,10 +283,10 @@ body{
 
 .pdfBtn{
   border:none;
-  background:#007aff;
+  background:#0a84ff;
   color:white;
-  padding:5px 8px;
-  border-radius:10px;
+  padding:5px 9px;
+  border-radius:9px;
   font-size:10px;
   font-weight:900;
   cursor:pointer;
@@ -253,11 +298,76 @@ body{
   color:#111;
   width:28px;
   height:28px;
-  font-size:21px;
+  font-size:20px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
+}
+
+/* =========================
+   PROGRESS CARD
+========================= */
+.summaryCard{
+  width:100%;
+  background:white;
+  border-radius:26px;
+  padding:18px 5%;
+  margin-bottom:15px;
+  box-shadow:0 9px 24px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.summaryTitle{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:14px;
+  letter-spacing:-0.2px;
+}
+
+.summaryRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:9px;
+}
+
+.summaryLabel{
+  font-size:14px;
+  font-weight:750;
+  color:#666;
+}
+
+.summaryCount{
+  font-size:14px;
+  font-weight:900;
+  color:#111;
+}
+
+.progressBar{
+  width:100%;
+  height:9px;
+  border-radius:99px;
+  background:#e9e9ee;
+  overflow:hidden;
+}
+
+.progressFill{
+  height:100%;
+  width:0%;
+  background:#0a84ff;
+  border-radius:99px;
+  transition:width 0.25s ease;
+}
+
+.progressFill.green{
+  background:#34c759;
+}
+
+.summaryDivider{
+  height:1px;
+  background:#eeeeF3;
+  margin:15px 0;
 }
 
 /* =========================
@@ -292,7 +402,7 @@ body{
   border:none;
   border-radius:18px;
   padding:15px;
-  background:#007aff;
+  background:#0a84ff;
   color:white;
   font-size:17px;
   font-weight:900;
@@ -427,22 +537,23 @@ body{
   box-shadow:0 10px 28px rgba(0,0,0,0.20);
 }
 
-
-
 /* =========================
    SMALL PHONES
 ========================= */
 @media(max-width:390px){
-  body{
+  .trackerTitle{
+    font-size:26px;
+  }
+
+  .trackerBody{
     padding-left:3.5%;
     padding-right:3.5%;
   }
-  .trackerTitle{
-    font-size:28px;
-  }
+
   .taskName{
-    font-size:16px;
+    font-size:15px;
   }
+
   .salahName{
     font-size:11px;
   }
@@ -461,40 +572,74 @@ body{
 </div>
 
 <!-- =========================
-     DATE CARD
+     TRACKER BODY
 ========================= -->
-<div class="card">
-  <div class="dateRow">
-    <button class="dateArrowBtn" onclick="prevDay()">‹</button>
+<div class="trackerBody">
 
-    <div class="dateCenter">
-      <div id="displayDate"></div>
-      <div id="hijriDate"></div>
-      <input type="date" id="datePicker" onchange="manualPick(this.value)">
+  <!-- =========================
+       DATE CARD
+  ========================= -->
+  <div class="card">
+    <div class="dateRow">
+      <button class="dateArrowBtn" onclick="prevDay()">‹</button>
+
+      <div class="dateCenter">
+        <div id="displayDate"></div>
+        <div id="hijriDate"></div>
+        <input type="date" id="datePicker" onchange="manualPick(this.value)">
+      </div>
+
+      <button class="dateArrowBtn" onclick="nextDay()">›</button>
+    </div>
+  </div>
+
+  <!-- =========================
+       DAILY SALAH CARD
+  ========================= -->
+  <div class="card">
+    <div class="cardTitle">🕌 Daily Salah</div>
+    <div id="salahContainer"></div>
+  </div>
+
+  <!-- =========================
+       PROGRESS SUMMARY CARD
+  ========================= -->
+  <div class="summaryCard">
+    <div class="summaryTitle">📊 Today's Progress</div>
+
+    <div class="summaryRow">
+      <div class="summaryLabel">Salah completed</div>
+      <div class="summaryCount" id="salahProgressCount">0 / 5</div>
     </div>
 
-    <button class="dateArrowBtn" onclick="nextDay()">›</button>
+    <div class="progressBar">
+      <div class="progressFill green" id="salahProgressFill"></div>
+    </div>
+
+    <div class="summaryDivider"></div>
+
+    <div class="summaryRow">
+      <div class="summaryLabel">Tasks completed</div>
+      <div class="summaryCount" id="taskProgressCount">0 / 0</div>
+    </div>
+
+    <div class="progressBar">
+      <div class="progressFill" id="taskProgressFill"></div>
+    </div>
   </div>
-</div>
 
-<!-- =========================
-     DAILY SALAH CARD
-========================= -->
-<div class="card">
-  <div class="cardTitle">🕌 Daily Salah</div>
-  <div id="salahContainer"></div>
-</div>
+  <!-- =========================
+       DAILY TASKS CARD
+  ========================= -->
+  <div class="card">
+    <div class="cardTitle">📝 Daily Tasks</div>
+    <div id="taskContainer"></div>
 
-<!-- =========================
-     DAILY TASKS CARD
-========================= -->
-<div class="card">
-  <div class="cardTitle">📝 Daily Tasks</div>
-  <div id="taskContainer"></div>
+    <div style="height:14px;"></div>
 
-  <div style="height:14px;"></div>
+    <button class="blueBtn" onclick="manageTasks()">Manage Tasks</button>
+  </div>
 
-  <button class="blueBtn" onclick="manageTasks()">Manage Tasks</button>
 </div>
 
 <!-- =========================
@@ -535,8 +680,6 @@ body{
      TOAST
 ========================= -->
 <div id="toast"></div>
-
-
 
 <script>
 /* =========================
@@ -666,7 +809,13 @@ function loadSalah(){
 
   container.innerHTML = "";
 
+  let doneCount = 0;
+
   prayers.forEach(function(p){
+
+    if(saved[p]){
+      doneCount++;
+    }
 
     let div = document.createElement("div");
     div.className = "salahItem";
@@ -681,6 +830,8 @@ function loadSalah(){
     container.appendChild(div);
 
   });
+
+  updateSalahProgress(doneCount, prayers.length);
 }
 
 /* =========================
@@ -694,6 +845,42 @@ function toggleSalah(prayer, status){
   saved[prayer] = status;
 
   localStorage.setItem(key, JSON.stringify(saved));
+
+  loadSalah();
+}
+
+/* =========================
+   UPDATE SALAH PROGRESS
+========================= */
+function updateSalahProgress(done, total){
+
+  let count = document.getElementById("salahProgressCount");
+  let fill = document.getElementById("salahProgressFill");
+
+  if(count){
+    count.innerText = done + " / " + total;
+  }
+
+  if(fill){
+    fill.style.width = total ? ((done / total) * 100) + "%" : "0%";
+  }
+}
+
+/* =========================
+   UPDATE TASK PROGRESS
+========================= */
+function updateTaskProgress(done, total){
+
+  let count = document.getElementById("taskProgressCount");
+  let fill = document.getElementById("taskProgressFill");
+
+  if(count){
+    count.innerText = done + " / " + total;
+  }
+
+  if(fill){
+    fill.style.width = total ? ((done / total) * 100) + "%" : "0%";
+  }
 }
 
 /* =========================
@@ -717,6 +904,8 @@ function loadTasks(){
   container.innerHTML = "";
 
   let selectedTime = new Date(currentDate).setHours(0,0,0,0);
+  let visibleTotal = 0;
+  let doneTotal = 0;
 
   taskList.forEach(function(task){
 
@@ -731,8 +920,14 @@ function loadTasks(){
       if(!task.days.includes(todayName)) return;
     }
 
+    visibleTotal++;
+
+    if(saved[task.name]){
+      doneTotal++;
+    }
+
     let div = document.createElement("div");
-    div.className = "task";
+    div.className = saved[task.name] ? "task completed" : "task";
 
     let shortcutHtml = "";
 
@@ -764,6 +959,8 @@ function loadTasks(){
 
   });
 
+  updateTaskProgress(doneTotal, visibleTotal);
+
 }
 
 /* =========================
@@ -777,6 +974,8 @@ function toggleTask(task, status){
   saved[task] = status;
 
   localStorage.setItem(key, JSON.stringify(saved));
+
+  loadTasks();
 }
 
 /* =========================
@@ -1369,7 +1568,6 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
-
 <!-- =========================
      UNIVERSAL BOTTOM NAV SCRIPT
      File used: shared/bottom-nav.js
@@ -1386,7 +1584,5 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
-
-     
 </body>
 </html>
