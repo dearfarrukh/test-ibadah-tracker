@@ -2709,6 +2709,18 @@ function getDefaultPage(){
 // =========================
 function openSelectedDefaultPage(){
 
+       // =========================
+  // OPEN APP SETTINGS FROM MORE FOLDER
+  // =========================
+  if(localStorage.getItem("ibadahOpenAppSettings") === "yes"){
+    localStorage.removeItem("ibadahOpenAppSettings");
+
+    if(typeof openAppSettingsPage === "function"){
+      openAppSettingsPage();
+      return;
+    }
+  }
+
   // FIRST CHECK: Did user come back from a folder page like Qaza, Dua, Dhikr, or Tasbih?
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
