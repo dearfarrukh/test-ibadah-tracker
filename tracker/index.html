@@ -574,72 +574,34 @@ body{
 <div id="toast"></div>
 
 <!-- =========================
-     SHARED BOTTOM BAR - TRACKER ACTIVE
-     Full section name: trackerBottomNav
+     BOTTOM NAV
 ========================= -->
-<div id="bottomNav" style="
-position:fixed;
-left:0;
-right:0;
-bottom:0;
-height:86px;
-padding:8px 3% calc(env(safe-area-inset-bottom) + 8px) 3%;
-background:rgba(255,255,255,0.92);
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-border-top:1px solid rgba(0,0,0,0.08);
-display:flex;
-align-items:center;
-justify-content:space-around;
-z-index:9999;
-box-shadow:0 -8px 24px rgba(0,0,0,0.08);
-box-sizing:border-box;
-">
-
-  <!-- HOME -->
-  <div onclick="goBottomHome()" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
-    <img src="../Images/Icons/Home1.png" style="width:42px;height:42px;object-fit:contain;opacity:0.72;">
-    <div style="font-size:11px;font-weight:800;color:#666;">Home</div>
+<div id="bottomNav">
+  <div class="navItem" onclick="goToMainPage('home')">
+    <div class="navIcon">🏠</div>
+    Home
   </div>
 
-  <!-- SALAH -->
-  <div onclick="goBottomSalah()" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
-    <img src="../Images/Icons/Salah.png" style="width:42px;height:42px;object-fit:contain;opacity:0.72;">
-    <div style="font-size:11px;font-weight:800;color:#666;">Salah</div>
+  <div class="navItem active">
+    <div class="navIcon">✅</div>
+    Tracker
   </div>
 
-  <!-- TRACKER ACTIVE -->
-  <div onclick="goBottomTracker()" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
-    <div style="
-    width:54px;
-    height:54px;
-    border-radius:22px;
-    background:#e9e9ee;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
-    ">
-      <img src="../Images/Icons/Tracker.png" style="width:42px;height:42px;object-fit:contain;">
-    </div>
-    <div style="font-size:11px;font-weight:900;color:#111;">Tracker</div>
+  <div class="navItem" onclick="goToMainPage('salah')">
+    <div class="navIcon">🕌</div>
+    Salah
   </div>
 
-  <!-- MORE -->
-  <div onclick="goBottomMore()" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
-    <img src="../Images/Icons/More.png" style="width:42px;height:42px;object-fit:contain;opacity:0.72;">
-    <div style="font-size:11px;font-weight:800;color:#666;">More</div>
+  <div class="navItem" onclick="goToMainPage('quran')">
+    <div class="navIcon">📖</div>
+    Quran
   </div>
 
+  <div class="navItem" onclick="goToMainPage('more')">
+    <div class="navIcon">☰</div>
+    More
+  </div>
 </div>
-
-
-
-
-
-
-
-     
 
 <script>
 /* =========================
@@ -1470,40 +1432,6 @@ function escapeJs(text){
 document.addEventListener("DOMContentLoaded", function(){
   setDate(islamicToday());
 });
-
-
-
-// =========================
-// BOTTOM BAR NAVIGATION - TRACKER PAGE
-// Full function names:
-// goBottomHome()
-// goBottomSalah()
-// goBottomTracker()
-// goBottomMore()
-// =========================
-function goBottomHome(){
-  localStorage.setItem("ibadahFolderReturnPage", "home");
-  window.location.href = "../";
-}
-
-function goBottomSalah(){
-  window.location.href = "../salah/";
-}
-
-function goBottomTracker(){
-  window.location.href = "../tracker/";
-}
-
-function goBottomMore(){
-  localStorage.setItem("ibadahFolderReturnPage", "more");
-  window.location.href = "../";
-}
-
-
-
-
-
-     
 </script>
 
 </body>
