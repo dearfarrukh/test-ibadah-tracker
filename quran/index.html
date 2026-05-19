@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     QURAN FOLDER PAGE
+     File: quran/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>Quran</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================
+   BASIC RESET
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+}
+
+body{
+  padding:18px 4% 108px 4%;
+  background:
+    linear-gradient(rgba(233,233,238,0.70), rgba(233,233,238,0.88)),
+    url("../wallpaper.jpg") center/cover fixed no-repeat;
+  overflow-x:hidden;
+}
+
+/* =========================
+   QURAN HEADER
+========================= */
+.quranHeader{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:16px;
+  padding-top:4px;
+}
+
+.quranLogo{
+  width:17%;
+  max-width:68px;
+  min-width:50px;
+  aspect-ratio:1/1;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.24));
+}
+
+.quranTitle{
+  margin:0;
+  font-size:32px;
+  font-weight:950;
+  color:white;
+  text-shadow:0 3px 10px rgba(0,0,0,0.28);
+  letter-spacing:-0.7px;
+  white-space:nowrap;
+}
+
+/* =========================
+   IOS CARD
+========================= */
+.iosCard{
+  width:100%;
+  background:rgba(255,255,255,0.86);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-radius:28px;
+  padding:20px 5%;
+  margin-bottom:16px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.10);
+  border:1px solid rgba(255,255,255,0.62);
+}
+
+.heroCard{
+  text-align:center;
+  background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,248,251,0.88));
+}
+
+.heroArabic{
+  font-family:"Amiri","Noto Naskh Arabic",serif;
+  direction:rtl;
+  font-size:30px;
+  line-height:1.5;
+  color:#111;
+  margin-bottom:8px;
+}
+
+.heroTitle{
+  font-size:26px;
+  font-weight:950;
+  color:#111;
+  letter-spacing:-0.5px;
+  margin-bottom:6px;
+}
+
+.heroSub{
+  font-size:15px;
+  font-weight:650;
+  color:#666;
+  line-height:1.45;
+}
+
+/* =========================
+   QURAN ACTION CARD
+========================= */
+.quranActionList{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.quranActionCard{
+  width:100%;
+  border:none;
+  background:white;
+  border-radius:26px;
+  padding:18px 16px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  text-align:left;
+}
+
+.quranActionCard:active{
+  transform:scale(0.98);
+}
+
+.quranActionLeft{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  flex:1;
+}
+
+.quranIconBox{
+  width:52px;
+  height:52px;
+  border-radius:18px;
+  background:#f2f2f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  flex-shrink:0;
+}
+
+.quranCardTitle{
+  font-size:19px;
+  font-weight:900;
+  color:#111;
+  margin-bottom:4px;
+  letter-spacing:-0.2px;
+  line-height:1.18;
+}
+
+.quranCardSub{
+  font-size:13px;
+  font-weight:650;
+  color:#666;
+  line-height:1.35;
+}
+
+.chevron{
+  font-size:28px;
+  font-weight:700;
+  color:#b0b0b8;
+  flex-shrink:0;
+}
+
+/* =========================
+   DOWNLOAD CARD
+========================= */
+.downloadTitle{
+  font-size:22px;
+  font-weight:950;
+  color:#111;
+  letter-spacing:-0.4px;
+  margin-bottom:6px;
+}
+
+.downloadSub{
+  font-size:14px;
+  color:#666;
+  line-height:1.45;
+  font-weight:650;
+  margin-bottom:14px;
+}
+
+.downloadGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.downloadBtn{
+  border:none;
+  border-radius:20px;
+  padding:15px 10px;
+  background:white;
+  color:#111;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,0.07);
+}
+
+.downloadBtn:disabled{
+  opacity:0.65;
+}
+
+.resetBtn{
+  width:100%;
+  margin-top:10px;
+  border:none;
+  border-radius:20px;
+  padding:15px;
+  background:#fff1f1;
+  color:#d11a2a;
+  font-size:16px;
+  font-weight:950;
+  cursor:pointer;
+}
+
+/* =========================
+   TOAST
+========================= */
+#toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:100px;
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.92);
+  color:white;
+  border-radius:18px;
+  padding:13px 16px;
+  font-size:15px;
+  font-weight:850;
+  z-index:10000;
+  max-width:88%;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.20);
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+@media(max-width:390px){
+  body{
+    padding-left:3.5%;
+    padding-right:3.5%;
+  }
+
+  .quranTitle{
+    font-size:29px;
+  }
+
+  .heroArabic{
+    font-size:27px;
+  }
+
+  .heroTitle{
+    font-size:24px;
+  }
+
+  .quranActionCard{
+    padding:16px 14px;
+    border-radius:24px;
+  }
+
+  .quranIconBox{
+    width:48px;
+    height:48px;
+    font-size:23px;
+  }
+
+  .quranCardTitle{
+    font-size:18px;
+  }
+
+  .quranCardSub{
+    font-size:12.5px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     QURAN HEADER
+========================= -->
+<div class="quranHeader">
+  <img class="quranLogo" src="../Images/Icons/quran.png" alt="">
+  <h1 class="quranTitle">Quran</h1>
+</div>
+
+<!-- =========================
+     HERO CARD
+========================= -->
+<div class="iosCard heroCard">
+  <div class="heroArabic">ٱلْقُرْآنُ ٱلْكَرِيم</div>
+  <div class="heroTitle">Holy Quran</div>
+  <div class="heroSub">
+    Continue your daily reading with a clean, peaceful, and premium Quran experience.
+  </div>
+</div>
+
+<!-- =========================
+     QURAN MAIN ACTION CARDS
+========================= -->
+<div class="quranActionList">
+
+  <button class="quranActionCard" onclick="openArabicQuranPage()">
+    <div class="quranActionLeft">
+      <div class="quranIconBox">🕋</div>
+      <div>
+        <div class="quranCardTitle">Quran with Audio & Urdu</div>
+        <div class="quranCardSub">Open Quran recitation and Urdu translation</div>
+      </div>
+    </div>
+    <div class="chevron">›</div>
+  </button>
+
+  <button class="quranActionCard" onclick="open9LineQuranPage()">
+    <div class="quranActionLeft">
+      <div class="quranIconBox">📚</div>
+      <div>
+        <div class="quranCardTitle">9 Line Quran</div>
+        <div class="quranCardSub">Open 9 Line Quran reader</div>
+      </div>
+    </div>
+    <div class="chevron">›</div>
+  </button>
+
+  <button class="quranActionCard" onclick="openQuran15Page()">
+    <div class="quranActionLeft">
+      <div class="quranIconBox">📖</div>
+      <div>
+        <div class="quranCardTitle">15 Line Quran</div>
+        <div class="quranCardSub">Open 15 Line Quran mushaf reader</div>
+      </div>
+    </div>
+    <div class="chevron">›</div>
+  </button>
+
+  <button class="quranActionCard" onclick="openQuran16Page()">
+    <div class="quranActionLeft">
+      <div class="quranIconBox">📘</div>
+      <div>
+        <div class="quranCardTitle">16 Line Quran</div>
+        <div class="quranCardSub">Open 16 Line Quran with Juz, Surah, bookmarks, and resume</div>
+      </div>
+    </div>
+    <div class="chevron">›</div>
+  </button>
+
+</div>
+
+<!-- =========================
+     DOWNLOAD CARD
+========================= -->
+<div class="iosCard" style="margin-top:16px;">
+  <div class="downloadTitle">Offline Quran Downloads</div>
+  <div class="downloadSub">
+    Download Quran pages for offline reading. Your saved app data will stay safe.
+  </div>
+
+  <div class="downloadGrid">
+    <button id="quran15DownloadBtn" class="downloadBtn" onclick="downloadQuran15Full()">15 Line Quran</button>
+    <button id="quran16DownloadBtn" class="downloadBtn" onclick="downloadQuran16Full()">16 Line Quran</button>
+  </div>
+
+  <button class="resetBtn" onclick="resetOfflineDownloads()">Remove Offline Downloads</button>
+</div>
+
+<!-- =========================
+     TOAST
+========================= -->
+<div id="toast"></div>
+
+<!-- =========================
+     QURAN PAGE JAVASCRIPT
+========================= -->
+<script>
+// =========================
+// QURAN PAGE RETURN SOURCE
+// Full function name: getQuranReturnPage()
+// =========================
+function getQuranReturnPage(){
+  let params = new URLSearchParams(window.location.search);
+  return params.get("from") || localStorage.getItem("ibadahQuranBackPage") || "home";
+}
+
+// =========================
+// OPEN ARABIC QURAN PAGE
+// Full function name: openArabicQuranPage()
+// =========================
+function openArabicQuranPage(){
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+  window.location.href = "../arabic-quran/";
+}
+
+// =========================
+// OPEN 9 LINE QURAN PAGE
+// Full function name: open9LineQuranPage()
+// =========================
+function open9LineQuranPage(){
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+  window.location.href = "../9LineQuran/";
+}
+
+// =========================
+// OPEN 15 LINE QURAN PAGE
+// Full function name: openQuran15Page()
+// =========================
+function openQuran15Page(){
+  localStorage.setItem("ibadahQuranBackPage", getQuranReturnPage());
+  window.location.href = "../QuranPages/?from=quran";
+}
+
+// =========================
+// OPEN 16 LINE QURAN PAGE
+// Full function name: openQuran16Page()
+// =========================
+function openQuran16Page(){
+  localStorage.setItem("ibadahQuranBackPage", getQuranReturnPage());
+  window.location.href = "../16linequranpages/?from=quran";
+}
+
+// =========================
+// GET 16 LINE IMAGE PATH
+// Full function name: getQuran16ImagePath()
+// =========================
+function getQuran16ImagePath(page){
+  return "../16linequranpages/" + page + ".jpg";
+}
+
+// =========================
+// REAL 15 LINE JUZ PAGE COUNTS
+// =========================
+const juzPageCounts = {
+  1:27,
+  2:28,
+  3:28,
+  4:28,
+  5:28,
+  6:28,
+  7:28,
+  8:28,
+  9:28,
+  10:28,
+  11:28,
+  12:28,
+  13:28,
+  14:28,
+  15:28,
+  16:28,
+  17:28,
+  18:28,
+  19:28,
+  20:26,
+  21:28,
+  22:26,
+  23:28,
+  24:26,
+  25:30,
+  26:30,
+  27:30,
+  28:30,
+  29:32,
+  30:30
+};
+
+// =========================
+// GET REAL JUZ INFO FROM MUSHAF PAGE
+// Full function name: getRealJuzInfoFromMushafPage()
+// =========================
+function getRealJuzInfoFromMushafPage(page){
+
+  let runningTotal = 0;
+
+  for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
+
+    let juzCount = juzPageCounts[juzNumber];
+    let juzStart = runningTotal + 1;
+    let juzEnd = runningTotal + juzCount;
+
+    if(page >= juzStart && page <= juzEnd){
+      return {
+        juzNumber:juzNumber,
+        pageInsideJuz:page - runningTotal,
+        juzStart:juzStart,
+        juzEnd:juzEnd
+      };
+    }
+
+    runningTotal += juzCount;
+  }
+
+  return {
+    juzNumber:1,
+    pageInsideJuz:1,
+    juzStart:1,
+    juzEnd:27
+  };
+}
+
+// =========================
+// BUILD 15 LINE MUSHAF IMAGE PATH
+// Full function name: buildMushafImagePath()
+// =========================
+function buildMushafImagePath(page){
+
+  let info = getRealJuzInfoFromMushafPage(page);
+  let paddedPage = String(info.pageInsideJuz).padStart(2, "0");
+
+  return "../QuranPages/juz" + info.juzNumber + "/" + info.juzNumber + "-" + paddedPage + ".png";
+}
+
+// =========================
+// DOWNLOAD 16 LINE FULL QURAN
+// Full function name: downloadQuran16Full()
+// =========================
+async function downloadQuran16Full(){
+
+  let btn = document.getElementById("quran16DownloadBtn");
+  if(!btn) return;
+
+  btn.disabled = true;
+  btn.innerText = "Downloading...";
+  btn.style.opacity = "0.7";
+
+  try{
+    const cache = await caches.open("ibadah-runtime-v1");
+
+    for(let page = 1; page <= 549; page++){
+
+      let url = getQuran16ImagePath(page);
+
+      try{
+        let response = await fetch(url, {cache:"no-store"});
+        if(response.ok){
+          await cache.put(url, response.clone());
+        }
+      }catch(error){
+        console.log("16 line skip page:", page, error);
+      }
+
+      if(page % 20 === 0){
+        btn.innerText = "Downloading " + page + " / 549";
+      }
+    }
+
+    localStorage.setItem("quran16FullDownloaded", "yes");
+
+    btn.innerText = "16 Line Downloaded";
+    btn.style.opacity = "1";
+    btn.style.background = "#dff6e4";
+    btn.style.color = "#177245";
+
+    showToast("16 Line Quran downloaded");
+  }catch(error){
+    console.log("16 line full download failed:", error);
+
+    btn.disabled = false;
+    btn.innerText = "16 Line Quran";
+    btn.style.opacity = "1";
+
+    showToast("16 Line download failed");
+  }
+}
+
+// =========================
+// DOWNLOAD 15 LINE FULL QURAN
+// Full function name: downloadQuran15Full()
+// =========================
+async function downloadQuran15Full(){
+
+  let btn = document.getElementById("quran15DownloadBtn");
+  if(!btn) return;
+
+  btn.disabled = true;
+  btn.innerText = "Downloading...";
+  btn.style.opacity = "0.7";
+
+  try{
+    const cache = await caches.open("ibadah-runtime-v1");
+
+    for(let page = 1; page <= 847; page++){
+
+      let url = buildMushafImagePath(page);
+
+      try{
+        let response = await fetch(url, {cache:"no-store"});
+        if(response.ok){
+          await cache.put(url, response.clone());
+        }
+      }catch(error){
+        console.log("15 line skip page:", page, error);
+      }
+
+      if(page % 20 === 0){
+        btn.innerText = "Downloading " + page + " / 847";
+      }
+    }
+
+    localStorage.setItem("quran15FullDownloaded", "yes");
+
+    btn.innerText = "15 Line Downloaded";
+    btn.style.opacity = "1";
+    btn.style.background = "#dff6e4";
+    btn.style.color = "#177245";
+
+    showToast("15 Line Quran downloaded");
+  }catch(error){
+    console.log("15 line full download failed:", error);
+
+    btn.disabled = false;
+    btn.innerText = "15 Line Quran";
+    btn.style.opacity = "1";
+
+    showToast("15 Line download failed");
+  }
+}
+
+// =========================
+// UPDATE FULL QURAN DOWNLOAD BUTTONS UI
+// Full function name: updateFullQuranDownloadButtonsUI()
+// =========================
+function updateFullQuranDownloadButtonsUI(){
+
+  let btn15 = document.getElementById("quran15DownloadBtn");
+  let btn16 = document.getElementById("quran16DownloadBtn");
+
+  if(btn15 && localStorage.getItem("quran15FullDownloaded") === "yes"){
+    btn15.innerText = "15 Line Downloaded";
+    btn15.style.background = "#dff6e4";
+    btn15.style.color = "#177245";
+    btn15.style.opacity = "1";
+  }
+
+  if(btn16 && localStorage.getItem("quran16FullDownloaded") === "yes"){
+    btn16.innerText = "16 Line Downloaded";
+    btn16.style.background = "#dff6e4";
+    btn16.style.color = "#177245";
+    btn16.style.opacity = "1";
+  }
+}
+
+// =========================
+// RESET OFFLINE DOWNLOADS
+// Full function name: resetOfflineDownloads()
+// =========================
+async function resetOfflineDownloads(){
+
+  let confirmDelete = confirm("Remove all downloaded Quran files?");
+
+  if(!confirmDelete) return;
+
+  try{
+
+    if("caches" in window){
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+        if(cacheName === "ibadah-runtime-v1"){
+          await caches.delete(cacheName);
+        }
+      }
+    }
+
+    localStorage.removeItem("juz30OfflineDownloaded");
+    localStorage.removeItem("quran16FullDownloaded");
+    localStorage.removeItem("quran15FullDownloaded");
+
+    updateFullQuranDownloadButtonsUI();
+    showToast("Offline Quran downloads removed");
+
+  }catch(error){
+    console.log("Reset failed:", error);
+    showToast("Failed to remove downloads");
+  }
+}
+
+// =========================
+// SHOW TOAST
+// Full function name: showToast()
+// =========================
+function showToast(message){
+
+  let toast = document.getElementById("toast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.quranToastTimer);
+
+  window.quranToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 1900);
+}
+
+// =========================
+// START QURAN PAGE
+// =========================
+document.addEventListener("DOMContentLoaded", function(){
+  updateFullQuranDownloadButtonsUI();
+});
+</script>
+
+<!-- =========================
+     UNIVERSAL BOTTOM NAV SCRIPT
+     File used: shared/bottom-nav.js
+========================= -->
+<script src="../shared/bottom-nav.js"></script>
+
+<script>
+// =========================
+// START UNIVERSAL BOTTOM NAV - QURAN ACTIVE
+// Full function name: createUniversalBottomNav("quran")
+// =========================
+document.addEventListener("DOMContentLoaded", function(){
+  if(typeof createUniversalBottomNav === "function"){
+    createUniversalBottomNav("quran");
+  }
+});
+</script>
+
+</body>
+</html>
