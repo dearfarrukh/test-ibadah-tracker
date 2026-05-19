@@ -129,7 +129,15 @@ function openDailyAzkarPageFromMore(){window.location.href="../dailyazkar/?from=
 function openQazaTrackerFromMore(){localStorage.setItem("qazaReturnPage","more");window.location.href="../qazatracker/";}
 function openQiblaPageFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../qibla/";}
 function openBooksPageFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../books/";}
-function openQuranFromMore(){localStorage.setItem("ibadahFolderReturnPage","quran");window.location.href="../";}
+// =========================
+// OPEN QURAN FROM MORE
+// Full function name: openQuranFromMore()
+// =========================
+function openQuranFromMore(){
+
+  window.location.href = "../quran/?from=more";
+
+}
 function open16LineQuranFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../16linequranpages/";}
 function openAppSettingsFromMore(){localStorage.setItem("ibadahOpenAppSettings","yes");localStorage.setItem("appSettingsReturnPage","more");window.location.href="../";}
 async function refreshAppFromMore(){try{if("caches" in window){let names=await caches.keys();for(let name of names){let lower=String(name).toLowerCase();if(lower.includes("runtime")||lower.includes("quran")||lower.includes("mushaf")||lower.includes("surah")||lower.includes("ayat")||lower.includes("offline")||lower.includes("download")){continue;}await caches.delete(name);}}showToast("Refreshing app...");setTimeout(function(){window.location.href="./?v="+Date.now();},450);}catch(error){window.location.href="./?v="+Date.now();}}
