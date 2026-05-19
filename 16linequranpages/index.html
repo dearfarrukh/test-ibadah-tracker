@@ -124,6 +124,260 @@ background:#000;
 
   
 
+
+/* =========================
+   16 LINE IOS BOTTOM SHEET
+========================= */
+#quran16SheetOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:90000;
+  background:rgba(0,0,0,0.28);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  align-items:flex-end;
+}
+
+#quran16SheetOverlay.show{
+  display:flex;
+}
+
+#quran16BottomSheet{
+  width:100%;
+  max-height:84%;
+  background:rgba(248,248,251,0.96);
+  border-radius:34px 34px 0 0;
+  box-shadow:0 -20px 45px rgba(0,0,0,0.22);
+  transform:translateY(100%);
+  animation:quran16SheetSlideUp 0.25s ease forwards;
+  overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.85);
+}
+
+@keyframes quran16SheetSlideUp{
+  from{ transform:translateY(100%); }
+  to{ transform:translateY(0); }
+}
+
+.quran16SheetTop{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:rgba(248,248,251,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  padding:12px 4% 12px 4%;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+
+.quran16SheetHandle{
+  width:42px;
+  height:5px;
+  background:#c9c9cf;
+  border-radius:99px;
+  margin:0 auto 12px auto;
+}
+
+.quran16SheetTitleRow{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.quran16SheetTitle{
+  font-size:22px;
+  font-weight:900;
+  color:#111;
+  letter-spacing:-0.5px;
+}
+
+.quran16SheetCloseBtn{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:#e9e9ee;
+  color:#111;
+  font-size:22px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.quran16SheetSearch{
+  width:100%;
+  background:white;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  padding:15px 16px;
+  font-size:17px;
+  font-weight:700;
+  color:#111;
+  box-shadow:0 6px 16px rgba(0,0,0,0.06);
+  margin-top:14px;
+}
+
+.quran16SheetBody{
+  max-height:calc(84vh - 92px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:14px 4% calc(env(safe-area-inset-bottom) + 24px) 4%;
+}
+
+.quran16SheetList{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.quran16SheetCard{
+  width:100%;
+  background:white;
+  border-radius:26px;
+  padding:16px 4%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.03);
+  cursor:pointer;
+}
+
+.quran16SheetBadge{
+  width:52px;
+  height:52px;
+  border-radius:18px;
+  background:#f2f2f7;
+  color:#111;
+  font-size:17px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.quran16SheetNames{
+  min-width:0;
+  flex:1;
+}
+
+.quran16SheetMainTitle{
+  font-size:18px;
+  font-weight:900;
+  color:#111;
+  margin-bottom:4px;
+  letter-spacing:-0.3px;
+}
+
+.quran16SheetArabic{
+  font-family:"Amiri","Noto Naskh Arabic",serif;
+  direction:rtl;
+  font-size:24px;
+  font-weight:700;
+  color:#555;
+  line-height:1.35;
+}
+
+.quran16SheetSmallText{
+  font-size:14px;
+  font-weight:700;
+  color:#666;
+  line-height:1.4;
+}
+
+.quran16SheetMeta{
+  font-size:13px;
+  font-weight:900;
+  color:#888;
+  white-space:nowrap;
+  text-align:right;
+}
+
+.quran16SheetDeleteBtn{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:#fff1f1;
+  color:#ff3b30;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.quran16EmptyCard{
+  width:100%;
+  background:white;
+  border-radius:26px;
+  padding:24px 5%;
+  text-align:center;
+  font-size:16px;
+  font-weight:700;
+  color:#666;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+}
+
+.quran16GotoBox{
+  width:100%;
+  background:white;
+  border-radius:28px;
+  padding:22px 5%;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+}
+
+.quran16GotoInput{
+  width:100%;
+  border:none;
+  outline:none;
+  background:#f2f2f7;
+  border-radius:22px;
+  padding:18px;
+  font-size:26px;
+  font-weight:900;
+  text-align:center;
+  color:#111;
+  margin-bottom:14px;
+}
+
+.quran16GotoBtn{
+  width:100%;
+  border:none;
+  border-radius:22px;
+  padding:17px;
+  font-size:18px;
+  font-weight:900;
+  background:#111;
+  color:white;
+  cursor:pointer;
+}
+
+#quran16Toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.94);
+  color:white;
+  padding:14px 18px;
+  border-radius:18px;
+  font-size:16px;
+  font-weight:800;
+  z-index:100000;
+  box-shadow:0 10px 30px rgba(0,0,0,0.22);
+  max-width:88%;
+  text-align:center;
+}
+
 </style>
 </head>
 <body>
@@ -622,7 +876,7 @@ letter-spacing:-0.3px;
           ">
             Resume Reading
           </div>
-          <div style="
+          <div id="quran16ResumeSubText" style="
           font-size:14px;
           color:#666;
           ">
@@ -640,7 +894,7 @@ letter-spacing:-0.3px;
     </div>
 
     <!-- Surah Number Card -->
-    <div onclick="openQuran16SurahPage()" style="
+    <div onclick="openQuran16SurahSheet()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -697,7 +951,7 @@ letter-spacing:-0.3px;
     </div>
 
       <!-- 16 LINE JUZ LIST CARD -->
-    <div onclick="openQuran16JuzPage()" style="
+    <div onclick="openQuran16JuzSheet()" style="
     background:white;
     border-radius:26px;
     padding:22px 20px;
@@ -754,7 +1008,7 @@ letter-spacing:-0.3px;
     </div>
 
 <!-- 16 LINE BOOKMARKS CARD -->
-<div onclick="openQuran16BookmarkPage()" style="
+<div onclick="openQuran16BookmarkSheet()" style="
 background:white;
 border-radius:26px;
 padding:22px 20px;
@@ -810,12 +1064,99 @@ border:1px solid rgba(0,0,0,0.03);
   </div>
 </div>
 
+<!-- 16 LINE GO TO PAGE CARD -->
+<div onclick="openQuran16GoToPageSheet()" style="
+background:white;
+border-radius:26px;
+padding:22px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 8px 22px rgba(0,0,0,0.07);
+border:1px solid rgba(0,0,0,0.03);
+">
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+  ">
+    <div style="
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:#f2f2f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    flex-shrink:0;
+    ">
+      🔢
+    </div>
+    <div>
+      <div style="
+      font-size:20px;
+      font-weight:800;
+      color:#111;
+      margin-bottom:4px;
+      ">
+        Go To Page
+      </div>
+      <div style="
+      font-size:14px;
+      color:#666;
+      ">
+        Open page number 1 to 549
+      </div>
+    </div>
+  </div>
+  <div style="
+  font-size:24px;
+  color:#b0b0b8;
+  margin-left:14px;
+  ">
+    ›
+  </div>
+</div>
+
 
 
        
   </div>
 
 </div>
+
+
+<!-- =========================
+     16 LINE IOS BOTTOM SHEET
+========================= -->
+<div id="quran16SheetOverlay" onclick="closeQuran16BottomSheetFromOverlay(event)">
+  <div id="quran16BottomSheet" onclick="event.stopPropagation();">
+
+    <div class="quran16SheetTop">
+      <div class="quran16SheetHandle"></div>
+
+      <div class="quran16SheetTitleRow">
+        <div id="quran16SheetTitle" class="quran16SheetTitle">Select</div>
+        <button class="quran16SheetCloseBtn" onclick="closeQuran16BottomSheet()">×</button>
+      </div>
+
+      <input id="quran16SheetSearch" class="quran16SheetSearch" placeholder="Search..." oninput="handleQuran16SheetSearch()" style="display:none;">
+    </div>
+
+    <div class="quran16SheetBody">
+      <div id="quran16SheetContent" class="quran16SheetList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========================
+     16 LINE TOAST
+========================= -->
+<div id="quran16Toast">Saved</div>
 
 <!-- =========================
      16 LINE QURAN SURAH PAGE
@@ -3123,6 +3464,370 @@ quranFlipState.underPage.classList.remove("show");
   
 
 
+
+
+// =========================
+// 16 LINE BOTTOM SHEET STATE
+// =========================
+let quran16ActiveSheetType = "";
+
+// =========================
+// OPEN 16 LINE BOTTOM SHEET
+// =========================
+function openQuran16BottomSheet(title, showSearch){
+
+  let overlay = document.getElementById("quran16SheetOverlay");
+  let sheetTitle = document.getElementById("quran16SheetTitle");
+  let search = document.getElementById("quran16SheetSearch");
+  let content = document.getElementById("quran16SheetContent");
+
+  if(sheetTitle){
+    sheetTitle.innerText = title;
+  }
+
+  if(search){
+    search.value = "";
+    search.style.display = showSearch ? "block" : "none";
+  }
+
+  if(content){
+    content.innerHTML = "";
+  }
+
+  if(overlay){
+    overlay.classList.add("show");
+  }
+}
+
+// =========================
+// CLOSE 16 LINE BOTTOM SHEET
+// =========================
+function closeQuran16BottomSheet(){
+
+  let overlay = document.getElementById("quran16SheetOverlay");
+
+  if(overlay){
+    overlay.classList.remove("show");
+  }
+
+  quran16ActiveSheetType = "";
+}
+
+// =========================
+// CLOSE 16 LINE BOTTOM SHEET FROM OVERLAY
+// =========================
+function closeQuran16BottomSheetFromOverlay(event){
+
+  if(event.target && event.target.id === "quran16SheetOverlay"){
+    closeQuran16BottomSheet();
+  }
+}
+
+// =========================
+// HANDLE 16 LINE SHEET SEARCH
+// =========================
+function handleQuran16SheetSearch(){
+
+  if(quran16ActiveSheetType === "surah"){
+    renderQuran16SurahSheetList();
+  }
+}
+
+// =========================
+// OPEN 16 LINE SURAH SHEET
+// =========================
+function openQuran16SurahSheet(){
+
+  quran16ActiveSheetType = "surah";
+  openQuran16BottomSheet("Surah Index", true);
+  renderQuran16SurahSheetList();
+}
+
+// =========================
+// RENDER 16 LINE SURAH SHEET LIST
+// =========================
+function renderQuran16SurahSheetList(){
+
+  let container = document.getElementById("quran16SheetContent");
+  let searchInput = document.getElementById("quran16SheetSearch");
+
+  if(!container) return;
+
+  let query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+  container.innerHTML = "";
+
+  quran16SurahData.forEach(function(surah){
+
+    let page = surahToQuran16PageMap[surah.num] || 1;
+
+    let searchText = (
+      surah.num + " " +
+      surah.en + " " +
+      surah.ar
+    ).toLowerCase();
+
+    if(query && !searchText.includes(query)){
+      return;
+    }
+
+    let card = document.createElement("div");
+    card.className = "quran16SheetCard";
+
+    card.onclick = function(){
+      closeQuran16BottomSheet();
+      openQuran16FromSurah(surah.num);
+    };
+
+    card.innerHTML = `
+      <div class="quran16SheetBadge">${surah.num}</div>
+
+      <div class="quran16SheetNames">
+        <div class="quran16SheetMainTitle">${surah.en}</div>
+        <div class="quran16SheetArabic">${surah.ar}</div>
+      </div>
+
+      <div class="quran16SheetMeta">Page<br>${page}</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// =========================
+// OPEN 16 LINE JUZ SHEET
+// =========================
+function openQuran16JuzSheet(){
+
+  quran16ActiveSheetType = "juz";
+  openQuran16BottomSheet("Juz Index", false);
+  renderQuran16JuzSheetList();
+}
+
+// =========================
+// RENDER 16 LINE JUZ SHEET LIST
+// =========================
+function renderQuran16JuzSheetList(){
+
+  let container = document.getElementById("quran16SheetContent");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
+
+    let startPage = juzToQuran16PageMap[juzNumber] || 1;
+    let arabicName = juzNamesArabic[juzNumber] || ("الجزء " + juzNumber);
+
+    let card = document.createElement("div");
+    card.className = "quran16SheetCard";
+
+    card.onclick = function(){
+      closeQuran16BottomSheet();
+      openQuran16FromJuz(juzNumber);
+    };
+
+    card.innerHTML = `
+      <div class="quran16SheetBadge">${juzNumber}</div>
+
+      <div class="quran16SheetNames">
+        <div class="quran16SheetMainTitle">Juz ${juzNumber}</div>
+        <div class="quran16SheetArabic">${arabicName}</div>
+        <div class="quran16SheetSmallText">Open Juz ${juzNumber}</div>
+      </div>
+
+      <div class="quran16SheetMeta">Page<br>${startPage}</div>
+    `;
+
+    container.appendChild(card);
+  }
+}
+
+// =========================
+// OPEN 16 LINE BOOKMARK SHEET
+// =========================
+function openQuran16BookmarkSheet(){
+
+  quran16ActiveSheetType = "bookmark";
+  openQuran16BottomSheet("Bookmarks", false);
+  renderQuran16BookmarkSheetList();
+}
+
+// =========================
+// GET ALL QURAN BOOKMARKS
+// =========================
+function getAllQuranBookmarks(){
+
+  try{
+    return JSON.parse(localStorage.getItem("quranBookmarks") || "[]");
+  }catch(error){
+    return [];
+  }
+}
+
+// =========================
+// SAVE ALL QURAN BOOKMARKS
+// =========================
+function saveAllQuranBookmarks(bookmarks){
+
+  localStorage.setItem("quranBookmarks", JSON.stringify(bookmarks));
+}
+
+// =========================
+// RENDER 16 LINE BOOKMARK SHEET LIST
+// =========================
+function renderQuran16BookmarkSheetList(){
+
+  let container = document.getElementById("quran16SheetContent");
+  if(!container) return;
+
+  let allBookmarks = getAllQuranBookmarks();
+
+  let bookmarks = allBookmarks.filter(function(item){
+    return item.type === "16line";
+  });
+
+  container.innerHTML = "";
+
+  if(!bookmarks.length){
+    container.innerHTML = `
+      <div class="quran16EmptyCard">
+        No 16 Line Quran bookmarks saved yet.
+      </div>
+    `;
+    return;
+  }
+
+  bookmarks.forEach(function(bookmark){
+
+    let card = document.createElement("div");
+    card.className = "quran16SheetCard";
+
+    card.onclick = function(){
+      closeQuran16BottomSheet();
+      openSavedQuran16Bookmark(bookmark.id);
+    };
+
+    card.innerHTML = `
+      <div class="quran16SheetBadge">🔖</div>
+
+      <div class="quran16SheetNames">
+        <div class="quran16SheetMainTitle">${bookmark.name || "Bookmark"}</div>
+        <div class="quran16SheetSmallText">${bookmark.surah || "16 Line Quran"} • ${bookmark.juz || ""}</div>
+        <div class="quran16SheetSmallText">Page ${bookmark.displayPage || bookmark.page || 1}</div>
+      </div>
+
+      <button class="quran16SheetDeleteBtn" onclick="deleteQuran16BookmarkFromSheet(event, '${bookmark.id}')">
+        🗑
+      </button>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// =========================
+// DELETE 16 LINE BOOKMARK FROM SHEET
+// =========================
+function deleteQuran16BookmarkFromSheet(event, bookmarkId){
+
+  event.stopPropagation();
+
+  let ok = confirm("Delete this bookmark?");
+  if(!ok) return;
+
+  let allBookmarks = getAllQuranBookmarks();
+
+  allBookmarks = allBookmarks.filter(function(item){
+    return String(item.id) !== String(bookmarkId);
+  });
+
+  saveAllQuranBookmarks(allBookmarks);
+  renderQuran16BookmarkSheetList();
+  showQuran16Toast("Bookmark deleted");
+}
+
+// =========================
+// OPEN 16 LINE GO TO PAGE SHEET
+// =========================
+function openQuran16GoToPageSheet(){
+
+  quran16ActiveSheetType = "goto";
+  openQuran16BottomSheet("Go To Page", false);
+
+  let container = document.getElementById("quran16SheetContent");
+  if(!container) return;
+
+  container.innerHTML = `
+    <div class="quran16GotoBox">
+      <input id="quran16GoToPageInput" class="quran16GotoInput" type="number" min="1" max="549" placeholder="1 - 549">
+      <button class="quran16GotoBtn" onclick="openTypedQuran16Page()">Open Page</button>
+    </div>
+  `;
+
+  setTimeout(function(){
+    let input = document.getElementById("quran16GoToPageInput");
+    if(input){
+      input.focus();
+    }
+  }, 250);
+}
+
+// =========================
+// OPEN TYPED 16 LINE PAGE
+// =========================
+function openTypedQuran16Page(){
+
+  let input = document.getElementById("quran16GoToPageInput");
+  if(!input) return;
+
+  let page = parseInt(input.value, 10);
+
+  if(!page || page < 1 || page > totalQuran16Pages){
+    showQuran16Toast("Please enter page number 1 to 549");
+    return;
+  }
+
+  closeQuran16BottomSheet();
+  openQuran16PageNumber(page);
+}
+
+// =========================
+// UPDATE 16 LINE RESUME TEXT
+// =========================
+function updateQuran16ResumeText(){
+
+  let resumeSubText = document.getElementById("quran16ResumeSubText");
+  if(!resumeSubText) return;
+
+  let lastPage = parseInt(localStorage.getItem("lastQuran16Page") || "0", 10);
+
+  if(lastPage && lastPage >= 1 && lastPage <= totalQuran16Pages){
+    let surahInfo = getQuran16SurahInfoFromPage(lastPage);
+    resumeSubText.innerText = "Continue from page " + lastPage + " • " + (surahInfo.en || "16 Line Quran");
+  }else{
+    resumeSubText.innerText = "Continue from your last 16 line page";
+  }
+}
+
+// =========================
+// SHOW 16 LINE TOAST
+// =========================
+function showQuran16Toast(message){
+
+  let toast = document.getElementById("quran16Toast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.quran16ToastTimer);
+
+  window.quran16ToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 1800);
+}
+
 // =========================
 // FOLDER PAGE SAFE HELPERS
 // =========================
@@ -3157,6 +3862,8 @@ function hideAllQuran16FolderPages(){
 // =========================
 function openQuran16Page(){
   hideAllQuran16FolderPages();
+  closeQuran16BottomSheet();
+  updateQuran16ResumeText();
   let page = document.getElementById("quran16Page");
   if(page) page.style.display = "block";
   window.scrollTo(0,0);
