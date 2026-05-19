@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     MORE FOLDER PAGE
+     File: more/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>More - Ibadah Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;background:#e9e9ee;color:#111;}
+body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9ee 100%);}
+.moreTopBar{width:100%;height:56px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:14px;}
+.roundBtn{width:44px;height:44px;border:none;border-radius:50%;background:white;color:#111;font-size:23px;font-weight:900;display:flex;align-items:center;justify-content:center;position:absolute;top:6px;box-shadow:0 6px 18px rgba(0,0,0,0.10);cursor:pointer;}
+.backBtn{left:0;}
+.moreTitle{font-size:22px;font-weight:900;letter-spacing:-0.4px;color:#111;}
+.heroCard{width:100%;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.90));border-radius:32px;padding:30px 5%;text-align:center;box-shadow:0 12px 32px rgba(0,0,0,0.09);border:1px solid rgba(255,255,255,0.75);margin-bottom:18px;}
+.heroIcon{font-size:42px;margin-bottom:12px;}
+.heroTitle{font-size:30px;font-weight:900;color:#111;letter-spacing:-0.7px;margin-bottom:8px;}
+.heroSub{font-size:15px;font-weight:650;color:#666;line-height:1.5;max-width:310px;margin:0 auto;}
+.sectionTitle{font-size:13px;font-weight:900;color:#777;letter-spacing:0.4px;text-transform:uppercase;margin:18px 2px 10px 2px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.moreCard{width:100%;min-height:132px;background:white;border-radius:28px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.03);}
+.moreCard:active{transform:scale(0.98);}
+.cardIconWrap{width:62px;height:62px;border-radius:22px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;}
+.cardIconWrap img{width:50px;height:50px;object-fit:contain;display:block;}
+.emojiIcon{font-size:34px;}
+.cardTitle{font-size:17px;font-weight:900;color:#111;letter-spacing:-0.2px;line-height:1.15;}
+.cardSub{margin-top:5px;font-size:12px;font-weight:650;color:#777;line-height:1.3;}
+.list{display:flex;flex-direction:column;gap:12px;}
+.listCard{width:100%;background:white;border-radius:26px;padding:16px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.03);}
+.listLeft{display:flex;align-items:center;gap:13px;min-width:0;}
+.listIcon{width:48px;height:48px;border-radius:18px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.listText{min-width:0;}.listTitle{font-size:18px;font-weight:900;color:#111;margin-bottom:3px;}.listSub{font-size:13px;font-weight:650;color:#777;line-height:1.35;}.arrow{font-size:28px;font-weight:700;color:#b0b0b8;}
+.popupOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.34);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:9000;align-items:center;justify-content:center;padding:20px;}
+.popupCard{width:100%;max-width:380px;background:linear-gradient(180deg,#ffffff,#f7f7fb);border-radius:32px;padding:26px 20px 20px 20px;box-shadow:0 20px 50px rgba(0,0,0,0.22);}
+.popupTitle{font-size:26px;font-weight:900;letter-spacing:-0.5px;text-align:center;margin-bottom:8px;}.popupSub{font-size:15px;font-weight:650;color:#666;text-align:center;line-height:1.45;margin-bottom:18px;}
+.primaryBtn,.secondaryBtn{width:100%;border:none;border-radius:22px;padding:17px;font-size:18px;font-weight:900;cursor:pointer;margin-bottom:10px;}.primaryBtn{background:#111;color:white;}.secondaryBtn{background:#e9e9ee;color:#555;}
+#toast{display:none;position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:rgba(17,17,17,0.94);color:white;padding:13px 16px;border-radius:18px;font-size:15px;font-weight:850;z-index:10000;max-width:88%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.22);}
+@media(max-width:390px){body{padding-left:3.5%;padding-right:3.5%;}.heroTitle{font-size:27px;}.moreCard{min-height:124px;}.cardTitle{font-size:16px;}}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     TOP BAR
+========================= -->
+<div class="moreTopBar">
+  <button class="roundBtn backBtn" onclick="goBackToMainApp()">←</button>
+  <div class="moreTitle">More</div>
+</div>
+
+<!-- =========================
+     HERO CARD
+========================= -->
+<div class="heroCard">
+  <div class="heroIcon">☰</div>
+  <div class="heroTitle">More</div>
+  <div class="heroSub">Open your Ibadah tools, Quran pages, books, backup, and app utilities.</div>
+</div>
+
+<!-- =========================
+     IBADAH TOOLS
+========================= -->
+<div class="sectionTitle">Ibadah Tools</div>
+<div class="grid">
+  <div class="moreCard" onclick="openTasbihPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/tasbih.png" alt=""></div><div class="cardTitle">Tasbih</div><div class="cardSub">Counter and dhikr</div></div>
+  <div class="moreCard" onclick="openDuaPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Dua.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>🤲</span>';">
+  </div><div class="cardTitle">Dua</div><div class="cardSub">Daily duas</div></div>
+  <div class="moreCard" onclick="openDailyAzkarPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Dhikr.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>📿</span>';">
+  </div><div class="cardTitle">Daily Dhikr</div><div class="cardSub">Azkar and zikr</div></div>
+  <div class="moreCard" onclick="openQazaTrackerFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Qaza.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>🧾</span>';">
+  </div><div class="cardTitle">Qaza</div><div class="cardSub">Prayer tracker</div></div>
+</div>
+
+<!-- =========================
+     QURAN AND BOOKS
+========================= -->
+<div class="sectionTitle">Quran & Books</div>
+<div class="grid">
+  <div class="moreCard" onclick="openQuranFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/QuranTracker.png" alt=""></div><div class="cardTitle">Quran</div><div class="cardSub">Open Quran page</div></div>
+  <div class="moreCard" onclick="openQiblaPageFromMore()"><div class="cardIconWrap"><span class="emojiIcon">🧭</span></div><div class="cardTitle">Qibla</div><div class="cardSub">Direction finder</div></div>
+  <div class="moreCard" onclick="openBooksPageFromMore()"><div class="cardIconWrap"><span class="emojiIcon">📚</span></div><div class="cardTitle">Books</div><div class="cardSub">Islamic books</div></div>
+  <div class="moreCard" onclick="open16LineQuranFromMore()"><div class="cardIconWrap"><span class="emojiIcon">📘</span></div><div class="cardTitle">16 Line Quran</div><div class="cardSub">Reader page</div></div>
+</div>
+
+<!-- =========================
+     APP TOOLS
+========================= -->
+<div class="sectionTitle">App Tools</div>
+<div class="list">
+  <div class="listCard" onclick="refreshAppFromMore()"><div class="listLeft"><div class="listIcon">🔄</div><div class="listText"><div class="listTitle">Refresh App</div><div class="listSub">Reload app and clear old app cache safely</div></div></div><div class="arrow">›</div></div>
+  <div class="listCard" onclick="openBackupPopup()"><div class="listLeft"><div class="listIcon">💾</div><div class="listText"><div class="listTitle">Backup & Restore</div><div class="listSub">Export or import your saved app data</div></div></div><div class="arrow">›</div></div>
+  <div class="listCard" onclick="goBackToMainApp()"><div class="listLeft"><div class="listIcon">🏠</div><div class="listText"><div class="listTitle">Main App</div><div class="listSub">Return to main app screen</div></div></div><div class="arrow">›</div></div>
+</div>
+
+<!-- =========================
+     BACKUP POPUP
+========================= -->
+<div id="backupPopup" class="popupOverlay" onclick="closeBackupPopup()">
+  <div class="popupCard" onclick="event.stopPropagation()">
+    <div class="popupTitle">Backup & Restore</div>
+    <div class="popupSub">Export your saved app data, or import a previous backup file.</div>
+    <button class="primaryBtn" onclick="exportBackupFromMore()">Export Backup</button>
+    <button class="secondaryBtn" onclick="chooseBackupImport()">Import Backup</button>
+    <button class="secondaryBtn" onclick="closeBackupPopup()">Cancel</button>
+  </div>
+</div>
+
+<input id="backupImportInput" type="file" accept=".json" style="display:none;" onchange="handleBackupImport(event)">
+<div id="toast"></div>
+
+<script>
+function goBackToMainApp(){localStorage.setItem("ibadahFolderReturnPage","home");window.location.href="../";}
+function openTasbihPageFromMore(){localStorage.setItem("tasbihReturnPage","more");window.location.href="../tasbih/?from=more";}
+function openDuaPageFromMore(){window.location.href="../duapage/?from=more&v="+Date.now();}
+function openDailyAzkarPageFromMore(){window.location.href="../dailyazkar/?from=more&v="+Date.now();}
+function openQazaTrackerFromMore(){localStorage.setItem("qazaReturnPage","more");window.location.href="../qazatracker/";}
+function openQiblaPageFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../qibla/";}
+function openBooksPageFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../books/";}
+function openQuranFromMore(){localStorage.setItem("ibadahFolderReturnPage","quran");window.location.href="../";}
+function open16LineQuranFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../16linequranpages/";}
+async function refreshAppFromMore(){try{if("caches" in window){let names=await caches.keys();for(let name of names){let lower=String(name).toLowerCase();if(lower.includes("runtime")||lower.includes("quran")||lower.includes("mushaf")||lower.includes("surah")||lower.includes("ayat")||lower.includes("offline")||lower.includes("download")){continue;}await caches.delete(name);}}showToast("Refreshing app...");setTimeout(function(){window.location.href="./?v="+Date.now();},450);}catch(error){window.location.href="./?v="+Date.now();}}
+function openBackupPopup(){let popup=document.getElementById("backupPopup");if(popup)popup.style.display="flex";}
+function closeBackupPopup(){let popup=document.getElementById("backupPopup");if(popup)popup.style.display="none";}
+function exportBackupFromMore(){let data={exportedAt:new Date().toISOString(),storage:{}};for(let i=0;i<localStorage.length;i++){let key=localStorage.key(i);data.storage[key]=localStorage.getItem(key);}let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob);let a=document.createElement("a");a.href=url;a.download="ibadah-backup.json";a.click();URL.revokeObjectURL(url);closeBackupPopup();showToast("Backup file ready");}
+function chooseBackupImport(){let input=document.getElementById("backupImportInput");if(input)input.click();}
+function handleBackupImport(event){let file=event.target.files&&event.target.files[0];if(!file)return;let ok=confirm("Import backup? This will replace saved app data.");if(!ok)return;let reader=new FileReader();reader.onload=function(e){try{let data=JSON.parse(e.target.result);if(!data||!data.storage){alert("Invalid backup file");return;}localStorage.clear();Object.keys(data.storage).forEach(function(key){localStorage.setItem(key,data.storage[key]);});alert("Backup imported successfully");window.location.reload();}catch(error){alert("Could not import backup file");}};reader.readAsText(file);}
+function showToast(message){let toast=document.getElementById("toast");if(!toast)return;toast.innerText=message;toast.style.display="block";clearTimeout(window.moreToastTimer);window.moreToastTimer=setTimeout(function(){toast.style.display="none";},1800);}
+</script>
+
+<!-- =========================
+     UNIVERSAL BOTTOM NAV SCRIPT
+     File used: shared/bottom-nav.js
+========================= -->
+<script src="../shared/bottom-nav.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",function(){createUniversalBottomNav("more");});
+</script>
+
+</body>
+</html>
