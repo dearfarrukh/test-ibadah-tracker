@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <!-- =========================
      SALAH FOLDER PAGE
      File: salah/index.html
 ========================= -->
+
 <meta charset="UTF-8">
 <title>Salah Times</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -492,8 +494,6 @@ body{
   border-radius:0 14px 14px 0;
 }
 
-
-
 /* =========================
    TOAST
 ========================= */
@@ -541,7 +541,7 @@ body{
   <div class="heroCard" onclick="openLocationSheet()">
     <div id="salahCityName" class="cityName">Loading location...</div>
     <div class="cityHint">🔎 Tap to change location</div>
-    <div id="salahSourceLabel" class="sourceLabel">Loading times...</div>
+    <div id="salahSourceLabel" class="sourceLabel">Refreshing current city...</div>
   </div>
 
   <!-- =========================
@@ -598,7 +598,7 @@ body{
   ========================= -->
   <div class="actionGrid">
     <button class="actionBtn" onclick="openMonthlySheet()">📅 Monthly</button>
-    <button class="actionBtn" onclick="reloadSalahTimes()">🔄 Refresh</button>
+    <button class="actionBtn" onclick="refreshCurrentLocationAndTimes()">🔄 Refresh</button>
   </div>
 
 </div>
@@ -620,7 +620,7 @@ body{
       <button class="sheetCard" onclick="useCurrentLocation()">
         <div>
           📍 Use Current Location
-          <div class="sheetSub">Uses your phone/browser location</div>
+          <div class="sheetSub">Refreshes city from your phone/browser location</div>
         </div>
         <span>›</span>
       </button>
@@ -718,31 +718,6 @@ body{
   </div>
 </div>
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-<div id="bottomNav">
-  <button class="navBtn" onclick="goToHome()">
-    <span class="navIcon">🏠</span>
-    <span>Home</span>
-  </button>
-
-  <button class="navBtn active" onclick="goToSalah()">
-    <span class="navIcon">🕌</span>
-    <span>Salah</span>
-  </button>
-
-  <button class="navBtn" onclick="goToTracker()">
-    <span class="navIcon">✅</span>
-    <span>Tracker</span>
-  </button>
-
-  <button class="navBtn" onclick="goToMore()">
-    <span class="navIcon">☰</span>
-    <span>More</span>
-  </button>
-</div>
-
 <div id="toast">Saved</div>
 
 <script>
@@ -751,6 +726,7 @@ body{
 ========================= */
 let salahDayOffset = 0;
 let salahSource = localStorage.getItem("salahLocationMode") || "current";
+
 let salahLocationData = {
   lat:null,
   lon:null,
@@ -776,20 +752,28 @@ document.addEventListener("DOMContentLoaded", function(){
   loadSettingsUI();
   updateSelectedDateText();
   renderSavedSalahLocationList();
-  reloadSalahTimes();
+
+  /*
+    IMPORTANT:
+    If mode is current, refresh GPS/city every time Salah page opens.
+    If user selected saved location, keep saved location.
+  */
+  if(salahSource === "current"){
+    refreshCurrentLocationAndTimes();
+  }else{
+    reloadSalahTimes();
+  }
 });
 
 /* =========================
    NAVIGATION
 ========================= */
 function goBackToMainApp(){
-  localStorage.setItem("ibadahFolderReturnPage", "salah");
-  window.location.href = "../";
+  window.location.href = "../home/";
 }
 
 function goToHome(){
-  localStorage.setItem("ibadahFolderReturnPage", "home");
-  window.location.href = "../";
+  window.location.href = "../home/";
 }
 
 function goToSalah(){
@@ -801,8 +785,7 @@ function goToTracker(){
 }
 
 function goToMore(){
-  localStorage.setItem("ibadahFolderReturnPage", "more");
-  window.location.href = "../";
+  window.location.href = "../more/";
 }
 
 /* =========================
@@ -1017,8 +1000,8 @@ function getLocationPosition(){
       },
       {
         enableHighAccuracy:true,
-        timeout:10000,
-        maximumAge:300000
+        timeout:12000,
+        maximumAge:0
       }
     );
   });
@@ -1045,6 +1028,67 @@ async function reverseGeocode(lat, lon){
   }
 }
 
+/* =========================
+   REFRESH CURRENT LOCATION EVERY OPEN
+   Full function name: refreshCurrentLocationAndTimes()
+========================= */
+async function refreshCurrentLocationAndTimes(){
+
+  salahSource = "current";
+  localStorage.setItem("salahLocationMode", "current");
+  setSalahLoadingState();
+  updateSelectedDateText();
+
+  let city = document.getElementById("salahCityName");
+  let source = document.getElementById("salahSourceLabel");
+
+  if(city) city.innerText = "Refreshing location...";
+  if(source) source.innerText = "Getting fresh city from phone";
+
+  try{
+    let position = await getLocationPosition();
+
+    salahLocationData.lat = position.coords.latitude;
+    salahLocationData.lon = position.coords.longitude;
+
+    localStorage.setItem("userLat", salahLocationData.lat);
+    localStorage.setItem("userLon", salahLocationData.lon);
+
+    let place = await reverseGeocode(salahLocationData.lat, salahLocationData.lon);
+
+    salahLocationData.city = place.city;
+    salahLocationData.state = place.state;
+    salahLocationData.country = place.country;
+
+    localStorage.setItem("userCity", place.city || "My Location");
+    localStorage.setItem("userState", place.state || "");
+    localStorage.setItem("userCountry", place.country || "");
+
+    salahLiveCache = {};
+
+    await reloadSalahTimes();
+
+  }catch(error){
+
+    if(city) city.innerText = "Location blocked";
+    if(source) source.innerText = "Allow location, or tap to enter city";
+
+    let savedLat = localStorage.getItem("userLat");
+    let savedLon = localStorage.getItem("userLon");
+    let savedCity = localStorage.getItem("userCity");
+
+    if(savedLat && savedLon){
+      salahLocationData.lat = Number(savedLat);
+      salahLocationData.lon = Number(savedLon);
+      salahLocationData.city = savedCity || "Saved Location";
+      salahLocationData.state = localStorage.getItem("userState") || "";
+      salahLocationData.country = localStorage.getItem("userCountry") || "";
+
+      reloadSalahTimes();
+    }
+  }
+}
+
 async function loadUserLocationData(){
   if(salahLocationData.lat !== null && salahLocationData.lon !== null){
     return salahLocationData;
@@ -1052,22 +1096,33 @@ async function loadUserLocationData(){
 
   let savedLat = localStorage.getItem("userLat");
   let savedLon = localStorage.getItem("userLon");
+  let savedCity = localStorage.getItem("userCity");
 
   if(savedLat && savedLon){
     salahLocationData.lat = Number(savedLat);
     salahLocationData.lon = Number(savedLon);
-  }else{
-    let position = await getLocationPosition();
-    salahLocationData.lat = position.coords.latitude;
-    salahLocationData.lon = position.coords.longitude;
-    localStorage.setItem("userLat", salahLocationData.lat);
-    localStorage.setItem("userLon", salahLocationData.lon);
+    salahLocationData.city = savedCity || "My Location";
+    salahLocationData.state = localStorage.getItem("userState") || "";
+    salahLocationData.country = localStorage.getItem("userCountry") || "";
+    return salahLocationData;
   }
 
+  let position = await getLocationPosition();
+  salahLocationData.lat = position.coords.latitude;
+  salahLocationData.lon = position.coords.longitude;
+
+  localStorage.setItem("userLat", salahLocationData.lat);
+  localStorage.setItem("userLon", salahLocationData.lon);
+
   let place = await reverseGeocode(salahLocationData.lat, salahLocationData.lon);
+
   salahLocationData.city = place.city;
   salahLocationData.state = place.state;
   salahLocationData.country = place.country;
+
+  localStorage.setItem("userCity", place.city || "My Location");
+  localStorage.setItem("userState", place.state || "");
+  localStorage.setItem("userCountry", place.country || "");
 
   return salahLocationData;
 }
@@ -1176,6 +1231,8 @@ async function reloadSalahTimes(){
       if(!saved){
         salahSource = "current";
         localStorage.setItem("salahLocationMode", "current");
+        await refreshCurrentLocationAndTimes();
+        return;
       }else{
         data = await fetchSalahForLocation(selectedDate, saved);
       }
@@ -1200,6 +1257,7 @@ async function reloadSalahTimes(){
     }
 
     applySalahDataToScreen(data);
+
   }catch(error){
     if(city) city.innerText = "Could not load";
     if(source) source.innerText = "Check location/internet, or enter a city";
@@ -1227,11 +1285,8 @@ function closeSheetFromOverlay(event, id){
 }
 
 async function useCurrentLocation(){
-  salahSource = "current";
-  localStorage.setItem("salahLocationMode", "current");
-  salahLocationData = {lat:null, lon:null, city:"", state:"", country:""};
   closeLocationSheet();
-  reloadSalahTimes();
+  refreshCurrentLocationAndTimes();
 }
 
 async function searchEnteredLocation(){
@@ -1284,6 +1339,7 @@ async function searchEnteredLocation(){
 
     closeLocationSheet();
     reloadSalahTimes();
+
   }catch(error){
     showToast("Could not search location");
   }
@@ -1616,10 +1672,11 @@ document.addEventListener("touchend", function(e){
 // Full function name: createUniversalBottomNav("salah")
 // =========================
 document.addEventListener("DOMContentLoaded", function(){
-  createUniversalBottomNav("salah");
+  if(typeof createUniversalBottomNav === "function"){
+    createUniversalBottomNav("salah");
+  }
 });
 </script>
 
-     
 </body>
 </html>
