@@ -186,7 +186,6 @@ function goUniversalBottomTracker(){
 // =========================
 function goUniversalBottomMore(){
 
-  localStorage.setItem("ibadahFolderReturnPage", "more");
-  window.location.href = "../";
+  window.location.href = "../more/";
 
 }
