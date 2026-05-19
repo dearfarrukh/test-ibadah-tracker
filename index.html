@@ -2208,31 +2208,13 @@ function getPrevQuran16ImageSrc(){
 // OPEN 16 LINE QURAN PAGE
 // =========================
 function openQuran16Page(){
-quran16BackDestination = "quran16Page";
-  let quranPage = document.getElementById("quranPage");
-  let quran16Page = document.getElementById("quran16Page");
-  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
-  let arabicQuranPage = document.getElementById("arabicQuranPage");
-  let quran15Page = document.getElementById("quran15Page");
-  let quran15SurahPage = document.getElementById("quran15SurahPage");
-  let quranReadingPage = document.getElementById("quranReadingPage");
-  let surahIndexPage = document.getElementById("surahIndexPage");
 
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+  window.location.href = "16linequran/";
 
-  if(quranPage) quranPage.style.display = "none";
-  if(arabicQuranPage) arabicQuranPage.style.display = "none";
-  if(quran15Page) quran15Page.style.display = "none";
-  if(quran15SurahPage) quran15SurahPage.style.display = "none";
-  if(quranReadingPage) quranReadingPage.style.display = "none";
-  if(surahIndexPage) surahIndexPage.style.display = "none";
-  if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
-
-  if(quran16Page) quran16Page.style.display = "block";
-  setBottomNavVisibility(true);
-
-  window.scrollTo(0,0);
 }
 
+     
 // =========================
 // CLOSE 16 LINE QURAN PAGE
 // =========================
@@ -5498,9 +5480,6 @@ function openTrackerQuran16Shortcut(name){
 
   let surahNumber = null;
 
-  // =========================
-  // TRACKER SURAH TO 16 LINE SURAH NUMBER
-  // =========================
   if(name === "Surah Mulk"){
     surahNumber = 67;
   }
@@ -5529,7 +5508,6 @@ function openTrackerQuran16Shortcut(name){
     surahNumber = 112;
   }
 
-  // Opens Surah Ad-Duha, then user can continue until Surah An-Nas
   if(name === "Surah Ad Duha to Surah Al Nas"){
     surahNumber = 93;
   }
@@ -5539,40 +5517,28 @@ function openTrackerQuran16Shortcut(name){
     return;
   }
 
-  if(typeof surahToQuran16PageMap !== "undefined" && typeof openQuran16PageNumber === "function"){
+  let quran16SurahPageMap = {
+    32:373,
+    36:396,
+    55:478,
+    56:481,
+    64:502,
+    67:508,
+    93:541,
+    112:547
+  };
 
-    let page = surahToQuran16PageMap[surahNumber];
+  let page = quran16SurahPageMap[surahNumber];
 
-    if(page){
-
-            // Remember this Quran reader was opened from Tracker shortcut
-        quran16OpenedFromTrackerShortcut = true;
-
-        // Hide menu handle before opening Quran reader
-        setMainMenuHandleVisibility(false);
-
-        // Close side menu if it is open
-        if(typeof closeSideMenu === "function"){
-          closeSideMenu();
-        }
-
-        // Tell 16 Line Quran back button to return to Tracker
-quran16BackDestination = "tracker";
-
-// Open 16 Line Quran page
-openQuran16PageNumber(page);
-         
-      // Force hide menu handle again after page opens
-      setMainMenuHandleVisibility(false);
-
-      return;
-    }
-
+  if(!page){
+    alert("16 Line shortcut could not open.");
+    return;
   }
 
-  alert("16 Line shortcut could not open.");
-}
+  localStorage.setItem("ibadahFolderReturnPage", "tracker");
+  window.location.href = "16linequran/?page=" + page + "&from=tracker";
 
+}
 
      
 // =========================
