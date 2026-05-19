@@ -858,11 +858,15 @@ function goHomeMorePage(){
 // =========================
 // SHORTCUT ACTION FUNCTIONS
 // =========================
+// =========================
+// OPEN HOME QURAN
+// Full function name: openHomeQuran()
+// =========================
 function openHomeQuran(){
-  localStorage.setItem("ibadahFolderReturnPage", "quran");
-  window.location.href = "../";
-}
 
+  window.location.href = "../quran/?from=home";
+
+}
 function openHomeAzkar(){
   window.location.href = "../dailyazkar/?from=home&v=" + Date.now();
 }
