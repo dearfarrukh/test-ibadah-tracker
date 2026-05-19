@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     TRACKER FOLDER PAGE
+     File: tracker/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>Ibadah Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+/* =========================
+   GLOBAL STYLE
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+}
+
+body{
+  padding:18px 4% 106px 4%;
+  background:
+    linear-gradient(rgba(233,233,238,0.50), rgba(233,233,238,0.82)),
+    url("../wallpaper.jpg") center/cover fixed no-repeat;
+}
+
+/* =========================
+   HEADER
+========================= */
+.trackerHeader{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:16px;
+  padding-top:4px;
+}
+
+.trackerLogo{
+  width:17%;
+  max-width:68px;
+  min-width:50px;
+  aspect-ratio:1/1;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.24));
+}
+
+.trackerTitle{
+  margin:0;
+  font-size:31px;
+  font-weight:900;
+  color:white;
+  text-shadow:0 3px 10px rgba(0,0,0,0.28);
+  letter-spacing:-0.7px;
+  white-space:nowrap;
+}
+
+/* =========================
+   iOS CARDS
+========================= */
+.card{
+  width:100%;
+  background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-radius:26px;
+  padding:18px 5%;
+  margin-bottom:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.10);
+  border:1px solid rgba(255,255,255,0.55);
+}
+
+.cardTitle{
+  font-size:21px;
+  font-weight:900;
+  margin-bottom:14px;
+  letter-spacing:-0.3px;
+}
+
+.smallText{
+  font-size:14px;
+  color:#666;
+  font-weight:650;
+}
+
+/* =========================
+   DATE CARD
+========================= */
+.dateRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.dateArrowBtn{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 4px 12px rgba(0,0,0,0.09);
+  font-size:20px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.dateCenter{
+  flex:1;
+  text-align:center;
+  position:relative;
+  min-height:46px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+#displayDate{
+  font-size:18px;
+  font-weight:900;
+  color:#111;
+  letter-spacing:-0.2px;
+}
+
+#hijriDate{
+  margin-top:4px;
+  font-size:14px;
+  font-weight:650;
+  color:#666;
+}
+
+#datePicker{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  cursor:pointer;
+}
+
+/* =========================
+   SALAH MINI TRACKER
+========================= */
+#salahContainer{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:8px;
+  text-align:center;
+}
+
+.salahItem{
+  background:white;
+  border-radius:20px;
+  padding:12px 4px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.06);
+}
+
+.salahName{
+  font-size:12px;
+  font-weight:800;
+  color:#333;
+  margin-bottom:8px;
+}
+
+.roundCheck{
+  width:24px;
+  height:24px;
+  accent-color:#34c759;
+  cursor:pointer;
+}
+
+/* =========================
+   TASKS
+========================= */
+#taskContainer{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.task{
+  background:white;
+  border-radius:22px;
+  padding:14px 14px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.06);
+}
+
+.taskInner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.taskLeft{
+  min-width:0;
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.taskName{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:17px;
+  font-weight:800;
+}
+
+.taskShortcutWrap{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+}
+
+.pdfBtn{
+  border:none;
+  background:#007aff;
+  color:white;
+  padding:5px 8px;
+  border-radius:10px;
+  font-size:10px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.quranBtn{
+  border:none;
+  background:transparent;
+  color:#111;
+  width:28px;
+  height:28px;
+  font-size:21px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.primaryBtn{
+  width:100%;
+  border:none;
+  border-radius:20px;
+  padding:17px;
+  background:#111;
+  color:white;
+  font-size:19px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.secondaryBtn{
+  width:100%;
+  border:none;
+  border-radius:20px;
+  padding:16px;
+  background:#e9e9ee;
+  color:#555;
+  font-size:18px;
+  font-weight:850;
+  cursor:pointer;
+}
+
+.blueBtn{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:15px;
+  background:#007aff;
+  color:white;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.dangerBtn{
+  width:100%;
+  border:none;
+  border-radius:20px;
+  padding:16px;
+  background:#fff1f1;
+  color:#d11a2a;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* =========================
+   BOTTOM SHEET
+========================= */
+.sheetOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.32);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  z-index:9000;
+  align-items:flex-end;
+}
+
+.sheetBox{
+  width:100%;
+  max-height:86%;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  background:rgba(248,248,251,0.97);
+  border-radius:34px 34px 0 0;
+  padding:14px 4% calc(env(safe-area-inset-bottom) + 24px) 4%;
+  box-shadow:0 -18px 44px rgba(0,0,0,0.22);
+  animation:sheetUp 0.24s ease forwards;
+}
+
+@keyframes sheetUp{
+  from{ transform:translateY(100%); }
+  to{ transform:translateY(0); }
+}
+
+.sheetHandle{
+  width:44px;
+  height:5px;
+  border-radius:99px;
+  background:#c9c9cf;
+  margin:0 auto 16px auto;
+}
+
+.sheetTitle{
+  font-size:28px;
+  font-weight:950;
+  text-align:center;
+  letter-spacing:-0.7px;
+  margin-bottom:8px;
+}
+
+.sheetSub{
+  font-size:15px;
+  font-weight:650;
+  color:#777;
+  text-align:center;
+  line-height:1.4;
+  margin-bottom:18px;
+}
+
+.formInput,
+.formSelect{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  background:#f2f2f7;
+  padding:16px;
+  font-size:18px;
+  font-weight:750;
+  color:#111;
+  margin-bottom:12px;
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+.formLabel{
+  text-align:left;
+  margin:4px 0 8px 2px;
+  font-size:16px;
+  font-weight:850;
+  color:#222;
+}
+
+.daysGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.dayOption{
+  background:#f2f2f7;
+  border-radius:18px;
+  padding:14px;
+  font-size:17px;
+  font-weight:800;
+}
+
+/* =========================
+   TOAST
+========================= */
+#toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:100px;
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.92);
+  color:white;
+  border-radius:18px;
+  padding:13px 16px;
+  font-size:15px;
+  font-weight:850;
+  z-index:10000;
+  max-width:88%;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.20);
+}
+
+/* =========================
+   SIMPLE BOTTOM NAV
+========================= */
+#bottomNav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:84px;
+  padding-bottom:12px;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-top:1px solid rgba(0,0,0,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  z-index:8000;
+  box-shadow:0 -5px 18px rgba(0,0,0,0.08);
+}
+
+.navItem{
+  flex:1;
+  text-align:center;
+  font-size:12px;
+  font-weight:850;
+  color:#777;
+  cursor:pointer;
+}
+
+.navItem.active{
+  color:#007aff;
+}
+
+.navIcon{
+  font-size:22px;
+  margin-bottom:3px;
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+@media(max-width:390px){
+  body{
+    padding-left:3.5%;
+    padding-right:3.5%;
+  }
+  .trackerTitle{
+    font-size:28px;
+  }
+  .taskName{
+    font-size:16px;
+  }
+  .salahName{
+    font-size:11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     TRACKER HEADER
+========================= -->
+<div class="trackerHeader">
+  <img class="trackerLogo" src="../Images/Icons/QuranTracker.png" alt="">
+  <h1 class="trackerTitle">Ibadah Tracker</h1>
+</div>
+
+<!-- =========================
+     DATE CARD
+========================= -->
+<div class="card">
+  <div class="dateRow">
+    <button class="dateArrowBtn" onclick="prevDay()">‹</button>
+
+    <div class="dateCenter">
+      <div id="displayDate"></div>
+      <div id="hijriDate"></div>
+      <input type="date" id="datePicker" onchange="manualPick(this.value)">
+    </div>
+
+    <button class="dateArrowBtn" onclick="nextDay()">›</button>
+  </div>
+</div>
+
+<!-- =========================
+     DAILY SALAH CARD
+========================= -->
+<div class="card">
+  <div class="cardTitle">🕌 Daily Salah</div>
+  <div id="salahContainer"></div>
+</div>
+
+<!-- =========================
+     DAILY TASKS CARD
+========================= -->
+<div class="card">
+  <div class="cardTitle">📝 Daily Tasks</div>
+  <div id="taskContainer"></div>
+
+  <div style="height:14px;"></div>
+
+  <button class="blueBtn" onclick="manageTasks()">Manage Tasks</button>
+</div>
+
+<!-- =========================
+     MANAGE TASKS SHEET
+========================= -->
+<div id="taskMenu" class="sheetOverlay" onclick="closeTaskMenuFromOverlay(event)">
+  <div class="sheetBox" onclick="event.stopPropagation();">
+    <div id="taskMenuContent"></div>
+  </div>
+</div>
+
+<!-- =========================
+     DELETE CHOICE POPUP
+========================= -->
+<div id="deleteChoicePopup" class="sheetOverlay" onclick="closeDeletePopup()" style="align-items:center;padding:20px;">
+  <div onclick="event.stopPropagation()" style="
+  width:100%;
+  max-width:360px;
+  background:white;
+  border-radius:30px;
+  padding:24px 20px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.22);
+  ">
+    <div style="font-size:24px;font-weight:950;text-align:center;margin-bottom:8px;">Delete Task</div>
+    <div style="font-size:15px;font-weight:650;color:#666;text-align:center;line-height:1.4;margin-bottom:18px;">
+      Choose how you want to remove this task.
+    </div>
+
+    <button class="dangerBtn" onclick="deleteFromBeginning()">Delete completely</button>
+    <div style="height:10px;"></div>
+    <button class="secondaryBtn" onclick="deleteFromToday()">Stop from today</button>
+    <div style="height:10px;"></div>
+    <button class="secondaryBtn" onclick="closeDeletePopup()">Cancel</button>
+  </div>
+</div>
+
+<!-- =========================
+     TOAST
+========================= -->
+<div id="toast"></div>
+
+<!-- =========================
+     BOTTOM NAV
+========================= -->
+<div id="bottomNav">
+  <div class="navItem" onclick="goToMainPage('home')">
+    <div class="navIcon">🏠</div>
+    Home
+  </div>
+
+  <div class="navItem active">
+    <div class="navIcon">✅</div>
+    Tracker
+  </div>
+
+  <div class="navItem" onclick="goToMainPage('salah')">
+    <div class="navIcon">🕌</div>
+    Salah
+  </div>
+
+  <div class="navItem" onclick="goToMainPage('quran')">
+    <div class="navIcon">📖</div>
+    Quran
+  </div>
+
+  <div class="navItem" onclick="goToMainPage('more')">
+    <div class="navIcon">☰</div>
+    More
+  </div>
+</div>
+
+<script>
+/* =========================
+   TRACKER GLOBAL VARIABLES
+========================= */
+let currentDate;
+let deleteTargetTask = null;
+
+/* =========================
+   LOAD TASK LIST
+========================= */
+let taskList = JSON.parse(localStorage.getItem("taskList") || "[]");
+
+taskList = taskList.filter(function(t){
+  return !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name);
+});
+
+if(!Array.isArray(taskList) || taskList.length === 0){
+  taskList = [
+    {name:"Surah Mulk",start:0,end:null},
+    {name:"Surah Sajdah",start:0,end:null},
+    {name:"Surah Yaseen",start:0,end:null},
+    {name:"Surah Rehman",start:0,end:null},
+    {name:"Surah Taghabun",start:0,end:null},
+    {name:"Surah Waqiya",start:0,end:null},
+    {name:"Surah Ikhlas",start:0,end:null},
+    {name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
+  ];
+}
+
+localStorage.setItem("taskList", JSON.stringify(taskList));
+
+/* =========================
+   ISLAMIC TODAY
+========================= */
+function islamicToday(){
+  let now = new Date();
+  let d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  if(now.getHours() < 2){
+    d.setDate(d.getDate() - 1);
+  }
+
+  return d;
+}
+
+/* =========================
+   FORMAT KEY
+========================= */
+function formatKey(d){
+  return d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
+}
+
+/* =========================
+   SET DATE
+========================= */
+function setDate(d){
+
+  currentDate = new Date(d);
+
+  let displayDate = document.getElementById("displayDate");
+  let hijriDate = document.getElementById("hijriDate");
+  let datePicker = document.getElementById("datePicker");
+
+  if(displayDate){
+    displayDate.innerText = currentDate.toLocaleDateString("en-US", {
+      weekday:"long",
+      year:"numeric",
+      month:"short",
+      day:"numeric"
+    });
+  }
+
+  if(hijriDate){
+    hijriDate.innerText = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    }).format(currentDate);
+  }
+
+  if(datePicker){
+    datePicker.value = formatKey(currentDate);
+  }
+
+  loadSalah();
+  loadTasks();
+}
+
+/* =========================
+   PREVIOUS DAY
+========================= */
+function prevDay(){
+  currentDate.setDate(currentDate.getDate() - 1);
+  setDate(currentDate);
+}
+
+/* =========================
+   NEXT DAY
+========================= */
+function nextDay(){
+  currentDate.setDate(currentDate.getDate() + 1);
+  setDate(currentDate);
+}
+
+/* =========================
+   MANUAL PICK
+========================= */
+function manualPick(value){
+  let p = value.split("-");
+  setDate(new Date(p[0], p[1] - 1, p[2]));
+}
+
+/* =========================
+   LOAD SALAH
+========================= */
+function loadSalah(){
+
+  let prayers = ["Fajr","Dhuhur","Asr","Maghrib","Isha"];
+  let key = "salah-" + formatKey(currentDate);
+  let saved = JSON.parse(localStorage.getItem(key) || "{}");
+
+  let container = document.getElementById("salahContainer");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  prayers.forEach(function(p){
+
+    let div = document.createElement("div");
+    div.className = "salahItem";
+
+    div.innerHTML = `
+      <div class="salahName">${p}</div>
+      <input class="roundCheck" type="checkbox"
+      ${saved[p] ? "checked" : ""}
+      onchange="toggleSalah('${p}', this.checked)">
+    `;
+
+    container.appendChild(div);
+
+  });
+}
+
+/* =========================
+   TOGGLE SALAH
+========================= */
+function toggleSalah(prayer, status){
+
+  let key = "salah-" + formatKey(currentDate);
+  let saved = JSON.parse(localStorage.getItem(key) || "{}");
+
+  saved[prayer] = status;
+
+  localStorage.setItem(key, JSON.stringify(saved));
+}
+
+/* =========================
+   IS SURAH
+========================= */
+function isSurah(name){
+  return String(name || "").includes("Surah");
+}
+
+/* =========================
+   LOAD TASKS
+========================= */
+function loadTasks(){
+
+  let dateKey = formatKey(currentDate);
+  let saved = JSON.parse(localStorage.getItem(dateKey) || "{}");
+
+  let container = document.getElementById("taskContainer");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  let selectedTime = new Date(currentDate).setHours(0,0,0,0);
+
+  taskList.forEach(function(task){
+
+    if(selectedTime < Number(task.start || 0)) return;
+
+    if(task.end !== null && task.end !== undefined && selectedTime > Number(task.end)) return;
+
+    if(task.days){
+      let dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      let todayName = dayNames[new Date(currentDate).getDay()];
+
+      if(!task.days.includes(todayName)) return;
+    }
+
+    let div = document.createElement("div");
+    div.className = "task";
+
+    let shortcutHtml = "";
+
+    if(isSurah(task.name)){
+      shortcutHtml = `
+        <div class="taskShortcutWrap">
+          <button class="pdfBtn" onclick="event.stopPropagation();handleTaskClick('${escapeJs(task.name)}')">📄 PDF</button>
+          ${isQuran16ShortcutReady(task.name) ? `
+            <button class="quranBtn" onclick="event.stopPropagation();openTrackerQuran16Shortcut('${escapeJs(task.name)}')">📖</button>
+          ` : ``}
+        </div>
+      `;
+    }
+
+    div.innerHTML = `
+      <div class="taskInner">
+        <div class="taskLeft">
+          <span class="taskName">${escapeHtml(task.name)}</span>
+          ${shortcutHtml}
+        </div>
+
+        <input class="roundCheck" type="checkbox"
+        ${saved[task.name] ? "checked" : ""}
+        onchange="toggleTask('${escapeJs(task.name)}', this.checked)">
+      </div>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+/* =========================
+   TOGGLE TASK
+========================= */
+function toggleTask(task, status){
+
+  let key = formatKey(currentDate);
+  let saved = JSON.parse(localStorage.getItem(key) || "{}");
+
+  saved[task] = status;
+
+  localStorage.setItem(key, JSON.stringify(saved));
+}
+
+/* =========================
+   MANAGE TASKS
+========================= */
+function manageTasks(){
+
+  let menu = document.getElementById("taskMenu");
+  let content = document.getElementById("taskMenuContent");
+
+  if(!menu || !content) return;
+
+  content.innerHTML = `
+    <div class="sheetHandle"></div>
+    <div class="sheetTitle">Manage Tasks</div>
+    <div class="sheetSub">Add, rename, or remove your daily tracker tasks.</div>
+
+    <button class="primaryBtn" onclick="showAddTask()">＋ Add Task</button>
+    <div style="height:10px;"></div>
+
+    <button class="secondaryBtn" onclick="showRenameTask()">✏️ Rename Task</button>
+    <div style="height:10px;"></div>
+
+    <button class="dangerBtn" onclick="showRemoveTask()">🗑️ Remove Task</button>
+    <div style="height:14px;"></div>
+
+    <button class="secondaryBtn" onclick="closeTaskMenu()">Cancel</button>
+  `;
+
+  menu.style.display = "flex";
+}
+
+/* =========================
+   CLOSE TASK MENU
+========================= */
+function closeTaskMenu(){
+  let menu = document.getElementById("taskMenu");
+  if(menu) menu.style.display = "none";
+}
+
+/* =========================
+   CLOSE TASK MENU FROM OVERLAY
+========================= */
+function closeTaskMenuFromOverlay(event){
+  if(event.target && event.target.id === "taskMenu"){
+    closeTaskMenu();
+  }
+}
+
+/* =========================
+   SHOW ADD TASK
+========================= */
+function showAddTask(){
+
+  let content = document.getElementById("taskMenuContent");
+  if(!content) return;
+
+  content.innerHTML = `
+    <div class="sheetHandle"></div>
+    <div class="sheetTitle">Add Task</div>
+    <div class="sheetSub">Create a new task for your tracker.</div>
+
+    <input id="taskNameInput" class="formInput" placeholder="Task name">
+
+    <select id="taskTypeSelect" class="formSelect" onchange="showTaskOptions()">
+      <option value="">Select Type</option>
+      <option value="range">Date Range</option>
+      <option value="today">Start Today</option>
+      <option value="days">Specific Days</option>
+    </select>
+
+    <div id="taskExtra"></div>
+
+    <button class="primaryBtn" onclick="createTask()">Save Task</button>
+    <div style="height:10px;"></div>
+
+    <button class="secondaryBtn" onclick="manageTasks()">Back</button>
+  `;
+}
+
+/* =========================
+   SHOW TASK OPTIONS
+========================= */
+function showTaskOptions(){
+
+  let type = document.getElementById("taskTypeSelect").value;
+  let area = document.getElementById("taskExtra");
+
+  if(!area) return;
+
+  if(type === "range"){
+    area.innerHTML = `
+      <div class="formLabel">Start Date</div>
+      <input type="date" id="taskStart" class="formInput">
+
+      <div class="formLabel">End Date</div>
+      <input type="date" id="taskEnd" class="formInput">
+
+      <div class="smallText" style="margin-bottom:12px;">Date Range can include past dates.</div>
+    `;
+    return;
+  }
+
+  if(type === "days"){
+    area.innerHTML = `
+      <div class="daysGrid">
+        <label class="dayOption"><input type="checkbox" value="Mon"> Mon</label>
+        <label class="dayOption"><input type="checkbox" value="Tue"> Tue</label>
+        <label class="dayOption"><input type="checkbox" value="Wed"> Wed</label>
+        <label class="dayOption"><input type="checkbox" value="Thu"> Thu</label>
+        <label class="dayOption"><input type="checkbox" value="Fri"> Fri</label>
+        <label class="dayOption"><input type="checkbox" value="Sat"> Sat</label>
+        <label class="dayOption"><input type="checkbox" value="Sun"> Sun</label>
+      </div>
+    `;
+    return;
+  }
+
+  area.innerHTML = "";
+}
+
+/* =========================
+   CREATE TASK
+========================= */
+function createTask(){
+
+  let nameInput = document.getElementById("taskNameInput");
+  let typeSelect = document.getElementById("taskTypeSelect");
+
+  if(!nameInput || !typeSelect) return;
+
+  let name = nameInput.value.trim();
+  let type = typeSelect.value;
+
+  if(!name){
+    showToast("Please enter task name");
+    return;
+  }
+
+  if(!type){
+    showToast("Please select a task type");
+    return;
+  }
+
+  let sameCurrentTask = taskList.find(function(t){
+    return t.name.trim().toLowerCase() === name.toLowerCase() && !isHistoricalTask(t);
+  });
+
+  if(sameCurrentTask){
+    showToast("This task already exists");
+    return;
+  }
+
+  let task = { name:name };
+  let today = new Date(currentDate).setHours(0,0,0,0);
+
+  if(type === "range"){
+    let startValue = document.getElementById("taskStart").value;
+    let endValue = document.getElementById("taskEnd").value;
+
+    if(!startValue || !endValue){
+      showToast("Please choose start and end date");
+      return;
+    }
+
+    let s = startValue.split("-");
+    let e = endValue.split("-");
+
+    task.start = new Date(s[0], s[1] - 1, s[2]).setHours(0,0,0,0);
+    task.end = new Date(e[0], e[1] - 1, e[2]).setHours(0,0,0,0);
+  }
+
+  if(type === "today"){
+    task.start = today;
+    task.end = null;
+  }
+
+  if(type === "days"){
+    let days = Array.from(document.querySelectorAll("#taskExtra input:checked")).map(function(d){
+      return d.value;
+    });
+
+    if(!days.length){
+      showToast("Please choose at least one day");
+      return;
+    }
+
+    task.days = days;
+    task.start = today;
+    task.end = null;
+  }
+
+  taskList.push(task);
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+
+  loadTasks();
+  manageTasks();
+  showToast("Task saved");
+}
+
+/* =========================
+   GET SELECTED TASK TIME
+========================= */
+function getSelectedTaskTime(){
+  return new Date(currentDate).setHours(0,0,0,0);
+}
+
+/* =========================
+   IS HISTORICAL TASK
+========================= */
+function isHistoricalTask(task){
+
+  let today = getSelectedTaskTime();
+
+  if(task.end === null || task.end === undefined) return false;
+
+  return Number(task.end) < today;
+}
+
+/* =========================
+   IS TASK ACTIVE ON SELECTED DATE
+========================= */
+function isTaskActiveOnSelectedDate(task){
+
+  let selectedTime = getSelectedTaskTime();
+
+  if(task.start !== undefined && selectedTime < Number(task.start)) return false;
+
+  if(task.end !== null && task.end !== undefined && selectedTime > Number(task.end)) return false;
+
+  if(task.days){
+    let dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let selectedDayName = dayNames[new Date(currentDate).getDay()];
+    if(!task.days.includes(selectedDayName)) return false;
+  }
+
+  return true;
+}
+
+/* =========================
+   GET MANAGEABLE TASKS
+========================= */
+function getManageableTasks(){
+  return taskList.filter(function(task){
+    return isTaskActiveOnSelectedDate(task);
+  });
+}
+
+/* =========================
+   SHOW RENAME TASK
+========================= */
+function showRenameTask(){
+
+  let visibleTasks = getManageableTasks();
+  let content = document.getElementById("taskMenuContent");
+  if(!content) return;
+
+  if(!visibleTasks.length){
+    content.innerHTML = `
+      <div class="sheetHandle"></div>
+      <div class="sheetTitle">Rename Task</div>
+      <div class="sheetSub">No current tasks to rename.</div>
+      <button class="secondaryBtn" onclick="manageTasks()">Back</button>
+    `;
+    return;
+  }
+
+  let options = visibleTasks.map(function(t){
+    return `<option>${escapeHtml(t.name)}</option>`;
+  }).join("");
+
+  content.innerHTML = `
+    <div class="sheetHandle"></div>
+    <div class="sheetTitle">Rename Task</div>
+    <div class="sheetSub">Choose a task and type the new name.</div>
+
+    <select id="renameSelect" class="formSelect">${options}</select>
+    <input id="renameInput" class="formInput" placeholder="New task name">
+
+    <button class="primaryBtn" onclick="confirmRenameTask()">Rename</button>
+    <div style="height:10px;"></div>
+    <button class="secondaryBtn" onclick="manageTasks()">Back</button>
+  `;
+}
+
+/* =========================
+   CONFIRM RENAME TASK
+========================= */
+function confirmRenameTask(){
+
+  let renameSelect = document.getElementById("renameSelect");
+  let renameInput = document.getElementById("renameInput");
+
+  if(!renameSelect || !renameInput) return;
+
+  let oldName = renameSelect.value;
+  let newName = renameInput.value.trim();
+
+  if(!newName){
+    showToast("Please type a new task name");
+    return;
+  }
+
+  if(newName === oldName){
+    showToast("Please type a different name");
+    return;
+  }
+
+  let nameAlreadyExists = taskList.some(function(t){
+    return t.name === newName;
+  });
+
+  if(nameAlreadyExists){
+    showToast("This task name already exists");
+    return;
+  }
+
+  taskList = taskList.map(function(t){
+    if(t.name === oldName){
+      return Object.assign({}, t, {name:newName});
+    }
+    return t;
+  });
+
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+
+  renameSavedCheckboxData(oldName, newName);
+
+  loadTasks();
+  manageTasks();
+  showToast("Task renamed");
+}
+
+/* =========================
+   RENAME SAVED CHECKBOX DATA
+========================= */
+function renameSavedCheckboxData(oldName, newName){
+
+  let keysToCheck = [];
+
+  for(let i = 0; i < localStorage.length; i++){
+    let storageKey = localStorage.key(i);
+    if(storageKey){
+      keysToCheck.push(storageKey);
+    }
+  }
+
+  keysToCheck.forEach(function(storageKey){
+
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(storageKey)) return;
+
+    let savedData;
+
+    try{
+      savedData = JSON.parse(localStorage.getItem(storageKey));
+    }catch(error){
+      return;
+    }
+
+    if(!savedData || typeof savedData !== "object") return;
+
+    if(Object.prototype.hasOwnProperty.call(savedData, oldName)){
+      savedData[newName] = savedData[oldName];
+      delete savedData[oldName];
+      localStorage.setItem(storageKey, JSON.stringify(savedData));
+    }
+
+  });
+}
+
+/* =========================
+   SHOW REMOVE TASK
+========================= */
+function showRemoveTask(){
+
+  let visibleTasks = getManageableTasks();
+  let content = document.getElementById("taskMenuContent");
+  if(!content) return;
+
+  if(!visibleTasks.length){
+    content.innerHTML = `
+      <div class="sheetHandle"></div>
+      <div class="sheetTitle">Remove Task</div>
+      <div class="sheetSub">No current tasks to remove.</div>
+      <button class="secondaryBtn" onclick="manageTasks()">Back</button>
+    `;
+    return;
+  }
+
+  let options = visibleTasks.map(function(t){
+    return `<option>${escapeHtml(t.name)}</option>`;
+  }).join("");
+
+  content.innerHTML = `
+    <div class="sheetHandle"></div>
+    <div class="sheetTitle">Remove Task</div>
+    <div class="sheetSub">Choose a task, then decide how to remove it.</div>
+
+    <select id="deleteSelect" class="formSelect">${options}</select>
+
+    <button class="dangerBtn" onclick="openDeletePopup()">Delete Task</button>
+    <div style="height:10px;"></div>
+    <button class="secondaryBtn" onclick="manageTasks()">Back</button>
+  `;
+}
+
+/* =========================
+   OPEN DELETE POPUP
+========================= */
+function openDeletePopup(){
+
+  let deleteSelect = document.getElementById("deleteSelect");
+  if(!deleteSelect) return;
+
+  deleteTargetTask = deleteSelect.value;
+
+  closeTaskMenu();
+
+  let popup = document.getElementById("deleteChoicePopup");
+  if(popup) popup.style.display = "flex";
+}
+
+/* =========================
+   CLOSE DELETE POPUP
+========================= */
+function closeDeletePopup(){
+
+  let popup = document.getElementById("deleteChoicePopup");
+  if(popup) popup.style.display = "none";
+
+  deleteTargetTask = null;
+}
+
+/* =========================
+   DELETE FROM BEGINNING
+========================= */
+function deleteFromBeginning(){
+
+  if(!deleteTargetTask) return;
+
+  taskList = taskList.filter(function(t){
+    return t.name !== deleteTargetTask;
+  });
+
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+
+  closeDeletePopup();
+  loadTasks();
+  manageTasks();
+  showToast("Task deleted");
+}
+
+/* =========================
+   DELETE FROM TODAY
+========================= */
+function deleteFromToday(){
+
+  if(!deleteTargetTask) return;
+
+  let today = new Date(currentDate).setHours(0,0,0,0);
+  let yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  taskList = taskList.map(function(t){
+    if(t.name === deleteTargetTask){
+      return Object.assign({}, t, {end:yesterday.setHours(0,0,0,0)});
+    }
+    return t;
+  });
+
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+
+  closeDeletePopup();
+  loadTasks();
+  manageTasks();
+  showToast("Task stopped from today");
+}
+
+/* =========================
+   QURAN 16 SHORTCUT READY
+========================= */
+function isQuran16ShortcutReady(name){
+  return [
+    "Surah Mulk",
+    "Surah Sajdah",
+    "Surah Yaseen",
+    "Surah Rehman",
+    "Surah Taghabun",
+    "Surah Waqiya",
+    "Surah Ikhlas",
+    "Surah Ad Duha to Surah Al Nas"
+  ].includes(name);
+}
+
+/* =========================
+   OPEN TRACKER QURAN 16 SHORTCUT
+========================= */
+function openTrackerQuran16Shortcut(name){
+
+  let quran16SurahPageMap = {
+    "Surah Sajdah":373,
+    "Surah Yaseen":396,
+    "Surah Rehman":478,
+    "Surah Waqiya":481,
+    "Surah Taghabun":502,
+    "Surah Mulk":508,
+    "Surah Ad Duha to Surah Al Nas":541,
+    "Surah Ikhlas":547
+  };
+
+  let page = quran16SurahPageMap[name];
+
+  if(!page){
+    showToast("16 Line shortcut could not open");
+    return;
+  }
+
+  localStorage.setItem("ibadahFolderReturnPage", "tracker");
+  window.location.href = "../16linequranpages/?page=" + page + "&from=tracker";
+}
+
+/* =========================
+   HANDLE TASK CLICK
+========================= */
+function handleTaskClick(name){
+
+  let file = String(name).replaceAll(" ", "-") + ".pdf";
+
+  /*
+    This keeps the PDF button simple in the separate tracker folder.
+    If the PDF file is in the main app root, this will open it.
+    If that Surah is only an old HTML block inside main index, we will move those pages later.
+  */
+  window.location.href = "../" + file;
+}
+
+/* =========================
+   GO TO MAIN PAGE
+========================= */
+function goToMainPage(pageName){
+
+  localStorage.setItem("ibadahFolderReturnPage", pageName || "tracker");
+  window.location.href = "../";
+}
+
+/* =========================
+   SHOW TOAST
+========================= */
+function showToast(message){
+
+  let toast = document.getElementById("toast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.trackerToastTimer);
+
+  window.trackerToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 1800);
+}
+
+/* =========================
+   ESCAPE HTML
+========================= */
+function escapeHtml(text){
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/* =========================
+   ESCAPE JS
+========================= */
+function escapeJs(text){
+  return String(text || "")
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\'");
+}
+
+/* =========================
+   START TRACKER PAGE
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+  setDate(islamicToday());
+});
+</script>
+
+</body>
+</html>
