@@ -427,44 +427,7 @@ body{
   box-shadow:0 10px 28px rgba(0,0,0,0.20);
 }
 
-/* =========================
-   SIMPLE BOTTOM NAV
-========================= */
-#bottomNav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:84px;
-  padding-bottom:12px;
-  background:rgba(255,255,255,0.96);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  border-top:1px solid rgba(0,0,0,0.08);
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  z-index:8000;
-  box-shadow:0 -5px 18px rgba(0,0,0,0.08);
-}
 
-.navItem{
-  flex:1;
-  text-align:center;
-  font-size:12px;
-  font-weight:850;
-  color:#777;
-  cursor:pointer;
-}
-
-.navItem.active{
-  color:#007aff;
-}
-
-.navIcon{
-  font-size:22px;
-  margin-bottom:3px;
-}
 
 /* =========================
    SMALL PHONES
@@ -573,35 +536,7 @@ body{
 ========================= -->
 <div id="toast"></div>
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-<div id="bottomNav">
-  <div class="navItem" onclick="goToMainPage('home')">
-    <div class="navIcon">🏠</div>
-    Home
-  </div>
 
-  <div class="navItem active">
-    <div class="navIcon">✅</div>
-    Tracker
-  </div>
-
-  <div class="navItem" onclick="goToMainPage('salah')">
-    <div class="navIcon">🕌</div>
-    Salah
-  </div>
-
-  <div class="navItem" onclick="goToMainPage('quran')">
-    <div class="navIcon">📖</div>
-    Quran
-  </div>
-
-  <div class="navItem" onclick="goToMainPage('more')">
-    <div class="navIcon">☰</div>
-    More
-  </div>
-</div>
 
 <script>
 /* =========================
