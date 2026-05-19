@@ -53,10 +53,13 @@ button{
 .readerPage{
   display:none;
   position:fixed;
-  inset:0;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
   width:100%;
   height:100%;
-  background:#000;
+  background:#d9d0c2;
   z-index:1000;
   overflow:hidden;
 }
@@ -238,27 +241,25 @@ button{
 }
 
 /* =========================
-   READER TOP BAR
+   16 LINE READING TOP BAR - OLD MAIN INDEX STYLE
 ========================= */
 .readerTopBar{
   position:absolute;
-  top:-74px;
+  top:-70px;
   left:0;
   right:0;
-  height:74px;
+  height:62px;
+  background:rgba(248,248,248,0.96);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,0,0,0.07);
   display:flex;
-  align-items:flex-end;
+  align-items:center;
   justify-content:space-between;
-  padding:0 16px 12px 16px;
-  background:rgba(20,20,20,0.92);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  padding:0 14px;
   z-index:20;
-  transition:top 0.22s ease;
-}
-
-.readerTopBar.show{
-  top:0;
+  transition:top 0.28s ease;
+  box-sizing:border-box;
 }
 
 .readerBtn{
@@ -266,23 +267,53 @@ button{
   height:42px;
   border:none;
   border-radius:50%;
-  background:rgba(255,255,255,0.14);
-  color:white;
+  background:#ffffff;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
   font-size:20px;
-  font-weight:800;
+  cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
+  color:#111;
+  flex-shrink:0;
+}
+
+.readerTitleWrap{
+  flex:1;
+  text-align:center;
+  min-width:0;
+  padding:0 10px;
+}
+
+.readerTitleText{
+  font-size:18px;
+  font-weight:800;
+  color:#111;
+  letter-spacing:-0.2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .readerMeta{
-  flex:1;
-  color:white;
-  text-align:center;
-  font-size:15px;
-  font-weight:800;
-  opacity:0.92;
+  font-size:12px;
+  line-height:1.4;
+  color:#666;
+  margin-top:2px;
+}
+
+.readerContent{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  transition:top 0.28s ease;
+  background:#d9d0c2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
 
 /* =========================
@@ -297,14 +328,14 @@ button{
   padding:0;
   overflow:hidden;
   touch-action:pan-y;
-  background:#000;
+  background:#f7f1e4;
 }
 
 .quranFlipTrack{
   position:relative;
   width:100%;
   height:100%;
-  background:#000;
+  background:#f7f1e4;
 }
 
 .quranFlipSheet{
@@ -315,20 +346,20 @@ button{
   transform:translateX(0%);
   transition:transform 0.22s ease;
   will-change:transform;
-  background:#000;
+  background:#f7f1e4;
 }
 
 .quranFlipSheet img,
 .quranFlipUnderPage img{
   width:100%;
   height:100%;
-  object-fit:contain;
-  object-position:center center;
+  object-fit:fill;
+  object-position:center top;
   display:block;
   user-select:none;
   -webkit-user-drag:none;
   pointer-events:none;
-  background:#000;
+  background:#f7f1e4;
 }
 
 .quranFlipShadow{
@@ -568,24 +599,102 @@ button{
 
 <!-- =========================
      16 LINE QURAN READING PAGE
+     Old main index reader style copied into folder page
 ========================= -->
 <div id="quran16ReadingPage" class="readerPage" onclick="handleQuran16ReadingPageTap(event)">
+
+  <!-- =========================
+       16 LINE READING TOP BAR
+  ========================= -->
   <div id="quran16ReadingTopBar" class="readerTopBar">
+
+    <!-- Close 16 Line Reading Button -->
     <button id="quran16ReadingBackBtn" class="readerBtn" onclick="event.stopPropagation();closeQuran16ReadingPage()">←</button>
-    <div id="quran16ReadingMeta" class="readerMeta">Page 1</div>
+
+    <div class="readerTitleWrap">
+      <div class="readerTitleText">16 Line Quran</div>
+      <div id="quran16ReadingMeta" class="readerMeta">Page 1</div>
+    </div>
+
+    <!-- 16 LINE READING BOOKMARK BUTTON -->
     <button id="quran16ReadingBookmarkBtn" class="readerBtn" onclick="event.stopPropagation();openQuran16BookmarkPopup()">🔖</button>
+
   </div>
 
-  <div id="quran16FlipStage" class="quranFlipStage">
-    <div id="quran16FlipUnderPage" class="quranFlipUnderPage">
-      <img id="quran16UnderImage" src="" alt="Next Quran page">
+  <!-- =========================
+       16 LINE READING CONTENT
+  ========================= -->
+  <div id="quran16ReadingContent" class="readerContent">
+
+    <!-- =========================
+         16 LINE PAGE VIEWER
+    ========================= -->
+    <div style="
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    background:#d9d0c2;
+    overflow:hidden;
+    ">
+
+      <!-- =========================
+           QURAN 16 FLIP STAGE
+      ========================= -->
+      <div class="quranFlipStage" id="quran16FlipStage" style="
+      width:100%;
+      height:100%;
+      background:#f7f1e4;
+      ">
+
+        <div class="quranFlipTrack" style="
+        width:100%;
+        height:100%;
+        ">
+
+          <!-- UNDER PAGE -->
+          <div class="quranFlipUnderPage" id="quran16FlipUnderPage">
+            <img id="quran16UnderImage" src="" alt="Next Quran page" style="
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:fill;
+            object-position:center top;
+            background:#f7f1e4;
+            ">
+          </div>
+
+          <!-- CURRENT PAGE -->
+          <div class="quranFlipSheet" id="quran16FlipSheet">
+
+            <!-- 16 Line Quran Page Image -->
+            <img id="quran16PageImage" src="" alt="16 Line Quran page" style="
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:fill;
+            object-position:center top;
+            user-select:none;
+            -webkit-user-select:none;
+            -webkit-user-drag:none;
+            pointer-events:none;
+            background:#f7f1e4;
+            ">
+
+            <div class="quranFlipShadow"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div id="quran16FlipSheet" class="quranFlipSheet">
-      <img id="quran16PageImage" src="" alt="16 Line Quran page">
-      <div class="quranFlipShadow"></div>
-    </div>
   </div>
+
 </div>
 
 <!-- =========================
@@ -997,31 +1106,44 @@ function closeQuran16ReadingPage(){
 // HANDLE 16 LINE READING PAGE TAP
 // =========================
 function handleQuran16ReadingPageTap(event){
+
   let target = event.target;
   let topBar = document.getElementById("quran16ReadingTopBar");
+  let content = document.getElementById("quran16ReadingContent");
 
-  if(!topBar) return;
+  if(!topBar || !content) return;
 
-  if(target && (
-    target.id === "quran16ReadingBackBtn" ||
-    target.id === "quran16ReadingBookmarkBtn" ||
-    (target.closest && target.closest("#quran16ReadingBackBtn")) ||
-    (target.closest && target.closest("#quran16ReadingBookmarkBtn"))
-  )){
+  if(
+    target &&
+    (
+      target.id === "quran16ReadingBackBtn" ||
+      target.id === "quran16ReadingBookmarkBtn" ||
+      (target.closest && target.closest("#quran16ReadingBackBtn")) ||
+      (target.closest && target.closest("#quran16ReadingBookmarkBtn"))
+    )
+  ){
     return;
   }
 
-  topBar.classList.toggle("show");
+  if(topBar.style.top === "0px"){
+    topBar.style.top = "-70px";
+    content.style.top = "0";
+  }else{
+    topBar.style.top = "0";
+    content.style.top = "62px";
+  }
 }
 
 // =========================
 // RESET 16 LINE READING TOP BAR
 // =========================
 function resetQuran16ReadingTopBar(){
+
   let topBar = document.getElementById("quran16ReadingTopBar");
-  if(topBar){
-    topBar.classList.remove("show");
-  }
+  let content = document.getElementById("quran16ReadingContent");
+
+  if(topBar) topBar.style.top = "-70px";
+  if(content) content.style.top = "0";
 }
 
 // =========================
