@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     HOME FOLDER PAGE
+     File: home/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>Ibadah Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+/* =========================
+   HOME PAGE GLOBAL STYLE
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+}
+
+body{
+  padding:0 0 112px 0;
+  overflow-x:hidden;
+}
+
+/* =========================
+   HOME SCROLL PAGE
+========================= */
+.homePageWrap{
+  width:100%;
+  min-height:100vh;
+  background:#e9e9ee;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* =========================
+   HOME TOP WALLPAPER SECTION
+========================= */
+.homeHero{
+  position:relative;
+  width:100%;
+  height:34vh;
+  min-height:255px;
+  max-height:330px;
+  background:
+    linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)),
+    url("../homewallpaper.jpg") center/cover no-repeat;
+  padding:16px 4% 22px 4%;
+  color:white;
+  overflow:hidden;
+}
+
+.homeDateBox{
+  position:absolute;
+  top:16px;
+  right:4%;
+  max-width:58%;
+  text-align:right;
+  color:white;
+}
+
+#homeLocationName{
+  font-size:15px;
+  font-weight:850;
+  line-height:1.2;
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-shadow:0 3px 10px rgba(0,0,0,0.35);
+}
+
+#homeIslamicDate,
+#homeNormalDate{
+  font-size:12px;
+  font-weight:650;
+  opacity:0.96;
+  line-height:1.35;
+  text-shadow:0 3px 10px rgba(0,0,0,0.32);
+}
+
+.homeBismillah{
+  position:absolute;
+  left:50%;
+  top:76px;
+  transform:translateX(-50%);
+  font-size:18px;
+  font-weight:500;
+  text-align:center;
+  color:rgba(255,255,255,0.72);
+  text-shadow:0 1px 4px rgba(0,0,0,0.16);
+  letter-spacing:0.4px;
+  white-space:nowrap;
+  pointer-events:none;
+  opacity:0.95;
+}
+
+.homeSalahRow{
+  position:absolute;
+  left:4%;
+  right:4%;
+  bottom:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:10px;
+}
+
+.homeNextLabel{
+  font-size:15px;
+  font-weight:850;
+  color:rgba(255,255,255,0.96);
+  margin-bottom:4px;
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  text-shadow:0 4px 12px rgba(0,0,0,0.28);
+}
+
+#homeNextSalahTime{
+  font-size:34px;
+  font-weight:950;
+  color:white;
+  line-height:1.1;
+  text-shadow:
+    0 1px 2px rgba(0,0,0,1),
+    0 -1px 2px rgba(0,0,0,1),
+    1px 0 2px rgba(0,0,0,1),
+    -1px 0 2px rgba(0,0,0,1),
+    0 6px 18px rgba(0,0,0,0.45);
+}
+
+.countdownCard{
+  min-width:38%;
+  padding:13px 12px;
+  border-radius:24px;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.28);
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.16);
+}
+
+.countdownLabel{
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  color:rgba(255,255,255,0.85);
+  margin-bottom:5px;
+}
+
+#homeCountdown{
+  font-size:22px;
+  font-weight:950;
+  color:white;
+  letter-spacing:-0.4px;
+  text-shadow:0 3px 10px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   HOME CONTENT
+========================= */
+.homeContent{
+  position:relative;
+  margin-top:-18px;
+  padding:0 4% 24px 4%;
+  z-index:2;
+}
+
+.iosCard{
+  width:100%;
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-radius:28px;
+  padding:18px 5%;
+  margin-bottom:16px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.09);
+  border:1px solid rgba(255,255,255,0.62);
+}
+
+.sectionTitle{
+  font-size:22px;
+  font-weight:950;
+  letter-spacing:-0.5px;
+  margin-bottom:14px;
+}
+
+.shortcutGrid{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+}
+
+.shortcutCard{
+  border:none;
+  background:white;
+  border-radius:24px;
+  padding:14px 6px 12px 6px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 7px 18px rgba(0,0,0,0.07);
+  min-height:92px;
+}
+
+.shortcutCard:active{
+  transform:scale(0.96);
+}
+
+.shortcutCard img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 7px auto;
+}
+
+.shortcutCard span{
+  display:block;
+  font-size:12px;
+  font-weight:850;
+  color:#111;
+  line-height:1.15;
+}
+
+.ayahArabic{
+  font-size:26px;
+  line-height:1.8;
+  direction:rtl;
+  text-align:right;
+  font-weight:650;
+  color:#111;
+  margin-bottom:14px;
+  font-family:"Amiri","Noto Naskh Arabic",serif;
+}
+
+.ayahUrdu{
+  font-size:17px;
+  line-height:1.7;
+  direction:rtl;
+  text-align:right;
+  color:#333;
+  margin-bottom:14px;
+  font-family:"Noto Naskh Arabic","Amiri",serif;
+}
+
+.ayahBottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid rgba(0,0,0,0.08);
+  padding-top:12px;
+}
+
+#quranAyatReference{
+  font-size:14px;
+  font-weight:850;
+  color:#111;
+}
+
+#quranAyatStatus{
+  font-size:12px;
+  font-weight:850;
+  color:#666;
+  background:#f2f2f7;
+  padding:7px 10px;
+  border-radius:999px;
+}
+
+/* =========================
+   HOME MENU HANDLE
+========================= */
+#homeMenuHandle{
+  position:fixed;
+  top:18px;
+  left:0;
+  width:34px;
+  height:96px;
+  background:rgba(255,255,255,0.70);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-top-right-radius:18px;
+  border-bottom-right-radius:18px;
+  border:1px solid rgba(255,255,255,0.55);
+  box-shadow:0 6px 18px rgba(0,0,0,0.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  cursor:pointer;
+}
+
+#homeMenuHandle span{
+  color:#3a3a3c;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:1.5px;
+  line-height:1.15;
+  text-align:center;
+  display:block;
+}
+
+#homeMenuOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  z-index:9997;
+}
+
+#homeSideMenu{
+  position:fixed;
+  top:0;
+  left:-280px;
+  width:260px;
+  height:100%;
+  background:rgba(233,233,238,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:10px 0 30px rgba(0,0,0,0.16);
+  z-index:9998;
+  padding:108px 18px 20px 18px;
+  transition:left 0.28s ease;
+  box-sizing:border-box;
+  border-top-right-radius:28px;
+  border-bottom-right-radius:28px;
+  border-right:1px solid rgba(255,255,255,0.55);
+}
+
+.menuTitle{
+  font-size:24px;
+  font-weight:850;
+  color:#111;
+  margin-bottom:22px;
+  text-align:center;
+}
+
+.menuCard{
+  width:100%;
+  border:none;
+  background:rgba(255,255,255,0.82);
+  padding:16px 18px;
+  border-radius:20px;
+  font-size:18px;
+  font-weight:850;
+  color:#111;
+  margin-bottom:14px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.08);
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.55);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+}
+
+.menuCard img{
+  width:30px;
+  height:30px;
+  display:block;
+  flex-shrink:0;
+  object-fit:contain;
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+@media(max-width:390px){
+  .shortcutGrid{
+    gap:8px;
+  }
+
+  .shortcutCard{
+    border-radius:22px;
+    padding:12px 4px 10px 4px;
+  }
+
+  .shortcutCard img{
+    width:44px;
+    height:44px;
+  }
+
+  .shortcutCard span{
+    font-size:11px;
+  }
+
+  #homeNextSalahTime{
+    font-size:31px;
+  }
+
+  #homeCountdown{
+    font-size:20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HOME MENU HANDLE
+========================= -->
+<div id="homeMenuOverlay" onclick="closeHomeSideMenu()"></div>
+
+<div id="homeMenuHandle" onclick="toggleHomeSideMenu()">
+  <span>M<br>E<br>N<br>U</span>
+</div>
+
+<div id="homeSideMenu">
+  <div class="menuTitle">Menu</div>
+
+  <button class="menuCard" onclick="goHomeMainPage()">
+    <img src="../Images/Icons/home.png" alt="">
+    <span>Main Page</span>
+  </button>
+
+  <button class="menuCard" onclick="refreshHomeApp()">
+    <img src="../Images/Icons/refresh.png" alt="">
+    <span>Refresh App</span>
+  </button>
+
+  <button class="menuCard" onclick="openHomeAppSettings()">
+    <img src="../Images/Icons/settings.png" alt="">
+    <span>App Settings</span>
+  </button>
+
+  <button class="menuCard" onclick="goHomeMorePage()">
+    <img src="../Images/Icons/More.png" alt="">
+    <span>More</span>
+  </button>
+</div>
+
+<!-- =========================
+     HOME PAGE CONTENT
+========================= -->
+<div class="homePageWrap">
+
+  <!-- =========================
+       HOME TOP WALLPAPER SECTION
+  ========================= -->
+  <div class="homeHero">
+
+    <div class="homeDateBox">
+      <div id="homeLocationName">Loading...</div>
+      <div id="homeIslamicDate">Islamic date</div>
+      <div id="homeNormalDate">Normal date</div>
+    </div>
+
+    <div class="homeBismillah">
+      بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+    </div>
+
+    <div class="homeSalahRow">
+      <div>
+        <div id="homeNextSalahName" class="homeNextLabel">Next Salah</div>
+        <div id="homeNextSalahTime">--:--</div>
+      </div>
+
+      <div class="countdownCard">
+        <div class="countdownLabel">Remaining</div>
+        <div id="homeCountdown">00:00:00</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="homeContent">
+
+    <!-- =========================
+         HOME SHORTCUTS CARD
+    ========================= -->
+    <div class="iosCard">
+      <div class="sectionTitle">Shortcuts</div>
+
+      <div class="shortcutGrid">
+
+        <button class="shortcutCard" onclick="openHomeQuran()">
+          <img src="../Images/Icons/quran.png" alt="">
+          <span>Quran</span>
+        </button>
+
+        <button class="shortcutCard" onclick="openHomeTasbih()">
+          <img src="../Images/Icons/tasbih.png" alt="">
+          <span>Tasbih</span>
+        </button>
+
+        <button class="shortcutCard" onclick="openHomeDua()">
+          <img src="../Images/Icons/dua.png" alt="">
+          <span>Dua</span>
+        </button>
+
+        <button class="shortcutCard" onclick="openHomeAzkar()">
+          <img src="../Images/Icons/Dailydhikar.png" alt="">
+          <span>Azkar</span>
+        </button>
+
+        <button class="shortcutCard" onclick="openHomeQaza()">
+          <img src="../Images/Icons/qazatracker-.png" alt="">
+          <span>Qaza</span>
+        </button>
+
+        <button class="shortcutCard" onclick="openHomeQibla()">
+          <img src="../Images/Icons/qibla.png" alt="">
+          <span>Qibla</span>
+        </button>
+
+        <button class="shortcutCard" onclick="goHomeSalah()">
+          <img src="../Images/Icons/Salah.png" alt="">
+          <span>Salah</span>
+        </button>
+
+        <button class="shortcutCard" onclick="goHomeTracker()">
+          <img src="../Images/Icons/Tracker.png" alt="">
+          <span>Tracker</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- =========================
+         QURAN AYAT OF THE DAY CARD
+    ========================= -->
+    <div class="iosCard">
+      <div class="sectionTitle">Quran Ayat of the Day</div>
+
+      <div id="quranAyatArabic" class="ayahArabic">
+        Loading Quran Ayat...
+      </div>
+
+      <div id="quranAyatUrdu" class="ayahUrdu">
+        قرآن آیت لوڈ ہو رہی ہے...
+      </div>
+
+      <div class="ayahBottom">
+        <div id="quranAyatReference">Loading...</div>
+        <div id="quranAyatStatus">Online</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========================
+     HOME PAGE SCRIPT
+========================= -->
+<script>
+// =========================
+// HOME MENU HANDLE FUNCTIONS
+// Full function names:
+// toggleHomeSideMenu()
+// openHomeSideMenu()
+// closeHomeSideMenu()
+// =========================
+let homeSideMenuOpen = false;
+
+function openHomeSideMenu(){
+  let overlay = document.getElementById("homeMenuOverlay");
+  let menu = document.getElementById("homeSideMenu");
+
+  if(overlay) overlay.style.display = "block";
+  if(menu) menu.style.left = "0";
+
+  homeSideMenuOpen = true;
+}
+
+function closeHomeSideMenu(){
+  let overlay = document.getElementById("homeMenuOverlay");
+  let menu = document.getElementById("homeSideMenu");
+
+  if(overlay) overlay.style.display = "none";
+  if(menu) menu.style.left = "-280px";
+
+  homeSideMenuOpen = false;
+}
+
+function toggleHomeSideMenu(){
+  if(homeSideMenuOpen){
+    closeHomeSideMenu();
+  }else{
+    openHomeSideMenu();
+  }
+}
+
+// =========================
+// HOME MENU ACTIONS
+// Full function names:
+// goHomeMainPage()
+// refreshHomeApp()
+// openHomeAppSettings()
+// goHomeMorePage()
+// =========================
+function goHomeMainPage(){
+  closeHomeSideMenu();
+  window.location.href = "../";
+}
+
+function refreshHomeApp(){
+  closeHomeSideMenu();
+  window.location.href = "./?v=" + Date.now();
+}
+
+function openHomeAppSettings(){
+  closeHomeSideMenu();
+  localStorage.setItem("ibadahOpenAppSettings", "yes");
+  window.location.href = "../";
+}
+
+function goHomeMorePage(){
+  closeHomeSideMenu();
+  window.location.href = "../more/";
+}
+
+// =========================
+// HOME SHORTCUT ACTIONS
+// =========================
+function openHomeQuran(){
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+  window.location.href = "../";
+}
+
+function openHomeTasbih(){
+  window.location.href = "../tasbih/?from=home";
+}
+
+function openHomeDua(){
+  window.location.href = "../duapage/?from=home&v=" + Date.now();
+}
+
+function openHomeAzkar(){
+  window.location.href = "../dailyazkar/?from=home&v=" + Date.now();
+}
+
+function openHomeQaza(){
+  localStorage.setItem("qazaReturnPage", "home");
+  window.location.href = "../qazatracker/";
+}
+
+function openHomeQibla(){
+  window.location.href = "../qibla/";
+}
+
+function goHomeSalah(){
+  window.location.href = "../salah/";
+}
+
+function goHomeTracker(){
+  window.location.href = "../tracker/";
+}
+
+// =========================
+// UPDATE HOME PAGE SALAH SUMMARY
+// Full function name: updateHomePageSalahSummary()
+// =========================
+async function updateHomePageSalahSummary(){
+
+  let locationEl = document.getElementById("homeLocationName");
+  let islamicEl = document.getElementById("homeIslamicDate");
+  let normalEl = document.getElementById("homeNormalDate");
+  let nextNameEl = document.getElementById("homeNextSalahName");
+  let nextTimeEl = document.getElementById("homeNextSalahTime");
+  let countdownEl = document.getElementById("homeCountdown");
+
+  if(!locationEl || !islamicEl || !normalEl || !nextNameEl || !nextTimeEl || !countdownEl) return;
+
+  let now = new Date();
+
+  normalEl.innerText = now.toLocaleDateString("en-US", {
+    weekday:"long",
+    month:"short",
+    day:"numeric",
+    year:"numeric"
+  });
+
+  islamicEl.innerText = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  }).format(now);
+
+  locationEl.innerText = "Loading...";
+  nextNameEl.innerText = "Next Salah";
+  nextTimeEl.innerText = "--:--";
+  countdownEl.innerText = "00:00:00";
+
+  try{
+    let loc = await loadHomeLocationData();
+    locationEl.innerText = loc.city || "My Location";
+
+    let liveData = await loadHomeSalahTimes(now, loc.latitude, loc.longitude);
+
+    let salahList = [
+      {name:"Fajr", time: liveData.fajr},
+      {name:"Dhuhr", time: liveData.dhuhr},
+      {name:"Asr", time: liveData.asr},
+      {name:"Maghrib", time: liveData.maghrib},
+      {name:"Isha", time: liveData.isha}
+    ];
+
+    function convertTimeToDate(timeText){
+      if(!timeText || timeText === "--:--") return null;
+
+      let parts = String(timeText).trim().split(" ");
+      if(parts.length < 2) return null;
+
+      let hm = parts[0].split(":");
+      if(hm.length < 2) return null;
+
+      let hour = parseInt(hm[0], 10);
+      let minute = parseInt(hm[1], 10);
+      let ampm = parts[1].toUpperCase();
+
+      if(ampm === "PM" && hour !== 12) hour += 12;
+      if(ampm === "AM" && hour === 12) hour = 0;
+
+      let d = new Date();
+      d.setHours(hour, minute, 0, 0);
+      return d;
+    }
+
+    let nextSalah = null;
+
+    for(let i = 0; i < salahList.length; i++){
+      let salahTime = convertTimeToDate(salahList[i].time);
+
+      if(salahTime && salahTime > now){
+        nextSalah = {
+          name:salahList[i].name,
+          time:salahList[i].time,
+          dateObj:salahTime
+        };
+        break;
+      }
+    }
+
+    if(!nextSalah){
+      let tomorrowFajr = convertTimeToDate(liveData.fajr);
+
+      if(tomorrowFajr){
+        tomorrowFajr.setDate(tomorrowFajr.getDate() + 1);
+        nextSalah = {
+          name:"Fajr",
+          time:liveData.fajr,
+          dateObj:tomorrowFajr
+        };
+      }
+    }
+
+    if(nextSalah){
+      nextNameEl.innerText = nextSalah.name;
+      nextTimeEl.innerText = nextSalah.time;
+
+      clearInterval(window.homeCountdownTimer);
+
+      function updateCountdown(){
+        let diff = nextSalah.dateObj.getTime() - new Date().getTime();
+
+        if(diff < 0){
+          countdownEl.innerText = "00:00:00";
+          return;
+        }
+
+        let hours = Math.floor(diff / 3600000);
+        let minutes = Math.floor((diff % 3600000) / 60000);
+        let seconds = Math.floor((diff % 60000) / 1000);
+
+        countdownEl.innerText =
+          String(hours).padStart(2,"0") + ":" +
+          String(minutes).padStart(2,"0") + ":" +
+          String(seconds).padStart(2,"0");
+      }
+
+      updateCountdown();
+      window.homeCountdownTimer = setInterval(updateCountdown, 1000);
+    }
+  }catch(error){
+    locationEl.innerText = "Location unavailable";
+    nextNameEl.innerText = "Next Salah";
+    nextTimeEl.innerText = "--:--";
+    countdownEl.innerText = "00:00:00";
+  }
+}
+
+// =========================
+// LOAD HOME LOCATION DATA
+// Full function name: loadHomeLocationData()
+// =========================
+function loadHomeLocationData(){
+
+  return new Promise(function(resolve, reject){
+
+    if(!navigator.geolocation){
+      reject(new Error("Geolocation unavailable"));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async function(position){
+
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+        let city = "My Location";
+
+        try{
+          let geoUrl = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lon);
+          let response = await fetch(geoUrl);
+          let data = await response.json();
+
+          if(data && data.address){
+            city =
+              data.address.city ||
+              data.address.town ||
+              data.address.village ||
+              data.address.hamlet ||
+              data.address.county ||
+              "My Location";
+          }
+        }catch(error){
+          city = "My Location";
+        }
+
+        resolve({
+          city:city,
+          latitude:lat,
+          longitude:lon
+        });
+      },
+      function(){
+        reject(new Error("Location blocked"));
+      },
+      {
+        enableHighAccuracy:true,
+        timeout:12000,
+        maximumAge:300000
+      }
+    );
+
+  });
+}
+
+// =========================
+// LOAD HOME SALAH TIMES
+// Full function name: loadHomeSalahTimes()
+// =========================
+async function loadHomeSalahTimes(date, latitude, longitude){
+
+  let day = String(date.getDate()).padStart(2, "0");
+  let month = String(date.getMonth() + 1).padStart(2, "0");
+  let year = date.getFullYear();
+
+  let url =
+    "https://api.aladhan.com/v1/timings/" + day + "-" + month + "-" + year +
+    "?latitude=" + encodeURIComponent(latitude) +
+    "&longitude=" + encodeURIComponent(longitude) +
+    "&method=2";
+
+  let response = await fetch(url);
+  let data = await response.json();
+
+  if(!data || !data.data || !data.data.timings){
+    throw new Error("Salah times failed");
+  }
+
+  let timings = data.data.timings;
+
+  return {
+    fajr: to12Hour(cleanTime(timings.Fajr)),
+    dhuhr: to12Hour(cleanTime(timings.Dhuhr)),
+    asr: to12Hour(cleanTime(timings.Asr)),
+    maghrib: to12Hour(cleanTime(timings.Maghrib)),
+    isha: to12Hour(cleanTime(timings.Isha))
+  };
+}
+
+// =========================
+// CLEAN TIME
+// Full function name: cleanTime()
+// =========================
+function cleanTime(value){
+  return String(value || "").replace(/\s*\(.+?\)\s*/g, "").trim();
+}
+
+// =========================
+// TO 12 HOUR
+// Full function name: to12Hour()
+// =========================
+function to12Hour(time24){
+
+  let parts = String(time24 || "").split(":");
+  if(parts.length < 2) return "--:--";
+
+  let hour = parseInt(parts[0], 10);
+  let minute = parts[1];
+
+  let ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12;
+  if(hour === 0) hour = 12;
+
+  return hour + ":" + minute + " " + ampm;
+}
+
+// =========================
+// LOAD QURAN AYAT OF THE DAY
+// Full function name: loadQuranAyatOfTheDay()
+// =========================
+async function loadQuranAyatOfTheDay(){
+
+  let arabicBox = document.getElementById("quranAyatArabic");
+  let urduBox = document.getElementById("quranAyatUrdu");
+  let refBox = document.getElementById("quranAyatReference");
+  let statusBox = document.getElementById("quranAyatStatus");
+
+  if(!arabicBox || !urduBox || !refBox || !statusBox) return;
+
+  let today = new Date();
+  let start = new Date(today.getFullYear(), 0, 0);
+  let diff = today - start;
+  let oneDay = 1000 * 60 * 60 * 24;
+  let dayNumber = Math.floor(diff / oneDay);
+  let ayahNumber = (dayNumber % 6236) + 1;
+
+  let savedAyah = localStorage.getItem("quranAyatOfTheDaySaved");
+
+  try{
+    statusBox.innerText = "Online";
+
+    let arabicUrl = "https://api.alquran.cloud/v1/ayah/" + ayahNumber + "/quran-uthmani";
+    let urduUrl = "https://api.alquran.cloud/v1/ayah/" + ayahNumber + "/ur.jalandhry";
+
+    let arabicResponse = await fetch(arabicUrl);
+    let urduResponse = await fetch(urduUrl);
+
+    if(!arabicResponse.ok || !urduResponse.ok){
+      throw new Error("Ayah loading failed");
+    }
+
+    let arabicData = await arabicResponse.json();
+    let urduData = await urduResponse.json();
+
+    let arabicAyah = arabicData.data.text;
+    let urduAyah = urduData.data.text;
+    let surahEnglish = arabicData.data.surah.englishName;
+    let surahNumber = arabicData.data.surah.number;
+    let ayahInSurah = arabicData.data.numberInSurah;
+
+    arabicBox.innerText = arabicAyah;
+    urduBox.innerText = urduAyah;
+    refBox.innerText = "Surah " + surahEnglish + " " + surahNumber + ":" + ayahInSurah;
+
+    let ayahToSave = {
+      arabic:arabicAyah,
+      urdu:urduAyah,
+      reference:"Surah " + surahEnglish + " " + surahNumber + ":" + ayahInSurah,
+      savedDate:today.toDateString()
+    };
+
+    localStorage.setItem("quranAyatOfTheDaySaved", JSON.stringify(ayahToSave));
+
+  }catch(error){
+
+    if(savedAyah){
+      let oldAyah = JSON.parse(savedAyah);
+
+      arabicBox.innerText = oldAyah.arabic;
+      urduBox.innerText = oldAyah.urdu;
+      refBox.innerText = oldAyah.reference;
+      statusBox.innerText = "Saved";
+    }else{
+      arabicBox.innerText = "Connect to internet once to load Quran Ayat of the Day.";
+      urduBox.innerText = "Quran Ayat of the Day لوڈ کرنے کے لیے ایک بار انٹرنیٹ سے کنیکٹ کریں۔";
+      refBox.innerText = "Offline";
+      statusBox.innerText = "Offline";
+    }
+  }
+}
+
+// =========================
+// START HOME PAGE
+// =========================
+document.addEventListener("DOMContentLoaded", function(){
+  updateHomePageSalahSummary();
+  loadQuranAyatOfTheDay();
+});
+</script>
+
+<!-- =========================
+     UNIVERSAL BOTTOM NAV SCRIPT
+     File used: shared/bottom-nav.js
+========================= -->
+<script src="../shared/bottom-nav.js"></script>
+
+<script>
+// =========================
+// START UNIVERSAL BOTTOM NAV - HOME ACTIVE
+// Full function name: createUniversalBottomNav("home")
+// =========================
+document.addEventListener("DOMContentLoaded", function(){
+  if(typeof createUniversalBottomNav === "function"){
+    createUniversalBottomNav("home");
+  }
+});
+</script>
+
+</body>
+</html>
