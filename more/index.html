@@ -99,6 +99,7 @@ body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9
 ========================= -->
 <div class="sectionTitle">App Tools</div>
 <div class="list">
+  <div class="listCard" onclick="openAppSettingsFromMore()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/settings.png" alt=""></div><div class="listText"><div class="listTitle">App Settings</div><div class="listSub">Default page, Quran downloads, and master reset</div></div></div><div class="arrow">›</div></div>
   <div class="listCard" onclick="refreshAppFromMore()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/refresh.png" alt=""></div><div class="listText"><div class="listTitle">Refresh App</div><div class="listSub">Reload app and clear old app cache safely</div></div></div><div class="arrow">›</div></div>
   <div class="listCard" onclick="openBackupPopup()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/backup.png" alt=""></div><div class="listText"><div class="listTitle">Backup & Restore</div><div class="listSub">Export or import your saved app data</div></div></div><div class="arrow">›</div></div>
   <div class="listCard" onclick="goBackToMainApp()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/home.png" alt=""></div><div class="listText"><div class="listTitle">Main App</div><div class="listSub">Return to main app screen</div></div></div><div class="arrow">›</div></div>
@@ -130,6 +131,7 @@ function openQiblaPageFromMore(){localStorage.setItem("ibadahFolderReturnPage","
 function openBooksPageFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../books/";}
 function openQuranFromMore(){localStorage.setItem("ibadahFolderReturnPage","quran");window.location.href="../";}
 function open16LineQuranFromMore(){localStorage.setItem("ibadahFolderReturnPage","more");window.location.href="../16linequranpages/";}
+function openAppSettingsFromMore(){localStorage.setItem("ibadahOpenAppSettings","yes");localStorage.setItem("appSettingsReturnPage","more");window.location.href="../";}
 async function refreshAppFromMore(){try{if("caches" in window){let names=await caches.keys();for(let name of names){let lower=String(name).toLowerCase();if(lower.includes("runtime")||lower.includes("quran")||lower.includes("mushaf")||lower.includes("surah")||lower.includes("ayat")||lower.includes("offline")||lower.includes("download")){continue;}await caches.delete(name);}}showToast("Refreshing app...");setTimeout(function(){window.location.href="./?v="+Date.now();},450);}catch(error){window.location.href="./?v="+Date.now();}}
 function openBackupPopup(){let popup=document.getElementById("backupPopup");if(popup)popup.style.display="flex";}
 function closeBackupPopup(){let popup=document.getElementById("backupPopup");if(popup)popup.style.display="none";}
