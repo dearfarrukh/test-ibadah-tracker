@@ -38,7 +38,7 @@ body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9
 .list{display:flex;flex-direction:column;gap:12px;}
 .listCard{width:100%;background:white;border-radius:26px;padding:16px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.03);}
 .listLeft{display:flex;align-items:center;gap:13px;min-width:0;}
-.listIcon{width:48px;height:48px;border-radius:18px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.listIcon{width:48px;height:48px;border-radius:18px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;}.listIcon img{width:32px;height:32px;object-fit:contain;display:block;}
 .listText{min-width:0;}.listTitle{font-size:18px;font-weight:900;color:#111;margin-bottom:3px;}.listSub{font-size:13px;font-weight:650;color:#777;line-height:1.35;}.arrow{font-size:28px;font-weight:700;color:#b0b0b8;}
 .popupOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.34);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:9000;align-items:center;justify-content:center;padding:20px;}
 .popupCard{width:100%;max-width:380px;background:linear-gradient(180deg,#ffffff,#f7f7fb);border-radius:32px;padding:26px 20px 20px 20px;box-shadow:0 20px 50px rgba(0,0,0,0.22);}
@@ -63,7 +63,7 @@ body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9
      HERO CARD
 ========================= -->
 <div class="heroCard">
-  <div class="heroIcon">☰</div>
+  <div class="heroIcon"><img src="../Images/Icons/More.png" alt="" style="width:58px;height:58px;object-fit:contain;display:block;margin:0 auto;"></div>
   <div class="heroTitle">More</div>
   <div class="heroSub">Open your Ibadah tools, Quran pages, books, backup, and app utilities.</div>
 </div>
@@ -74,11 +74,11 @@ body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9
 <div class="sectionTitle">Ibadah Tools</div>
 <div class="grid">
   <div class="moreCard" onclick="openTasbihPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/tasbih.png" alt=""></div><div class="cardTitle">Tasbih</div><div class="cardSub">Counter and dhikr</div></div>
-  <div class="moreCard" onclick="openDuaPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Dua.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>🤲</span>';">
+  <div class="moreCard" onclick="openDuaPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/dua.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>🤲</span>';">
   </div><div class="cardTitle">Dua</div><div class="cardSub">Daily duas</div></div>
-  <div class="moreCard" onclick="openDailyAzkarPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Dhikr.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>📿</span>';">
+  <div class="moreCard" onclick="openDailyAzkarPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Dailydhikar.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>📿</span>';">
   </div><div class="cardTitle">Daily Dhikr</div><div class="cardSub">Azkar and zikr</div></div>
-  <div class="moreCard" onclick="openQazaTrackerFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/Qaza.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>🧾</span>';">
+  <div class="moreCard" onclick="openQazaTrackerFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/qazatracker-.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>🧾</span>';">
   </div><div class="cardTitle">Qaza</div><div class="cardSub">Prayer tracker</div></div>
 </div>
 
@@ -87,10 +87,11 @@ body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9
 ========================= -->
 <div class="sectionTitle">Quran & Books</div>
 <div class="grid">
-  <div class="moreCard" onclick="openQuranFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/QuranTracker.png" alt=""></div><div class="cardTitle">Quran</div><div class="cardSub">Open Quran page</div></div>
-  <div class="moreCard" onclick="openQiblaPageFromMore()"><div class="cardIconWrap"><span class="emojiIcon">🧭</span></div><div class="cardTitle">Qibla</div><div class="cardSub">Direction finder</div></div>
-  <div class="moreCard" onclick="openBooksPageFromMore()"><div class="cardIconWrap"><span class="emojiIcon">📚</span></div><div class="cardTitle">Books</div><div class="cardSub">Islamic books</div></div>
-  <div class="moreCard" onclick="open16LineQuranFromMore()"><div class="cardIconWrap"><span class="emojiIcon">📘</span></div><div class="cardTitle">16 Line Quran</div><div class="cardSub">Reader page</div></div>
+  <div class="moreCard" onclick="openQuranFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/quran.png" alt=""></div><div class="cardTitle">Quran</div><div class="cardSub">Open Quran page</div></div>
+  <div class="moreCard" onclick="openQiblaPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/qibla.png" alt=""></div><div class="cardTitle">Qibla</div><div class="cardSub">Direction finder</div></div>
+  <div class="moreCard" onclick="openBooksPageFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/books.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;emojiIcon&quot;>📚</span>';">
+  </div><div class="cardTitle">Books</div><div class="cardSub">Islamic books</div></div>
+  <div class="moreCard" onclick="open16LineQuranFromMore()"><div class="cardIconWrap"><img src="../Images/Icons/quran.png" alt=""></div><div class="cardTitle">16 Line Quran</div><div class="cardSub">Reader page</div></div>
 </div>
 
 <!-- =========================
@@ -98,9 +99,9 @@ body{padding:18px 4% 112px 4%;background:linear-gradient(180deg,#f8f8fb 0%,#e9e9
 ========================= -->
 <div class="sectionTitle">App Tools</div>
 <div class="list">
-  <div class="listCard" onclick="refreshAppFromMore()"><div class="listLeft"><div class="listIcon">🔄</div><div class="listText"><div class="listTitle">Refresh App</div><div class="listSub">Reload app and clear old app cache safely</div></div></div><div class="arrow">›</div></div>
-  <div class="listCard" onclick="openBackupPopup()"><div class="listLeft"><div class="listIcon">💾</div><div class="listText"><div class="listTitle">Backup & Restore</div><div class="listSub">Export or import your saved app data</div></div></div><div class="arrow">›</div></div>
-  <div class="listCard" onclick="goBackToMainApp()"><div class="listLeft"><div class="listIcon">🏠</div><div class="listText"><div class="listTitle">Main App</div><div class="listSub">Return to main app screen</div></div></div><div class="arrow">›</div></div>
+  <div class="listCard" onclick="refreshAppFromMore()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/refresh.png" alt=""></div><div class="listText"><div class="listTitle">Refresh App</div><div class="listSub">Reload app and clear old app cache safely</div></div></div><div class="arrow">›</div></div>
+  <div class="listCard" onclick="openBackupPopup()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/backup.png" alt=""></div><div class="listText"><div class="listTitle">Backup & Restore</div><div class="listSub">Export or import your saved app data</div></div></div><div class="arrow">›</div></div>
+  <div class="listCard" onclick="goBackToMainApp()"><div class="listLeft"><div class="listIcon"><img src="../Images/Icons/home.png" alt=""></div><div class="listText"><div class="listTitle">Main App</div><div class="listSub">Return to main app screen</div></div></div><div class="arrow">›</div></div>
 </div>
 
 <!-- =========================
