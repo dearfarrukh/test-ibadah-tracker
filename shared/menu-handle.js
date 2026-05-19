@@ -9,7 +9,7 @@
 // setMainMenuHandleVisibility()
 // =========================
 
-let isSideMenuOpen = false;
+let universalSideMenuOpen = false;
 
 // =========================
 // CREATE UNIVERSAL MENU HANDLE
@@ -194,7 +194,7 @@ function openUniversalSideMenu(){
   if(overlay) overlay.style.display = "block";
   if(menu) menu.style.left = "0";
 
-  isSideMenuOpen = true;
+  let universalSideMenuOpen = false; = true;
 }
 
 // =========================
@@ -208,7 +208,7 @@ function closeUniversalSideMenu(){
   if(overlay) overlay.style.display = "none";
   if(menu) menu.style.left = "-280px";
 
-  isSideMenuOpen = false;
+  universalSideMenuOpen = false;
 }
 
 // =========================
@@ -216,7 +216,7 @@ function closeUniversalSideMenu(){
 // =========================
 function toggleUniversalSideMenu(){
 
-  if(isSideMenuOpen){
+  if(universalSideMenuOpen){
     closeUniversalSideMenu();
   }else{
     openUniversalSideMenu();
