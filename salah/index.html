@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- =========================
+     SALAH FOLDER PAGE
+     File: salah/index.html
+========================= -->
+<meta charset="UTF-8">
+<title>Salah Times</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+/* =========================
+   GLOBAL STYLE
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+  overflow:hidden;
+}
+
+body{
+  position:fixed;
+  inset:0;
+}
+
+/* =========================
+   PAGE
+========================= */
+#salahPage{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  background:linear-gradient(180deg,#f8f8fb 0%,#e9e9ee 100%);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:calc(env(safe-area-inset-top) + 12px) 4% calc(100px + env(safe-area-inset-bottom)) 4%;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+.topBar{
+  width:100%;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  margin-bottom:14px;
+}
+
+.roundBtn{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#111;
+  font-size:22px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:absolute;
+  top:6px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.10);
+  cursor:pointer;
+}
+
+.backBtn{
+  left:0;
+}
+
+.settingsBtn{
+  right:0;
+}
+
+.topTitle{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-0.4px;
+  max-width:68%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* =========================
+   CARDS
+========================= */
+.heroCard,
+.infoCard{
+  width:100%;
+  background:rgba(255,255,255,0.92);
+  border-radius:30px;
+  padding:22px 5%;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  border:1px solid rgba(255,255,255,0.75);
+  margin-bottom:14px;
+}
+
+.heroCard{
+  text-align:center;
+  padding-top:28px;
+  padding-bottom:26px;
+}
+
+.cityName{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-0.7px;
+  line-height:1.15;
+  margin-bottom:6px;
+}
+
+.cityHint{
+  font-size:14px;
+  font-weight:700;
+  color:#777;
+}
+
+.sourceLabel{
+  font-size:13px;
+  font-weight:700;
+  color:#666;
+  margin-top:8px;
+  line-height:1.4;
+}
+
+.dateCard{
+  width:100%;
+  background:white;
+  border-radius:24px;
+  padding:14px 4%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  margin-bottom:14px;
+}
+
+.dateBtn{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:#f2f2f7;
+  color:#111;
+  font-size:23px;
+  font-weight:900;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.dateTextWrap{
+  flex:1;
+  min-width:0;
+  text-align:center;
+}
+
+.dateMain{
+  font-size:17px;
+  font-weight:900;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.dateHijri{
+  margin-top:3px;
+  font-size:13px;
+  font-weight:700;
+  color:#777;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.timesTitle{
+  font-size:21px;
+  font-weight:900;
+  text-align:center;
+  margin-bottom:12px;
+}
+
+.salahRow{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+
+.salahRow:last-child{
+  border-bottom:none;
+}
+
+.salahName{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-size:18px;
+  font-weight:800;
+}
+
+.salahIcon{
+  width:34px;
+  height:34px;
+  border-radius:13px;
+  background:#f2f2f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.salahTime{
+  font-size:18px;
+  font-weight:900;
+}
+
+.actionGrid{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+
+.actionBtn{
+  border:none;
+  border-radius:22px;
+  background:white;
+  color:#111;
+  padding:17px 12px;
+  font-size:16px;
+  font-weight:900;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  cursor:pointer;
+}
+
+.primaryBtn{
+  width:100%;
+  border:none;
+  border-radius:22px;
+  background:#111;
+  color:white;
+  padding:17px;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.secondaryBtn{
+  width:100%;
+  border:none;
+  border-radius:22px;
+  background:#f2f2f7;
+  color:#111;
+  padding:16px;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* =========================
+   BOTTOM SHEET
+========================= */
+.sheetOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:8000;
+  background:rgba(0,0,0,0.30);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  align-items:flex-end;
+}
+
+.sheetOverlay.show{
+  display:flex;
+}
+
+.bottomSheet{
+  width:100%;
+  max-height:86%;
+  background:rgba(248,248,251,0.98);
+  border-radius:34px 34px 0 0;
+  box-shadow:0 -20px 45px rgba(0,0,0,0.22);
+  animation:slideUp 0.24s ease forwards;
+  overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.9);
+}
+
+@keyframes slideUp{
+  from{transform:translateY(100%);}
+  to{transform:translateY(0);}
+}
+
+.sheetTop{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:rgba(248,248,251,0.98);
+  padding:12px 4% 12px 4%;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+
+.sheetHandle{
+  width:42px;
+  height:5px;
+  background:#c9c9cf;
+  border-radius:99px;
+  margin:0 auto 12px auto;
+}
+
+.sheetTitleRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.sheetTitle{
+  font-size:22px;
+  font-weight:900;
+}
+
+.sheetClose{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:#e9e9ee;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.sheetBody{
+  max-height:calc(86vh - 88px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:16px 4% calc(env(safe-area-inset-bottom) + 24px) 4%;
+}
+
+.inputBox{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:20px;
+  background:white;
+  padding:17px 16px;
+  font-size:18px;
+  font-weight:800;
+  color:#111;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  margin-bottom:12px;
+}
+
+.sheetCard{
+  width:100%;
+  border:none;
+  border-radius:24px;
+  background:white;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-size:17px;
+  font-weight:900;
+  color:#111;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  margin-bottom:12px;
+  cursor:pointer;
+  text-align:left;
+}
+
+.sheetSub{
+  font-size:13px;
+  font-weight:700;
+  color:#666;
+  margin-top:4px;
+  line-height:1.35;
+}
+
+.settingRow{
+  background:white;
+  border-radius:24px;
+  padding:16px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  margin-bottom:12px;
+}
+
+.settingLabel{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.selectBox{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  background:#f2f2f7;
+  padding:15px;
+  font-size:17px;
+  font-weight:800;
+}
+
+.toggleRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.switch{
+  width:54px;
+  height:32px;
+  border-radius:999px;
+  background:#d1d1d6;
+  padding:3px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.switch.on{
+  background:#34c759;
+}
+
+.knob{
+  width:26px;
+  height:26px;
+  background:white;
+  border-radius:50%;
+  transition:transform 0.2s ease;
+  box-shadow:0 2px 6px rgba(0,0,0,0.18);
+}
+
+.switch.on .knob{
+  transform:translateX(22px);
+}
+
+/* =========================
+   MONTHLY TABLE
+========================= */
+.monthTable{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 8px;
+}
+
+.monthTable th{
+  font-size:12px;
+  color:#777;
+  text-align:left;
+  padding:0 8px 4px 8px;
+}
+
+.monthTable td{
+  background:white;
+  padding:10px 8px;
+  font-size:13px;
+  font-weight:800;
+}
+
+.monthTable td:first-child{
+  border-radius:14px 0 0 14px;
+}
+
+.monthTable td:last-child{
+  border-radius:0 14px 14px 0;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+#bottomNav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:82px;
+  padding:9px 4% calc(9px + env(safe-area-inset-bottom)) 4%;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-top:1px solid rgba(0,0,0,0.08);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  z-index:7000;
+}
+
+.navBtn{
+  flex:1;
+  border:none;
+  border-radius:20px;
+  background:transparent;
+  color:#666;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+}
+
+.navBtn.active{
+  background:#e9e9ee;
+  color:#111;
+}
+
+.navIcon{
+  font-size:21px;
+  line-height:1;
+}
+
+/* =========================
+   TOAST
+========================= */
+#toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:100px;
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.94);
+  color:white;
+  padding:13px 16px;
+  border-radius:18px;
+  font-size:15px;
+  font-weight:800;
+  z-index:9999;
+  max-width:88%;
+  text-align:center;
+}
+
+@media(max-width:390px){
+  .cityName{font-size:24px;}
+  .salahName{font-size:17px;}
+  .salahTime{font-size:17px;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="salahPage">
+
+  <!-- =========================
+       TOP BAR
+  ========================= -->
+  <div class="topBar">
+    <button class="roundBtn backBtn" onclick="goBackToMainApp()">←</button>
+    <div class="topTitle">Salah</div>
+    <button class="roundBtn settingsBtn" onclick="openSettingsSheet()">⚙️</button>
+  </div>
+
+  <!-- =========================
+       HERO LOCATION CARD
+  ========================= -->
+  <div class="heroCard" onclick="openLocationSheet()">
+    <div id="salahCityName" class="cityName">Loading location...</div>
+    <div class="cityHint">🔎 Tap to change location</div>
+    <div id="salahSourceLabel" class="sourceLabel">Loading times...</div>
+  </div>
+
+  <!-- =========================
+       DATE CARD
+  ========================= -->
+  <div class="dateCard">
+    <button id="salahPrevDayBtn" class="dateBtn" onclick="changeSalahDay(-1)">‹</button>
+    <div class="dateTextWrap">
+      <div id="salahSelectedDate" class="dateMain">Today</div>
+      <div id="salahSelectedHijri" class="dateHijri">Loading Hijri date...</div>
+    </div>
+    <button id="salahNextDayBtn" class="dateBtn" onclick="changeSalahDay(1)">›</button>
+  </div>
+
+  <!-- =========================
+       SALAH TIMES CARD
+  ========================= -->
+  <div class="infoCard">
+    <div class="timesTitle">Salah Times</div>
+
+    <div class="salahRow">
+      <div class="salahName"><span class="salahIcon">🌅</span>Fajr</div>
+      <div id="fajrTime" class="salahTime">--:--</div>
+    </div>
+
+    <div class="salahRow">
+      <div class="salahName"><span class="salahIcon">🌄</span>Sunrise</div>
+      <div id="sunriseTime" class="salahTime">--:--</div>
+    </div>
+
+    <div class="salahRow">
+      <div class="salahName"><span class="salahIcon">☀️</span>Dhuhr</div>
+      <div id="dhuhrTime" class="salahTime">--:--</div>
+    </div>
+
+    <div class="salahRow">
+      <div class="salahName"><span class="salahIcon">🌤️</span>Asr</div>
+      <div id="asrTime" class="salahTime">--:--</div>
+    </div>
+
+    <div class="salahRow">
+      <div class="salahName"><span class="salahIcon">🌇</span>Maghrib</div>
+      <div id="maghribTime" class="salahTime">--:--</div>
+    </div>
+
+    <div class="salahRow">
+      <div class="salahName"><span class="salahIcon">🌙</span>Isha</div>
+      <div id="ishaTime" class="salahTime">--:--</div>
+    </div>
+  </div>
+
+  <!-- =========================
+       ACTION BUTTONS
+  ========================= -->
+  <div class="actionGrid">
+    <button class="actionBtn" onclick="openMonthlySheet()">📅 Monthly</button>
+    <button class="actionBtn" onclick="reloadSalahTimes()">🔄 Refresh</button>
+  </div>
+
+</div>
+
+<!-- =========================
+     LOCATION SHEET
+========================= -->
+<div id="locationSheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'locationSheet')">
+  <div class="bottomSheet" onclick="event.stopPropagation()">
+    <div class="sheetTop">
+      <div class="sheetHandle"></div>
+      <div class="sheetTitleRow">
+        <div class="sheetTitle">Location</div>
+        <button class="sheetClose" onclick="closeLocationSheet()">×</button>
+      </div>
+    </div>
+
+    <div class="sheetBody">
+      <button class="sheetCard" onclick="useCurrentLocation()">
+        <div>
+          📍 Use Current Location
+          <div class="sheetSub">Uses your phone/browser location</div>
+        </div>
+        <span>›</span>
+      </button>
+
+      <input id="locationSearchInput" class="inputBox" placeholder="Enter city, example: Mineola, NY">
+      <button class="primaryBtn" onclick="searchEnteredLocation()">Search & Save Location</button>
+
+      <div style="height:18px;"></div>
+
+      <div style="font-size:13px;font-weight:900;color:#777;margin:0 0 10px 4px;text-transform:uppercase;">
+        Saved Locations
+      </div>
+
+      <div id="savedSalahLocationListArea"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     SETTINGS SHEET
+========================= -->
+<div id="settingsSheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'settingsSheet')">
+  <div class="bottomSheet" onclick="event.stopPropagation()">
+    <div class="sheetTop">
+      <div class="sheetHandle"></div>
+      <div class="sheetTitleRow">
+        <div class="sheetTitle">Salah Settings</div>
+        <button class="sheetClose" onclick="closeSettingsSheet()">×</button>
+      </div>
+    </div>
+
+    <div class="sheetBody">
+
+      <div class="settingRow">
+        <div class="settingLabel">Calculation Method</div>
+        <select id="calculationMethodSelect" class="selectBox" onchange="saveSettingsAndRefresh()">
+          <option value="auto">Auto Recommended</option>
+          <option value="isna">ISNA</option>
+          <option value="mwl">Muslim World League</option>
+          <option value="makkah">Umm al-Qura Makkah</option>
+          <option value="karachi">Karachi</option>
+        </select>
+      </div>
+
+      <div class="settingRow">
+        <div class="settingLabel">Asr Method</div>
+        <select id="asrMethodSelect" class="selectBox" onchange="saveSettingsAndRefresh()">
+          <option value="hanafi">Hanafi</option>
+          <option value="shafi">Shafi</option>
+        </select>
+      </div>
+
+      <div class="settingRow">
+        <div class="toggleRow">
+          <div>
+            <div class="settingLabel" style="margin-bottom:4px;">ISNA Fajr 18°</div>
+            <div class="sheetSub">Only applies when calculation method is ISNA</div>
+          </div>
+          <div id="isnaFajr18Switch" class="switch" onclick="toggleIsnaFajr18()">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="secondaryBtn" onclick="closeSettingsSheet()">Done</button>
+
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     MONTHLY SHEET
+========================= -->
+<div id="monthlySheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'monthlySheet')">
+  <div class="bottomSheet" onclick="event.stopPropagation()">
+    <div class="sheetTop">
+      <div class="sheetHandle"></div>
+      <div class="sheetTitleRow">
+        <div class="sheetTitle">Monthly Timetable</div>
+        <button class="sheetClose" onclick="closeMonthlySheet()">×</button>
+      </div>
+    </div>
+
+    <div class="sheetBody">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <select id="monthlyMonthSelect" class="selectBox"></select>
+        <select id="monthlyYearSelect" class="selectBox"></select>
+      </div>
+
+      <button class="primaryBtn" onclick="loadMonthlyTimetable()">Load Monthly Timetable</button>
+
+      <div id="monthlyStatus" class="sheetSub" style="margin:14px 4px;">Choose month and press load.</div>
+      <div id="monthlyTableWrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     BOTTOM NAV
+========================= -->
+<div id="bottomNav">
+  <button class="navBtn" onclick="goToHome()">
+    <span class="navIcon">🏠</span>
+    <span>Home</span>
+  </button>
+
+  <button class="navBtn active" onclick="goToSalah()">
+    <span class="navIcon">🕌</span>
+    <span>Salah</span>
+  </button>
+
+  <button class="navBtn" onclick="goToTracker()">
+    <span class="navIcon">✅</span>
+    <span>Tracker</span>
+  </button>
+
+  <button class="navBtn" onclick="goToMore()">
+    <span class="navIcon">☰</span>
+    <span>More</span>
+  </button>
+</div>
+
+<div id="toast">Saved</div>
+
+<script>
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+let salahDayOffset = 0;
+let salahSource = localStorage.getItem("salahLocationMode") || "current";
+let salahLocationData = {
+  lat:null,
+  lon:null,
+  city:"",
+  state:"",
+  country:""
+};
+
+let salahEnteredLocation = JSON.parse(localStorage.getItem("salahEnteredLocation") || "null") || {
+  query:"",
+  lat:null,
+  lon:null,
+  locationName:""
+};
+
+let salahLiveCache = {};
+
+/* =========================
+   START APP
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+  setupMonthlySelectors();
+  loadSettingsUI();
+  updateSelectedDateText();
+  renderSavedSalahLocationList();
+  reloadSalahTimes();
+});
+
+/* =========================
+   NAVIGATION
+========================= */
+function goBackToMainApp(){
+  localStorage.setItem("ibadahFolderReturnPage", "salah");
+  window.location.href = "../";
+}
+
+function goToHome(){
+  localStorage.setItem("ibadahFolderReturnPage", "home");
+  window.location.href = "../";
+}
+
+function goToSalah(){
+  window.location.href = "./";
+}
+
+function goToTracker(){
+  window.location.href = "../tracker/";
+}
+
+function goToMore(){
+  localStorage.setItem("ibadahFolderReturnPage", "more");
+  window.location.href = "../";
+}
+
+/* =========================
+   DATE HELPERS
+========================= */
+function getSelectedSalahDate(){
+  let d = new Date();
+  d.setDate(d.getDate() + salahDayOffset);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function formatKey(d){
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+function formatSalahApiDate(dateObj){
+  let day = String(dateObj.getDate()).padStart(2,"0");
+  let month = String(dateObj.getMonth()+1).padStart(2,"0");
+  let year = dateObj.getFullYear();
+  return day + "-" + month + "-" + year;
+}
+
+function updateSelectedDateText(){
+  let d = getSelectedSalahDate();
+  let normal = document.getElementById("salahSelectedDate");
+  let hijri = document.getElementById("salahSelectedHijri");
+
+  if(normal){
+    normal.innerText = d.toLocaleDateString("en-US", {
+      weekday:"long",
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    });
+  }
+
+  if(hijri){
+    try{
+      hijri.innerText = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }).format(d);
+    }catch(error){
+      hijri.innerText = "";
+    }
+  }
+}
+
+function changeSalahDay(amount){
+  salahDayOffset += amount;
+  updateSelectedDateText();
+  reloadSalahTimes();
+}
+
+/* =========================
+   TIME HELPERS
+========================= */
+function to12Hour(time24){
+  if(!time24) return "--:--";
+
+  let clean = String(time24).split(" ")[0];
+  let parts = clean.split(":");
+
+  if(parts.length < 2) return clean;
+
+  let hour = parseInt(parts[0], 10);
+  let minute = parts[1];
+  let ampm = hour >= 12 ? "PM" : "AM";
+
+  hour = hour % 12;
+  if(hour === 0) hour = 12;
+
+  return hour + ":" + minute + " " + ampm;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+function getAsrMethod(){
+  let m = localStorage.getItem("asrMethod");
+  if(!m){
+    localStorage.setItem("asrMethod", "hanafi");
+    return "hanafi";
+  }
+  return m;
+}
+
+function getIsnaFajr18Enabled(){
+  return localStorage.getItem("isnaFajr18") === "true";
+}
+
+function getAladhanMethodNumber(placeText){
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+
+  if(savedMethod === "isna") return 2;
+  if(savedMethod === "mwl") return 3;
+  if(savedMethod === "makkah") return 4;
+  if(savedMethod === "karachi") return 1;
+
+  let text = String(placeText || "").toLowerCase();
+
+  if(text.includes("united states") || text.includes("canada") || text.includes("usa")){
+    return 2;
+  }
+
+  if(text.includes("pakistan") || text.includes("india") || text.includes("bangladesh")){
+    return 1;
+  }
+
+  if(text.includes("saudi") || text.includes("makkah") || text.includes("mecca")){
+    return 4;
+  }
+
+  return 3;
+}
+
+function getCalculationMethodSourceLabel(placeText){
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+
+  if(savedMethod === "isna") return "ISNA";
+  if(savedMethod === "mwl") return "Muslim World League";
+  if(savedMethod === "makkah") return "Umm al-Qura";
+  if(savedMethod === "karachi") return "Karachi";
+
+  let methodNumber = getAladhanMethodNumber(placeText);
+
+  if(methodNumber === 2) return "Auto - ISNA";
+  if(methodNumber === 1) return "Auto - Karachi";
+  if(methodNumber === 4) return "Auto - Umm al-Qura";
+  return "Auto - MWL";
+}
+
+function applyIsnaFajr18Override(baseTimings, overrideTimings){
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+
+  if(savedMethod !== "isna") return baseTimings;
+  if(!getIsnaFajr18Enabled()) return baseTimings;
+  if(!overrideTimings || !overrideTimings.Fajr) return baseTimings;
+
+  return {
+    Fajr: overrideTimings.Fajr,
+    Sunrise: baseTimings.Sunrise,
+    Dhuhr: baseTimings.Dhuhr,
+    Asr: baseTimings.Asr,
+    Maghrib: baseTimings.Maghrib,
+    Isha: baseTimings.Isha
+  };
+}
+
+function loadSettingsUI(){
+  let method = localStorage.getItem("salahCalculationMethod") || "auto";
+  let asr = localStorage.getItem("asrMethod") || "hanafi";
+
+  let methodSelect = document.getElementById("calculationMethodSelect");
+  let asrSelect = document.getElementById("asrMethodSelect");
+  let fajrSwitch = document.getElementById("isnaFajr18Switch");
+
+  if(methodSelect) methodSelect.value = method;
+  if(asrSelect) asrSelect.value = asr;
+
+  if(fajrSwitch){
+    if(getIsnaFajr18Enabled()){
+      fajrSwitch.classList.add("on");
+    }else{
+      fajrSwitch.classList.remove("on");
+    }
+  }
+}
+
+function saveSettingsAndRefresh(){
+  let methodSelect = document.getElementById("calculationMethodSelect");
+  let asrSelect = document.getElementById("asrMethodSelect");
+
+  if(methodSelect){
+    localStorage.setItem("salahCalculationMethod", methodSelect.value);
+  }
+
+  if(asrSelect){
+    localStorage.setItem("asrMethod", asrSelect.value);
+  }
+
+  salahLiveCache = {};
+  reloadSalahTimes();
+}
+
+function toggleIsnaFajr18(){
+  let newValue = !getIsnaFajr18Enabled();
+  localStorage.setItem("isnaFajr18", newValue ? "true" : "false");
+  loadSettingsUI();
+  salahLiveCache = {};
+  reloadSalahTimes();
+}
+
+/* =========================
+   GEOLOCATION
+========================= */
+function getLocationPosition(){
+  return new Promise(function(resolve, reject){
+    if(!navigator.geolocation){
+      reject(new Error("Geolocation not supported"));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      function(position){
+        resolve(position);
+      },
+      function(error){
+        reject(error);
+      },
+      {
+        enableHighAccuracy:true,
+        timeout:10000,
+        maximumAge:300000
+      }
+    );
+  });
+}
+
+async function reverseGeocode(lat, lon){
+  try{
+    let geoUrl =
+      "https://nominatim.openstreetmap.org/reverse?format=jsonv2"
+      + "&lat=" + encodeURIComponent(lat)
+      + "&lon=" + encodeURIComponent(lon);
+
+    let geoRes = await fetch(geoUrl, {headers:{"Accept":"application/json"}});
+    let geoData = await geoRes.json();
+    let a = geoData.address || {};
+
+    return {
+      city: a.city || a.town || a.village || a.suburb || a.county || "My Location",
+      state: a.state || "",
+      country: a.country || ""
+    };
+  }catch(error){
+    return {city:"My Location", state:"", country:""};
+  }
+}
+
+async function loadUserLocationData(){
+  if(salahLocationData.lat !== null && salahLocationData.lon !== null){
+    return salahLocationData;
+  }
+
+  let savedLat = localStorage.getItem("userLat");
+  let savedLon = localStorage.getItem("userLon");
+
+  if(savedLat && savedLon){
+    salahLocationData.lat = Number(savedLat);
+    salahLocationData.lon = Number(savedLon);
+  }else{
+    let position = await getLocationPosition();
+    salahLocationData.lat = position.coords.latitude;
+    salahLocationData.lon = position.coords.longitude;
+    localStorage.setItem("userLat", salahLocationData.lat);
+    localStorage.setItem("userLon", salahLocationData.lon);
+  }
+
+  let place = await reverseGeocode(salahLocationData.lat, salahLocationData.lon);
+  salahLocationData.city = place.city;
+  salahLocationData.state = place.state;
+  salahLocationData.country = place.country;
+
+  return salahLocationData;
+}
+
+/* =========================
+   LOAD SALAH TIMES
+========================= */
+function setSalahLoadingState(){
+  ["fajrTime","sunriseTime","dhuhrTime","asrTime","maghribTime","ishaTime"].forEach(function(id){
+    let el = document.getElementById(id);
+    if(el) el.innerText = "--:--";
+  });
+}
+
+function applySalahDataToScreen(data){
+  let city = document.getElementById("salahCityName");
+  let source = document.getElementById("salahSourceLabel");
+
+  if(city) city.innerText = data.locationName || "Salah Times";
+  if(source) source.innerText = data.sourceLabel || "";
+
+  let map = {
+    fajrTime: data.fajr,
+    sunriseTime: data.sunrise,
+    dhuhrTime: data.dhuhr,
+    asrTime: data.asr,
+    maghribTime: data.maghrib,
+    ishaTime: data.isha
+  };
+
+  Object.keys(map).forEach(function(id){
+    let el = document.getElementById(id);
+    if(el) el.innerText = map[id] || "--:--";
+  });
+}
+
+async function fetchSalahForLocation(dateObj, locationObj){
+  let apiDate = formatSalahApiDate(dateObj);
+  let apiMethod = getAladhanMethodNumber(locationObj.country || locationObj.name || locationObj.query || "");
+  let school = getAsrMethod() === "hanafi" ? "1" : "0";
+
+  let salahUrl =
+    "https://api.aladhan.com/v1/timings/" + apiDate
+    + "?latitude=" + encodeURIComponent(locationObj.lat)
+    + "&longitude=" + encodeURIComponent(locationObj.lon)
+    + "&method=" + apiMethod
+    + "&school=" + school;
+
+  let res = await fetch(salahUrl);
+  let json = await res.json();
+
+  if(!json || !json.data || !json.data.timings){
+    throw new Error("Could not load Salah times");
+  }
+
+  let t = json.data.timings;
+
+  if(
+    (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
+    getIsnaFajr18Enabled()
+  ){
+    let overrideUrl =
+      "https://api.aladhan.com/v1/timings/" + apiDate
+      + "?latitude=" + encodeURIComponent(locationObj.lat)
+      + "&longitude=" + encodeURIComponent(locationObj.lon)
+      + "&method=13"
+      + "&school=" + school;
+
+    let overrideRes = await fetch(overrideUrl);
+    let overrideJson = await overrideRes.json();
+
+    if(overrideJson && overrideJson.data && overrideJson.data.timings){
+      t = applyIsnaFajr18Override(t, overrideJson.data.timings);
+    }
+  }
+
+  return {
+    locationName: locationObj.name || locationObj.locationName || locationObj.city || "Salah Times",
+    sourceLabel: getCalculationMethodSourceLabel(locationObj.country || locationObj.name || locationObj.query || "") + " - " + (getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi"),
+    fajr: to12Hour(t.Fajr),
+    sunrise: to12Hour(t.Sunrise),
+    dhuhr: to12Hour(t.Dhuhr),
+    asr: to12Hour(t.Asr),
+    maghrib: to12Hour(t.Maghrib),
+    isha: to12Hour(t.Isha)
+  };
+}
+
+async function reloadSalahTimes(){
+  setSalahLoadingState();
+  updateSelectedDateText();
+
+  let city = document.getElementById("salahCityName");
+  let source = document.getElementById("salahSourceLabel");
+
+  if(city) city.innerText = "Loading...";
+  if(source) source.innerText = "Getting Salah times";
+
+  try{
+    let selectedDate = getSelectedSalahDate();
+    let data = null;
+
+    if(salahSource === "saved"){
+      let saved = getSelectedSavedSalahLocation();
+
+      if(!saved){
+        salahSource = "current";
+        localStorage.setItem("salahLocationMode", "current");
+      }else{
+        data = await fetchSalahForLocation(selectedDate, saved);
+      }
+    }
+
+    if(!data && salahSource === "entered"){
+      if(!salahEnteredLocation || !salahEnteredLocation.lat){
+        throw new Error("No entered location");
+      }
+      data = await fetchSalahForLocation(selectedDate, salahEnteredLocation);
+    }
+
+    if(!data){
+      let loc = await loadUserLocationData();
+      data = await fetchSalahForLocation(selectedDate, {
+        lat: loc.lat,
+        lon: loc.lon,
+        city: loc.city,
+        name: loc.city || "My Location",
+        country: loc.country
+      });
+    }
+
+    applySalahDataToScreen(data);
+  }catch(error){
+    if(city) city.innerText = "Could not load";
+    if(source) source.innerText = "Check location/internet, or enter a city";
+  }
+}
+
+/* =========================
+   LOCATION SHEET
+========================= */
+function openLocationSheet(){
+  renderSavedSalahLocationList();
+  let sheet = document.getElementById("locationSheet");
+  if(sheet) sheet.classList.add("show");
+}
+
+function closeLocationSheet(){
+  let sheet = document.getElementById("locationSheet");
+  if(sheet) sheet.classList.remove("show");
+}
+
+function closeSheetFromOverlay(event, id){
+  if(event.target && event.target.id === id){
+    event.target.classList.remove("show");
+  }
+}
+
+async function useCurrentLocation(){
+  salahSource = "current";
+  localStorage.setItem("salahLocationMode", "current");
+  salahLocationData = {lat:null, lon:null, city:"", state:"", country:""};
+  closeLocationSheet();
+  reloadSalahTimes();
+}
+
+async function searchEnteredLocation(){
+  let input = document.getElementById("locationSearchInput");
+  let query = input ? input.value.trim() : "";
+
+  if(!query){
+    showToast("Type a city first");
+    return;
+  }
+
+  let city = document.getElementById("salahCityName");
+  let source = document.getElementById("salahSourceLabel");
+
+  if(city) city.innerText = "Finding location...";
+  if(source) source.innerText = query;
+
+  try{
+    let geoUrl =
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=" +
+      encodeURIComponent(query);
+
+    let geoRes = await fetch(geoUrl, {headers:{"Accept":"application/json"}});
+    let geoData = await geoRes.json();
+
+    if(!geoData || !geoData.length){
+      showToast("Location not found");
+      return;
+    }
+
+    let found = geoData[0];
+
+    let pickedLocation = {
+      name: found.display_name.split(",")[0] || query,
+      lat: found.lat,
+      lon: found.lon,
+      country: found.display_name || query,
+      query: query,
+      locationName: found.display_name.split(",")[0] || query
+    };
+
+    addSavedSalahLocation(pickedLocation);
+    setSelectedSavedSalahLocation(pickedLocation);
+
+    salahEnteredLocation = pickedLocation;
+    localStorage.setItem("salahEnteredLocation", JSON.stringify(pickedLocation));
+
+    salahSource = "saved";
+    localStorage.setItem("salahLocationMode", "saved");
+
+    closeLocationSheet();
+    reloadSalahTimes();
+  }catch(error){
+    showToast("Could not search location");
+  }
+}
+
+/* =========================
+   SAVED LOCATIONS
+========================= */
+function getSavedSalahLocations(){
+  let saved = localStorage.getItem("savedSalahLocations");
+
+  if(!saved) return [];
+
+  try{
+    let parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(error){
+    return [];
+  }
+}
+
+function setSavedSalahLocations(locations){
+  localStorage.setItem("savedSalahLocations", JSON.stringify(locations || []));
+}
+
+function getSelectedSavedSalahLocation(){
+  let saved = localStorage.getItem("selectedSavedSalahLocation");
+
+  if(!saved) return null;
+
+  try{
+    return JSON.parse(saved);
+  }catch(error){
+    return null;
+  }
+}
+
+function setSelectedSavedSalahLocation(locationObj){
+  if(!locationObj){
+    localStorage.removeItem("selectedSavedSalahLocation");
+    return;
+  }
+
+  localStorage.setItem("selectedSavedSalahLocation", JSON.stringify(locationObj));
+}
+
+function addSavedSalahLocation(locationObj){
+  let list = getSavedSalahLocations();
+
+  let exists = list.some(function(item){
+    return (
+      String(item.lat) === String(locationObj.lat) &&
+      String(item.lon) === String(locationObj.lon)
+    );
+  });
+
+  if(!exists){
+    list.unshift(locationObj);
+    setSavedSalahLocations(list.slice(0, 12));
+  }
+}
+
+function renderSavedSalahLocationList(){
+  let area = document.getElementById("savedSalahLocationListArea");
+  if(!area) return;
+
+  let savedLocations = getSavedSalahLocations();
+  let selectedSaved = getSelectedSavedSalahLocation();
+
+  if(!savedLocations.length){
+    area.innerHTML = `
+      <div style="
+      background:#f7f7f9;
+      border-radius:18px;
+      padding:14px 14px;
+      font-size:14px;
+      font-weight:700;
+      color:#666;
+      line-height:1.5;
+      ">
+        No saved locations yet
+      </div>
+    `;
+    return;
+  }
+
+  area.innerHTML = "";
+
+  savedLocations.forEach(function(location, index){
+    let isSelected =
+      selectedSaved &&
+      String(selectedSaved.lat) === String(location.lat) &&
+      String(selectedSaved.lon) === String(location.lon);
+
+    let row = document.createElement("button");
+    row.className = "sheetCard";
+    row.style.background = isSelected ? "#111" : "white";
+    row.style.color = isSelected ? "white" : "#111";
+
+    row.onclick = function(){
+      selectSavedSalahLocation(index);
+    };
+
+    row.innerHTML = `
+      <div>
+        ${location.name || "Saved Location"}
+        <div class="sheetSub" style="color:${isSelected ? "rgba(255,255,255,0.78)" : "#666"};">
+          ${isSelected ? "Selected" : "Tap to use this location"}
+        </div>
+      </div>
+      <span>›</span>
+    `;
+
+    area.appendChild(row);
+  });
+}
+
+function selectSavedSalahLocation(index){
+  let savedLocations = getSavedSalahLocations();
+  let picked = savedLocations[index];
+
+  if(!picked) return;
+
+  setSelectedSavedSalahLocation(picked);
+  salahSource = "saved";
+  localStorage.setItem("salahLocationMode", "saved");
+
+  closeLocationSheet();
+  reloadSalahTimes();
+}
+
+/* =========================
+   SETTINGS SHEET
+========================= */
+function openSettingsSheet(){
+  loadSettingsUI();
+  let sheet = document.getElementById("settingsSheet");
+  if(sheet) sheet.classList.add("show");
+}
+
+function closeSettingsSheet(){
+  let sheet = document.getElementById("settingsSheet");
+  if(sheet) sheet.classList.remove("show");
+}
+
+/* =========================
+   MONTHLY TIMETABLE
+========================= */
+function setupMonthlySelectors(){
+  let monthSelect = document.getElementById("monthlyMonthSelect");
+  let yearSelect = document.getElementById("monthlyYearSelect");
+
+  if(!monthSelect || !yearSelect) return;
+
+  let now = new Date();
+  let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  monthSelect.innerHTML = "";
+  monthNames.forEach(function(name, index){
+    let opt = document.createElement("option");
+    opt.value = String(index + 1);
+    opt.innerText = name;
+    if(index === now.getMonth()) opt.selected = true;
+    monthSelect.appendChild(opt);
+  });
+
+  yearSelect.innerHTML = "";
+  for(let y = now.getFullYear() - 1; y <= now.getFullYear() + 2; y++){
+    let opt = document.createElement("option");
+    opt.value = String(y);
+    opt.innerText = String(y);
+    if(y === now.getFullYear()) opt.selected = true;
+    yearSelect.appendChild(opt);
+  }
+}
+
+function openMonthlySheet(){
+  let sheet = document.getElementById("monthlySheet");
+  if(sheet) sheet.classList.add("show");
+}
+
+function closeMonthlySheet(){
+  let sheet = document.getElementById("monthlySheet");
+  if(sheet) sheet.classList.remove("show");
+}
+
+async function getActiveMonthlyLocation(){
+  if(salahSource === "saved"){
+    let saved = getSelectedSavedSalahLocation();
+    if(saved && saved.lat && saved.lon) return saved;
+  }
+
+  if(salahSource === "entered" && salahEnteredLocation && salahEnteredLocation.lat){
+    return salahEnteredLocation;
+  }
+
+  let loc = await loadUserLocationData();
+  return {
+    name: loc.city || "My Location",
+    lat: loc.lat,
+    lon: loc.lon,
+    country: loc.country || ""
+  };
+}
+
+async function loadMonthlyTimetable(){
+  let status = document.getElementById("monthlyStatus");
+  let wrap = document.getElementById("monthlyTableWrap");
+  let monthSelect = document.getElementById("monthlyMonthSelect");
+  let yearSelect = document.getElementById("monthlyYearSelect");
+
+  if(status) status.innerText = "Loading monthly timetable...";
+  if(wrap) wrap.innerHTML = "";
+
+  try{
+    let month = Number(monthSelect.value);
+    let year = Number(yearSelect.value);
+    let loc = await getActiveMonthlyLocation();
+    let method = getAladhanMethodNumber(loc.country || loc.name || "");
+    let school = getAsrMethod() === "hanafi" ? "1" : "0";
+
+    let url =
+      "https://api.aladhan.com/v1/calendar/" + year + "/" + month
+      + "?latitude=" + encodeURIComponent(loc.lat)
+      + "&longitude=" + encodeURIComponent(loc.lon)
+      + "&method=" + method
+      + "&school=" + school;
+
+    let res = await fetch(url);
+    let json = await res.json();
+
+    if(!json || !json.data || !Array.isArray(json.data)){
+      throw new Error("Monthly timetable not loaded");
+    }
+
+    if(status){
+      status.innerText = (loc.name || "Location") + " • " + month + "/" + year;
+    }
+
+    let rows = json.data.map(function(day){
+      let t = day.timings;
+      let date = day.date && day.date.gregorian ? day.date.gregorian.day : "";
+      return `
+        <tr>
+          <td>${date}</td>
+          <td>${to12Hour(t.Fajr)}</td>
+          <td>${to12Hour(t.Dhuhr)}</td>
+          <td>${to12Hour(t.Asr)}</td>
+          <td>${to12Hour(t.Maghrib)}</td>
+          <td>${to12Hour(t.Isha)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    if(wrap){
+      wrap.innerHTML = `
+        <table class="monthTable">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Fajr</th>
+              <th>Dhuhr</th>
+              <th>Asr</th>
+              <th>Maghrib</th>
+              <th>Isha</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+  }catch(error){
+    if(status) status.innerText = "Could not load monthly timetable.";
+  }
+}
+
+/* =========================
+   TOAST
+========================= */
+function showToast(message){
+  let toast = document.getElementById("toast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.salahToastTimer);
+  window.salahToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 1800);
+}
+
+/* =========================
+   SWIPE DAY CHANGE
+========================= */
+let salahTouchStartX = 0;
+
+document.addEventListener("touchstart", function(e){
+  if(!e.touches || !e.touches.length) return;
+  if(e.target.closest && (e.target.closest(".sheetOverlay") || e.target.closest("button") || e.target.closest("input") || e.target.closest("select"))) return;
+  salahTouchStartX = e.touches[0].clientX;
+}, {passive:true});
+
+document.addEventListener("touchend", function(e){
+  if(!e.changedTouches || !e.changedTouches.length) return;
+  if(e.target.closest && (e.target.closest(".sheetOverlay") || e.target.closest("button") || e.target.closest("input") || e.target.closest("select"))) return;
+
+  let endX = e.changedTouches[0].clientX;
+  let diff = endX - salahTouchStartX;
+
+  if(Math.abs(diff) < 70) return;
+
+  if(diff < 0){
+    changeSalahDay(1);
+  }else{
+    changeSalahDay(-1);
+  }
+}, {passive:true});
+</script>
+
+</body>
+</html>
