@@ -810,18 +810,6 @@ function handleImportBackupFile(event){
 
       let backup = JSON.parse(e.target.result);
 
-      /*
-        This supports different backup styles:
-
-        1. New clean app backup:
-           backup.localStorage
-
-        2. Real Ibadah app backup:
-           backup.storage
-
-        3. Some backups may have:
-           backup.taskList
-      */
       let importedStorage = null;
 
       if(backup && backup.localStorage && typeof backup.localStorage === "object"){
@@ -840,19 +828,27 @@ function handleImportBackupFile(event){
 
       localStorage.clear();
 
+      /*
+        Restore every saved localStorage key.
+
+        Important:
+        If backup value is an object or array, save it as JSON text.
+        This prevents [object Object] problem.
+      */
       Object.keys(importedStorage).forEach(function(key){
-        localStorage.setItem(key, importedStorage[key]);
+
+        let value = importedStorage[key];
+
+        if(typeof value === "string"){
+          localStorage.setItem(key, value);
+        }else{
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+
       });
 
       /*
-        IMPORTANT:
-        Restore manually added tracker tasks.
-
-        This restores:
-        - manually added tasks
-        - specific-day tasks
-        - date-range tasks
-        - start-today tasks
+        Restore taskList from every possible backup style.
       */
       let restoredTaskList = null;
 
@@ -861,34 +857,77 @@ function handleImportBackupFile(event){
       }
 
       if(importedStorage.taskList){
-        try{
-          let parsedTaskList = JSON.parse(importedStorage.taskList);
 
-          if(Array.isArray(parsedTaskList)){
-            restoredTaskList = parsedTaskList;
+        if(Array.isArray(importedStorage.taskList)){
+          restoredTaskList = importedStorage.taskList;
+        }else{
+          try{
+            let parsedTaskList = JSON.parse(importedStorage.taskList);
+
+            if(Array.isArray(parsedTaskList)){
+              restoredTaskList = parsedTaskList;
+            }
+
+          }catch(error){
+            console.log("taskList was not JSON text", error);
           }
-
-        }catch(error){
-          console.log("Could not parse importedStorage.taskList", error);
         }
+
       }
 
+      /*
+        Extra protection:
+        If old backup saved tasks under another key,
+        search backup for any array that looks like tracker tasks.
+      */
+      if(!restoredTaskList){
+
+        let possibleTaskKeys = [
+          "taskList",
+          "tasks",
+          "trackerTasks",
+          "dailyTasks",
+          "ibadahTasks"
+        ];
+
+        possibleTaskKeys.forEach(function(possibleKey){
+
+          if(restoredTaskList) return;
+
+          if(backup[possibleKey] && Array.isArray(backup[possibleKey])){
+            restoredTaskList = backup[possibleKey];
+          }
+
+          if(importedStorage[possibleKey]){
+
+            if(Array.isArray(importedStorage[possibleKey])){
+              restoredTaskList = importedStorage[possibleKey];
+            }else{
+              try{
+                let parsed = JSON.parse(importedStorage[possibleKey]);
+
+                if(Array.isArray(parsed)){
+                  restoredTaskList = parsed;
+                }
+
+              }catch(error){}
+            }
+
+          }
+
+        });
+
+      }
+
+      /*
+        Save restored taskList if found.
+      */
       if(restoredTaskList && Array.isArray(restoredTaskList)){
         localStorage.setItem("taskList", JSON.stringify(restoredTaskList));
       }
 
       /*
-        Keep completed tracker history and Salah history.
-        These are already restored because we copied all importedStorage keys.
-
-        Examples:
-        - 2026-05-20
-        - salah-2026-05-20
-      */
-
-      /*
-        Remove old one-time return keys so imported backup does not force
-        the app to open the wrong page after import.
+        Remove one-time return keys.
       */
       localStorage.removeItem("ibadahFolderReturnPage");
       localStorage.removeItem("qazaReturnPage");
@@ -896,7 +935,15 @@ function handleImportBackupFile(event){
       localStorage.removeItem("appSettingsReturnPage");
       localStorage.removeItem("ibadahOpenAppSettings");
 
-      alert("Backup imported successfully.");
+      let taskCount = 0;
+
+      try{
+        taskCount = JSON.parse(localStorage.getItem("taskList") || "[]").length;
+      }catch(error){
+        taskCount = 0;
+      }
+
+      alert("Backup imported successfully.\nTasks restored: " + taskCount);
 
       window.location.href = getIbadahBasePath() + "?v=" + Date.now();
 
