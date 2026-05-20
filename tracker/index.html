@@ -421,7 +421,7 @@ body{
 }
 
 /* =========================
-   PDF READER PAGE - FIXED SIZE FIXED
+   PDF READER PAGE - FIXED SIZE
 ========================= */
 #trackerPdfReaderPage{
   display:none;
@@ -446,54 +446,11 @@ body{
   padding:calc(env(safe-area-inset-top) + 10px) 4% 10px 4%;
   background:rgba(233,233,238,0.96);
   backdrop-filter:blur(22px);
-  -webkit-backdrop-filter:blur(22px);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
   z-index:12002;
   box-shadow:0 5px 18px rgba(0,0,0,0.08);
-}
-
-.pdfBackBtn{
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:50%;
-  background:white;
-  color:#111;
-  font-size:24px;
-  font-weight:950;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 18px rgba(0,0,0,0.10);
-  cursor:pointer;
-  flex-shrink:0;
-}
-
-.pdfTitle{
-  flex:1;
-  min-width:0;
-  text-align:center;
-  font-size:18px;
-  font-weight:950;
-  color:#111;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.pdfOpenFullBtn{
-  border:none;
-  border-radius:16px;
-  background:#0a84ff;
-  color:white;
-  padding:11px 12px;
-  font-size:13px;
-  font-weight:900;
-  cursor:pointer;
-  flex-shrink:0;
 }
 
 .pdfFrameWrap{
@@ -514,13 +471,13 @@ body{
 
 #trackerPdfFrame{
   width:100%;
-  height:100%;
   max-width:100%;
-  max-height:100%;
+  min-height:100%;
+  height:auto;
   border:none;
+  outline:none;
   background:white;
   display:block;
-  object-fit:contain;
 }
 
 /* =========================
@@ -1656,23 +1613,34 @@ function buildTrackerPdfViewUrl(pdfUrl){
 function openTrackerPdfReader(title, pdfUrl){
   currentTrackerPdfUrl = pdfUrl;
 
-  let readerPage = document.getElementById("trackerPdfReaderPage");
-  let frame = document.getElementById("trackerPdfFrame");
-  let titleBox = document.getElementById("trackerPdfTitle");
+  const readerPage = document.getElementById("trackerPdfReaderPage");
+  const frame = document.getElementById("trackerPdfFrame");
+  const titleBox = document.getElementById("trackerPdfTitle");
 
   if(titleBox) titleBox.innerText = title || "PDF Reader";
 
   if(frame){
-    frame.src = "about:blank"; // clear previous PDF
-    setTimeout(()=>{
-      frame.src = pdfUrl + "#toolbar=0&navpanes=0&scrollbar=1&view=FitH"; 
+    frame.src = "about:blank"; // clear previous
+    setTimeout(() => {
+      frame.src = pdfUrl + "#toolbar=0&navpanes=0&scrollbar=1&view=FitH";
     }, 50);
   }
 
-  if(readerPage) readerPage.style.display = "block";
+  if(readerPage) readerPage.style.display = "flex";
 
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
+}
+
+function closeTrackerPdfReader(){
+  const readerPage = document.getElementById("trackerPdfReaderPage");
+  const frame = document.getElementById("trackerPdfFrame");
+
+  if(frame) frame.src = "about:blank";
+  if(readerPage) readerPage.style.display = "none";
+
+  document.documentElement.style.overflow = "";
+  document.body.style.overflow = "";
 }
 /* =========================
    CLOSE TRACKER PDF READER
