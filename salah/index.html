@@ -5,12 +5,13 @@
 <!-- =========================
      SALAH FOLDER PAGE
      File: salah/index.html
+     Restyled to match Ibadah Tracker dark navy design
 ========================= -->
 
 <meta charset="UTF-8">
 <title>Salah Times</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#e9e9ee">
+<meta name="theme-color" content="#0f1d35">
 <link rel="apple-touch-icon" href="../icon.png">
 <link rel="manifest" href="../manifest.webmanifest">
 
@@ -27,7 +28,7 @@ body{
   width:100%;
   min-height:100%;
   font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
-  background:#e9e9ee;
+  background:#f5f5f7;
   color:#111;
   overflow:hidden;
 }
@@ -42,20 +43,27 @@ body{
   inset:0;
   width:100%;
   height:100%;
-  background:linear-gradient(180deg,#f8f8fb 0%,#e9e9ee 100%);
+  background:#f5f5f7;
   overflow:auto;
   -webkit-overflow-scrolling:touch;
-  padding:calc(env(safe-area-inset-top) + 12px) 4% calc(120px + env(safe-area-inset-bottom)) 4%;
+  padding:calc(env(safe-area-inset-top) + 0px) 0 calc(120px + env(safe-area-inset-bottom)) 0;
 }
 
 .topBar{
   width:100%;
-  height:56px;
+  background:linear-gradient(180deg, #0f1d35 0%, #1a2f4a 100%);
+  padding:16px 4% calc(24px + env(safe-area-inset-top)) 4%;
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:space-between;
   position:relative;
-  margin-bottom:14px;
+}
+
+.topTitle{
+  font-size:28px;
+  font-weight:900;
+  color:white;
+  letter-spacing:-0.5px;
 }
 
 .roundBtn{
@@ -63,66 +71,80 @@ body{
   height:44px;
   border:none;
   border-radius:50%;
-  background:white;
-  color:#111;
+  background:rgba(255,255,255,0.15);
+  color:white;
   font-size:22px;
   font-weight:900;
   display:flex;
   align-items:center;
   justify-content:center;
-  position:absolute;
-  top:6px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.10);
   cursor:pointer;
+  backdrop-filter:blur(8px);
 }
 
-.settingsBtn{
-  right:0;
-}
-
-.topTitle{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:-0.4px;
-}
-
-.heroCard,
-.infoCard{
-  width:100%;
-  background:rgba(255,255,255,0.92);
-  border-radius:30px;
-  padding:22px 5%;
-  box-shadow:0 10px 28px rgba(0,0,0,0.08);
-  border:1px solid rgba(255,255,255,0.75);
-  margin-bottom:14px;
+.roundBtn:active{
+  background:rgba(255,255,255,0.25);
 }
 
 .heroCard{
+  width:100%;
+  background:linear-gradient(135deg, #2a4a7a 0%, #1f3a5a 100%);
+  border-radius:0 0 40px 40px;
+  padding:28px 4%;
+  color:white;
   text-align:center;
-  padding-top:28px;
-  padding-bottom:26px;
+  position:relative;
+  overflow:hidden;
+}
+
+.heroCard::before{
+  content:'';
+  position:absolute;
+  top:-50%;
+  right:-20%;
+  width:300px;
+  height:300px;
+  background:radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.heroCard > *{
+  position:relative;
+  z-index:1;
 }
 
 .cityName{
-  font-size:27px;
+  font-size:32px;
   font-weight:900;
   letter-spacing:-0.7px;
-  line-height:1.15;
+  line-height:1.2;
   margin-bottom:6px;
 }
 
 .cityHint{
   font-size:14px;
-  font-weight:700;
-  color:#777;
+  font-weight:600;
+  color:rgba(255,255,255,0.85);
+  cursor:pointer;
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  transition:background 0.2s ease;
+}
+
+.cityHint:active{
+  background:rgba(255,255,255,0.15);
 }
 
 .sourceLabel{
-  font-size:13px;
+  font-size:12px;
   font-weight:700;
-  color:#666;
-  margin-top:8px;
+  color:rgba(255,255,255,0.75);
+  margin-top:12px;
   line-height:1.4;
+  text-transform:uppercase;
+  letter-spacing:0.3px;
 }
 
 .dateCard{
@@ -134,8 +156,8 @@ body{
   align-items:center;
   justify-content:center;
   gap:10px;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
-  margin-bottom:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  margin:16px 0 16px 0;
 }
 
 .dateBtn{
@@ -149,6 +171,11 @@ body{
   font-weight:900;
   cursor:pointer;
   flex-shrink:0;
+  transition:background 0.2s ease;
+}
+
+.dateBtn:active{
+  background:#e0e0e5;
 }
 
 .dateTextWrap{
@@ -158,11 +185,12 @@ body{
 }
 
 .dateMain{
-  font-size:17px;
+  font-size:16px;
   font-weight:900;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  color:#111;
 }
 
 .dateHijri{
@@ -175,11 +203,25 @@ body{
   text-overflow:ellipsis;
 }
 
+.contentWrapper{
+  padding:0 4%;
+}
+
+.infoCard{
+  width:100%;
+  background:white;
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom:14px;
+}
+
 .timesTitle{
-  font-size:21px;
+  font-size:20px;
   font-weight:900;
   text-align:center;
-  margin-bottom:12px;
+  margin-bottom:14px;
+  color:#111;
 }
 
 .salahRow{
@@ -187,7 +229,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:12px 0;
+  padding:13px 0;
   border-bottom:1px solid rgba(0,0,0,0.06);
 }
 
@@ -199,23 +241,28 @@ body{
   display:flex;
   align-items:center;
   gap:11px;
-  font-size:18px;
+  font-size:17px;
   font-weight:800;
+  color:#111;
 }
 
 .salahIcon{
   width:34px;
   height:34px;
-  border-radius:13px;
+  border-radius:12px;
   background:#f2f2f7;
   display:flex;
   align-items:center;
   justify-content:center;
+  font-size:18px;
 }
 
 .salahTime{
   font-size:18px;
   font-weight:900;
+  color:#111;
+  min-width:70px;
+  text-align:right;
 }
 
 .actionGrid{
@@ -223,44 +270,58 @@ body{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-top:14px;
   margin-bottom:20px;
 }
 
 .actionBtn{
   border:none;
-  border-radius:22px;
+  border-radius:20px;
   background:white;
   color:#111;
-  padding:17px 12px;
+  padding:16px 12px;
   font-size:16px;
   font-weight:900;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
   cursor:pointer;
+  transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.actionBtn:active{
+  transform:scale(0.95);
 }
 
 .primaryBtn{
   width:100%;
   border:none;
-  border-radius:22px;
-  background:#111;
+  border-radius:20px;
+  background:#0f1d35;
   color:white;
-  padding:17px;
-  font-size:18px;
+  padding:16px;
+  font-size:17px;
   font-weight:900;
   cursor:pointer;
+  transition:background 0.2s ease;
+}
+
+.primaryBtn:active{
+  background:#051027;
 }
 
 .secondaryBtn{
   width:100%;
   border:none;
-  border-radius:22px;
+  border-radius:20px;
   background:#f2f2f7;
   color:#111;
   padding:16px;
   font-size:17px;
   font-weight:900;
   cursor:pointer;
+  transition:background 0.2s ease;
+}
+
+.secondaryBtn:active{
+  background:#e0e0e5;
 }
 
 .sheetOverlay{
@@ -268,7 +329,7 @@ body{
   position:fixed;
   inset:0;
   z-index:8000;
-  background:rgba(0,0,0,0.30);
+  background:rgba(0,0,0,0.35);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
   align-items:flex-end;
@@ -322,6 +383,7 @@ body{
 .sheetTitle{
   font-size:22px;
   font-weight:900;
+  color:#111;
 }
 
 .sheetClose{
@@ -333,6 +395,11 @@ body{
   font-size:22px;
   font-weight:900;
   cursor:pointer;
+  transition:background 0.2s ease;
+}
+
+.sheetClose:active{
+  background:#d5d5db;
 }
 
 .sheetBody{
@@ -346,20 +413,20 @@ body{
   width:100%;
   border:none;
   outline:none;
-  border-radius:20px;
+  border-radius:18px;
   background:white;
-  padding:17px 16px;
+  padding:16px;
   font-size:18px;
   font-weight:800;
   color:#111;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  box-shadow:0 4px 12px rgba(0,0,0,0.07);
   margin-bottom:12px;
 }
 
 .sheetCard{
   width:100%;
   border:none;
-  border-radius:24px;
+  border-radius:22px;
   background:white;
   padding:18px 16px;
   display:flex;
@@ -369,10 +436,15 @@ body{
   font-size:17px;
   font-weight:900;
   color:#111;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  box-shadow:0 4px 12px rgba(0,0,0,0.07);
   margin-bottom:12px;
   cursor:pointer;
   text-align:left;
+  transition:background 0.2s ease;
+}
+
+.sheetCard:active{
+  background:#f5f5f7;
 }
 
 .sheetSub{
@@ -385,15 +457,16 @@ body{
 
 .settingRow{
   background:white;
-  border-radius:24px;
+  border-radius:22px;
   padding:16px;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  box-shadow:0 4px 12px rgba(0,0,0,0.07);
   margin-bottom:12px;
 }
 
 .settingLabel{
   font-size:16px;
   font-weight:900;
+  color:#111;
   margin-bottom:10px;
 }
 
@@ -401,11 +474,12 @@ body{
   width:100%;
   border:none;
   outline:none;
-  border-radius:18px;
+  border-radius:16px;
   background:#f2f2f7;
-  padding:15px;
+  padding:14px;
   font-size:17px;
   font-weight:800;
+  color:#111;
 }
 
 .toggleRow{
@@ -423,6 +497,7 @@ body{
   padding:3px;
   flex-shrink:0;
   cursor:pointer;
+  transition:background 0.2s ease;
 }
 
 .switch.on{
@@ -453,21 +528,22 @@ body{
 .monthChoiceBtn{
   width:100%;
   border:none;
-  border-radius:22px;
+  border-radius:20px;
   background:white;
   color:#111;
-  padding:17px 16px;
-  font-size:17px;
+  padding:16px;
+  font-size:16px;
   font-weight:900;
-  box-shadow:0 8px 22px rgba(0,0,0,0.07);
+  box-shadow:0 4px 12px rgba(0,0,0,0.07);
   cursor:pointer;
-  text-align:left;
+  text-align:center;
+  transition:all 0.2s ease;
 }
 
 .monthChoiceBtn.active{
-  background:#0a84ff;
+  background:#0f1d35;
   color:white;
-  box-shadow:0 10px 26px rgba(10,132,255,0.28);
+  box-shadow:0 6px 18px rgba(15,29,53,0.28);
 }
 
 .monthPrintHeader{
@@ -497,9 +573,10 @@ body{
 
 .monthTable th{
   font-size:12px;
-  color:#777;
-  text-align:left;
-  padding:0 8px 4px 8px;
+  color:#666;
+  text-align:center;
+  padding:0 8px 6px 8px;
+  font-weight:900;
 }
 
 .monthTable td{
@@ -507,14 +584,18 @@ body{
   padding:10px 8px;
   font-size:13px;
   font-weight:800;
+  text-align:center;
+  color:#111;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
 }
 
 .monthTable td:first-child{
-  border-radius:14px 0 0 14px;
+  border-radius:12px 0 0 12px;
+  text-align:left;
 }
 
 .monthTable td:last-child{
-  border-radius:0 14px 14px 0;
+  border-radius:0 12px 12px 0;
 }
 
 #toast{
@@ -523,9 +604,9 @@ body{
   left:50%;
   bottom:100px;
   transform:translateX(-50%);
-  background:rgba(17,17,17,0.94);
+  background:rgba(15,29,53,0.95);
   color:white;
-  padding:13px 16px;
+  padding:12px 16px;
   border-radius:18px;
   font-size:15px;
   font-weight:800;
@@ -535,9 +616,8 @@ body{
 }
 
 @media(max-width:390px){
-  .cityName{font-size:24px;}
-  .salahName{font-size:17px;}
-  .salahTime{font-size:17px;}
+  .cityName{font-size:28px;}
+  .topTitle{font-size:26px;}
 }
 
 @media print{
@@ -653,43 +733,47 @@ body{
     <button id="salahNextDayBtn" class="dateBtn" onclick="changeSalahDay(1)">›</button>
   </div>
 
-  <div class="infoCard">
-    <div class="timesTitle">Salah Times</div>
+  <div class="contentWrapper">
 
-    <div class="salahRow">
-      <div class="salahName"><span class="salahIcon">🌅</span>Fajr</div>
-      <div id="fajrTime" class="salahTime">--:--</div>
+    <div class="infoCard">
+      <div class="timesTitle">Salah Times</div>
+
+      <div class="salahRow">
+        <div class="salahName"><span class="salahIcon">🌅</span>Fajr</div>
+        <div id="fajrTime" class="salahTime">--:--</div>
+      </div>
+
+      <div class="salahRow">
+        <div class="salahName"><span class="salahIcon">🌄</span>Sunrise</div>
+        <div id="sunriseTime" class="salahTime">--:--</div>
+      </div>
+
+      <div class="salahRow">
+        <div class="salahName"><span class="salahIcon">☀️</span>Dhuhr</div>
+        <div id="dhuhrTime" class="salahTime">--:--</div>
+      </div>
+
+      <div class="salahRow">
+        <div class="salahName"><span class="salahIcon">🌤️</span>Asr</div>
+        <div id="asrTime" class="salahTime">--:--</div>
+      </div>
+
+      <div class="salahRow">
+        <div class="salahName"><span class="salahIcon">🌇</span>Maghrib</div>
+        <div id="maghribTime" class="salahTime">--:--</div>
+      </div>
+
+      <div class="salahRow">
+        <div class="salahName"><span class="salahIcon">🌙</span>Isha</div>
+        <div id="ishaTime" class="salahTime">--:--</div>
+      </div>
     </div>
 
-    <div class="salahRow">
-      <div class="salahName"><span class="salahIcon">🌄</span>Sunrise</div>
-      <div id="sunriseTime" class="salahTime">--:--</div>
+    <div class="actionGrid">
+      <button class="actionBtn" onclick="openMonthlySheet()">📅 Monthly</button>
+      <button class="actionBtn" onclick="refreshCurrentLocationAndTimes()">🔄 Refresh</button>
     </div>
 
-    <div class="salahRow">
-      <div class="salahName"><span class="salahIcon">☀️</span>Dhuhr</div>
-      <div id="dhuhrTime" class="salahTime">--:--</div>
-    </div>
-
-    <div class="salahRow">
-      <div class="salahName"><span class="salahIcon">🌤️</span>Asr</div>
-      <div id="asrTime" class="salahTime">--:--</div>
-    </div>
-
-    <div class="salahRow">
-      <div class="salahName"><span class="salahIcon">🌇</span>Maghrib</div>
-      <div id="maghribTime" class="salahTime">--:--</div>
-    </div>
-
-    <div class="salahRow">
-      <div class="salahName"><span class="salahIcon">🌙</span>Isha</div>
-      <div id="ishaTime" class="salahTime">--:--</div>
-    </div>
-  </div>
-
-  <div class="actionGrid">
-    <button class="actionBtn" onclick="openMonthlySheet()">📅 Monthly</button>
-    <button class="actionBtn" onclick="refreshCurrentLocationAndTimes()">🔄 Refresh</button>
   </div>
 
 </div>
@@ -946,16 +1030,19 @@ function getIsnaFajr18Enabled(){
 /* =========================
    SALAH CACHE BUSTER
    Full function name: getSalahCacheBuster
-   FIX #2: Stronger cache buster - includes settings fingerprint
-   so each settings combo gets a unique URL the API cannot cache
+   FIX #2: cache buster now includes method + asr + fajr18 so each
+   settings combo produces a unique URL the API/edge cache cannot reuse.
 ========================= */
 function getSalahCacheBuster(){
   let method = localStorage.getItem("salahCalculationMethod") || "auto";
   let asr = localStorage.getItem("asrMethod") || "hanafi";
   let fajr18 = getIsnaFajr18Enabled() ? "1" : "0";
-  let fingerprint = method + "_" + asr + "_" + fajr18;
-  let random = Math.random().toString(36).substring(2, 10);
-  return "&t=" + Date.now() + "&fp=" + fingerprint + "&r=" + random;
+  let rand = Math.random().toString(36).slice(2, 10);
+  return "&t=" + Date.now()
+       + "&cb_m=" + encodeURIComponent(method)
+       + "&cb_a=" + encodeURIComponent(asr)
+       + "&cb_f=" + fajr18
+       + "&cb_r=" + rand;
 }
 
 function getAladhanMethodNumber(placeText){
@@ -1054,8 +1141,8 @@ function loadSettingsUI(){
 /* =========================
    SAVE SETTINGS AND REFRESH
    Full function name: saveSettingsAndRefresh
-   FIX #1: Added delay so localStorage writes commit
-   before reloadSalahTimes reads them
+   FIX #1: small delay so localStorage.setItem commits
+   before reloadSalahTimes() reads it.
 ========================= */
 async function saveSettingsAndRefresh(){
   let methodSelect = document.getElementById("calculationMethodSelect");
@@ -1084,8 +1171,8 @@ async function saveSettingsAndRefresh(){
 /* =========================
    TOGGLE ISNA FAJR 18 DEGREE
    Full function name: toggleIsnaFajr18
-   FIX #1: Added delay so localStorage writes commit
-   before reloadSalahTimes reads them
+   FIX #1: small delay so localStorage.setItem commits
+   before reloadSalahTimes() reads it.
 ========================= */
 async function toggleIsnaFajr18(){
   let method = localStorage.getItem("salahCalculationMethod") || "auto";
@@ -1599,7 +1686,7 @@ function renderSavedSalahLocationList(){
 
     let row = document.createElement("button");
     row.className = "sheetCard";
-    row.style.background = isSelected ? "#111" : "white";
+    row.style.background = isSelected ? "#0f1d35" : "white";
     row.style.color = isSelected ? "white" : "#111";
 
     row.onclick = function(){
@@ -1730,13 +1817,15 @@ async function getActiveMonthlyLocation(){
 /* =========================
    FETCH MONTHLY CALENDAR
    Full function name: fetchMonthlyCalendarWithCurrentSettings
-   FIX #3: Re-reads localStorage fresh every call,
-   so monthly always uses the same settings as the daily screen
+   FIX #3: reads method, asr, fajr18 fresh from localStorage right
+   before fetch so monthly always matches the daily screen settings.
 ========================= */
 async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
 
   let method = getAladhanMethodNumber(loc.country || loc.name || "");
   let school = getAsrMethod() === "hanafi" ? "1" : "0";
+  let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
+  let fajr18On = getIsnaFajr18Enabled();
 
   let url =
     "https://api.aladhan.com/v1/calendar/" + year + "/" + month
@@ -1757,10 +1846,7 @@ async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
     throw new Error("Monthly timetable not loaded");
   }
 
-  if(
-    (localStorage.getItem("salahCalculationMethod") || "auto") === "isna" &&
-    getIsnaFajr18Enabled()
-  ){
+  if(savedMethod === "isna" && fajr18On){
     let overrideUrl =
       "https://api.aladhan.com/v1/calendar/" + year + "/" + month
       + "?latitude=" + encodeURIComponent(loc.lat)
@@ -1878,8 +1964,8 @@ async function loadMonthlyTimetable(){
 /* =========================
    PRINT MONTHLY TIMETABLE WITH CURRENT SETTINGS
    Full function name: printMonthlyTimetable
-   FIX #3: Force reload monthly table right before printing
-   so print always matches the latest screen settings
+   FIX #3: always reloads the monthly table with the latest live
+   settings just before printing, so the print matches the screen.
 ========================= */
 async function printMonthlyTimetable(){
   if(salahPrintInProgress){
@@ -1889,9 +1975,9 @@ async function printMonthlyTimetable(){
   salahPrintInProgress = true;
   showToast("Preparing latest timetable...");
 
-  await new Promise(function(resolve){ setTimeout(resolve, 80); });
-
   monthlyTableLoaded = false;
+
+  await new Promise(function(resolve){ setTimeout(resolve, 80); });
 
   await loadMonthlyTimetable();
 
