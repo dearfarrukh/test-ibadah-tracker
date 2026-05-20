@@ -946,9 +946,16 @@ function getIsnaFajr18Enabled(){
 /* =========================
    SALAH CACHE BUSTER
    Full function name: getSalahCacheBuster
+   FIX #2: Stronger cache buster - includes settings fingerprint
+   so each settings combo gets a unique URL the API cannot cache
 ========================= */
 function getSalahCacheBuster(){
-  return "&t=" + Date.now();
+  let method = localStorage.getItem("salahCalculationMethod") || "auto";
+  let asr = localStorage.getItem("asrMethod") || "hanafi";
+  let fajr18 = getIsnaFajr18Enabled() ? "1" : "0";
+  let fingerprint = method + "_" + asr + "_" + fajr18;
+  let random = Math.random().toString(36).substring(2, 10);
+  return "&t=" + Date.now() + "&fp=" + fingerprint + "&r=" + random;
 }
 
 function getAladhanMethodNumber(placeText){
@@ -1044,6 +1051,12 @@ function loadSettingsUI(){
   }
 }
 
+/* =========================
+   SAVE SETTINGS AND REFRESH
+   Full function name: saveSettingsAndRefresh
+   FIX #1: Added delay so localStorage writes commit
+   before reloadSalahTimes reads them
+========================= */
 async function saveSettingsAndRefresh(){
   let methodSelect = document.getElementById("calculationMethodSelect");
   let asrSelect = document.getElementById("asrMethodSelect");
@@ -1063,9 +1076,17 @@ async function saveSettingsAndRefresh(){
 
   showToast("Updating Salah times...");
 
+  await new Promise(function(resolve){ setTimeout(resolve, 80); });
+
   await reloadSalahTimes();
 }
 
+/* =========================
+   TOGGLE ISNA FAJR 18 DEGREE
+   Full function name: toggleIsnaFajr18
+   FIX #1: Added delay so localStorage writes commit
+   before reloadSalahTimes reads them
+========================= */
 async function toggleIsnaFajr18(){
   let method = localStorage.getItem("salahCalculationMethod") || "auto";
 
@@ -1083,6 +1104,8 @@ async function toggleIsnaFajr18(){
   clearMonthlyTimetableBecauseSettingsChanged();
 
   showToast("Updating Salah times...");
+
+  await new Promise(function(resolve){ setTimeout(resolve, 80); });
 
   await reloadSalahTimes();
 }
@@ -1704,6 +1727,12 @@ async function getActiveMonthlyLocation(){
   };
 }
 
+/* =========================
+   FETCH MONTHLY CALENDAR
+   Full function name: fetchMonthlyCalendarWithCurrentSettings
+   FIX #3: Re-reads localStorage fresh every call,
+   so monthly always uses the same settings as the daily screen
+========================= */
 async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
 
   let method = getAladhanMethodNumber(loc.country || loc.name || "");
@@ -1849,6 +1878,8 @@ async function loadMonthlyTimetable(){
 /* =========================
    PRINT MONTHLY TIMETABLE WITH CURRENT SETTINGS
    Full function name: printMonthlyTimetable
+   FIX #3: Force reload monthly table right before printing
+   so print always matches the latest screen settings
 ========================= */
 async function printMonthlyTimetable(){
   if(salahPrintInProgress){
@@ -1857,6 +1888,10 @@ async function printMonthlyTimetable(){
 
   salahPrintInProgress = true;
   showToast("Preparing latest timetable...");
+
+  await new Promise(function(resolve){ setTimeout(resolve, 80); });
+
+  monthlyTableLoaded = false;
 
   await loadMonthlyTimetable();
 
