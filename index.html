@@ -673,17 +673,7 @@ function openQiblaPage(){
 ========================= */
 function openAppSettingsPage(){
 
-  localStorage.removeItem("ibadahOpenAppSettings");
-
-  let loadingPage = document.getElementById("cleanLoadingPage");
-  let settingsPage = document.getElementById("appSettingsPage");
-
-  if(loadingPage) loadingPage.style.display = "none";
-  if(settingsPage) settingsPage.style.display = "block";
-
-  loadAppSettingsUI();
-
-  window.scrollTo(0,0);
+  window.location.href = getIbadahBasePath() + "settings/";
 
 }
 
