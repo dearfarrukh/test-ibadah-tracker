@@ -819,6 +819,7 @@ let salahDayOffset = 0;
 let salahSource = localStorage.getItem("salahLocationMode") || "current";
 let selectedMonthlyOption = "current";
 let monthlyTableLoaded = false;
+let salahPrintInProgress = false;
 
 let salahLocationData = {
   lat:null,
@@ -1807,15 +1808,35 @@ async function loadMonthlyTimetable(){
   }
 }
 
-function printMonthlyTimetable(){
-  let wrap = document.getElementById("monthlyTableWrap");
-
-  if(!wrap || !wrap.innerHTML.trim()){
-    showToast("Load monthly timetable first");
+/* =========================
+   PRINT MONTHLY TIMETABLE WITH CURRENT SETTINGS
+   Full function name: printMonthlyTimetable
+========================= */
+async function printMonthlyTimetable(){
+  if(salahPrintInProgress){
     return;
   }
 
-  window.print();
+  salahPrintInProgress = true;
+  showToast("Preparing latest timetable...");
+
+  await loadMonthlyTimetable();
+
+  let wrap = document.getElementById("monthlyTableWrap");
+
+  if(!monthlyTableLoaded || !wrap || !wrap.innerHTML.trim()){
+    salahPrintInProgress = false;
+    showToast("Could not prepare print");
+    return;
+  }
+
+  setTimeout(function(){
+    window.print();
+
+    setTimeout(function(){
+      salahPrintInProgress = false;
+    }, 800);
+  }, 350);
 }
 
 function showToast(message){
