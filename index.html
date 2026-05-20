@@ -384,6 +384,25 @@ function showAppToast(message){
 
 
 /* =========================
+   GET IBADAH BASE PATH
+   Full function name: getIbadahBasePath()
+========================= */
+function getIbadahBasePath(){
+
+  if(window.location.pathname.includes("/test-ibadah-tracker/")){
+    return "/test-ibadah-tracker/";
+  }
+
+  if(window.location.pathname.includes("/ibadah-tracker/")){
+    return "/ibadah-tracker/";
+  }
+
+  return "/";
+
+}
+
+
+/* =========================
    GET DEFAULT PAGE
    Full function name: getDefaultPage()
 ========================= */
@@ -396,7 +415,20 @@ function getDefaultPage(){
     return "home";
   }
 
-  return String(saved).trim().toLowerCase();
+  saved = String(saved).trim().toLowerCase();
+
+  if(
+    saved !== "home" &&
+    saved !== "tracker" &&
+    saved !== "salah" &&
+    saved !== "more" &&
+    saved !== "quran"
+  ){
+    localStorage.setItem("defaultPage", "home");
+    return "home";
+  }
+
+  return saved;
 
 }
 
@@ -413,9 +445,9 @@ function openSelectedDefaultPage(){
   }
 
   /*
-    If any old folder page still sends user to ../,
-    this will catch the return and send user directly
-    to the correct new folder page.
+    Folder return should run only one time.
+    After using it, remove it so it does not keep overriding
+    your saved default page.
   */
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
@@ -450,9 +482,14 @@ function openSelectedDefaultPage(){
     }
   }
 
+  /*
+    Old Qaza return should also run one time only.
+  */
   let qazaReturnPage = localStorage.getItem("qazaReturnPage");
 
   if(qazaReturnPage){
+    localStorage.removeItem("qazaReturnPage");
+
     qazaReturnPage = String(qazaReturnPage).trim().toLowerCase();
 
     if(qazaReturnPage === "home"){
@@ -471,9 +508,14 @@ function openSelectedDefaultPage(){
     }
   }
 
+  /*
+    Old Tasbih return should also run one time only.
+  */
   let tasbihReturnPage = localStorage.getItem("tasbihReturnPage");
 
   if(tasbihReturnPage){
+    localStorage.removeItem("tasbihReturnPage");
+
     tasbihReturnPage = String(tasbihReturnPage).trim().toLowerCase();
 
     if(tasbihReturnPage === "home"){
@@ -514,43 +556,6 @@ function openSelectedDefaultPage(){
 }
 
 
-     /* =========================
-   GET IBADAH BASE PATH
-   Full function name: getIbadahBasePath()
-========================= */
-function getIbadahBasePath(){
-
-  if(window.location.pathname.includes("/test-ibadah-tracker/")){
-    return "/test-ibadah-tracker/";
-  }
-
-  if(window.location.pathname.includes("/ibadah-tracker/")){
-    return "/ibadah-tracker/";
-  }
-
-  return "/";
-
-}
-
-/* =========================
-   GET IBADAH BASE PATH
-   Full function name: getIbadahBasePath()
-========================= */
-function getIbadahBasePath(){
-
-  if(window.location.pathname.includes("/test-ibadah-tracker/")){
-    return "/test-ibadah-tracker/";
-  }
-
-  if(window.location.pathname.includes("/ibadah-tracker/")){
-    return "/ibadah-tracker/";
-  }
-
-  return "/";
-
-}
-     
-     
 /* =========================
    OPEN HOME PAGE
    Full function name: openHomePage()
@@ -568,7 +573,7 @@ function openHomePage(){
 ========================= */
 function openTrackerPage(){
 
-  window.location.href = "tracker/";
+  window.location.href = getIbadahBasePath() + "tracker/";
 
 }
 
@@ -579,7 +584,7 @@ function openTrackerPage(){
 ========================= */
 function openSalahPage(){
 
-  window.location.href = "salah/";
+  window.location.href = getIbadahBasePath() + "salah/";
 
 }
 
@@ -590,7 +595,7 @@ function openSalahPage(){
 ========================= */
 function openMorePage(){
 
-  window.location.href = "more/";
+  window.location.href = getIbadahBasePath() + "more/";
 
 }
 
@@ -601,7 +606,7 @@ function openMorePage(){
 ========================= */
 function openQuranPage(){
 
-  window.location.href = "quran/?from=main";
+  window.location.href = getIbadahBasePath() + "quran/?from=main";
 
 }
 
@@ -612,7 +617,7 @@ function openQuranPage(){
 ========================= */
 function openTasbihPageFromHome(){
 
-  window.location.href = "tasbih/?from=home";
+  window.location.href = getIbadahBasePath() + "tasbih/?from=home";
 
 }
 
@@ -624,7 +629,7 @@ function openTasbihPageFromHome(){
 function openQazaTrackerFromHome(){
 
   localStorage.setItem("qazaReturnPage", "home");
-  window.location.href = "qazatracker/";
+  window.location.href = getIbadahBasePath() + "qazatracker/";
 
 }
 
@@ -635,7 +640,7 @@ function openQazaTrackerFromHome(){
 ========================= */
 function openDuaPageFromHome(){
 
-  window.location.href = "duapage/?from=home&v=" + Date.now();
+  window.location.href = getIbadahBasePath() + "duapage/?from=home&v=" + Date.now();
 
 }
 
@@ -646,7 +651,7 @@ function openDuaPageFromHome(){
 ========================= */
 function openDailyAzkarPageFromHome(){
 
-  window.location.href = "dailyazkar/?from=home&v=" + Date.now();
+  window.location.href = getIbadahBasePath() + "dailyazkar/?from=home&v=" + Date.now();
 
 }
 
@@ -657,7 +662,7 @@ function openDailyAzkarPageFromHome(){
 ========================= */
 function openQiblaPage(){
 
-  window.location.href = "qibla/";
+  window.location.href = getIbadahBasePath() + "qibla/";
 
 }
 
@@ -851,7 +856,7 @@ async function resetOfflineDownloads(){
 
       for(let cacheName of cacheNames){
 
-        if(cacheName === "ibadah-runtime-v1"){
+        if(cacheName === "ibadah-runtime-v1" || cacheName === "ibadah-test-runtime-v1"){
           await caches.delete(cacheName);
         }
 
@@ -897,7 +902,7 @@ async function refreshApp(){
     console.log("Refresh update failed:", error);
   }
 
-  window.location.reload(true);
+  window.location.href = getIbadahBasePath() + "?v=" + Date.now();
 
 }
 
@@ -929,7 +934,7 @@ async function masterResetApp(){
     }
 
     alert("App reset complete.");
-    location.reload();
+    window.location.href = getIbadahBasePath() + "?v=" + Date.now();
 
   }catch(error){
 
