@@ -95,6 +95,55 @@ button{
   letter-spacing:-0.3px;
 }
 
+/* =========================
+   QAZA LOCK MESSAGE UNDER TOP BAR
+========================= */
+.qazaLockMessage{
+  position:fixed;
+  top:calc(8% + env(safe-area-inset-top) + 8px);
+  right:4%;
+  width:78%;
+  max-width:360px;
+  min-height:46px;
+  padding:10px 14px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 8px 22px rgba(0,0,0,0.14);
+  border:1px solid rgba(255,255,255,0.75);
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  opacity:0;
+  transform:translateY(-10px) scale(0.98);
+  pointer-events:none;
+  transition:opacity 0.22s ease, transform 0.22s ease;
+  z-index:250;
+}
+
+.qazaLockMessage.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+.qazaLockMessageText{
+  font-size:14px;
+  font-weight:900;
+  color:#111;
+  line-height:1.25;
+  text-align:right;
+}
+
+.qazaLockMessageArrow{
+  font-size:22px;
+  font-weight:900;
+  color:#ff3b30;
+  line-height:1;
+  transform:translateY(-2px);
+}
+
 .qazaPageWrap{
   width:100%;
   min-height:100vh;
@@ -446,84 +495,6 @@ button{
   color:#34c759;
 }
 
-.qazaPopupOverlay{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(0,0,0,0.35);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  z-index:300;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.qazaPopupCard{
-  width:100%;
-  max-width:340px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,248,250,0.96) 100%);
-  border-radius:30px;
-  padding:24px 20px 18px 20px;
-  box-shadow:0 22px 50px rgba(0,0,0,0.20);
-  border:1px solid rgba(255,255,255,0.7);
-  text-align:center;
-}
-
-.qazaPopupIcon{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:#f2f2f7;
-  color:#111;
-  font-size:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 14px auto;
-}
-
-.qazaPopupTitle{
-  font-size:22px;
-  font-weight:900;
-  color:#111;
-  margin-bottom:8px;
-}
-
-.qazaPopupText{
-  font-size:15px;
-  line-height:1.6;
-  color:#666;
-  margin-bottom:18px;
-}
-
-.qazaPopupMainBtn{
-  width:100%;
-  border:none;
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:10px;
-  background:#111;
-  color:white;
-  font-size:18px;
-  font-weight:900;
-}
-
-.qazaPopupCancelBtn{
-  width:100%;
-  border:none;
-  border-radius:18px;
-  padding:14px;
-  background:#f2f2f7;
-  color:#666;
-  font-size:17px;
-  font-weight:800;
-}
-
-
 /* =========================
    QAZA TOP BAR SPACING FIX
 ========================= */
@@ -539,10 +510,6 @@ body{
   position:relative;
   z-index:2;
 }
-
-
-
-   
 </style>
 </head>
 
@@ -555,6 +522,14 @@ body{
   <button class="qazaBackBtn" onclick="goBackToMainIbadahApp()">←</button>
   <div class="qazaTitle">Qaza Tracker</div>
   <button id="qazaLockBtn" class="qazaLockBtn" onclick="toggleQazaLockState()">🔒</button>
+</div>
+
+<!-- =========================
+     QAZA LOCK MESSAGE UNDER TOP BAR
+========================= -->
+<div id="qazaLockMessage" class="qazaLockMessage">
+  <div class="qazaLockMessageText">Tap the red lock button to unlock editing</div>
+  <div class="qazaLockMessageArrow">↗</div>
 </div>
 
 <!-- =========================
@@ -597,7 +572,6 @@ body{
           <div class="qazaStatsLabel">Total Qaza</div>
           <div id="qazaOverallTotalText" class="qazaStatsNumber">0</div>
 
-          <div class="qazaStatsLabel">Remaining</div>
           <div id="qazaOverallRemainingText" class="qazaStatsNumber" style="color:#34c759;">0</div>
         </div>
       </div>
@@ -632,20 +606,6 @@ body{
 
 </div>
 
-<!-- =========================
-     QAZA LOCK REQUIRED POPUP
-========================= -->
-<div id="qazaLockRequiredPopup" class="qazaPopupOverlay" onclick="closeQazaLockRequiredPopup()">
-  <div class="qazaPopupCard" onclick="event.stopPropagation()">
-    <div class="qazaPopupIcon">🔒</div>
-    <div class="qazaPopupTitle">Unlock first</div>
-    <div class="qazaPopupText">Unlock first to edit Qaza totals or use the plus and minus buttons.</div>
-
-    <button class="qazaPopupMainBtn" onclick="unlockQazaEditingFromPopup()">Unlock Editing</button>
-    <button class="qazaPopupCancelBtn" onclick="closeQazaLockRequiredPopup()">Cancel</button>
-  </div>
-</div>
-
 <script>
 /* =========================
    QAZA TRACKER JAVASCRIPT
@@ -674,6 +634,7 @@ let qazaData = {
 let qazaHoldTimer = null;
 let qazaHoldInterval = null;
 let qazaHoldStarted = false;
+let qazaLockMessageTimer = null;
 
 /* =========================
    GO BACK TO MAIN IBADAH APP
@@ -771,7 +732,7 @@ function setupQazaTotalInputs(){
 
       if(getQazaLockState()){
         input.blur();
-        openQazaLockRequiredPopup();
+        showQazaLockMessage();
         return;
       }
 
@@ -792,7 +753,7 @@ function setupQazaTotalInputs(){
     input.addEventListener("focus", function(){
       if(getQazaLockState()){
         input.blur();
-        openQazaLockRequiredPopup();
+        showQazaLockMessage();
       }
     });
 
@@ -926,7 +887,7 @@ function handleQazaDecreaseTap(prayer){
 function adjustQazaPrayer(prayer, amount){
 
   if(getQazaLockState()){
-    openQazaLockRequiredPopup();
+    showQazaLockMessage();
     return;
   }
 
@@ -953,7 +914,7 @@ function adjustQazaPrayer(prayer, amount){
 function startHoldQaza(prayer, amount){
 
   if(getQazaLockState()){
-    openQazaLockRequiredPopup();
+    showQazaLockMessage();
     return;
   }
 
@@ -1202,6 +1163,10 @@ function setQazaLockState(isLocked){
 
   updateQazaLockButtonUI();
   updateQazaTotalInputsLockState();
+
+  if(!isLocked){
+    hideQazaLockMessage();
+  }
 }
 
 /* =========================
@@ -1270,37 +1235,59 @@ function updateQazaTotalInputsLockState(){
 }
 
 /* =========================
-   OPEN QAZA LOCK REQUIRED POPUP
+   SHOW QAZA LOCK MESSAGE
+========================= */
+function showQazaLockMessage(){
+
+  let message = document.getElementById("qazaLockMessage");
+  if(!message) return;
+
+  clearTimeout(qazaLockMessageTimer);
+
+  message.classList.add("show");
+
+  qazaLockMessageTimer = setTimeout(function(){
+    hideQazaLockMessage();
+  }, 3000);
+}
+
+/* =========================
+   HIDE QAZA LOCK MESSAGE
+========================= */
+function hideQazaLockMessage(){
+
+  let message = document.getElementById("qazaLockMessage");
+  if(!message) return;
+
+  message.classList.remove("show");
+}
+
+/* =========================
+   OLD POPUP FUNCTION NAME KEPT SAFE
+   NOW IT SHOWS SMALL MESSAGE ONLY
 ========================= */
 function openQazaLockRequiredPopup(){
 
-  let popup = document.getElementById("qazaLockRequiredPopup");
-
-  if(popup){
-    popup.style.display = "flex";
-  }
+  showQazaLockMessage();
 }
 
 /* =========================
-   CLOSE QAZA LOCK REQUIRED POPUP
+   OLD CLOSE POPUP FUNCTION NAME KEPT SAFE
+   NOW IT HIDES SMALL MESSAGE ONLY
 ========================= */
 function closeQazaLockRequiredPopup(){
 
-  let popup = document.getElementById("qazaLockRequiredPopup");
-
-  if(popup){
-    popup.style.display = "none";
-  }
+  hideQazaLockMessage();
 }
 
 /* =========================
-   UNLOCK QAZA EDITING FROM POPUP
+   OLD UNLOCK FROM POPUP FUNCTION NAME KEPT SAFE
 ========================= */
 function unlockQazaEditingFromPopup(){
 
   setQazaLockState(false);
 
-  closeQazaLockRequiredPopup();
+  hideQazaLockMessage();
 }
 
 /* =========================
@@ -1324,7 +1311,7 @@ document.addEventListener("click", function(e){
         target.blur();
       }
 
-      openQazaLockRequiredPopup();
+      showQazaLockMessage();
       return false;
     }
 
