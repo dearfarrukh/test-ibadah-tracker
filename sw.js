@@ -1,9 +1,10 @@
 // =========================
-// IBADAH OFFLINE SERVICE WORKER
+// IBADAH OFFLINE SERVICE WORKER (TEST APP)
 // =========================
 
-const IBADAH_STATIC_CACHE = "ibadah-static-v3";
-const IBADAH_RUNTIME_CACHE = "ibadah-runtime-v1";
+// Use a separate cache name for test app
+const IBADAH_STATIC_CACHE = "ibadah-test-static-v1";
+const IBADAH_RUNTIME_CACHE = "ibadah-test-runtime-v1";
 
 // =========================
 // APP SHELL FILES TO CACHE
@@ -27,43 +28,36 @@ const APP_SHELL_FILES = [
 // INSTALL
 // =========================
 self.addEventListener("install", function(event){
-
   event.waitUntil(
     caches.open(IBADAH_STATIC_CACHE).then(function(cache){
       return cache.addAll(APP_SHELL_FILES);
     })
   );
-
   self.skipWaiting();
-
 });
 
 // =========================
 // ACTIVATE
 // =========================
 self.addEventListener("activate", function(event){
-
   event.waitUntil(
     caches.keys().then(function(keys){
-
       return Promise.all(
         keys.map(function(key){
-
+          // Delete old test caches only
           if(
             key !== IBADAH_STATIC_CACHE &&
-            key !== IBADAH_RUNTIME_CACHE
+            key !== IBADAH_RUNTIME_CACHE &&
+            key.startsWith("ibadah-test")
           ){
             return caches.delete(key);
           }
-
         })
       );
-
     }).then(function(){
       return self.clients.claim();
     })
   );
-
 });
 
 // =========================
@@ -92,7 +86,6 @@ self.addEventListener("fetch", function(event){
 
     // =========================
     // FOLDER PAGES MUST LOAD THEIR OWN INDEX.HTML
-    // full protected folder list
     // =========================
     if(
       url.pathname.includes("/duapage/") ||
@@ -105,28 +98,23 @@ self.addEventListener("fetch", function(event){
       url.pathname.includes("/books/AsanNamaz/") ||
       url.pathname.includes("/books/noorani-qaida/")
     ){
-
       event.respondWith(
         fetch(request).catch(function(){
           return caches.match(request);
         })
       );
-
       return;
-
     }
 
     // =========================
-    // MAIN APP PAGE CAN USE CACHED APP SHELL
+    // MAIN APP PAGE USE CACHED APP SHELL
     // =========================
     event.respondWith(
       caches.match("./index.html").then(function(cachedPage){
         return cachedPage || fetch(request);
       })
     );
-
     return;
-
   }
 
   // =========================
@@ -134,27 +122,16 @@ self.addEventListener("fetch", function(event){
   // =========================
   event.respondWith(
     caches.match(request).then(function(cachedResponse){
-
-      if(cachedResponse){
-        return cachedResponse;
-      }
+      if(cachedResponse) return cachedResponse;
 
       return fetch(request).then(function(networkResponse){
-
         return caches.open(IBADAH_RUNTIME_CACHE).then(function(cache){
-
           cache.put(request, networkResponse.clone());
           return networkResponse;
-
         });
-
       }).catch(function(){
-
         return caches.match("./index.html");
-
       });
-
     })
   );
-
 });
