@@ -943,13 +943,22 @@ function getIsnaFajr18Enabled(){
   return localStorage.getItem("isnaFajr18") === "true";
 }
 
+/* =========================
+   SALAH CACHE BUSTER
+   Full function name: getSalahCacheBuster
+========================= */
+function getSalahCacheBuster(){
+  return "&t=" + Date.now();
+}
+
 function getAladhanMethodNumber(placeText){
   let savedMethod = localStorage.getItem("salahCalculationMethod") || "auto";
 
   if(savedMethod === "isna") return 2;
   if(savedMethod === "mwl") return 3;
-  if(savedMethod === "makkah") return 4;
+  if(savedMethod === "makkah" || savedMethod === "ummalqura") return 4;
   if(savedMethod === "karachi") return 1;
+  if(savedMethod === "1815") return 13;
 
   let text = String(placeText || "").toLowerCase();
 
@@ -973,8 +982,9 @@ function getCalculationMethodSourceLabel(placeText){
 
   if(savedMethod === "isna") return "ISNA";
   if(savedMethod === "mwl") return "Muslim World League";
-  if(savedMethod === "makkah") return "Umm al-Qura";
+  if(savedMethod === "makkah" || savedMethod === "ummalqura") return "Umm al-Qura";
   if(savedMethod === "karachi") return "Karachi";
+  if(savedMethod === "1815") return "Fajr 18° / Isha 15°";
 
   let methodNumber = getAladhanMethodNumber(placeText);
 
@@ -1034,7 +1044,7 @@ function loadSettingsUI(){
   }
 }
 
-function saveSettingsAndRefresh(){
+async function saveSettingsAndRefresh(){
   let methodSelect = document.getElementById("calculationMethodSelect");
   let asrSelect = document.getElementById("asrMethodSelect");
 
@@ -1046,19 +1056,17 @@ function saveSettingsAndRefresh(){
     localStorage.setItem("asrMethod", asrSelect.value);
   }
 
+  monthlyTableLoaded = false;
+
   loadSettingsUI();
-  showToast("Settings changed");
+  clearMonthlyTimetableBecauseSettingsChanged();
 
-  reloadSalahTimes();
+  showToast("Updating Salah times...");
 
-  if(monthlyTableLoaded){
-    loadMonthlyTimetable();
-  }else{
-    clearMonthlyTimetableBecauseSettingsChanged();
-  }
+  await reloadSalahTimes();
 }
 
-function toggleIsnaFajr18(){
+async function toggleIsnaFajr18(){
   let method = localStorage.getItem("salahCalculationMethod") || "auto";
 
   if(method !== "isna"){
@@ -1069,16 +1077,14 @@ function toggleIsnaFajr18(){
   let newValue = !getIsnaFajr18Enabled();
   localStorage.setItem("isnaFajr18", newValue ? "true" : "false");
 
+  monthlyTableLoaded = false;
+
   loadSettingsUI();
-  showToast("18° setting changed");
+  clearMonthlyTimetableBecauseSettingsChanged();
 
-  reloadSalahTimes();
+  showToast("Updating Salah times...");
 
-  if(monthlyTableLoaded){
-    loadMonthlyTimetable();
-  }else{
-    clearMonthlyTimetableBecauseSettingsChanged();
-  }
+  await reloadSalahTimes();
 }
 
 function clearMonthlyTimetableBecauseSettingsChanged(){
@@ -1129,9 +1135,15 @@ async function reverseGeocode(lat, lon){
     let geoUrl =
       "https://nominatim.openstreetmap.org/reverse?format=jsonv2"
       + "&lat=" + encodeURIComponent(lat)
-      + "&lon=" + encodeURIComponent(lon);
+      + "&lon=" + encodeURIComponent(lon)
+      + getSalahCacheBuster();
 
-    let geoRes = await fetch(geoUrl, {headers:{"Accept":"application/json"}});
+    let geoRes = await fetch(geoUrl, {
+      method:"GET",
+      cache:"no-store",
+      headers:{"Accept":"application/json"}
+    });
+
     let geoData = await geoRes.json();
     let a = geoData.address || {};
 
@@ -1281,9 +1293,14 @@ async function fetchSalahForLocation(dateObj, locationObj){
     + "?latitude=" + encodeURIComponent(locationObj.lat)
     + "&longitude=" + encodeURIComponent(locationObj.lon)
     + "&method=" + apiMethod
-    + "&school=" + school;
+    + "&school=" + school
+    + getSalahCacheBuster();
 
-  let res = await fetch(salahUrl);
+  let res = await fetch(salahUrl, {
+    method:"GET",
+    cache:"no-store"
+  });
+
   let json = await res.json();
 
   if(!json || !json.data || !json.data.timings){
@@ -1301,9 +1318,14 @@ async function fetchSalahForLocation(dateObj, locationObj){
       + "?latitude=" + encodeURIComponent(locationObj.lat)
       + "&longitude=" + encodeURIComponent(locationObj.lon)
       + "&method=13"
-      + "&school=" + school;
+      + "&school=" + school
+      + getSalahCacheBuster();
 
-    let overrideRes = await fetch(overrideUrl);
+    let overrideRes = await fetch(overrideUrl, {
+      method:"GET",
+      cache:"no-store"
+    });
+
     let overrideJson = await overrideRes.json();
 
     if(overrideJson && overrideJson.data && overrideJson.data.timings){
@@ -1416,9 +1438,15 @@ async function searchEnteredLocation(){
   try{
     let geoUrl =
       "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=" +
-      encodeURIComponent(query);
+      encodeURIComponent(query) +
+      getSalahCacheBuster();
 
-    let geoRes = await fetch(geoUrl, {headers:{"Accept":"application/json"}});
+    let geoRes = await fetch(geoUrl, {
+      method:"GET",
+      cache:"no-store",
+      headers:{"Accept":"application/json"}
+    });
+
     let geoData = await geoRes.json();
 
     if(!geoData || !geoData.length){
@@ -1686,9 +1714,14 @@ async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
     + "?latitude=" + encodeURIComponent(loc.lat)
     + "&longitude=" + encodeURIComponent(loc.lon)
     + "&method=" + method
-    + "&school=" + school;
+    + "&school=" + school
+    + getSalahCacheBuster();
 
-  let res = await fetch(url);
+  let res = await fetch(url, {
+    method:"GET",
+    cache:"no-store"
+  });
+
   let json = await res.json();
 
   if(!json || !json.data || !Array.isArray(json.data)){
@@ -1704,9 +1737,14 @@ async function fetchMonthlyCalendarWithCurrentSettings(year, month, loc){
       + "?latitude=" + encodeURIComponent(loc.lat)
       + "&longitude=" + encodeURIComponent(loc.lon)
       + "&method=13"
-      + "&school=" + school;
+      + "&school=" + school
+      + getSalahCacheBuster();
 
-    let overrideRes = await fetch(overrideUrl);
+    let overrideRes = await fetch(overrideUrl, {
+      method:"GET",
+      cache:"no-store"
+    });
+
     let overrideJson = await overrideRes.json();
 
     if(overrideJson && overrideJson.data && Array.isArray(overrideJson.data)){
