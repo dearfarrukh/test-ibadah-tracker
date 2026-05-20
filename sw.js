@@ -96,8 +96,7 @@ self.addEventListener("fetch", function(event){
       url.pathname.includes("/QuranPages/") ||
       url.pathname.includes("/books/") ||
       url.pathname.includes("/books/AsanNamaz/") ||
-           url.pathname.includes("/books/noorani-qaida/") ||
-      url.pathname.includes("/settings/")
+      url.pathname.includes("/books/noorani-qaida/")
     ){
       event.respondWith(
         fetch(request).catch(function(){
