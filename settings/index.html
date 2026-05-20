@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     SETTINGS FOLDER PAGE
+     File: settings/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>Settings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+/* =========================
+   GLOBAL RESET
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+}
+
+body{
+  overflow-x:hidden;
+  padding-bottom:calc(env(safe-area-inset-bottom) + 28px);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+.settingsTopBar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  width:100%;
+  min-height:calc(env(safe-area-inset-top) + 94px);
+  padding:calc(env(safe-area-inset-top) + 22px) 4% 18px 4%;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+
+.settingsBackBtn{
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#0a84ff;
+  font-size:34px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.settingsBackBtn:active{
+  transform:scale(0.96);
+}
+
+.settingsTopTitle{
+  flex:1;
+  text-align:center;
+  font-size:28px;
+  font-weight:950;
+  letter-spacing:-0.6px;
+  color:#000;
+}
+
+.settingsTopRightSpace{
+  width:52px;
+  height:52px;
+  flex-shrink:0;
+}
+
+/* =========================
+   PAGE CONTENT
+========================= */
+.settingsPage{
+  width:100%;
+  padding:28px 4% 0 4%;
+}
+
+/* =========================
+   APP HERO CARD
+========================= */
+.appHeroCard{
+  width:100%;
+  border-radius:34px;
+  background:
+    radial-gradient(circle at 88% 58%, rgba(255,255,255,0.08), transparent 30%),
+    linear-gradient(135deg, #1d447c 0%, #0e2747 100%);
+  box-shadow:0 12px 26px rgba(20,48,86,0.20);
+  overflow:hidden;
+  padding:34px 5%;
+  text-align:center;
+  position:relative;
+}
+
+.appHeroCard:after{
+  content:"☪";
+  position:absolute;
+  right:8%;
+  bottom:8%;
+  font-size:120px;
+  opacity:0.08;
+  color:white;
+}
+
+.appHeroIcon{
+  width:82px;
+  height:82px;
+  border-radius:20px;
+  margin:0 auto 22px auto;
+  background:linear-gradient(135deg,#b44cff,#7d2bc5);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:48px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.18);
+  position:relative;
+  z-index:2;
+}
+
+.appHeroTitle{
+  position:relative;
+  z-index:2;
+  font-size:34px;
+  font-weight:950;
+  color:white;
+  letter-spacing:-0.8px;
+  margin-bottom:10px;
+}
+
+.appHeroSub{
+  position:relative;
+  z-index:2;
+  font-size:20px;
+  font-weight:650;
+  color:rgba(255,255,255,0.62);
+  line-height:1.35;
+}
+
+/* =========================
+   SECTION TITLE
+========================= */
+.sectionTitle{
+  margin:34px 1% 12px 1%;
+  font-size:22px;
+  font-weight:950;
+  letter-spacing:1px;
+  color:#6b6b72;
+  text-transform:uppercase;
+}
+
+/* =========================
+   SETTINGS CARD GROUP
+========================= */
+.settingsGroup{
+  width:100%;
+  background:white;
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.settingsRow{
+  width:100%;
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 5%;
+  border-bottom:1px solid #eeeeF3;
+  background:white;
+}
+
+.settingsRow:last-child{
+  border-bottom:none;
+}
+
+.settingsRowBtn{
+  cursor:pointer;
+}
+
+.settingsRowBtn:active{
+  background:#f7f7fa;
+}
+
+.settingsIconBox{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  flex-shrink:0;
+}
+
+.iconBlue{
+  background:#eaf2ff;
+}
+
+.iconGreen{
+  background:#eafaf0;
+}
+
+.iconPurple{
+  background:#f5eaff;
+}
+
+.iconOrange{
+  background:#fff3e0;
+}
+
+.iconRed{
+  background:#ffecec;
+}
+
+.iconGray{
+  background:#f2f2f7;
+}
+
+.settingsTextBox{
+  flex:1;
+  min-width:0;
+}
+
+.settingsMainText{
+  font-size:23px;
+  font-weight:900;
+  color:#000;
+  letter-spacing:-0.3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.settingsSubText{
+  margin-top:4px;
+  font-size:18px;
+  font-weight:600;
+  color:#777;
+  line-height:1.25;
+}
+
+.settingsValue{
+  font-size:20px;
+  font-weight:850;
+  color:#0a84ff;
+  white-space:nowrap;
+}
+
+.settingsChevron{
+  font-size:32px;
+  color:#b4b4ba;
+  flex-shrink:0;
+}
+
+.redText{
+  color:#ff3b30 !important;
+}
+
+/* =========================
+   SELECT
+========================= */
+.settingsSelect{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:18px;
+  background:#f2f2f7;
+  padding:15px 14px;
+  font-size:18px;
+  font-weight:800;
+  color:#111;
+  margin-top:12px;
+}
+
+/* =========================
+   SAVED DATA LIST
+========================= */
+.savedDataGroup{
+  width:100%;
+  background:white;
+  border-radius:30px;
+  padding:18px 5%;
+  box-shadow:0 10px 24px rgba(0,0,0,0.07);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.savedDataRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px 0;
+  border-bottom:1px solid #eeeeF3;
+}
+
+.savedDataRow:last-child{
+  border-bottom:none;
+}
+
+.savedDataLabel{
+  font-size:22px;
+  font-weight:900;
+  color:#000;
+}
+
+.savedDataValue{
+  font-size:20px;
+  font-weight:900;
+  color:#0a84ff;
+}
+
+/* =========================
+   TOAST
+========================= */
+#settingsToast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:calc(env(safe-area-inset-bottom) + 34px);
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.92);
+  color:white;
+  border-radius:24px;
+  padding:16px 24px;
+  font-size:18px;
+  font-weight:800;
+  z-index:9999;
+  max-width:88%;
+  text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.24);
+}
+
+/* =========================
+   SMALL PHONE FIX
+========================= */
+@media(max-width:430px){
+  .settingsTopTitle{
+    font-size:23px;
+  }
+
+  .settingsPage{
+    padding-left:3.5%;
+    padding-right:3.5%;
+  }
+
+  .appHeroCard{
+    border-radius:26px;
+    padding:30px 5%;
+  }
+
+  .appHeroIcon{
+    width:70px;
+    height:70px;
+    font-size:40px;
+  }
+
+  .appHeroTitle{
+    font-size:30px;
+  }
+
+  .appHeroSub{
+    font-size:18px;
+  }
+
+  .sectionTitle{
+    font-size:18px;
+  }
+
+  .settingsMainText{
+    font-size:20px;
+  }
+
+  .settingsSubText{
+    font-size:16px;
+  }
+
+  .settingsIconBox{
+    width:48px;
+    height:48px;
+    font-size:26px;
+  }
+
+  .savedDataLabel{
+    font-size:19px;
+  }
+
+  .savedDataValue{
+    font-size:18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     TOP BAR
+========================= -->
+<div class="settingsTopBar">
+  <button class="settingsBackBtn" onclick="goBackToMainApp()">‹</button>
+  <div class="settingsTopTitle">Settings</div>
+  <div class="settingsTopRightSpace"></div>
+</div>
+
+<!-- =========================
+     SETTINGS PAGE
+========================= -->
+<div class="settingsPage">
+
+  <!-- =========================
+       APP HERO
+  ========================= -->
+  <div class="appHeroCard">
+    <div class="appHeroIcon">☪</div>
+    <div class="appHeroTitle">Ibadah Tracker</div>
+    <div class="appHeroSub">
+      Your daily Islamic worship companion<br>
+      Version 1.0.0
+    </div>
+  </div>
+
+  <!-- =========================
+       GENERAL SETTINGS
+  ========================= -->
+  <div class="sectionTitle">General Settings</div>
+
+  <div class="settingsGroup">
+    <div class="settingsRow">
+      <div class="settingsIconBox iconBlue">🏠</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Default Start Page</div>
+        <div class="settingsSubText">Choose which page opens first</div>
+
+        <select id="defaultPageSelect" class="settingsSelect" onchange="saveDefaultPageSetting()">
+          <option value="home">Home</option>
+          <option value="tracker">Tracker</option>
+          <option value="salah">Salah</option>
+          <option value="more">More</option>
+          <option value="quran">Quran</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       LOCATION
+  ========================= -->
+  <div class="sectionTitle">Location</div>
+
+  <div class="settingsGroup">
+    <div class="settingsRow">
+      <div class="settingsIconBox iconBlue">📍</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Saved Location</div>
+        <div class="settingsSubText" id="savedLocationText">Checking...</div>
+      </div>
+    </div>
+
+    <div class="settingsRow settingsRowBtn" onclick="resetSavedLocation()">
+      <div class="settingsIconBox iconRed">🔄</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Reset Location</div>
+        <div class="settingsSubText">Re-detect your location next time</div>
+      </div>
+      <div class="settingsChevron">›</div>
+    </div>
+  </div>
+
+  <!-- =========================
+       BACKUP AND RESTORE
+  ========================= -->
+  <div class="sectionTitle">Backup & Restore</div>
+
+  <div class="settingsGroup">
+    <div class="settingsRow settingsRowBtn" onclick="exportBackupData()">
+      <div class="settingsIconBox iconGreen">⬆️</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Export Backup</div>
+        <div class="settingsSubText">Save all your data to a file</div>
+      </div>
+    </div>
+
+    <div class="settingsRow settingsRowBtn" onclick="openImportBackupFile()">
+      <div class="settingsIconBox iconBlue">⬇️</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Restore Backup</div>
+        <div class="settingsSubText">Load data from a backup file</div>
+      </div>
+    </div>
+  </div>
+
+  <input id="backupFileInput" type="file" accept=".json" style="display:none;" onchange="handleImportBackupFile(event)">
+
+  <!-- =========================
+       SAVED DATA
+  ========================= -->
+  <div class="sectionTitle">Saved Data</div>
+
+  <div class="savedDataGroup">
+    <div class="savedDataRow">
+      <div class="savedDataLabel">📌 Quran Bookmarks</div>
+      <div class="savedDataValue" id="quranBookmarkCount">Checking</div>
+    </div>
+
+    <div class="savedDataRow">
+      <div class="savedDataLabel">🤲 Dua Favorites</div>
+      <div class="savedDataValue" id="duaFavoriteCount">Checking</div>
+    </div>
+
+    <div class="savedDataRow">
+      <div class="savedDataLabel">📋 Qaza Data</div>
+      <div class="savedDataValue" id="qazaDataStatus">Checking</div>
+    </div>
+
+    <div class="savedDataRow">
+      <div class="savedDataLabel">📊 Tracker Data</div>
+      <div class="savedDataValue" id="trackerDataStatus">Checking</div>
+    </div>
+  </div>
+
+  <!-- =========================
+       DANGER ZONE
+  ========================= -->
+  <div class="sectionTitle">Danger Zone</div>
+
+  <div class="settingsGroup">
+    <div class="settingsRow settingsRowBtn" onclick="clearQuranBookmarks()">
+      <div class="settingsIconBox iconRed">📌</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText redText">Clear Quran Bookmarks</div>
+        <div class="settingsSubText">Remove saved Quran pages only</div>
+      </div>
+    </div>
+
+    <div class="settingsRow settingsRowBtn" onclick="safeMasterResetApp()">
+      <div class="settingsIconBox iconOrange">⚠️</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText redText">Safe Master Reset</div>
+        <div class="settingsSubText">Reset app settings, keep tracker history</div>
+      </div>
+    </div>
+
+    <div class="settingsRow settingsRowBtn" onclick="clearAllDataOnlyAfterBackup()">
+      <div class="settingsIconBox iconRed">🚨</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText redText">Clear ALL Data</div>
+        <div class="settingsSubText">Deletes everything on this device</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       APP
+  ========================= -->
+  <div class="sectionTitle">App</div>
+
+  <div class="settingsGroup">
+    <div class="settingsRow settingsRowBtn" onclick="refreshApp()">
+      <div class="settingsIconBox iconBlue">🔄</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Refresh App</div>
+        <div class="settingsSubText">Reload latest version of the app</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       ABOUT
+  ========================= -->
+  <div class="sectionTitle">About</div>
+
+  <div class="settingsGroup">
+    <div class="settingsRow">
+      <div class="settingsIconBox iconGreen">📱</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">App Version</div>
+        <div class="settingsSubText">Ibadah Tracker v1.0.0</div>
+      </div>
+      <div class="settingsValue">1.0.0</div>
+    </div>
+
+    <div class="settingsRow">
+      <div class="settingsIconBox iconOrange">🕌</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Prayer Data</div>
+        <div class="settingsSubText">Managed inside Salah page</div>
+      </div>
+    </div>
+
+    <div class="settingsRow">
+      <div class="settingsIconBox iconBlue">📖</div>
+      <div class="settingsTextBox">
+        <div class="settingsMainText">Quran Settings</div>
+        <div class="settingsSubText">Managed inside Quran pages</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================
+     TOAST
+========================= -->
+<div id="settingsToast"></div>
+
+<script>
+/* =========================
+   GO BACK TO MAIN APP
+   Full function name: goBackToMainApp()
+========================= */
+function goBackToMainApp(){
+
+  window.location.href = "../";
+
+}
+
+/* =========================
+   GET IBADAH BASE PATH
+   Full function name: getIbadahBasePath()
+========================= */
+function getIbadahBasePath(){
+
+  if(window.location.pathname.includes("/test-ibadah-tracker/")){
+    return "/test-ibadah-tracker/";
+  }
+
+  if(window.location.pathname.includes("/ibadah-tracker/")){
+    return "/ibadah-tracker/";
+  }
+
+  return "/";
+
+}
+
+/* =========================
+   SHOW SETTINGS TOAST
+   Full function name: showSettingsToast()
+========================= */
+function showSettingsToast(message){
+
+  let toast = document.getElementById("settingsToast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.settingsToastTimer);
+
+  window.settingsToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 2200);
+
+}
+
+/* =========================
+   GET DEFAULT PAGE
+   Full function name: getDefaultPage()
+========================= */
+function getDefaultPage(){
+
+  let saved = localStorage.getItem("defaultPage");
+
+  if(!saved){
+    localStorage.setItem("defaultPage", "home");
+    return "home";
+  }
+
+  saved = String(saved).trim().toLowerCase();
+
+  if(
+    saved !== "home" &&
+    saved !== "tracker" &&
+    saved !== "salah" &&
+    saved !== "more" &&
+    saved !== "quran"
+  ){
+    localStorage.setItem("defaultPage", "home");
+    return "home";
+  }
+
+  return saved;
+
+}
+
+/* =========================
+   SAVE DEFAULT PAGE SETTING
+   Full function name: saveDefaultPageSetting()
+========================= */
+function saveDefaultPageSetting(){
+
+  let select = document.getElementById("defaultPageSelect");
+  if(!select) return;
+
+  localStorage.setItem("defaultPage", select.value);
+
+  showSettingsToast("Default page saved");
+
+}
+
+/* =========================
+   LOAD DEFAULT PAGE SETTING
+   Full function name: loadDefaultPageSetting()
+========================= */
+function loadDefaultPageSetting(){
+
+  let select = document.getElementById("defaultPageSelect");
+  if(!select) return;
+
+  select.value = getDefaultPage();
+
+}
+
+/* =========================
+   LOAD SAVED LOCATION
+   Full function name: loadSavedLocation()
+========================= */
+function loadSavedLocation(){
+
+  let savedLocationText = document.getElementById("savedLocationText");
+  if(!savedLocationText) return;
+
+  let city =
+    localStorage.getItem("salahCityName") ||
+    localStorage.getItem("userCity") ||
+    localStorage.getItem("savedCity") ||
+    localStorage.getItem("cityName");
+
+  if(city){
+    savedLocationText.innerText = city;
+    return;
+  }
+
+  let lat = localStorage.getItem("userLat");
+  let lon = localStorage.getItem("userLon");
+
+  if(lat && lon){
+    savedLocationText.innerText = Number(lat).toFixed(2) + ", " + Number(lon).toFixed(2);
+    return;
+  }
+
+  savedLocationText.innerText = "No saved location";
+
+}
+
+/* =========================
+   RESET SAVED LOCATION
+   Full function name: resetSavedLocation()
+========================= */
+function resetSavedLocation(){
+
+  let ok = confirm("Reset saved location? Your app will ask for location again when needed.");
+
+  if(!ok) return;
+
+  [
+    "salahCityName",
+    "salahLatitude",
+    "salahLongitude",
+    "userCity",
+    "userLat",
+    "userLon",
+    "savedCity",
+    "cityName",
+    "latitude",
+    "longitude"
+  ].forEach(function(key){
+    localStorage.removeItem(key);
+  });
+
+  loadSavedLocation();
+  showSettingsToast("Location reset");
+
+}
+
+/* =========================
+   EXPORT BACKUP DATA
+   Full function name: exportBackupData()
+========================= */
+function exportBackupData(){
+
+  let backup = {
+    app:"Ibadah Tracker",
+    version:"1.0.0",
+    createdAt:new Date().toISOString(),
+    storage:{},
+    taskList:null
+  };
+
+  for(let i = 0; i < localStorage.length; i++){
+
+    let key = localStorage.key(i);
+
+    if(key){
+      backup.storage[key] = localStorage.getItem(key);
+    }
+
+  }
+
+  try{
+    backup.taskList = JSON.parse(localStorage.getItem("taskList") || "[]");
+  }catch(error){
+    backup.taskList = [];
+  }
+
+  let text = JSON.stringify(backup, null, 2);
+  let blob = new Blob([text], {type:"application/json"});
+  let url = URL.createObjectURL(blob);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "ibadah-tracker-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+  showSettingsToast("Backup exported");
+
+}
+
+/* =========================
+   OPEN IMPORT BACKUP FILE
+   Full function name: openImportBackupFile()
+========================= */
+function openImportBackupFile(){
+
+  let input = document.getElementById("backupFileInput");
+  if(input){
+    input.click();
+  }
+
+}
+
+/* =========================
+   HANDLE IMPORT BACKUP FILE
+   Full function name: handleImportBackupFile()
+========================= */
+function handleImportBackupFile(event){
+
+  let file = event.target.files && event.target.files[0];
+
+  if(!file){
+    return;
+  }
+
+  let ok = confirm("Restore this backup? This will replace saved data on this device.");
+
+  if(!ok){
+    event.target.value = "";
+    return;
+  }
+
+  let reader = new FileReader();
+
+  reader.onload = function(e){
+
+    try{
+
+      let backup = JSON.parse(e.target.result);
+      let importedStorage = null;
+
+      if(backup && backup.localStorage && typeof backup.localStorage === "object"){
+        importedStorage = backup.localStorage;
+      }
+
+      if(backup && backup.storage && typeof backup.storage === "object"){
+        importedStorage = backup.storage;
+      }
+
+      if(!importedStorage){
+        alert("This backup file is not valid.");
+        event.target.value = "";
+        return;
+      }
+
+      localStorage.clear();
+
+      Object.keys(importedStorage).forEach(function(key){
+        localStorage.setItem(key, importedStorage[key]);
+      });
+
+      if(backup.taskList && Array.isArray(backup.taskList)){
+        localStorage.setItem("taskList", JSON.stringify(backup.taskList));
+      }
+
+      if(importedStorage.taskList){
+        localStorage.setItem("taskList", importedStorage.taskList);
+      }
+
+      localStorage.removeItem("ibadahFolderReturnPage");
+      localStorage.removeItem("qazaReturnPage");
+      localStorage.removeItem("tasbihReturnPage");
+      localStorage.removeItem("appSettingsReturnPage");
+
+      alert("Backup restored successfully.");
+
+      window.location.href = getIbadahBasePath() + "settings/?v=" + Date.now();
+
+    }catch(error){
+
+      console.log(error);
+      alert("Could not restore backup file.");
+
+    }
+
+  };
+
+  reader.readAsText(file);
+
+}
+
+/* =========================
+   GET LOCAL STORAGE KEYS
+   Full function name: getLocalStorageKeys()
+========================= */
+function getLocalStorageKeys(){
+
+  let keys = [];
+
+  for(let i = 0; i < localStorage.length; i++){
+    let key = localStorage.key(i);
+    if(key) keys.push(key);
+  }
+
+  return keys;
+
+}
+
+/* =========================
+   COUNT ARRAY STORAGE
+   Full function name: countArrayStorage()
+========================= */
+function countArrayStorage(possibleKeys){
+
+  for(let i = 0; i < possibleKeys.length; i++){
+
+    let value = localStorage.getItem(possibleKeys[i]);
+
+    if(!value) continue;
+
+    try{
+      let parsed = JSON.parse(value);
+
+      if(Array.isArray(parsed)){
+        return parsed.length;
+      }
+
+      if(parsed && typeof parsed === "object"){
+        return Object.keys(parsed).length;
+      }
+
+    }catch(error){
+      continue;
+    }
+
+  }
+
+  return 0;
+
+}
+
+/* =========================
+   HAS KEYS CONTAINING
+   Full function name: hasKeysContaining()
+========================= */
+function hasKeysContaining(words){
+
+  let keys = getLocalStorageKeys();
+
+  return keys.some(function(key){
+
+    let lowerKey = key.toLowerCase();
+
+    return words.some(function(word){
+      return lowerKey.includes(word.toLowerCase());
+    });
+
+  });
+
+}
+
+/* =========================
+   LOAD SAVED DATA SUMMARY
+   Full function name: loadSavedDataSummary()
+========================= */
+function loadSavedDataSummary(){
+
+  let quranBookmarkCount = document.getElementById("quranBookmarkCount");
+  let duaFavoriteCount = document.getElementById("duaFavoriteCount");
+  let qazaDataStatus = document.getElementById("qazaDataStatus");
+  let trackerDataStatus = document.getElementById("trackerDataStatus");
+
+  let quranCount = countArrayStorage([
+    "quranBookmarks",
+    "quranBookmarkList",
+    "arabicQuranBookmarks",
+    "quran15Bookmarks",
+    "quran16Bookmarks"
+  ]);
+
+  let duaCount = countArrayStorage([
+    "duaFavorites",
+    "favoriteDuas",
+    "duapageFavorites"
+  ]);
+
+  let hasQaza = hasKeysContaining(["qaza"]);
+  let hasTracker = hasKeysContaining(["taskList"]) || getLocalStorageKeys().some(function(key){
+    return /^\d{4}-\d{2}-\d{2}$/.test(key) || /^salah-\d{4}-\d{2}-\d{2}$/.test(key);
+  });
+
+  if(quranBookmarkCount){
+    quranBookmarkCount.innerText = quranCount + (quranCount === 1 ? " bookmark" : " bookmarks");
+  }
+
+  if(duaFavoriteCount){
+    duaFavoriteCount.innerText = duaCount + (duaCount === 1 ? " favorite" : " favorites");
+  }
+
+  if(qazaDataStatus){
+    qazaDataStatus.innerText = hasQaza ? "Saved" : "Empty";
+  }
+
+  if(trackerDataStatus){
+    trackerDataStatus.innerText = hasTracker ? "Saved" : "Empty";
+  }
+
+}
+
+/* =========================
+   CLEAR QURAN BOOKMARKS
+   Full function name: clearQuranBookmarks()
+========================= */
+function clearQuranBookmarks(){
+
+  let ok = confirm("Clear Quran bookmarks only?");
+
+  if(!ok) return;
+
+  [
+    "quranBookmarks",
+    "quranBookmarkList",
+    "arabicQuranBookmarks",
+    "quran15Bookmarks",
+    "quran16Bookmarks"
+  ].forEach(function(key){
+    localStorage.removeItem(key);
+  });
+
+  loadSavedDataSummary();
+  showSettingsToast("Quran bookmarks cleared");
+
+}
+
+/* =========================
+   SAFE MASTER RESET APP
+   Full function name: safeMasterResetApp()
+========================= */
+async function safeMasterResetApp(){
+
+  let ok = confirm("Safe Master Reset will reset app settings and cache, but keep tracker history and completed tasks. Continue?");
+
+  if(!ok) return;
+
+  [
+    "ibadahFolderReturnPage",
+    "qazaReturnPage",
+    "tasbihReturnPage",
+    "appSettingsReturnPage",
+    "ibadahOpenAppSettings",
+    "juz30OfflineDownloaded",
+    "quran16FullDownloaded",
+    "quran15FullDownloaded"
+  ].forEach(function(key){
+    localStorage.removeItem(key);
+  });
+
+  try{
+
+    if("caches" in window){
+
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+        if(cacheName.includes("runtime") || cacheName.includes("test")){
+          await caches.delete(cacheName);
+        }
+      }
+
+    }
+
+    showSettingsToast("Safe reset complete");
+
+  }catch(error){
+
+    console.log(error);
+    showSettingsToast("Safe reset done");
+
+  }
+
+}
+
+/* =========================
+   CLEAR ALL DATA ONLY AFTER BACKUP
+   Full function name: clearAllDataOnlyAfterBackup()
+========================= */
+async function clearAllDataOnlyAfterBackup(){
+
+  let firstConfirm = confirm("This will delete ALL saved data on this device. Make a backup first. Continue?");
+  if(!firstConfirm) return;
+
+  let secondConfirm = confirm("Are you sure? This deletes tracker history, tasks, Salah checks, bookmarks, and all saved data.");
+  if(!secondConfirm) return;
+
+  localStorage.clear();
+
+  if("caches" in window){
+
+    let cacheNames = await caches.keys();
+
+    for(let cacheName of cacheNames){
+      await caches.delete(cacheName);
+    }
+
+  }
+
+  alert("All data cleared.");
+  window.location.href = getIbadahBasePath() + "?v=" + Date.now();
+
+}
+
+/* =========================
+   REFRESH APP
+   Full function name: refreshApp()
+========================= */
+async function refreshApp(){
+
+  try{
+
+    if("serviceWorker" in navigator){
+      let registrations = await navigator.serviceWorker.getRegistrations();
+
+      for(let registration of registrations){
+        if(registration && registration.update){
+          await registration.update();
+        }
+      }
+    }
+
+  }catch(error){
+    console.log("Refresh update failed:", error);
+  }
+
+  window.location.href = getIbadahBasePath() + "settings/?v=" + Date.now();
+
+}
+
+/* =========================
+   START SETTINGS PAGE
+   Full function name: startSettingsPage()
+========================= */
+function startSettingsPage(){
+
+  loadDefaultPageSetting();
+  loadSavedLocation();
+  loadSavedDataSummary();
+
+}
+
+document.addEventListener("DOMContentLoaded", startSettingsPage);
+</script>
+
+</body>
+</html>
