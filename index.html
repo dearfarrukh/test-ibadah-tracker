@@ -513,13 +513,32 @@ function openSelectedDefaultPage(){
 
 }
 
+
+     /* =========================
+   GET IBADAH BASE PATH
+   Full function name: getIbadahBasePath()
+========================= */
+function getIbadahBasePath(){
+
+  if(window.location.pathname.includes("/test-ibadah-tracker/")){
+    return "/test-ibadah-tracker/";
+  }
+
+  if(window.location.pathname.includes("/ibadah-tracker/")){
+    return "/ibadah-tracker/";
+  }
+
+  return "/";
+
+}
+
 /* =========================
    OPEN HOME PAGE
    Full function name: openHomePage()
 ========================= */
 function openHomePage(){
 
-  window.location.href = "home/";
+  window.location.href = getIbadahBasePath() + "home/";
 
 }
 
