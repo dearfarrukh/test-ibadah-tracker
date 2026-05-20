@@ -511,7 +511,6 @@ body{
   display:block;
   width:100%;
   height:100%;
-  min-width:100%;
   max-width:100%;
   border:none;
   outline:none;
@@ -1640,7 +1639,7 @@ function buildTrackerPdfViewUrl(pdfUrl){
 
   let cleanUrl = String(pdfUrl || "").split("#")[0];
 
-  return cleanUrl + "#toolbar=0&navpanes=0&scrollbar=1&statusbar=0&messages=0&view=Fit";
+  return cleanUrl + "#toolbar=0&navpanes=0&scrollbar=1&statusbar=0&messages=0&zoom=page-width";
 
 }
 
@@ -1703,27 +1702,7 @@ function closeTrackerPdfReader(){
 
 
      
-/* =========================
-   CLOSE TRACKER PDF READER
-   Full function name: closeTrackerPdfReader()
-========================= */
-function closeTrackerPdfReader(){
 
-  let readerPage = document.getElementById("trackerPdfReaderPage");
-  let frame = document.getElementById("trackerPdfFrame");
-
-  if(frame){
-    frame.src = "about:blank";
-  }
-
-  if(readerPage){
-    readerPage.style.display = "none";
-  }
-
-  document.documentElement.style.overflow = "";
-  document.body.style.overflow = "";
-
-}
 
 /* =========================
    OPEN CURRENT PDF FULL SCREEN
