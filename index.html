@@ -810,19 +810,58 @@ function handleImportBackupFile(event){
 
       let backup = JSON.parse(e.target.result);
 
-      if(!backup || !backup.localStorage){
+      /*
+        This supports both backup styles:
+
+        1. New clean test app backup:
+           backup.localStorage
+
+        2. Real Ibadah app backup:
+           backup.storage
+           backup.taskList
+      */
+      let importedStorage = null;
+
+      if(backup && backup.localStorage && typeof backup.localStorage === "object"){
+        importedStorage = backup.localStorage;
+      }
+
+      if(backup && backup.storage && typeof backup.storage === "object"){
+        importedStorage = backup.storage;
+      }
+
+      if(!importedStorage){
         alert("This backup file is not valid.");
+        event.target.value = "";
         return;
       }
 
       localStorage.clear();
 
-      Object.keys(backup.localStorage).forEach(function(key){
-        localStorage.setItem(key, backup.localStorage[key]);
+      Object.keys(importedStorage).forEach(function(key){
+        localStorage.setItem(key, importedStorage[key]);
       });
 
+      /*
+        Your real app backup has taskList outside storage.
+        This saves it into localStorage so the test tracker can read it.
+      */
+      if(backup.taskList && Array.isArray(backup.taskList)){
+        localStorage.setItem("taskList", JSON.stringify(backup.taskList));
+      }
+
+      /*
+        Remove old one-time return keys so imported backup does not force
+        the app to open the wrong page after import.
+      */
+      localStorage.removeItem("ibadahFolderReturnPage");
+      localStorage.removeItem("qazaReturnPage");
+      localStorage.removeItem("tasbihReturnPage");
+      localStorage.removeItem("appSettingsReturnPage");
+
       alert("Backup imported successfully.");
-      location.reload();
+
+      window.location.href = getIbadahBasePath() + "?v=" + Date.now();
 
     }catch(error){
 
