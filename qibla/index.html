@@ -26,11 +26,32 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); min-height:100vh; font-family:'Inter',sans-serif; padding-bottom:40px; }
 
-    .page-header {
+      .page-header {
       display:flex; align-items:center; gap:12px;
       padding:14px 16px;
       padding-top:calc(env(safe-area-inset-top,16px) + 10px);
       background:white; box-shadow:0 1px 0 var(--border);
+    }
+
+    .back-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:50%;
+      background:#f2f2f7;
+      color:#111;
+      font-size:28px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      flex-shrink:0;
+    }
+
+    .back-btn:active{
+      transform:scale(0.96);
     }
 
     .header-title { font-size:17px; font-weight:700; flex:1; text-align:center; }
