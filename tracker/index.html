@@ -446,6 +446,7 @@ body{
   padding:calc(env(safe-area-inset-top) + 10px) 4% 10px 4%;
   background:rgba(233,233,238,0.96);
   backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -465,19 +466,19 @@ body{
   overflow:auto;
   -webkit-overflow-scrolling:touch;
   display:flex;
-  align-items:center;
-  justify-content:center;
+  align-items:flex-start;
+  justify-content:center; /* centers PDF horizontally */
 }
 
 #trackerPdfFrame{
-  width:100%;
-  max-width:100%;
-  min-height:100%;
-  height:auto;
+  max-width:100%; /* prevents going beyond sides */
+  width:auto; /* allows it to shrink if smaller screen */
+  height:100%;
   border:none;
   outline:none;
   background:white;
   display:block;
+  object-fit:contain;
 }
 
 /* =========================
