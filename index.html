@@ -811,13 +811,15 @@ function handleImportBackupFile(event){
       let backup = JSON.parse(e.target.result);
 
       /*
-        This supports both backup styles:
+        This supports different backup styles:
 
-        1. New clean test app backup:
+        1. New clean app backup:
            backup.localStorage
 
         2. Real Ibadah app backup:
            backup.storage
+
+        3. Some backups may have:
            backup.taskList
       */
       let importedStorage = null;
@@ -843,12 +845,46 @@ function handleImportBackupFile(event){
       });
 
       /*
-        Your real app backup has taskList outside storage.
-        This saves it into localStorage so the test tracker can read it.
+        IMPORTANT:
+        Restore manually added tracker tasks.
+
+        This restores:
+        - manually added tasks
+        - specific-day tasks
+        - date-range tasks
+        - start-today tasks
       */
+      let restoredTaskList = null;
+
       if(backup.taskList && Array.isArray(backup.taskList)){
-        localStorage.setItem("taskList", JSON.stringify(backup.taskList));
+        restoredTaskList = backup.taskList;
       }
+
+      if(importedStorage.taskList){
+        try{
+          let parsedTaskList = JSON.parse(importedStorage.taskList);
+
+          if(Array.isArray(parsedTaskList)){
+            restoredTaskList = parsedTaskList;
+          }
+
+        }catch(error){
+          console.log("Could not parse importedStorage.taskList", error);
+        }
+      }
+
+      if(restoredTaskList && Array.isArray(restoredTaskList)){
+        localStorage.setItem("taskList", JSON.stringify(restoredTaskList));
+      }
+
+      /*
+        Keep completed tracker history and Salah history.
+        These are already restored because we copied all importedStorage keys.
+
+        Examples:
+        - 2026-05-20
+        - salah-2026-05-20
+      */
 
       /*
         Remove old one-time return keys so imported backup does not force
@@ -858,6 +894,7 @@ function handleImportBackupFile(event){
       localStorage.removeItem("qazaReturnPage");
       localStorage.removeItem("tasbihReturnPage");
       localStorage.removeItem("appSettingsReturnPage");
+      localStorage.removeItem("ibadahOpenAppSettings");
 
       alert("Backup imported successfully.");
 
