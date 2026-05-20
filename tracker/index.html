@@ -421,7 +421,7 @@ body{
 }
 
 /* =========================
-   PDF READER PAGE - FIXED SIZE
+   PDF READER PAGE - FIXED SIZE FIXED
 ========================= */
 #trackerPdfReaderPage{
   display:none;
@@ -432,7 +432,6 @@ body{
   bottom:0;
   width:100vw;
   height:100vh;
-  height:100dvh;
   background:#e9e9ee;
   z-index:12000;
   overflow:hidden;
@@ -443,7 +442,6 @@ body{
   top:0;
   left:0;
   right:0;
-  width:100%;
   height:calc(env(safe-area-inset-top) + 62px);
   padding:calc(env(safe-area-inset-top) + 10px) 4% 10px 4%;
   background:rgba(233,233,238,0.96);
@@ -505,23 +503,24 @@ body{
   right:0;
   bottom:0;
   width:100%;
-  height:auto;
-  background:#525659;
+  height:calc(100% - (env(safe-area-inset-top) + 62px));
+  background:#e9e9ee;
   overflow:auto;
   -webkit-overflow-scrolling:touch;
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:center;
 }
 
 #trackerPdfFrame{
-  display:block;
   width:100%;
   height:100%;
-  min-height:100%;
+  max-width:100%;
+  max-height:100%;
   border:none;
-  outline:none;
   background:white;
+  display:block;
+  object-fit:contain;
 }
 
 /* =========================
@@ -1655,34 +1654,26 @@ function buildTrackerPdfViewUrl(pdfUrl){
    Full function name: openTrackerPdfReader()
 ========================= */
 function openTrackerPdfReader(title, pdfUrl){
-
   currentTrackerPdfUrl = pdfUrl;
 
   let readerPage = document.getElementById("trackerPdfReaderPage");
   let frame = document.getElementById("trackerPdfFrame");
   let titleBox = document.getElementById("trackerPdfTitle");
 
-  if(titleBox){
-    titleBox.innerText = title || "PDF Reader";
-  }
+  if(titleBox) titleBox.innerText = title || "PDF Reader";
 
   if(frame){
-    frame.src = "about:blank";
-
-    setTimeout(function(){
-      frame.src = buildTrackerPdfViewUrl(pdfUrl);
+    frame.src = "about:blank"; // clear previous PDF
+    setTimeout(()=>{
+      frame.src = pdfUrl + "#toolbar=0&navpanes=0&scrollbar=1&view=FitH"; 
     }, 50);
   }
 
-  if(readerPage){
-    readerPage.style.display = "block";
-  }
+  if(readerPage) readerPage.style.display = "block";
 
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
-
 }
-
 /* =========================
    CLOSE TRACKER PDF READER
    Full function name: closeTrackerPdfReader()
