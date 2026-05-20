@@ -110,12 +110,47 @@ display:block;
 }
 
 /* =========================
+   DAILY AZKAR TABS
+========================= */
+.azkarTabs{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:0 0 14px 0;
+margin-bottom:8px;
+scrollbar-width:none;
+-webkit-overflow-scrolling:touch;
+}
+
+.azkarTabs::-webkit-scrollbar{
+display:none;
+}
+
+.azkarTabBtn{
+border:none;
+border-radius:999px;
+background:white;
+color:#555;
+font-size:14px;
+font-weight:850;
+padding:10px 16px;
+white-space:nowrap;
+box-shadow:0 5px 14px rgba(0,0,0,0.06);
+cursor:pointer;
+}
+
+.azkarTabBtn.active{
+background:#111;
+color:white;
+}
+
+/* =========================
    DAILY AZKAR HERO CARD
 ========================= */
 .dailyAzkarHeroCard{
 background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,248,250,0.94) 100%);
 border-radius:30px;
-padding:26px 6%;
+padding:22px 6%;
 text-align:center;
 box-shadow:0 10px 30px rgba(0,0,0,0.08);
 border:1px solid rgba(255,255,255,0.75);
@@ -123,24 +158,24 @@ margin-bottom:18px;
 }
 
 .dailyAzkarHeroIcon{
-font-size:34px;
-margin-bottom:10px;
-}
-
-.dailyAzkarHeroTitle{
-font-size:28px;
-font-weight:900;
-letter-spacing:-0.5px;
-line-height:1.1;
+font-size:32px;
 margin-bottom:8px;
 }
 
+.dailyAzkarHeroTitle{
+font-size:25px;
+font-weight:900;
+letter-spacing:-0.5px;
+line-height:1.1;
+margin-bottom:7px;
+}
+
 .dailyAzkarHeroText{
-font-size:15px;
-font-weight:600;
+font-size:14px;
+font-weight:650;
 color:#666;
 line-height:1.6;
-max-width:320px;
+max-width:330px;
 margin:0 auto;
 }
 
@@ -214,7 +249,7 @@ color:#8a8a8a;
 }
 
 .zikrActions{
-width:50px;
+width:56px;
 display:flex;
 flex-direction:column;
 align-items:center;
@@ -252,6 +287,31 @@ display:flex;
 align-items:center;
 justify-content:center;
 box-shadow:0 6px 14px rgba(0,0,0,0.16);
+}
+
+.zikrAddToListBtn{
+min-width:54px;
+height:36px;
+border:none;
+border-radius:999px;
+background:#111;
+color:white;
+font-size:13px;
+font-weight:900;
+cursor:pointer;
+padding:0 12px;
+}
+
+.zikrAddedBtn{
+min-width:54px;
+height:36px;
+border:none;
+border-radius:999px;
+background:#e8f8ee;
+color:#22863a;
+font-size:13px;
+font-weight:900;
+padding:0 12px;
 }
 
 /* =========================
@@ -346,6 +406,10 @@ display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:24px;
+font-family:'Amiri','Noto Naskh Arabic',serif;
+font-size:30px;
+line-height:2;
+direction:rtl;
 }
 
 .zikrArabicBig img{
@@ -544,8 +608,8 @@ z-index:10001;
 
 #zikrCardMenuBox{
 position:fixed;
-min-width:180px;
-max-width:230px;
+min-width:190px;
+max-width:240px;
 background:rgba(255,255,255,0.98);
 backdrop-filter:blur(18px);
 -webkit-backdrop-filter:blur(18px);
@@ -602,6 +666,62 @@ opacity:1;
 }
 }
 
+/* =========================
+   EMPTY STATE
+========================= */
+.emptyZikrBox{
+padding:55px 8%;
+text-align:center;
+}
+
+.emptyZikrIcon{
+font-size:52px;
+opacity:0.45;
+margin-bottom:12px;
+}
+
+.emptyZikrTitle{
+font-size:20px;
+font-weight:900;
+margin-bottom:8px;
+}
+
+.emptyZikrText{
+font-size:15px;
+font-weight:600;
+line-height:1.6;
+color:#666;
+}
+
+/* =========================
+   SMALL TOAST
+========================= */
+.azkarToast{
+position:fixed;
+left:50%;
+bottom:145px;
+transform:translateX(-50%) translateY(16px);
+background:rgba(0,0,0,0.88);
+color:white;
+padding:12px 18px;
+border-radius:999px;
+font-size:14px;
+font-weight:800;
+z-index:20000;
+opacity:0;
+pointer-events:none;
+transition:0.25s ease;
+white-space:nowrap;
+max-width:88%;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.azkarToast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0);
+}
+
 </style>
 </head>
 
@@ -620,13 +740,20 @@ opacity:1;
 ========================= -->
 <div id="dailyAzkarMainPage" class="dailyAzkarPage active">
 
-  
+  <!-- TABS -->
+  <div id="azkarTabs" class="azkarTabs"></div>
 
-  <!-- BUILT-IN ZIKR LIST -->
-  <div id="builtInZikrList"></div>
+  <!-- HERO -->
+  <div id="dailyAzkarHeroCard" class="dailyAzkarHeroCard">
+    <div id="dailyAzkarHeroIcon" class="dailyAzkarHeroIcon">🌿</div>
+    <div id="dailyAzkarHeroTitle" class="dailyAzkarHeroTitle">My List</div>
+    <div id="dailyAzkarHeroText" class="dailyAzkarHeroText">
+      Your daily zikr list. Some default zikr cannot be deleted.
+    </div>
+  </div>
 
-  <!-- CUSTOM ZIKR LIST -->
-  <div id="customZikrList"></div>
+  <!-- ACTIVE ZIKR LIST -->
+  <div id="activeZikrList"></div>
 
 </div>
 
@@ -691,6 +818,10 @@ opacity:1;
 
     <button id="zikrManualDoneMenuBtn" class="menuOptionBtn" onclick="handleManualDoneFromZikrMenu()">
       Mark as Done
+    </button>
+
+    <button id="zikrRemoveFromMyListMenuBtn" class="menuOptionBtn menuOptionDanger" onclick="removeLibraryZikrFromMyListFromMenu()" style="display:none;">
+      Remove from My List
     </button>
 
     <button id="zikrEditCustomMenuBtn" class="menuOptionBtn" onclick="openEditCustomFromMenu()" style="display:none;">
@@ -812,8 +943,8 @@ opacity:1;
     <div class="popupTitle">Reset all zikr counts?</div>
 
     <div class="popupText">
-      This will reset all built-in and custom zikr counts to 0.<br>
-      Your saved targets will stay the same.
+      This will reset all zikr counts to 0.<br>
+      Your saved targets and My List will stay the same.
     </div>
 
     <button class="popupDangerBtn" onclick="confirmResetAllZikr()">
@@ -928,6 +1059,11 @@ opacity:1;
 </div>
 
 <!-- =========================
+     TOAST MESSAGE
+========================= -->
+<div id="azkarToast" class="azkarToast"></div>
+
+<!-- =========================
      DAILY AZKAR JAVASCRIPT
 ========================= -->
 <script>
@@ -943,49 +1079,243 @@ let currentZikrTargetEdit = "";
 let currentZikrCardMenuName = "";
 let currentZikrManualDoneEdit = "";
 let editingCustomZikrId = "";
+let currentAzkarTab = "My List";
+
+/* =========================
+   DAILY AZKAR TAB ORDER
+========================= */
+const azkarTabs = [
+  "My List",
+  "All",
+  "Morning",
+  "Evening",
+  "Salah",
+  "Food",
+  "Travel"
+];
 
 /* =========================
    BUILT-IN ZIKR DATA
 ========================= */
 const zikrData = {
+
   subhanallah: {
     title: "SubhanAllahi wa bihamdihi",
     shortArabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+    category: "My List",
+    locked: true,
     hadith: `نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:<br>"دو کلمے زبان پر ہلکے ہیں لیکن میزان میں انتہائی وزنی اور اللہ تعالیٰ کو از حد محبوب ہیں"`,
     arabic: `سُبْحَانَ اللَّهِ وَبِحَمْدِهِ<br>سُبْحَانَ اللَّهِ الْعَظِيم`,
     meaning: `"پاک ہے اللہ اپنی خوبیوں سمیت، پاک ہے اللہ بہت عظمت والا"`,
     ref: `صحیح البخاری، حدیث: 6682`
   },
- hawqala: {
+
+  hawqala: {
     title: "La hawla wa la quwwata illa billah",
     shortArabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ",
+    category: "My List",
+    locked: true,
     hadith: `نبی صلی اللہ علیہ وآلہ وسلم نے فرمایا:<br>"کیا میں تمہیں جنت کے خزانوں میں سے ایک خزانے کے متعلق نہ بتاؤں؟"`,
-
     arabic: `<img src="../duas/La-hawla.jpg" alt="La Hawla">`,
-
     meaning: `گناہ سے بچنے کی ہمت ہے نہ نیکی کرنے کی طاقت مگر اللہ ہی کی توفیق سے۔`,
-
     ref: `صحیح البخاری، حدیث: 6409`
   },
+
   farghirizq: {
     title: "Farghi Rizq",
     shortArabic: "رَبَّنَا أَنزِلْ عَلَيْنَا مَائِدَةً",
+    category: "My List",
+    locked: true,
     hadith: `Farghi Rizq Dua`,
     arabic: `<img src="../duas/Faraghi-rizq.png" alt="Farghi Rizq">`,
     meaning: `اے ہمارے رب! ہم پر آسمان سے خوان نازل فرما جو ہمارے اگلوں اور پچھلوں کے لیے عید ہو اور تیری طرف سے نشانی ہو، اور ہمیں رزق عطا فرما، اور تو بہترین رزق دینے والا ہے۔`,
     ref: `Surah Al-Ma'idah — Ayah 114`
   },
+
   alhamdulillah: {
     title: "Alhamdulillah",
     shortArabic: "ٱلْحَمْدُ لِلَّٰهِ",
+    category: "My List",
+    locked: true,
     hadith: `Alhamdulillah is a blessed word of praise.`,
     arabic: `ٱلْحَمْدُ لِلَّٰهِ`,
     meaning: `تمام تعریفیں اللہ ہی کے لیے ہیں۔`,
     ref: `صحیح مسلم، حدیث: 223`
+  },
+
+  morning_subhanallah_100: {
+    title: "SubhanAllahi wa bihamdihi 100 times",
+    shortArabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+    category: "Morning",
+    library: true,
+    defaultTarget: 100,
+    hadith: `Morning zikr for reward and forgiveness.`,
+    arabic: `سُبْحَانَ اللَّهِ وَبِحَمْدِهِ`,
+    meaning: `پاک ہے اللہ اپنی حمد کے ساتھ۔`,
+    ref: `صحیح البخاری / صحیح مسلم`
+  },
+
+  morning_protection: {
+    title: "Morning Protection Zikr",
+    shortArabic: "بِسْمِ اللّٰهِ الَّذِي لَا يَضُرُّ",
+    category: "Morning",
+    library: true,
+    defaultTarget: 3,
+    hadith: `Recite in the morning for protection by Allah's permission.`,
+    arabic: `بِسْمِ اللّٰهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ`,
+    meaning: `اللہ کے نام کے ساتھ، جس کے نام کے ساتھ زمین و آسمان میں کوئی چیز نقصان نہیں دیتی۔`,
+    ref: `سنن ابی داود`
+  },
+
+  morning_ayatul_kursi: {
+    title: "Ayatul Kursi Morning",
+    shortArabic: "اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ",
+    category: "Morning",
+    library: true,
+    defaultTarget: 1,
+    hadith: `Recite Ayatul Kursi in morning protection routine.`,
+    arabic: `اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ`,
+    meaning: `اللہ کے سوا کوئی معبود نہیں، وہ زندہ اور قائم رکھنے والا ہے۔`,
+    ref: `Surah Al-Baqarah 2:255`
+  },
+
+  evening_protection: {
+    title: "Evening Protection Zikr",
+    shortArabic: "بِسْمِ اللّٰهِ الَّذِي لَا يَضُرُّ",
+    category: "Evening",
+    library: true,
+    defaultTarget: 3,
+    hadith: `Recite in the evening for protection by Allah's permission.`,
+    arabic: `بِسْمِ اللّٰهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ`,
+    meaning: `اللہ کے نام کے ساتھ، جس کے نام کے ساتھ زمین و آسمان میں کوئی چیز نقصان نہیں دیتی۔`,
+    ref: `سنن ابی داود`
+  },
+
+  evening_hasbiyallah: {
+    title: "Hasbiyallahu Zikr",
+    shortArabic: "حَسْبِيَ اللَّهُ لَا إِلٰهَ إِلَّا هُوَ",
+    category: "Evening",
+    library: true,
+    defaultTarget: 7,
+    hadith: `A beautiful evening zikr of trust in Allah.`,
+    arabic: `حَسْبِيَ اللَّهُ لَا إِلٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ`,
+    meaning: `میرے لیے اللہ کافی ہے، اس کے سوا کوئی معبود نہیں، اسی پر میں نے بھروسہ کیا۔`,
+    ref: `التوبہ 9:129`
+  },
+
+  salah_subhanallah: {
+    title: "After Salah — SubhanAllah",
+    shortArabic: "سُبْحَانَ اللَّهِ",
+    category: "Salah",
+    library: true,
+    defaultTarget: 33,
+    hadith: `After salah tasbih.`,
+    arabic: `سُبْحَانَ اللَّهِ`,
+    meaning: `اللہ پاک ہے۔`,
+    ref: `صحیح مسلم`
+  },
+
+  salah_alhamdulillah: {
+    title: "After Salah — Alhamdulillah",
+    shortArabic: "الْحَمْدُ لِلَّهِ",
+    category: "Salah",
+    library: true,
+    defaultTarget: 33,
+    hadith: `After salah tahmeed.`,
+    arabic: `الْحَمْدُ لِلَّهِ`,
+    meaning: `تمام تعریفیں اللہ کے لیے ہیں۔`,
+    ref: `صحیح مسلم`
+  },
+
+  salah_allahuakbar: {
+    title: "After Salah — Allahu Akbar",
+    shortArabic: "اللَّهُ أَكْبَرُ",
+    category: "Salah",
+    library: true,
+    defaultTarget: 34,
+    hadith: `After salah takbeer.`,
+    arabic: `اللَّهُ أَكْبَرُ`,
+    meaning: `اللہ سب سے بڑا ہے۔`,
+    ref: `صحیح مسلم`
+  },
+
+  food_bismillah: {
+    title: "Before Eating",
+    shortArabic: "بِسْمِ اللَّهِ",
+    category: "Food",
+    library: true,
+    defaultTarget: 1,
+    hadith: `Say Bismillah before eating.`,
+    arabic: `بِسْمِ اللَّهِ`,
+    meaning: `اللہ کے نام سے۔`,
+    ref: `سنن ابی داود`
+  },
+
+  food_alhamdulillah: {
+    title: "After Eating",
+    shortArabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا",
+    category: "Food",
+    library: true,
+    defaultTarget: 1,
+    hadith: `Say this after eating.`,
+    arabic: `الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مِنَ الْمُسْلِمِينَ`,
+    meaning: `تمام تعریفیں اللہ کے لیے ہیں جس نے ہمیں کھلایا، پلایا اور مسلمانوں میں سے بنایا۔`,
+    ref: `سنن ابی داود`
+  },
+
+  travel_subhanallazi: {
+    title: "Travel Zikr",
+    shortArabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هٰذَا",
+    category: "Travel",
+    library: true,
+    defaultTarget: 1,
+    hadith: `Dua when beginning travel.`,
+    arabic: `سُبْحَانَ الَّذِي سَخَّرَ لَنَا هٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنقَلِبُونَ`,
+    meaning: `پاک ہے وہ ذات جس نے اسے ہمارے قابو میں کیا، ورنہ ہم اسے قابو کرنے والے نہ تھے۔`,
+    ref: `القرآن 43:13-14`
+  },
+
+  travel_takbeer: {
+    title: "Travel Takbeer",
+    shortArabic: "اللَّهُ أَكْبَرُ",
+    category: "Travel",
+    library: true,
+    defaultTarget: 3,
+    hadith: `Takbeer while starting a journey.`,
+    arabic: `اللَّهُ أَكْبَرُ`,
+    meaning: `اللہ سب سے بڑا ہے۔`,
+    ref: `Travel remembrance`
   }
+
 };
 
-const builtInZikrOrder = ["subhanallah", "hawqala", "farghirizq", "alhamdulillah"];
+/* =========================
+   LOCKED DEFAULT MY LIST
+========================= */
+const builtInZikrOrder = [
+  "subhanallah",
+  "hawqala",
+  "farghirizq",
+  "alhamdulillah"
+];
+
+/* =========================
+   LIBRARY ZIKR ORDER
+========================= */
+const libraryZikrOrder = [
+  "morning_subhanallah_100",
+  "morning_protection",
+  "morning_ayatul_kursi",
+  "evening_protection",
+  "evening_hasbiyallah",
+  "salah_subhanallah",
+  "salah_alhamdulillah",
+  "salah_allahuakbar",
+  "food_bismillah",
+  "food_alhamdulillah",
+  "travel_subhanallazi",
+  "travel_takbeer"
+];
 
 /* =========================
    HANDLE DAILY AZKAR BACK
@@ -1005,14 +1335,20 @@ function handleDailyAzkarBack(){
   }
 
   window.location.href = "../index.html";
+
 }
 
 /* =========================
    SET DAILY AZKAR TITLE
 ========================= */
 function setDailyAzkarTitle(text){
+
   let title = document.getElementById("dailyAzkarTopTitle");
-  if(title) title.innerText = text;
+
+  if(title){
+    title.innerText = text;
+  }
+
 }
 
 /* =========================
@@ -1027,14 +1363,19 @@ function showDailyAzkarPageOnly(pageId){
   });
 
   let target = document.getElementById(pageId);
-  if(target) target.classList.add("active");
+
+  if(target){
+    target.classList.add("active");
+  }
 
   let floating = document.getElementById("dailyAzkarFloatingActions");
+
   if(floating){
     floating.style.display = pageId === "dailyAzkarMainPage" ? "block" : "none";
   }
 
   window.scrollTo(0,0);
+
 }
 
 /* =========================
@@ -1045,9 +1386,291 @@ function openDailyAzkarMainPage(){
   currentZikr = "";
   setDailyAzkarTitle("Daily Azkar");
   showDailyAzkarPageOnly("dailyAzkarMainPage");
-  renderBuiltInZikrCards();
-  renderCustomZikrCards();
+  renderAzkarTabs();
+  renderActiveZikrList();
   updateAllZikrCardUI();
+
+}
+
+/* =========================
+   RENDER AZKAR TABS
+========================= */
+function renderAzkarTabs(){
+
+  let box = document.getElementById("azkarTabs");
+
+  if(!box) return;
+
+  box.innerHTML = azkarTabs.map(function(tab){
+
+    let activeClass = tab === currentAzkarTab ? "active" : "";
+
+    return `
+      <button class="azkarTabBtn ${activeClass}" onclick="selectAzkarTab('${tab}')">
+        ${tab}
+      </button>
+    `;
+
+  }).join("");
+
+}
+
+/* =========================
+   SELECT AZKAR TAB
+========================= */
+function selectAzkarTab(tabName){
+
+  currentAzkarTab = tabName;
+
+  renderAzkarTabs();
+  renderActiveZikrList();
+  updateAllZikrCardUI();
+
+}
+
+/* =========================
+   SET HERO TEXT
+========================= */
+function setAzkarHero(tabName){
+
+  let icon = document.getElementById("dailyAzkarHeroIcon");
+  let title = document.getElementById("dailyAzkarHeroTitle");
+  let text = document.getElementById("dailyAzkarHeroText");
+
+  if(!icon || !title || !text) return;
+
+  if(tabName === "My List"){
+    icon.innerText = "🌿";
+    title.innerText = "My List";
+    text.innerText = "Your daily zikr list. Default zikr cannot be deleted. Added zikr can be moved back.";
+    return;
+  }
+
+  if(tabName === "All"){
+    icon.innerText = "📚";
+    title.innerText = "All Zikr Library";
+    text.innerText = "Press Add to copy a zikr into My List.";
+    return;
+  }
+
+  icon.innerText = "🤲";
+  title.innerText = tabName + " Zikr";
+  text.innerText = "Press Add to save any zikr into My List.";
+
+}
+
+/* =========================
+   RENDER ACTIVE ZIKR LIST
+========================= */
+function renderActiveZikrList(){
+
+  let container = document.getElementById("activeZikrList");
+
+  if(!container) return;
+
+  setAzkarHero(currentAzkarTab);
+
+  container.innerHTML = "";
+
+  if(currentAzkarTab === "My List"){
+    renderMyListZikr(container);
+    return;
+  }
+
+  renderLibraryZikr(container, currentAzkarTab);
+
+}
+
+/* =========================
+   RENDER MY LIST ZIKR
+========================= */
+function renderMyListZikr(container){
+
+  let addedLibraryIds = getMyListLibraryZikrIds();
+  let customList = getCustomZikrList();
+
+  builtInZikrOrder.forEach(function(name){
+
+    let data = zikrData[name];
+
+    if(data){
+      container.innerHTML += createZikrCardHtml(name, data.title, data.shortArabic, "mylist");
+    }
+
+  });
+
+  addedLibraryIds.forEach(function(name){
+
+    let data = zikrData[name];
+
+    if(data){
+      container.innerHTML += createZikrCardHtml(name, data.title, data.shortArabic, "mylist");
+    }
+
+  });
+
+  customList.forEach(function(item){
+
+    let title = escapeHtml(item.englishName || "Custom Zikr");
+    let arabic = escapeHtml(item.arabicText || "");
+
+    container.innerHTML += createZikrCardHtml(item.id, title, arabic, "mylist");
+
+  });
+
+}
+
+/* =========================
+   RENDER LIBRARY ZIKR
+========================= */
+function renderLibraryZikr(container, tabName){
+
+  let list = libraryZikrOrder.filter(function(name){
+
+    let data = zikrData[name];
+
+    if(!data) return false;
+
+    if(tabName === "All") return true;
+
+    return data.category === tabName;
+
+  });
+
+  if(list.length === 0){
+
+    container.innerHTML = `
+      <div class="emptyZikrBox">
+        <div class="emptyZikrIcon">🤲</div>
+        <div class="emptyZikrTitle">No zikr here yet</div>
+        <div class="emptyZikrText">More zikr can be added later.</div>
+      </div>
+    `;
+
+    return;
+  }
+
+  list.forEach(function(name){
+
+    let data = zikrData[name];
+
+    container.innerHTML += createZikrCardHtml(name, data.title, data.shortArabic, "library");
+
+  });
+
+}
+
+/* =========================
+   GET MY LIST LIBRARY STORAGE KEY
+========================= */
+function getMyListLibraryZikrStorageKey(){
+
+  return "daily-azkar-my-list-library";
+
+}
+
+/* =========================
+   GET MY LIST LIBRARY ZIKR IDS
+========================= */
+function getMyListLibraryZikrIds(){
+
+  let saved = localStorage.getItem(getMyListLibraryZikrStorageKey());
+
+  if(!saved) return [];
+
+  try{
+    let parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(error){
+    return [];
+  }
+
+}
+
+/* =========================
+   SAVE MY LIST LIBRARY ZIKR IDS
+========================= */
+function saveMyListLibraryZikrIds(list){
+
+  localStorage.setItem(getMyListLibraryZikrStorageKey(), JSON.stringify(list));
+
+}
+
+/* =========================
+   ADD LIBRARY ZIKR TO MY LIST
+========================= */
+function addLibraryZikrToMyList(name){
+
+  if(!zikrData[name]) return;
+
+  let list = getMyListLibraryZikrIds();
+
+  if(!list.includes(name)){
+    list.push(name);
+    saveMyListLibraryZikrIds(list);
+
+    let defaultTarget = zikrData[name].defaultTarget || 33;
+
+    if(!localStorage.getItem(getZikrCardTargetKey(name))){
+      localStorage.setItem(getZikrCardTargetKey(name), String(defaultTarget));
+    }
+
+    showAzkarToast("Added to My List");
+  }else{
+    showAzkarToast("Already in My List");
+  }
+
+  renderActiveZikrList();
+  updateAllZikrCardUI();
+
+}
+
+/* =========================
+   REMOVE LIBRARY ZIKR FROM MY LIST
+========================= */
+function removeLibraryZikrFromMyList(name){
+
+  if(builtInZikrOrder.includes(name)){
+    showAzkarToast("Default zikr cannot be removed");
+    return;
+  }
+
+  let list = getMyListLibraryZikrIds();
+
+  list = list.filter(function(item){
+    return item !== name;
+  });
+
+  saveMyListLibraryZikrIds(list);
+
+  localStorage.removeItem(getZikrCardCountKey(name));
+  localStorage.removeItem(getZikrCardManualDoneKey(name));
+
+  showAzkarToast("Moved back to library");
+
+  currentAzkarTab = "My List";
+  renderAzkarTabs();
+  renderActiveZikrList();
+  updateAllZikrCardUI();
+
+}
+
+/* =========================
+   REMOVE LIBRARY ZIKR FROM MENU
+========================= */
+function removeLibraryZikrFromMyListFromMenu(){
+
+  let name = currentZikrCardMenuName;
+
+  closeZikrCardMenu();
+
+  if(!name) return;
+
+  let ok = confirm("Remove this zikr from My List?");
+
+  if(!ok) return;
+
+  removeLibraryZikrFromMyList(name);
 
 }
 
@@ -1067,100 +1690,144 @@ function getZikrDisplayTitle(name){
   }
 
   return name;
+
 }
 
 /* =========================
    GET ZIKR CARD COUNT KEY
 ========================= */
 function getZikrCardCountKey(name){
+
   return "zikr-card-count-" + name;
+
 }
 
 /* =========================
    GET ZIKR CARD COUNT
 ========================= */
 function getZikrCardCount(name){
+
   return parseInt(localStorage.getItem(getZikrCardCountKey(name)) || "0", 10);
+
 }
 
 /* =========================
    GET ZIKR CARD TARGET KEY
 ========================= */
 function getZikrCardTargetKey(name){
+
   return "zikr-card-target-" + name;
+
 }
 
 /* =========================
    GET ZIKR CARD TARGET
 ========================= */
 function getZikrCardTarget(name){
+
+  if(zikrData[name] && zikrData[name].defaultTarget){
+    return localStorage.getItem(getZikrCardTargetKey(name)) || String(zikrData[name].defaultTarget);
+  }
+
   return localStorage.getItem(getZikrCardTargetKey(name)) || "33";
+
 }
 
 /* =========================
    GET ZIKR CARD MANUAL DONE KEY
 ========================= */
 function getZikrCardManualDoneKey(name){
+
   return "zikr-card-manual-done-" + name;
+
 }
 
 /* =========================
    GET ZIKR CARD MANUAL DONE
 ========================= */
 function getZikrCardManualDone(name){
+
   return localStorage.getItem(getZikrCardManualDoneKey(name)) === "true";
+
 }
 
 /* =========================
    CREATE ZIKR CARD HTML
 ========================= */
-function createZikrCardHtml(name, title, arabic){
+function createZikrCardHtml(name, title, arabic, mode){
+
+  let safeTitle = escapeHtml(title || "");
+  let safeArabic = arabic || "";
+  let addedIds = getMyListLibraryZikrIds();
+  let isAdded = addedIds.includes(name) || builtInZikrOrder.includes(name);
+  let isLibraryMode = mode === "library";
+
+  if(isLibraryMode){
+
+    let addButton = "";
+
+    if(isAdded){
+      addButton = `
+        <button class="zikrAddedBtn" onclick="event.stopPropagation();">
+          Added
+        </button>
+      `;
+    }else{
+      addButton = `
+        <button class="zikrAddToListBtn" onclick="event.stopPropagation();addLibraryZikrToMyList('${name}')">
+          Add
+        </button>
+      `;
+    }
+
+    return `
+      <div class="zikrCard" onclick="openZikrDetail('${name}')">
+
+        <div class="zikrRing">
+          <div class="zikrRingInner">＋</div>
+        </div>
+
+        <div style="flex:1;min-width:0;">
+          <div class="zikrTitle">${safeTitle}</div>
+          <div class="zikrArabicSmall">${safeArabic}</div>
+          <div class="zikrProgressText">${escapeHtml(zikrData[name].category || "")}</div>
+        </div>
+
+        <div class="zikrActions">
+          ${addButton}
+        </div>
+
+      </div>
+    `;
+  }
 
   return `
-  <div class="zikrCard" onclick="openZikrDetail('${name}')">
+    <div class="zikrCard" onclick="openZikrDetail('${name}')">
 
-    <div id="zikrCardRing-${name}" class="zikrRing">
-      <div id="zikrCardRingText-${name}" class="zikrRingInner">0</div>
+      <div id="zikrCardRing-${name}" class="zikrRing">
+        <div id="zikrCardRingText-${name}" class="zikrRingInner">0</div>
+      </div>
+
+      <div style="flex:1;min-width:0;">
+        <div class="zikrTitle">${safeTitle}</div>
+        <div class="zikrArabicSmall">${safeArabic || ""}</div>
+        <div id="zikrCardProgressText-${name}" class="zikrProgressText">0 / 33</div>
+      </div>
+
+      <div class="zikrActions">
+
+        <button class="zikrMenuBtn" onclick="event.stopPropagation();openZikrCardMenu('${name}', event)">
+          ⋮
+        </button>
+
+        <button class="zikrStartBtn" onclick="event.stopPropagation();openZikrDetail('${name}')">
+          ▶
+        </button>
+
+      </div>
+
     </div>
-
-    <div style="flex:1;min-width:0;">
-      <div class="zikrTitle">${title}</div>
-      <div class="zikrArabicSmall">${arabic || ""}</div>
-      <div id="zikrCardProgressText-${name}" class="zikrProgressText">0 / 33</div>
-    </div>
-
-    <div class="zikrActions">
-
-      <button class="zikrMenuBtn" onclick="event.stopPropagation();openZikrCardMenu('${name}', event)">
-        ⋮
-      </button>
-
-      <button class="zikrStartBtn" onclick="event.stopPropagation();openZikrDetail('${name}')">
-        ▶
-      </button>
-
-    </div>
-
-  </div>
   `;
-}
-
-/* =========================
-   RENDER BUILT-IN ZIKR CARDS
-========================= */
-function renderBuiltInZikrCards(){
-
-  let container = document.getElementById("builtInZikrList");
-  if(!container) return;
-
-  container.innerHTML = "";
-
-  builtInZikrOrder.forEach(function(name){
-    let data = zikrData[name];
-    if(!data) return;
-
-    container.innerHTML += createZikrCardHtml(name, data.title, data.shortArabic);
-  });
 
 }
 
@@ -1205,6 +1872,7 @@ function updateSingleZikrCardUI(name){
       ringText.style.color = "#666";
     }
   }
+
 }
 
 /* =========================
@@ -1213,6 +1881,10 @@ function updateSingleZikrCardUI(name){
 function updateAllZikrCardUI(){
 
   builtInZikrOrder.forEach(function(name){
+    updateSingleZikrCardUI(name);
+  });
+
+  getMyListLibraryZikrIds().forEach(function(name){
     updateSingleZikrCardUI(name);
   });
 
@@ -1238,7 +1910,7 @@ function openZikrDetail(name){
     zikrTarget = 33;
   }
 
-  if(zikrTarget !== "inf" && zikrCount > zikrTarget){
+  if(zikrCount > zikrTarget){
     zikrContinuePastTarget = true;
   }else{
     zikrContinuePastTarget = false;
@@ -1256,6 +1928,7 @@ function openZikrDetail(name){
     }
 
     data = {
+      title: customItem.englishName || "Custom Zikr",
       hadith: "Your custom zikr",
       arabic: escapeHtml(customItem.arabicText),
       meaning: escapeHtml(customItem.englishName),
@@ -1304,6 +1977,7 @@ function openZikrDetail(name){
 function updateZikrDisplay(){
 
   let countText = document.getElementById("zikrCountText");
+
   if(!countText) return;
 
   countText.innerText = zikrCount + " / " + zikrTarget;
@@ -1374,7 +2048,10 @@ function continueAfterTarget(){
   zikrContinuePastTarget = true;
 
   let popup = document.getElementById("zikrTargetReachedPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
 }
 
@@ -1386,7 +2063,10 @@ function resetAfterTarget(){
   resetZikrTasbih();
 
   let popup = document.getElementById("zikrTargetReachedPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
 }
 
@@ -1402,6 +2082,7 @@ function openZikrCardMenu(name, event){
   let manualBtn = document.getElementById("zikrManualDoneMenuBtn");
   let editCustomBtn = document.getElementById("zikrEditCustomMenuBtn");
   let deleteCustomBtn = document.getElementById("zikrDeleteCustomMenuBtn");
+  let removeFromMyListBtn = document.getElementById("zikrRemoveFromMyListMenuBtn");
 
   if(!popup || !box) return;
 
@@ -1424,9 +2105,18 @@ function openZikrCardMenu(name, event){
   if(isCustomZikr(name)){
     if(editCustomBtn) editCustomBtn.style.display = "block";
     if(deleteCustomBtn) deleteCustomBtn.style.display = "block";
+    if(removeFromMyListBtn) removeFromMyListBtn.style.display = "none";
   }else{
     if(editCustomBtn) editCustomBtn.style.display = "none";
     if(deleteCustomBtn) deleteCustomBtn.style.display = "none";
+
+    if(removeFromMyListBtn){
+      if(getMyListLibraryZikrIds().includes(name)){
+        removeFromMyListBtn.style.display = "block";
+      }else{
+        removeFromMyListBtn.style.display = "none";
+      }
+    }
   }
 
   popup.style.display = "block";
@@ -1434,8 +2124,8 @@ function openZikrCardMenu(name, event){
   let x = event.clientX || 220;
   let y = event.clientY || 140;
 
-  box.style.left = Math.max(12, Math.min(x - 170, window.innerWidth - 240)) + "px";
-  box.style.top = Math.max(70, Math.min(y + 8, window.innerHeight - 230)) + "px";
+  box.style.left = Math.max(12, Math.min(x - 170, window.innerWidth - 250)) + "px";
+  box.style.top = Math.max(70, Math.min(y + 8, window.innerHeight - 250)) + "px";
 
 }
 
@@ -1445,7 +2135,10 @@ function openZikrCardMenu(name, event){
 function closeZikrCardMenu(){
 
   let popup = document.getElementById("zikrCardMenuPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
 }
 
@@ -1455,14 +2148,10 @@ function closeZikrCardMenu(){
 function openEditTargetFromZikrMenu(){
 
   let name = currentZikrCardMenuName;
+
   closeZikrCardMenu();
 
   if(!name) return;
-
-  if(isCustomZikr(name)){
-    openEditCustomZikrPopup(name);
-    return;
-  }
 
   openZikrTargetPopup(name);
 
@@ -1479,10 +2168,17 @@ function openZikrTargetPopup(name){
   let title = document.getElementById("zikrTargetPopupTitle");
   let input = document.getElementById("zikrCustomTargetInput");
 
-  if(title) title.innerText = getZikrDisplayTitle(name);
-  if(input) input.value = "";
+  if(title){
+    title.innerText = getZikrDisplayTitle(name);
+  }
 
-  if(popup) popup.style.display = "flex";
+  if(input){
+    input.value = "";
+  }
+
+  if(popup){
+    popup.style.display = "flex";
+  }
 
 }
 
@@ -1492,7 +2188,10 @@ function openZikrTargetPopup(name){
 function closeZikrTargetPopup(){
 
   let popup = document.getElementById("zikrTargetPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
 }
 
@@ -1524,6 +2223,7 @@ function saveCustomZikrCardTarget(){
   if(!currentZikrTargetEdit) return;
 
   let input = document.getElementById("zikrCustomTargetInput");
+
   if(!input) return;
 
   let value = parseInt(input.value, 10);
@@ -1543,6 +2243,7 @@ function saveCustomZikrCardTarget(){
 function handleManualDoneFromZikrMenu(){
 
   let name = currentZikrCardMenuName;
+
   closeZikrCardMenu();
 
   if(!name) return;
@@ -1597,7 +2298,10 @@ function openZikrManualDonePopup(name){
 function closeZikrManualDonePopup(){
 
   let popup = document.getElementById("zikrManualDonePopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
   currentZikrManualDoneEdit = "";
 
@@ -1609,6 +2313,7 @@ function closeZikrManualDonePopup(){
 function confirmManualDoneForZikr(){
 
   let name = currentZikrManualDoneEdit;
+
   if(!name) return;
 
   let count = getZikrCardCount(name);
@@ -1643,7 +2348,9 @@ function confirmManualDoneForZikr(){
    CUSTOM ZIKR STORAGE KEY
 ========================= */
 function getCustomZikrStorageKey(){
+
   return "custom-zikr-list";
+
 }
 
 /* =========================
@@ -1668,33 +2375,41 @@ function getCustomZikrList(){
    SAVE CUSTOM ZIKR LIST
 ========================= */
 function saveCustomZikrList(list){
+
   localStorage.setItem(getCustomZikrStorageKey(), JSON.stringify(list));
+
 }
 
 /* =========================
    CREATE CUSTOM ZIKR ID
 ========================= */
 function createCustomZikrId(){
+
   return "custom_" + Date.now();
+
 }
 
 /* =========================
    IS CUSTOM ZIKR
 ========================= */
 function isCustomZikr(name){
+
   return String(name).indexOf("custom_") === 0;
+
 }
 
 /* =========================
    ESCAPE HTML
 ========================= */
 function escapeHtml(text){
+
   return String(text || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+
 }
 
 /* =========================
@@ -1724,7 +2439,9 @@ function openAddCustomZikrPopup(){
   if(arabicInput) arabicInput.value = "";
   if(targetInput) targetInput.value = "33";
 
-  if(popup) popup.style.display = "flex";
+  if(popup){
+    popup.style.display = "flex";
+  }
 
 }
 
@@ -1734,7 +2451,10 @@ function openAddCustomZikrPopup(){
 function closeAddCustomZikrPopup(){
 
   let popup = document.getElementById("addCustomZikrPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
 }
 
@@ -1782,31 +2502,14 @@ function saveNewCustomZikr(){
   localStorage.setItem(getZikrCardTargetKey(newItem.id), String(target));
 
   closeAddCustomZikrPopup();
-  renderCustomZikrCards();
+
+  currentAzkarTab = "My List";
+
+  renderAzkarTabs();
+  renderActiveZikrList();
   updateAllZikrCardUI();
 
-}
-
-/* =========================
-   RENDER CUSTOM ZIKR CARDS
-========================= */
-function renderCustomZikrCards(){
-
-  let container = document.getElementById("customZikrList");
-  if(!container) return;
-
-  let customList = getCustomZikrList();
-
-  container.innerHTML = "";
-
-  customList.forEach(function(item){
-
-    let title = escapeHtml(item.englishName || "Custom Zikr");
-    let arabic = escapeHtml(item.arabicText || "");
-
-    container.innerHTML += createZikrCardHtml(item.id, title, arabic);
-
-  });
+  showAzkarToast("Custom zikr added");
 
 }
 
@@ -1816,6 +2519,7 @@ function renderCustomZikrCards(){
 function openEditCustomFromMenu(){
 
   let name = currentZikrCardMenuName;
+
   closeZikrCardMenu();
 
   if(!name) return;
@@ -1832,6 +2536,7 @@ function openEditCustomZikrPopup(id){
   editingCustomZikrId = id;
 
   let item = getCustomZikrById(id);
+
   if(!item) return;
 
   let popup = document.getElementById("editCustomZikrPopup");
@@ -1843,7 +2548,9 @@ function openEditCustomZikrPopup(id){
   if(arabicInput) arabicInput.value = item.arabicText || "";
   if(targetInput) targetInput.value = getZikrCardTarget(id) || item.target || 33;
 
-  if(popup) popup.style.display = "flex";
+  if(popup){
+    popup.style.display = "flex";
+  }
 
 }
 
@@ -1853,7 +2560,10 @@ function openEditCustomZikrPopup(id){
 function closeEditCustomZikrPopup(){
 
   let popup = document.getElementById("editCustomZikrPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
   editingCustomZikrId = "";
 
@@ -1913,7 +2623,7 @@ function updateCustomZikr(){
   let editedId = editingCustomZikrId;
 
   closeEditCustomZikrPopup();
-  renderCustomZikrCards();
+  renderActiveZikrList();
   updateAllZikrCardUI();
 
   if(currentZikr === editedId){
@@ -1962,7 +2672,7 @@ function deleteCustomZikrFromMenu(){
   localStorage.removeItem(getZikrCardManualDoneKey(name));
 
   closeZikrCardMenu();
-  renderCustomZikrCards();
+  renderActiveZikrList();
   updateAllZikrCardUI();
 
 }
@@ -1973,7 +2683,10 @@ function deleteCustomZikrFromMenu(){
 function openResetAllZikrPopup(){
 
   let popup = document.getElementById("resetAllZikrPopup");
-  if(popup) popup.style.display = "flex";
+
+  if(popup){
+    popup.style.display = "flex";
+  }
 
 }
 
@@ -1983,7 +2696,10 @@ function openResetAllZikrPopup(){
 function closeResetAllZikrPopup(){
 
   let popup = document.getElementById("resetAllZikrPopup");
-  if(popup) popup.style.display = "none";
+
+  if(popup){
+    popup.style.display = "none";
+  }
 
 }
 
@@ -1992,7 +2708,7 @@ function closeResetAllZikrPopup(){
 ========================= */
 function confirmResetAllZikr(){
 
-  builtInZikrOrder.forEach(function(name){
+  Object.keys(zikrData).forEach(function(name){
     localStorage.setItem(getZikrCardCountKey(name), "0");
     localStorage.removeItem(getZikrCardManualDoneKey(name));
   });
@@ -2009,9 +2725,27 @@ function confirmResetAllZikr(){
     updateZikrDisplay();
   }
 
-  renderCustomZikrCards();
+  renderActiveZikrList();
   updateAllZikrCardUI();
   closeResetAllZikrPopup();
+
+}
+
+/* =========================
+   SHOW AZKAR TOAST
+========================= */
+function showAzkarToast(message){
+
+  let toast = document.getElementById("azkarToast");
+
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.classList.add("show");
+
+  setTimeout(function(){
+    toast.classList.remove("show");
+  }, 2300);
 
 }
 
@@ -2020,8 +2754,10 @@ function confirmResetAllZikr(){
 ========================= */
 function loadDailyAzkarPage(){
 
-  renderBuiltInZikrCards();
-  renderCustomZikrCards();
+  currentAzkarTab = "My List";
+
+  renderAzkarTabs();
+  renderActiveZikrList();
   updateAllZikrCardUI();
   openDailyAzkarMainPage();
 
