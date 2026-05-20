@@ -639,7 +639,11 @@ body{
 ========================= */
 function goBackToMainApp(){
 
-  window.location.href = "../";
+  localStorage.removeItem("ibadahOpenAppSettings");
+  localStorage.removeItem("appSettingsReturnPage");
+  localStorage.removeItem("ibadahFolderReturnPage");
+
+  window.location.href = getIbadahBasePath() + "?v=" + Date.now();
 
 }
 
