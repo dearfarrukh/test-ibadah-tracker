@@ -5,14 +5,14 @@
 <!-- =========================
      DUA PAGE FONT IMPORT
 ========================= -->
-<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
 
 <!-- =========================
      DUA PAGE CACHE FIX
 ========================= -->
 <meta charset="UTF-8">
 <title>Dua Page</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#e9e9ee">
 
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -88,10 +88,30 @@ font-size:20px;
 font-weight:900;
 letter-spacing:-0.3px;
 text-align:center;
-max-width:70%;
+max-width:62%;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
+}
+
+.duaTopHeart{
+position:absolute;
+right:4%;
+bottom:10px;
+width:42px;
+height:42px;
+border:none;
+border-radius:50%;
+background:white;
+color:#111;
+font-size:20px;
+font-weight:800;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.10);
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
 }
 
 /* =========================
@@ -109,6 +129,67 @@ padding:92px 4% 40px 4%;
 display:block;
 }
 
+/* =========================
+   SEARCH BAR
+========================= */
+.duaSearchWrap{
+width:100%;
+margin-bottom:12px;
+}
+
+.duaSearchInput{
+width:100%;
+height:48px;
+border:none;
+outline:none;
+border-radius:18px;
+background:white;
+padding:0 16px;
+font-size:15px;
+font-weight:600;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+box-sizing:border-box;
+}
+
+/* =========================
+   CATEGORY TABS
+========================= */
+.duaTabs{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:2px 0 14px 0;
+margin-bottom:2px;
+-webkit-overflow-scrolling:touch;
+scrollbar-width:none;
+}
+
+.duaTabs::-webkit-scrollbar{
+display:none;
+}
+
+.duaTabBtn{
+border:none;
+border-radius:999px;
+background:white;
+color:#555;
+font-size:14px;
+font-weight:800;
+padding:10px 16px;
+white-space:nowrap;
+box-shadow:0 5px 14px rgba(0,0,0,0.06);
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
+}
+
+.duaTabBtn.active{
+background:#111;
+color:white;
+}
+
+/* =========================
+   DUA LIST
+========================= */
 .duaList{
 display:flex;
 flex-direction:column;
@@ -158,11 +239,16 @@ font-size:26px;
 flex-shrink:0;
 }
 
+.duaOptionTextBox{
+min-width:0;
+flex:1;
+}
+
 .duaOptionTitle{
-font-size:19px;
+font-size:18px;
 font-weight:850;
 color:#111;
-line-height:1.2;
+line-height:1.25;
 margin-bottom:5px;
 }
 
@@ -170,13 +256,78 @@ margin-bottom:5px;
 font-size:14px;
 font-weight:600;
 color:#666;
-line-height:1.4;
+line-height:1.45;
 }
 
 .duaOptionArrow{
 font-size:28px;
 color:#b0b0b8;
 flex-shrink:0;
+}
+
+.duaFavSmallBtn{
+width:36px;
+height:36px;
+border:none;
+border-radius:50%;
+background:#f2f2f7;
+font-size:17px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
+flex-shrink:0;
+}
+
+.duaFavSmallBtn.on{
+background:#fff1f2;
+}
+
+/* =========================
+   CUSTOM ADD CARD
+========================= */
+.addCustomDuaCard{
+width:100%;
+background:#111;
+color:white;
+border-radius:26px;
+padding:18px 5%;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+box-shadow:0 10px 28px rgba(0,0,0,0.14);
+box-sizing:border-box;
+margin-bottom:2px;
+-webkit-tap-highlight-color:transparent;
+}
+
+.addCustomDuaIcon{
+width:54px;
+height:54px;
+border-radius:18px;
+background:rgba(255,255,255,0.14);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+flex-shrink:0;
+}
+
+.addCustomDuaTitle{
+font-size:18px;
+font-weight:900;
+line-height:1.2;
+margin-bottom:4px;
+}
+
+.addCustomDuaSub{
+font-size:14px;
+font-weight:600;
+color:rgba(255,255,255,0.72);
+line-height:1.4;
 }
 
 /* =========================
@@ -198,8 +349,16 @@ font-size:26px;
 font-weight:900;
 color:#111;
 text-align:center;
-margin-bottom:18px;
+margin-bottom:8px;
 letter-spacing:-0.4px;
+}
+
+.duaDetailSub{
+font-size:14px;
+font-weight:700;
+color:#777;
+text-align:center;
+margin-bottom:18px;
 }
 
 .duaImage{
@@ -233,13 +392,225 @@ text-transform:uppercase;
 margin-bottom:14px;
 }
 
-.textCardText{
+.textCardArabic{
 font-family:'Noto Naskh Arabic','Amiri',serif;
 direction:rtl;
 text-align:right;
-font-size:21px;
-line-height:2;
+font-size:25px;
+line-height:2.15;
 color:#111;
+}
+
+.textCardUrdu{
+font-family:'Noto Nastaliq Urdu','Noto Naskh Arabic',serif;
+direction:rtl;
+text-align:right;
+font-size:18px;
+line-height:2.45;
+color:#222;
+}
+
+.textCardEnglish{
+font-size:16px;
+font-weight:500;
+line-height:1.8;
+color:#333;
+}
+
+.textCardReference{
+font-family:'Noto Naskh Arabic','Amiri',serif;
+direction:rtl;
+text-align:center;
+font-size:15px;
+font-weight:700;
+line-height:1.8;
+color:#777;
+border-top:1px solid rgba(0,0,0,0.08);
+padding-top:12px;
+margin-top:12px;
+}
+
+/* =========================
+   DETAIL ACTION BUTTONS
+========================= */
+.duaActionRow{
+display:flex;
+gap:10px;
+margin-top:2px;
+margin-bottom:18px;
+}
+
+.duaActionBtn{
+flex:1;
+height:48px;
+border:none;
+border-radius:18px;
+font-size:15px;
+font-weight:850;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
+}
+
+.duaCopyBtn{
+background:#e8f0fe;
+color:#0b57d0;
+}
+
+.duaShareBtn{
+background:#e7f8ed;
+color:#16803a;
+}
+
+.duaDeleteBtn{
+background:#fff1f2;
+color:#d11a2a;
+}
+
+/* =========================
+   CUSTOM FORM
+========================= */
+.customFormCard{
+background:white;
+border-radius:30px;
+padding:20px 5%;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+border:1px solid rgba(0,0,0,0.03);
+box-sizing:border-box;
+}
+
+.customFormTitle{
+font-size:24px;
+font-weight:900;
+text-align:center;
+margin-bottom:8px;
+}
+
+.customFormSub{
+font-size:14px;
+font-weight:600;
+color:#666;
+text-align:center;
+line-height:1.5;
+margin-bottom:18px;
+}
+
+.customInputLabel{
+font-size:13px;
+font-weight:900;
+color:#666;
+letter-spacing:0.4px;
+text-transform:uppercase;
+margin:16px 0 8px 0;
+}
+
+.customInput,
+.customTextarea{
+width:100%;
+border:none;
+outline:none;
+border-radius:18px;
+background:#f2f2f7;
+padding:14px 15px;
+font-size:16px;
+font-weight:600;
+box-sizing:border-box;
+font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.customTextarea{
+min-height:110px;
+resize:vertical;
+line-height:1.6;
+}
+
+.customArabicInput{
+font-family:'Noto Naskh Arabic','Amiri',serif;
+direction:rtl;
+text-align:right;
+font-size:22px;
+line-height:2;
+}
+
+.customUrduInput{
+font-family:'Noto Nastaliq Urdu','Noto Naskh Arabic',serif;
+direction:rtl;
+text-align:right;
+font-size:18px;
+line-height:2.2;
+}
+
+.saveCustomBtn{
+width:100%;
+height:54px;
+border:none;
+border-radius:20px;
+background:#111;
+color:white;
+font-size:17px;
+font-weight:900;
+margin-top:20px;
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.emptyDuaBox{
+padding:55px 8%;
+text-align:center;
+}
+
+.emptyDuaIcon{
+font-size:54px;
+opacity:0.45;
+margin-bottom:12px;
+}
+
+.emptyDuaTitle{
+font-size:20px;
+font-weight:900;
+margin-bottom:8px;
+}
+
+.emptyDuaText{
+font-size:15px;
+font-weight:600;
+line-height:1.6;
+color:#666;
+}
+
+/* =========================
+   TOAST MESSAGE
+========================= */
+.duaToast{
+position:fixed;
+left:50%;
+bottom:30px;
+transform:translateX(-50%) translateY(18px);
+background:rgba(0,0,0,0.90);
+color:white;
+padding:12px 20px;
+border-radius:999px;
+font-size:14px;
+font-weight:750;
+z-index:99999;
+opacity:0;
+pointer-events:none;
+transition:0.25s ease;
+white-space:nowrap;
+max-width:88%;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.duaToast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0);
 }
 
 </style>
@@ -253,6 +624,7 @@ color:#111;
 <div class="duaTopBar">
   <button class="duaBackBtn" onclick="handleDuaBack()">←</button>
   <div id="duaTopTitle" class="duaTopTitle">🤲 Masnoon Dua</div>
+  <button id="duaTopHeartBtn" class="duaTopHeart" onclick="showFavoriteDuas()">❤️</button>
 </div>
 
 <!-- =========================
@@ -260,159 +632,73 @@ color:#111;
 ========================= -->
 <div id="duaMainPage" class="duaPage active">
 
-  <div class="duaList">
-
-    <!-- ISTIKHARA -->
-    <div class="duaOptionCard" onclick="openDuaDetailPage('istikhara')">
-      <div class="duaOptionLeft">
-        <div class="duaOptionIcon">🤲</div>
-        <div style="min-width:0;flex:1;">
-          <div class="duaOptionTitle">Istikhara Dua</div>
-          <div class="duaOptionSub">Dua images from your app</div>
-        </div>
-      </div>
-      <div class="duaOptionArrow">›</div>
-    </div>
-
-    <!-- FARGHI -->
-    <div class="duaOptionCard" onclick="openDuaDetailPage('farghi')">
-      <div class="duaOptionLeft">
-        <div class="duaOptionIcon">🌿</div>
-        <div style="min-width:0;flex:1;">
-          <div class="duaOptionTitle">Farghi Rizq</div>
-          <div class="duaOptionSub">Rizq dua image</div>
-        </div>
-      </div>
-      <div class="duaOptionArrow">›</div>
-    </div>
-
-    <!-- IMAN -->
-    <div class="duaOptionCard" onclick="openDuaDetailPage('iman')">
-      <div class="duaOptionLeft">
-        <div class="duaOptionIcon">☝️</div>
-        <div style="min-width:0;flex:1;">
-          <div class="duaOptionTitle">Iman Mujmal & Mufassal</div>
-          <div class="duaOptionSub">ایمان مجمل اور ایمان مفصل</div>
-        </div>
-      </div>
-      <div class="duaOptionArrow">›</div>
-    </div>
-
-    <!-- AYATUL KURSI -->
-    <div class="duaOptionCard" onclick="openDuaDetailPage('ayatul')">
-      <div class="duaOptionLeft">
-        <div class="duaOptionIcon">📖</div>
-        <div style="min-width:0;flex:1;">
-          <div class="duaOptionTitle">Ayatul Kursi</div>
-          <div class="duaOptionSub">Surah Al-Baqarah 255</div>
-        </div>
-      </div>
-      <div class="duaOptionArrow">›</div>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- =========================
-     ISTIKHARA PAGE
-========================= -->
-<div id="istikharaPage" class="duaPage">
-
-  <div class="duaDetailCard">
-    <div class="duaDetailTitle">Istikhara Dua</div>
-
-    <img class="duaImage" src="../duas/istikhara-1.jpg">
-    <br>
-    <img class="duaImage" src="../duas/istikhara-2.jpg">
-    <br>
-    <img class="duaImage" src="../duas/istikhara-3.jpg">
-
-  </div>
-
-</div>
-
-<!-- =========================
-     FARGHI PAGE
-========================= -->
-<div id="farghiPage" class="duaPage">
-
-  <div class="duaDetailCard">
-    <div class="duaDetailTitle">Farghi Rizq</div>
-
-    <img class="duaImage" src="../Images/Rizq.png">
-
-  </div>
-
-</div>
-
-<!-- =========================
-     IMAN PAGE
-========================= -->
-<div id="imanPage" class="duaPage">
-
-  <div class="duaDetailCard">
-
-    <div class="duaDetailTitle">
-      Iman Mujmal & Mufassal
-    </div>
-
-    <img 
-      class="duaImage"
-      src="../duas/Iman Mufasil & Mujamil.png"
-      alt="Iman Mujmal and Mufassal"
+  <!-- SEARCH -->
+  <div class="duaSearchWrap">
+    <input
+      id="duaSearchInput"
+      class="duaSearchInput"
+      type="text"
+      placeholder="🔍 Search duas..."
+      oninput="filterDuaCards()"
     >
+  </div>
+
+  <!-- TABS -->
+  <div id="duaTabs" class="duaTabs"></div>
+
+  <!-- LIST -->
+  <div id="duaList" class="duaList"></div>
+
+</div>
+
+<!-- =========================
+     DUA DETAIL PAGE
+========================= -->
+<div id="duaDetailPage" class="duaPage">
+
+  <div id="duaDetailContent"></div>
+
+</div>
+
+<!-- =========================
+     CUSTOM DUA FORM PAGE
+========================= -->
+<div id="customDuaFormPage" class="duaPage">
+
+  <div class="customFormCard">
+
+    <div class="customFormTitle">Add Custom Dua</div>
+    <div class="customFormSub">
+      Add your own dua here. It will save inside this browser/app.
+    </div>
+
+    <div class="customInputLabel">Title</div>
+    <input id="customDuaTitleInput" class="customInput" type="text" placeholder="Example: Dua for parents">
+
+    <div class="customInputLabel">Arabic</div>
+    <textarea id="customDuaArabicInput" class="customTextarea customArabicInput" placeholder="Arabic dua"></textarea>
+
+    <div class="customInputLabel">Urdu Translation</div>
+    <textarea id="customDuaUrduInput" class="customTextarea customUrduInput" placeholder="Urdu translation"></textarea>
+
+    <div class="customInputLabel">English Translation</div>
+    <textarea id="customDuaEnglishInput" class="customTextarea" placeholder="English translation"></textarea>
+
+    <div class="customInputLabel">Reference / Note</div>
+    <input id="customDuaReferenceInput" class="customInput" type="text" placeholder="Optional">
+
+    <button class="saveCustomBtn" onclick="saveCustomDuaFromForm()">
+      Save Custom Dua
+    </button>
 
   </div>
 
 </div>
 
 <!-- =========================
-     AYATUL KURSI PAGE
+     TOAST MESSAGE
 ========================= -->
-<div id="ayatulPage" class="duaPage">
-
-  <div class="duaDetailCard">
-
-    <div class="duaDetailTitle">
-      Ayatul Kursi
-    </div>
-
-    <img 
-      class="duaImage"
-      src="../duas/aytul kursi.jpg"
-      alt="Ayatul Kursi"
-    >
-
-  </div>
-
-  <!-- URDU TRANSLATION -->
-  <div class="textCard">
-
-    <div class="textCardTitle">
-      Urdu Translation
-    </div>
-
-    <div class="textCardText">
-      خدا (وہ معبود برحق ہے کہ) اس کے سوا کوئی عبادت کے لائق نہیں، زندہ ہمیشہ رہنے والا، اسے نہ اونگھ آتی ہے نہ نیند۔ جو کچھ آسمانوں میں اور جو کچھ زمین میں ہے سب اسی کا ہے۔ کون ہے جو اس کی اجازت کے بغیر اس سے کسی کی سفارش کر سکے؟ جو کچھ لوگوں کے روبرو ہو رہا ہے اور جو کچھ ان کے پیچھے ہوچکا ہے اسے سب معلوم ہے۔
-    </div>
-
-  </div>
-
-  <!-- TAFSIR -->
-  <div class="textCard">
-
-    <div class="textCardTitle">
-      Tafsir / Explanation
-    </div>
-
-    <div class="textCardText">
-      یہ آیت الکرسی قرآن پاک کی سب سے عظیم آیات میں سے ایک ہے۔ اس میں اللہ تعالیٰ کی عظمت، قدرت، علم اور حفاظت بیان کی گئی ہے۔ ہر فرض نماز کے بعد اور سونے سے پہلے اس کی تلاوت کی بڑی فضیلت ہے۔
-    </div>
-
-  </div>
-
-</div>
+<div id="duaToast" class="duaToast"></div>
 
 <script>
 
@@ -420,6 +706,445 @@ color:#111;
    PAGE STATE
 ========================= */
 let currentDuaSubPage = "main";
+let currentDuaTab = "All";
+let currentDuaId = null;
+let currentFavoriteMode = false;
+let currentSearchText = "";
+
+/* =========================
+   TAB ORDER
+========================= */
+const duaCategories = [
+  "All",
+  "Custom",
+  "Morning",
+  "Evening",
+  "Salah",
+  "Food",
+  "Travel"
+];
+
+/* =========================
+   BUILT IN DUA DATA
+========================= */
+const builtInDuas = [
+
+  {
+    id:"own-istikhara",
+    source:"builtin",
+    type:"image",
+    category:"Custom",
+    icon:"🤲",
+    title:"Istikhara Dua",
+    subtitle:"Dua images from your app",
+    images:[
+      "../duas/istikhara-1.jpg",
+      "../duas/istikhara-2.jpg",
+      "../duas/istikhara-3.jpg"
+    ],
+    reference:""
+  },
+
+  {
+    id:"own-farghi",
+    source:"builtin",
+    type:"image",
+    category:"Custom",
+    icon:"🌿",
+    title:"Farghi Rizq",
+    subtitle:"Rizq dua image",
+    images:[
+      "../Images/Rizq.png"
+    ],
+    reference:""
+  },
+
+  {
+    id:"own-iman",
+    source:"builtin",
+    type:"image",
+    category:"Custom",
+    icon:"☝️",
+    title:"Iman Mujmal & Mufassal",
+    subtitle:"ایمان مجمل اور ایمان مفصل",
+    images:[
+      "../duas/Iman Mufasil & Mujamil.png"
+    ],
+    reference:""
+  },
+
+  {
+    id:"own-ayatul",
+    source:"builtin",
+    type:"imageText",
+    category:"Custom",
+    icon:"📖",
+    title:"Ayatul Kursi",
+    subtitle:"Surah Al-Baqarah 255",
+    images:[
+      "../duas/aytul kursi.jpg"
+    ],
+    urdu:"خدا (وہ معبود برحق ہے کہ) اس کے سوا کوئی عبادت کے لائق نہیں، زندہ ہمیشہ رہنے والا، اسے نہ اونگھ آتی ہے نہ نیند۔ جو کچھ آسمانوں میں اور جو کچھ زمین میں ہے سب اسی کا ہے۔ کون ہے جو اس کی اجازت کے بغیر اس سے کسی کی سفارش کر سکے؟ جو کچھ لوگوں کے روبرو ہو رہا ہے اور جو کچھ ان کے پیچھے ہوچکا ہے اسے سب معلوم ہے۔",
+    explanation:"یہ آیت الکرسی قرآن پاک کی سب سے عظیم آیات میں سے ایک ہے۔ اس میں اللہ تعالیٰ کی عظمت، قدرت، علم اور حفاظت بیان کی گئی ہے۔ ہر فرض نماز کے بعد اور سونے سے پہلے اس کی تلاوت کی بڑی فضیلت ہے۔",
+    reference:""
+  },
+
+  {
+    id:"morning-waking",
+    source:"builtin",
+    type:"text",
+    category:"Morning",
+    icon:"🌅",
+    title:"Morning Dua — Waking Up",
+    subtitle:"Recite after waking up",
+    arabic:"اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+    urdu:"تمام تعریفیں اللہ کے لیے ہیں جس نے ہمیں موت کے بعد زندہ کیا اور اسی کی طرف اٹھنا ہے۔",
+    english:"All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.",
+    explanation:"Recite this dua immediately upon waking up in the morning.",
+    reference:"صحیح البخاری"
+  },
+
+  {
+    id:"morning-protection",
+    source:"builtin",
+    type:"text",
+    category:"Morning",
+    icon:"🛡️",
+    title:"Morning Dua — Protection",
+    subtitle:"Protection dua",
+    arabic:"بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+    urdu:"اللہ کے نام کے ساتھ جس کے نام کے ساتھ زمین و آسمان میں کوئی چیز نقصان نہیں دیتی اور وہ سننے والا جاننے والا ہے۔",
+    english:"In the name of Allah with whose name nothing can cause harm on earth or in heaven, and He is the All-Hearing, All-Knowing.",
+    explanation:"Recite this three times every morning and evening for protection.",
+    reference:"سنن ابی داود"
+  },
+
+  {
+    id:"evening-protection",
+    source:"builtin",
+    type:"text",
+    category:"Evening",
+    icon:"🌙",
+    title:"Evening Dua — Protection",
+    subtitle:"Evening remembrance",
+    arabic:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
+    urdu:"ہم نے شام کی اور اللہ کی بادشاہی نے شام کی، تمام تعریفیں اللہ کے لیے ہیں، اللہ کے سوا کوئی معبود نہیں وہ اکیلا ہے اس کا کوئی شریک نہیں۔",
+    english:"We have reached the evening and at this very time unto Allah belongs all sovereignty, and all praise is for Allah. None has the right to be worshipped except Allah, alone.",
+    explanation:"This dua is recited in the evening as an act of remembrance.",
+    reference:"صحیح مسلم"
+  },
+
+  {
+    id:"salah-adhan",
+    source:"builtin",
+    type:"text",
+    category:"Salah",
+    icon:"🕌",
+    title:"Before Salah — Adhan Dua",
+    subtitle:"After hearing Adhan",
+    arabic:"اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ",
+    urdu:"اے اللہ اس کامل دعوت اور قائم ہونے والی نماز کے رب، محمدﷺ کو وسیلہ اور فضیلت عطا فرما۔",
+    english:"O Allah, Lord of this perfect call and of the prayer to be offered, grant Muhammad the privilege and also the eminence.",
+    explanation:"Recite after hearing the Adhan.",
+    reference:"صحیح البخاری"
+  },
+
+  {
+    id:"salah-after",
+    source:"builtin",
+    type:"text",
+    category:"Salah",
+    icon:"🤲",
+    title:"Dua after Salah",
+    subtitle:"After completing Salah",
+    arabic:"اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
+    urdu:"اے اللہ تو سلامتی ہے اور تجھ ہی سے سلامتی ہے، تو بابرکت ہے اے جلال و اکرام والے۔",
+    english:"O Allah, You are Peace and from You comes peace. Blessed are You, O Owner of majesty and honor.",
+    explanation:"Recite this immediately after completing the Salah.",
+    reference:"صحیح مسلم"
+  },
+
+  {
+    id:"food-before",
+    source:"builtin",
+    type:"text",
+    category:"Food",
+    icon:"🍽️",
+    title:"Before Eating",
+    subtitle:"Before food",
+    arabic:"بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ",
+    urdu:"اللہ کے نام کے ساتھ اور اللہ کی برکت کے ساتھ۔",
+    english:"In the name of Allah and with the blessings of Allah.",
+    explanation:"Say this before starting to eat any food.",
+    reference:"سنن ابی داود"
+  },
+
+  {
+    id:"food-after",
+    source:"builtin",
+    type:"text",
+    category:"Food",
+    icon:"🍽️",
+    title:"After Eating",
+    subtitle:"After food",
+    arabic:"اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مِنَ الْمُسْلِمِينَ",
+    urdu:"تمام تعریفیں اللہ کے لیے ہیں جس نے ہمیں کھلایا، پلایا اور ہمیں مسلمانوں میں سے بنایا۔",
+    english:"All praise is for Allah who fed us and gave us drink and made us Muslims.",
+    explanation:"Recite this after finishing your meal.",
+    reference:"سنن ابی داود"
+  },
+
+  {
+    id:"travel-dua",
+    source:"builtin",
+    type:"text",
+    category:"Travel",
+    icon:"🚗",
+    title:"Dua for Travel",
+    subtitle:"When starting journey",
+    arabic:"سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ",
+    urdu:"پاک ہے وہ جس نے ہمارے لیے اسے مسخر کیا اور ہم اسے قابو کرنے والے نہ تھے اور بیشک ہم اپنے رب کی طرف لوٹنے والے ہیں۔",
+    english:"Glory be to Him who has subjected this to us, and we could never have it by our efforts, and verily, to our Lord we are to return.",
+    explanation:"Recite when mounting or boarding any vehicle or transport.",
+    reference:"القرآن 43:13-14"
+  },
+
+  {
+    id:"home-entering",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🏠",
+    title:"Entering Home",
+    subtitle:"When entering home",
+    arabic:"اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلَجِ وَخَيْرَ الْمَخْرَجِ بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا",
+    urdu:"اے اللہ میں تجھ سے داخل ہونے کی بھلائی اور نکلنے کی بھلائی مانگتا ہوں، اللہ کے نام پر داخل ہوئے اور اللہ کے نام پر نکلے اور اللہ پر بھروسہ کیا۔",
+    english:"O Allah, I ask You for goodness upon entering and goodness upon leaving. In the name of Allah we enter, in the name of Allah we leave, and upon Allah our Lord we rely.",
+    explanation:"Recite upon entering your home.",
+    reference:"سنن ابی داود"
+  },
+
+  {
+    id:"home-leaving",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🏠",
+    title:"Leaving Home",
+    subtitle:"When leaving home",
+    arabic:"بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+    urdu:"اللہ کے نام پر، اللہ پر بھروسہ کیا، اللہ کے بغیر نہ کوئی طاقت ہے نہ قوت۔",
+    english:"In the name of Allah, I place my trust in Allah, and there is no might nor power except with Allah.",
+    explanation:"Recite when leaving your home for protection throughout the day.",
+    reference:"سنن ابی داود"
+  },
+
+  {
+    id:"forgiveness-sayyidul",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🤲",
+    title:"Seeking Forgiveness — Sayyidul Istighfar",
+    subtitle:"Master dua for forgiveness",
+    arabic:"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ",
+    urdu:"اے اللہ تو میرا رب ہے، تیرے سوا کوئی معبود نہیں، تو نے مجھے پیدا کیا اور میں تیرا بندہ ہوں اور میں اپنی طاقت کے مطابق تیرے عہد و وعدے پر قائم ہوں۔",
+    english:"O Allah, You are my Lord, none has the right to be worshipped except You. You created me and I am your servant and I abide by your covenant and promise as best I can.",
+    explanation:"The master of supplications for forgiveness. Recite in morning and evening.",
+    reference:"صحیح البخاری"
+  },
+
+  {
+    id:"forgiveness-short",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🤲",
+    title:"Short Istighfar",
+    subtitle:"Short forgiveness dua",
+    arabic:"أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ",
+    urdu:"میں اللہ عظیم سے مغفرت مانگتا ہوں جس کے سوا کوئی معبود نہیں، وہ زندہ قائم رہنے والا ہے، اور میں اس کی طرف توبہ کرتا ہوں۔",
+    english:"I seek forgiveness from Allah the Magnificent, beside whom there is no deity, the Ever-Living, the Sustainer, and I repent to Him.",
+    explanation:"Recite this dua for seeking forgiveness from Allah.",
+    reference:"سنن الترمذی"
+  },
+
+  {
+    id:"hardship-yunus",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🌊",
+    title:"Dua in Difficulty",
+    subtitle:"Dua of Prophet Yunus AS",
+    arabic:"لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+    urdu:"تیرے سوا کوئی معبود نہیں، تو پاک ہے، بیشک میں ظالموں میں سے تھا۔",
+    english:"There is none worthy of worship except You, glory be to You. Indeed, I have been of the wrongdoers.",
+    explanation:"The dua of Prophet Yunus (AS) when he was in the belly of the whale. Highly effective in times of hardship.",
+    reference:"القرآن 21:87"
+  },
+
+  {
+    id:"hardship-anxiety",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🕊️",
+    title:"Dua for Anxiety",
+    subtitle:"For worry and grief",
+    arabic:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ",
+    urdu:"اے اللہ میں تیری پناہ مانگتا ہوں غم، حزن، عاجزی اور سستی سے۔",
+    english:"O Allah, I seek refuge in you from worry and grief, from helplessness and laziness.",
+    explanation:"Recite when feeling anxious, worried, or distressed.",
+    reference:"صحیح البخاری"
+  },
+
+  {
+    id:"sleep-before",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"😴",
+    title:"Before Sleeping",
+    subtitle:"Before sleep",
+    arabic:"بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+    urdu:"اے اللہ تیرے نام پر مرتا اور جیتا ہوں۔",
+    english:"In Your name O Allah, I die and I live.",
+    explanation:"Recite before going to sleep every night.",
+    reference:"صحیح البخاری"
+  },
+
+  {
+    id:"sleep-bad-dream",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"😴",
+    title:"Dua for Bad Dream",
+    subtitle:"After bad dream",
+    arabic:"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ وَمِنْ هَمَزَاتِ الشَّيَاطِينِ",
+    urdu:"میں اللہ کے کامل کلمات کی پناہ لیتا ہوں اس کے غضب، سزا، اس کے بندوں کی برائی اور شیطانوں کے وسوسوں سے۔",
+    english:"I seek refuge in the perfect words of Allah from His anger and punishment, from the evil of His servants and from the madness of devils.",
+    explanation:"Recite upon waking from a bad dream.",
+    reference:"سنن ابی داود"
+  },
+
+  {
+    id:"quran-before",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"📖",
+    title:"Before Reading Quran",
+    subtitle:"Before Quran recitation",
+    arabic:"أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
+    urdu:"میں شیطان مردود سے اللہ کی پناہ لیتا ہوں، اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے۔",
+    english:"I seek refuge with Allah from the accursed devil. In the name of Allah, the Most Gracious, the Most Merciful.",
+    explanation:"Always recite this before beginning to read the Quran.",
+    reference:"القرآن 16:98"
+  },
+
+  {
+    id:"family-parents",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"👨‍👩‍👧",
+    title:"Dua for Parents",
+    subtitle:"For mother and father",
+    arabic:"رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
+    urdu:"اے میرے رب ان دونوں پر رحم فرما جیسا انہوں نے مجھے بچپن میں پالا۔",
+    english:"My Lord, have mercy upon them as they brought me up when I was small.",
+    explanation:"Recite this dua for your parents after every prayer.",
+    reference:"القرآن 17:24"
+  },
+
+  {
+    id:"family-children",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"👶",
+    title:"Dua for Righteous Children",
+    subtitle:"For pious children",
+    arabic:"رَبِّ هَبْ لِي مِنَ الصَّالِحِينَ",
+    urdu:"اے میرے رب مجھے نیک اولاد عطا فرما۔",
+    english:"My Lord, grant me from the righteous.",
+    explanation:"The dua of Prophet Ibrahim (AS) asking for righteous children.",
+    reference:"القرآن 37:100"
+  },
+
+  {
+    id:"rizq-dua",
+    source:"builtin",
+    type:"text",
+    category:"Custom",
+    icon:"🌿",
+    title:"Dua for Rizq",
+    subtitle:"For halal provision",
+    arabic:"اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ",
+    urdu:"اے اللہ مجھے اپنے حلال سے حرام سے بے نیاز کر دے اور اپنے فضل سے مجھے اپنے سوا سب سے غنی کر دے۔",
+    english:"O Allah, suffice me with what You have allowed instead of what You have forbidden, and make me independent of all others besides You.",
+    explanation:"A powerful dua for halal provision and financial ease.",
+    reference:"سنن الترمذی"
+  }
+
+];
+
+/* =========================
+   GET CUSTOM DUAS
+========================= */
+function getCustomDuas(){
+
+  try{
+    return JSON.parse(localStorage.getItem("ibadahCustomDuas") || "[]");
+  }catch(error){
+    return [];
+  }
+
+}
+
+/* =========================
+   SAVE CUSTOM DUAS
+========================= */
+function saveCustomDuas(customDuas){
+
+  localStorage.setItem("ibadahCustomDuas", JSON.stringify(customDuas));
+
+}
+
+/* =========================
+   GET ALL DUAS
+========================= */
+function getAllDuas(){
+
+  let customDuas = getCustomDuas();
+
+  return builtInDuas.concat(customDuas);
+
+}
+
+/* =========================
+   GET FAVORITE DUAS
+========================= */
+function getFavoriteDuaIds(){
+
+  try{
+    return JSON.parse(localStorage.getItem("ibadahDuaFavorites") || "[]");
+  }catch(error){
+    return [];
+  }
+
+}
+
+/* =========================
+   SAVE FAVORITE DUAS
+========================= */
+function saveFavoriteDuaIds(favIds){
+
+  localStorage.setItem("ibadahDuaFavorites", JSON.stringify(favIds));
+
+}
 
 /* =========================
    SHOW ONLY ONE PAGE
@@ -439,6 +1164,7 @@ function showOnlyDuaPage(pageId){
   }
 
   window.scrollTo(0,0);
+
 }
 
 /* =========================
@@ -451,40 +1177,555 @@ function setDuaTopTitle(titleText){
   if(title){
     title.innerText = titleText;
   }
+
 }
 
 /* =========================
-   OPEN DETAIL PAGE
+   SHOW OR HIDE TOP HEART
 ========================= */
-function openDuaDetailPage(duaName){
+function setDuaTopHeartVisible(shouldShow){
 
-  currentDuaSubPage = duaName;
+  let btn = document.getElementById("duaTopHeartBtn");
 
-  if(duaName === "istikhara"){
-    setDuaTopTitle("Istikhara Dua");
-    showOnlyDuaPage("istikharaPage");
+  if(!btn) return;
+
+  btn.style.display = shouldShow ? "flex" : "none";
+
+}
+
+/* =========================
+   RENDER DUA TABS
+========================= */
+function renderDuaTabs(){
+
+  let tabs = document.getElementById("duaTabs");
+
+  if(!tabs) return;
+
+  tabs.innerHTML = duaCategories.map(function(category){
+
+    let activeClass = category === currentDuaTab ? "active" : "";
+
+    return `
+      <button class="duaTabBtn ${activeClass}" onclick="selectDuaTab('${category}')">
+        ${category}
+      </button>
+    `;
+
+  }).join("");
+
+}
+
+/* =========================
+   SELECT DUA TAB
+========================= */
+function selectDuaTab(category){
+
+  currentDuaTab = category;
+  currentFavoriteMode = false;
+  currentSearchText = "";
+
+  let searchInput = document.getElementById("duaSearchInput");
+
+  if(searchInput){
+    searchInput.value = "";
+  }
+
+  renderDuaTabs();
+  renderDuaList();
+
+}
+
+/* =========================
+   FILTER DUA CARDS
+========================= */
+function filterDuaCards(){
+
+  let searchInput = document.getElementById("duaSearchInput");
+
+  currentSearchText = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+  renderDuaList();
+
+}
+
+/* =========================
+   GET FILTERED DUAS
+========================= */
+function getFilteredDuas(){
+
+  let allDuas = getAllDuas();
+  let favIds = getFavoriteDuaIds();
+
+  let filtered = allDuas;
+
+  if(currentFavoriteMode){
+    filtered = filtered.filter(function(dua){
+      return favIds.includes(dua.id);
+    });
+  }else{
+    if(currentDuaTab !== "All"){
+      filtered = filtered.filter(function(dua){
+        return dua.category === currentDuaTab;
+      });
+    }
+  }
+
+  if(currentSearchText){
+    filtered = filtered.filter(function(dua){
+
+      let searchArea = [
+        dua.title || "",
+        dua.subtitle || "",
+        dua.category || "",
+        dua.arabic || "",
+        dua.urdu || "",
+        dua.english || "",
+        dua.explanation || "",
+        dua.reference || ""
+      ].join(" ").toLowerCase();
+
+      return searchArea.includes(currentSearchText);
+
+    });
+  }
+
+  return filtered;
+
+}
+
+/* =========================
+   RENDER DUA LIST
+========================= */
+function renderDuaList(){
+
+  let list = document.getElementById("duaList");
+
+  if(!list) return;
+
+  let duasToShow = getFilteredDuas();
+  let favIds = getFavoriteDuaIds();
+
+  let html = "";
+
+  if(currentDuaTab === "Custom" && currentFavoriteMode === false){
+    html += `
+      <div class="addCustomDuaCard" onclick="openCustomDuaFormPage()">
+        <div class="duaOptionLeft">
+          <div class="addCustomDuaIcon">＋</div>
+          <div class="duaOptionTextBox">
+            <div class="addCustomDuaTitle">Add Custom Dua</div>
+            <div class="addCustomDuaSub">Save your own personal dua</div>
+          </div>
+        </div>
+        <div class="duaOptionArrow" style="color:rgba(255,255,255,0.7);">›</div>
+      </div>
+    `;
+  }
+
+  if(duasToShow.length === 0){
+
+    html += `
+      <div class="emptyDuaBox">
+        <div class="emptyDuaIcon">🤲</div>
+        <div class="emptyDuaTitle">No duas found</div>
+        <div class="emptyDuaText">Try another tab or add your own dua in Custom.</div>
+      </div>
+    `;
+
+    list.innerHTML = html;
+    return;
+
+  }
+
+  html += duasToShow.map(function(dua){
+
+    let isFav = favIds.includes(dua.id);
+
+    return `
+      <div class="duaOptionCard" onclick="openDuaDetailPage('${dua.id}')">
+        <div class="duaOptionLeft">
+          <div class="duaOptionIcon">${dua.icon || "🤲"}</div>
+          <div class="duaOptionTextBox">
+            <div class="duaOptionTitle">${escapeHtml(dua.title || "Dua")}</div>
+            <div class="duaOptionSub">${escapeHtml(dua.subtitle || dua.category || "")}</div>
+          </div>
+        </div>
+
+        <button
+          class="duaFavSmallBtn ${isFav ? "on" : ""}"
+          onclick="event.stopPropagation(); toggleDuaFavorite('${dua.id}')"
+        >
+          ${isFav ? "❤️" : "🤍"}
+        </button>
+
+        <div class="duaOptionArrow">›</div>
+      </div>
+    `;
+
+  }).join("");
+
+  list.innerHTML = html;
+
+}
+
+/* =========================
+   OPEN DUA DETAIL PAGE
+========================= */
+function openDuaDetailPage(duaId){
+
+  let dua = getAllDuas().find(function(item){
+    return item.id === duaId;
+  });
+
+  if(!dua){
+    openDuaMainPage();
     return;
   }
 
-  if(duaName === "farghi"){
-    setDuaTopTitle("Farghi Rizq");
-    showOnlyDuaPage("farghiPage");
+  currentDuaSubPage = "detail";
+  currentDuaId = duaId;
+
+  setDuaTopTitle(dua.title || "Dua");
+  setDuaTopHeartVisible(false);
+
+  renderDuaDetailContent(dua);
+
+  showOnlyDuaPage("duaDetailPage");
+
+}
+
+/* =========================
+   RENDER DUA DETAIL CONTENT
+========================= */
+function renderDuaDetailContent(dua){
+
+  let detailBox = document.getElementById("duaDetailContent");
+
+  if(!detailBox) return;
+
+  let favoriteIds = getFavoriteDuaIds();
+  let isFav = favoriteIds.includes(dua.id);
+
+  let html = `
+    <div class="duaDetailCard">
+      <div class="duaDetailTitle">${escapeHtml(dua.title || "Dua")}</div>
+      <div class="duaDetailSub">${escapeHtml(dua.category || "")}</div>
+  `;
+
+  if(dua.images && dua.images.length > 0){
+
+    dua.images.forEach(function(imageSrc){
+      html += `
+        <img class="duaImage" src="${imageSrc}" alt="${escapeHtml(dua.title || "Dua")}">
+        <br>
+      `;
+    });
+
+  }
+
+  html += `</div>`;
+
+  if(dua.arabic){
+    html += `
+      <div class="textCard">
+        <div class="textCardTitle">Arabic</div>
+        <div class="textCardArabic">${escapeHtml(dua.arabic)}</div>
+      </div>
+    `;
+  }
+
+  if(dua.urdu){
+    html += `
+      <div class="textCard">
+        <div class="textCardTitle">Urdu Translation</div>
+        <div class="textCardUrdu">${escapeHtml(dua.urdu)}</div>
+      </div>
+    `;
+  }
+
+  if(dua.english){
+    html += `
+      <div class="textCard">
+        <div class="textCardTitle">English Translation</div>
+        <div class="textCardEnglish">${escapeHtml(dua.english)}</div>
+      </div>
+    `;
+  }
+
+  if(dua.explanation){
+    html += `
+      <div class="textCard">
+        <div class="textCardTitle">Tafsir / Explanation</div>
+        <div class="textCardUrdu">${escapeHtml(dua.explanation)}</div>
+        ${dua.reference ? `<div class="textCardReference">${escapeHtml(dua.reference)}</div>` : ""}
+      </div>
+    `;
+  }else{
+    if(dua.reference){
+      html += `
+        <div class="textCard">
+          <div class="textCardTitle">Reference</div>
+          <div class="textCardReference">${escapeHtml(dua.reference)}</div>
+        </div>
+      `;
+    }
+  }
+
+  html += `
+    <div class="duaActionRow">
+      <button class="duaActionBtn duaCopyBtn" onclick="copyCurrentDua()">
+        📋 Copy
+      </button>
+
+      <button class="duaActionBtn duaShareBtn" onclick="shareCurrentDua()">
+        🔗 Share
+      </button>
+    </div>
+
+    <div class="duaActionRow">
+      <button class="duaActionBtn ${isFav ? "duaDeleteBtn" : "duaShareBtn"}" onclick="toggleDuaFavorite('${dua.id}')">
+        ${isFav ? "❤️ Remove Favorite" : "🤍 Add Favorite"}
+      </button>
+    </div>
+  `;
+
+  if(dua.source === "custom"){
+    html += `
+      <div class="duaActionRow">
+        <button class="duaActionBtn duaDeleteBtn" onclick="deleteCustomDua('${dua.id}')">
+          🗑️ Delete Custom Dua
+        </button>
+      </div>
+    `;
+  }
+
+  detailBox.innerHTML = html;
+
+}
+
+/* =========================
+   OPEN CUSTOM DUA FORM PAGE
+========================= */
+function openCustomDuaFormPage(){
+
+  currentDuaSubPage = "customForm";
+
+  setDuaTopTitle("Add Custom Dua");
+  setDuaTopHeartVisible(false);
+
+  document.getElementById("customDuaTitleInput").value = "";
+  document.getElementById("customDuaArabicInput").value = "";
+  document.getElementById("customDuaUrduInput").value = "";
+  document.getElementById("customDuaEnglishInput").value = "";
+  document.getElementById("customDuaReferenceInput").value = "";
+
+  showOnlyDuaPage("customDuaFormPage");
+
+}
+
+/* =========================
+   SAVE CUSTOM DUA FROM FORM
+========================= */
+function saveCustomDuaFromForm(){
+
+  let title = document.getElementById("customDuaTitleInput").value.trim();
+  let arabic = document.getElementById("customDuaArabicInput").value.trim();
+  let urdu = document.getElementById("customDuaUrduInput").value.trim();
+  let english = document.getElementById("customDuaEnglishInput").value.trim();
+  let reference = document.getElementById("customDuaReferenceInput").value.trim();
+
+  if(!title){
+    showDuaToast("Please write a title");
     return;
   }
 
-  if(duaName === "iman"){
-    setDuaTopTitle("Iman");
-    showOnlyDuaPage("imanPage");
+  if(!arabic && !urdu && !english){
+    showDuaToast("Please write at least Arabic, Urdu, or English");
     return;
   }
 
-  if(duaName === "ayatul"){
-    setDuaTopTitle("Ayatul Kursi");
-    showOnlyDuaPage("ayatulPage");
-    return;
-  }
+  let customDuas = getCustomDuas();
+
+  let newDua = {
+    id:"custom-" + Date.now(),
+    source:"custom",
+    type:"text",
+    category:"Custom",
+    icon:"🤲",
+    title:title,
+    subtitle:"Your custom dua",
+    arabic:arabic,
+    urdu:urdu,
+    english:english,
+    explanation:"",
+    reference:reference
+  };
+
+  customDuas.unshift(newDua);
+
+  saveCustomDuas(customDuas);
+
+  currentDuaTab = "Custom";
+  currentFavoriteMode = false;
+
+  showDuaToast("Custom dua saved");
 
   openDuaMainPage();
+
+}
+
+/* =========================
+   DELETE CUSTOM DUA
+========================= */
+function deleteCustomDua(duaId){
+
+  let confirmDelete = confirm("Delete this custom dua?");
+
+  if(!confirmDelete) return;
+
+  let customDuas = getCustomDuas().filter(function(dua){
+    return dua.id !== duaId;
+  });
+
+  saveCustomDuas(customDuas);
+
+  let favIds = getFavoriteDuaIds().filter(function(id){
+    return id !== duaId;
+  });
+
+  saveFavoriteDuaIds(favIds);
+
+  showDuaToast("Custom dua deleted");
+
+  currentDuaTab = "Custom";
+  currentFavoriteMode = false;
+
+  openDuaMainPage();
+
+}
+
+/* =========================
+   TOGGLE DUA FAVORITE
+========================= */
+function toggleDuaFavorite(duaId){
+
+  let favIds = getFavoriteDuaIds();
+  let index = favIds.indexOf(duaId);
+
+  if(index === -1){
+    favIds.push(duaId);
+    showDuaToast("Added to favorites");
+  }else{
+    favIds.splice(index, 1);
+    showDuaToast("Removed from favorites");
+  }
+
+  saveFavoriteDuaIds(favIds);
+
+  if(currentDuaSubPage === "detail" && currentDuaId){
+    let dua = getAllDuas().find(function(item){
+      return item.id === currentDuaId;
+    });
+
+    if(dua){
+      renderDuaDetailContent(dua);
+    }
+  }else{
+    renderDuaList();
+  }
+
+}
+
+/* =========================
+   SHOW FAVORITE DUAS
+========================= */
+function showFavoriteDuas(){
+
+  currentFavoriteMode = true;
+  currentDuaTab = "All";
+  currentSearchText = "";
+
+  let searchInput = document.getElementById("duaSearchInput");
+
+  if(searchInput){
+    searchInput.value = "";
+  }
+
+  setDuaTopTitle("❤️ Favorite Duas");
+
+  renderDuaTabs();
+  renderDuaList();
+
+}
+
+/* =========================
+   COPY CURRENT DUA
+========================= */
+function copyCurrentDua(){
+
+  let dua = getAllDuas().find(function(item){
+    return item.id === currentDuaId;
+  });
+
+  if(!dua) return;
+
+  let text = buildDuaShareText(dua);
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      showDuaToast("Copied");
+    });
+  }else{
+    showDuaToast("Copy not supported");
+  }
+
+}
+
+/* =========================
+   SHARE CURRENT DUA
+========================= */
+function shareCurrentDua(){
+
+  let dua = getAllDuas().find(function(item){
+    return item.id === currentDuaId;
+  });
+
+  if(!dua) return;
+
+  let text = buildDuaShareText(dua);
+
+  if(navigator.share){
+    navigator.share({
+      title:dua.title || "Dua",
+      text:text
+    });
+  }else{
+    copyCurrentDua();
+  }
+
+}
+
+/* =========================
+   BUILD DUA SHARE TEXT
+========================= */
+function buildDuaShareText(dua){
+
+  let parts = [];
+
+  if(dua.title) parts.push(dua.title);
+  if(dua.arabic) parts.push(dua.arabic);
+  if(dua.urdu) parts.push(dua.urdu);
+  if(dua.english) parts.push(dua.english);
+  if(dua.explanation) parts.push(dua.explanation);
+  if(dua.reference) parts.push(dua.reference);
+
+  if(parts.length === 1 && dua.images && dua.images.length > 0){
+    parts.push("This dua is saved as an image inside the Ibadah app.");
+  }
+
+  return parts.join("\n\n");
+
 }
 
 /* =========================
@@ -493,10 +1734,21 @@ function openDuaDetailPage(duaName){
 function openDuaMainPage(){
 
   currentDuaSubPage = "main";
+  currentDuaId = null;
 
-  setDuaTopTitle("🤲 Masnoon Dua");
+  if(currentFavoriteMode){
+    setDuaTopTitle("❤️ Favorite Duas");
+  }else{
+    setDuaTopTitle("🤲 Masnoon Dua");
+  }
+
+  setDuaTopHeartVisible(true);
+
+  renderDuaTabs();
+  renderDuaList();
 
   showOnlyDuaPage("duaMainPage");
+
 }
 
 /* =========================
@@ -514,6 +1766,7 @@ function getDuaReturnSource(){
   if(from === "salah") return "salah";
 
   return "home";
+
 }
 
 /* =========================
@@ -531,6 +1784,41 @@ function handleDuaBack(){
   localStorage.setItem("ibadahFolderReturnPage", from);
 
   window.location.href = "../";
+
+}
+
+/* =========================
+   SHOW DUA TOAST
+========================= */
+function showDuaToast(message){
+
+  let toast = document.getElementById("duaToast");
+
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.classList.add("show");
+
+  setTimeout(function(){
+    toast.classList.remove("show");
+  }, 2500);
+
+}
+
+/* =========================
+   ESCAPE HTML
+========================= */
+function escapeHtml(text){
+
+  if(text === null || text === undefined) return "";
+
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 }
 
 /* =========================
@@ -538,7 +1826,12 @@ function handleDuaBack(){
 ========================= */
 function loadDuaPage(){
 
+  currentDuaTab = "All";
+  currentFavoriteMode = false;
+  currentSearchText = "";
+
   openDuaMainPage();
+
 }
 
 loadDuaPage();
