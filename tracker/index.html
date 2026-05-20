@@ -426,9 +426,13 @@ body{
 #trackerPdfReaderPage{
   display:none;
   position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100vw;
+  height:100vh;
+  height:100dvh;
   background:#e9e9ee;
   z-index:12000;
   overflow:hidden;
@@ -501,17 +505,20 @@ body{
   right:0;
   bottom:0;
   width:100%;
-  height:calc(100% - env(safe-area-inset-top) - 62px);
-  background:#d8d8de;
-  overflow:hidden;
+  height:auto;
+  background:#525659;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
 }
 
 #trackerPdfFrame{
   display:block;
   width:100%;
   height:100%;
-  max-width:100%;
-  max-height:100%;
+  min-height:100%;
   border:none;
   outline:none;
   background:white;
@@ -758,7 +765,7 @@ body{
   </div>
 
   <div class="pdfFrameWrap">
-    <iframe id="trackerPdfFrame" src=""></iframe>
+    <iframe id="trackerPdfFrame" src="" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -1639,7 +1646,7 @@ function buildTrackerPdfViewUrl(pdfUrl){
 
   let cleanUrl = String(pdfUrl || "").split("#")[0];
 
-  return cleanUrl + "#toolbar=0&navpanes=0&scrollbar=1&view=FitH&zoom=page-fit";
+  return cleanUrl + "#toolbar=0&navpanes=0&scrollbar=1&statusbar=0&messages=0&view=FitH";
 
 }
 
