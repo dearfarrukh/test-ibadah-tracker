@@ -17,7 +17,6 @@
 <link rel="manifest" href="manifest.webmanifest">
 
 <style>
-
 /* =========================
    CLEAN BASIC RESET
 ========================= */
@@ -26,7 +25,8 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html, body{
+html,
+body{
   margin:0;
   padding:0;
   width:100%;
@@ -105,11 +105,6 @@ html, body{
   color:#111;
 }
 
-.cleanButtonRed{
-  background:#fff1f1;
-  color:#ff3b30;
-}
-
 .cleanSmallText{
   font-size:13px;
   font-weight:650;
@@ -117,101 +112,6 @@ html, body{
   line-height:1.45;
   margin-top:14px;
 }
-
-/* =========================
-   SETTINGS PAGE
-========================= */
-#appSettingsPage{
-  display:none;
-  width:100%;
-  min-height:100vh;
-  background:#e9e9ee;
-  padding:calc(env(safe-area-inset-top) + 18px) 4% 36px 4%;
-}
-
-.settingsTop{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-}
-
-.backCircle{
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:50%;
-  background:white;
-  color:#111;
-  font-size:24px;
-  font-weight:900;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 16px rgba(0,0,0,0.10);
-  cursor:pointer;
-}
-
-.settingsTitle{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:-0.4px;
-}
-
-.settingsCard{
-  background:white;
-  border-radius:28px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 10px 28px rgba(0,0,0,0.08);
-  border:1px solid rgba(0,0,0,0.04);
-}
-
-.settingsCardTitle{
-  font-size:20px;
-  font-weight:900;
-  margin-bottom:8px;
-}
-
-.settingsCardText{
-  font-size:14px;
-  font-weight:650;
-  color:#666;
-  line-height:1.5;
-  margin-bottom:14px;
-}
-
-.settingsSelect{
-  width:100%;
-  border:none;
-  border-radius:18px;
-  background:#f2f2f7;
-  padding:15px 14px;
-  font-size:17px;
-  font-weight:800;
-  color:#111;
-  outline:none;
-  margin-top:8px;
-}
-
-.toast{
-  display:none;
-  position:fixed;
-  left:50%;
-  bottom:28px;
-  transform:translateX(-50%);
-  background:rgba(17,17,17,0.94);
-  color:white;
-  padding:14px 18px;
-  border-radius:18px;
-  font-size:15px;
-  font-weight:800;
-  z-index:9999;
-  max-width:88%;
-  text-align:center;
-}
-
 </style>
 
 </head>
@@ -221,7 +121,7 @@ html, body{
 <!-- =========================
      CLEAN LOADING SCREEN
 ========================= -->
-<div id="cleanLoadingPage" class="cleanAppShell" style="visibility:hidden;">
+<div id="cleanLoadingPage" class="cleanAppShell">
   <div class="cleanCard">
 
     <img class="cleanLogo" src="Images/Icons/QuranTracker.png" onerror="this.style.display='none'">
@@ -229,7 +129,7 @@ html, body{
     <div class="cleanTitle">Ibadah Tracker</div>
 
     <div id="cleanStatusText" class="cleanSub">
-      Opening your app...
+      Opening your saved default page...
     </div>
 
     <button class="cleanButton cleanButtonBlack" onclick="openSelectedDefaultPage()">
@@ -241,102 +141,13 @@ html, body{
     </button>
 
     <div class="cleanSmallText">
-      Clean main index. Pages now open from separate folders.
+      Clean main index. Settings now open from separate appsettings folder.
     </div>
 
   </div>
 </div>
-
-<!-- =========================
-     APP SETTINGS PAGE
-========================= -->
-<div id="appSettingsPage">
-
-  <div class="settingsTop">
-    <button class="backCircle" onclick="closeAppSettingsPage()">‹</button>
-    <div class="settingsTitle">App Settings</div>
-    <div style="width:44px;height:44px;"></div>
-  </div>
-
-  <!-- DEFAULT PAGE -->
-  <div class="settingsCard">
-    <div class="settingsCardTitle">Default Start Page</div>
-    <div class="settingsCardText">
-      Choose which page opens first when the app starts.
-    </div>
-
-    <select id="defaultPageSelect" class="settingsSelect" onchange="saveDefaultPageSetting()">
-      <option value="home">Home</option>
-      <option value="tracker">Tracker</option>
-      <option value="salah">Salah</option>
-      <option value="more">More</option>
-      <option value="quran">Quran</option>
-    </select>
-  </div>
-
-  <!-- BACKUP -->
-  <div class="settingsCard">
-    <div class="settingsCardTitle">Backup & Restore</div>
-    <div class="settingsCardText">
-      Export your saved app data, or import a backup file.
-    </div>
-
-    <button class="cleanButton cleanButtonBlack" onclick="exportBackupData()">
-      Export Backup
-    </button>
-
-    <button class="cleanButton cleanButtonLight" onclick="openImportBackupFile()">
-      Import Backup
-    </button>
-
-    <input id="backupFileInput" type="file" accept=".json" style="display:none;" onchange="handleImportBackupFile(event)">
-  </div>
-
-  <!-- QURAN DOWNLOADS -->
-  <div class="settingsCard">
-    <div class="settingsCardTitle">Downloaded Quran Files</div>
-    <div class="settingsCardText">
-      This removes saved offline Quran downloads from the runtime cache only. It does not delete your folders from GitHub.
-    </div>
-
-    <button class="cleanButton cleanButtonLight" onclick="resetOfflineDownloads()">
-      Remove Offline Quran Downloads
-    </button>
-  </div>
-
-  <!-- REFRESH -->
-  <div class="settingsCard">
-    <div class="settingsCardTitle">Refresh App</div>
-    <div class="settingsCardText">
-      Use this after code changes if the browser is showing an old cached version.
-    </div>
-
-    <button class="cleanButton cleanButtonLight" onclick="refreshApp()">
-      Refresh App
-    </button>
-  </div>
-
-  <!-- MASTER RESET -->
-  <div class="settingsCard">
-    <div class="settingsCardTitle">Master Reset</div>
-    <div class="settingsCardText">
-      This clears local saved app data on this device. Use only after making a backup.
-    </div>
-
-    <button class="cleanButton cleanButtonRed" onclick="masterResetApp()">
-      Master Reset App
-    </button>
-  </div>
-
-</div>
-
-<!-- =========================
-     TOAST MESSAGE
-========================= -->
-<div id="appToast" class="toast"></div>
 
 <script>
-
 /* =========================
    REGISTER SERVICE WORKER
    Full function name: registerIbadahServiceWorker()
@@ -361,28 +172,6 @@ function registerIbadahServiceWorker(){
 
 registerIbadahServiceWorker();
 
-
-/* =========================
-   SHOW TOAST
-   Full function name: showAppToast()
-========================= */
-function showAppToast(message){
-
-  let toast = document.getElementById("appToast");
-  if(!toast) return;
-
-  toast.innerText = message || "";
-  toast.style.display = "block";
-
-  clearTimeout(window.appToastTimer);
-
-  window.appToastTimer = setTimeout(function(){
-    toast.style.display = "none";
-  }, 2600);
-
-}
-
-
 /* =========================
    GET IBADAH BASE PATH
    Full function name: getIbadahBasePath()
@@ -400,7 +189,6 @@ function getIbadahBasePath(){
   return "/";
 
 }
-
 
 /* =========================
    GET DEFAULT PAGE
@@ -431,7 +219,6 @@ function getDefaultPage(){
   return saved;
 
 }
-
 
 /* =========================
    CLEAR ONE-TIME RETURN KEYS
@@ -465,10 +252,6 @@ function shouldUseFolderReturnKeys(){
     return false;
   }
 
-  /*
-    Use return keys only when user really came back from a folder page.
-    This stops old/stuck return keys from breaking your saved default page.
-  */
   let folderNames = [
     "/home/",
     "/tracker/",
@@ -538,8 +321,7 @@ function openSelectedDefaultPage(){
 
   /*
     Powerful default page rule:
-    If app opens normally, or refresh sends forceDefault=1,
-    always clear old return keys and open saved default page.
+    Normal app open or forceDefault=1 always opens saved default page.
   */
   if(!shouldUseFolderReturnKeys()){
     clearOneTimeReturnKeys();
@@ -548,8 +330,7 @@ function openSelectedDefaultPage(){
   }
 
   /*
-    Folder return should run only when user truly came back
-    from a folder page.
+    Folder return only works when user really came from a folder page.
   */
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
@@ -639,7 +420,6 @@ function openHomePage(){
 
 }
 
-
 /* =========================
    OPEN TRACKER PAGE
    Full function name: openTrackerPage()
@@ -649,7 +429,6 @@ function openTrackerPage(){
   window.location.href = getIbadahBasePath() + "tracker/";
 
 }
-
 
 /* =========================
    OPEN SALAH PAGE
@@ -661,7 +440,6 @@ function openSalahPage(){
 
 }
 
-
 /* =========================
    OPEN MORE PAGE
    Full function name: openMorePage()
@@ -671,7 +449,6 @@ function openMorePage(){
   window.location.href = getIbadahBasePath() + "more/";
 
 }
-
 
 /* =========================
    OPEN QURAN PAGE
@@ -683,7 +460,6 @@ function openQuranPage(){
 
 }
 
-
 /* =========================
    OPEN TASBIH PAGE FROM HOME
    Full function name: openTasbihPageFromHome()
@@ -693,7 +469,6 @@ function openTasbihPageFromHome(){
   window.location.href = getIbadahBasePath() + "tasbih/?from=home";
 
 }
-
 
 /* =========================
    OPEN QAZA TRACKER FROM HOME
@@ -706,7 +481,6 @@ function openQazaTrackerFromHome(){
 
 }
 
-
 /* =========================
    OPEN DUA PAGE FROM HOME
    Full function name: openDuaPageFromHome()
@@ -716,7 +490,6 @@ function openDuaPageFromHome(){
   window.location.href = getIbadahBasePath() + "duapage/?from=home&v=" + Date.now();
 
 }
-
 
 /* =========================
    OPEN DAILY AZKAR PAGE FROM HOME
@@ -728,7 +501,6 @@ function openDailyAzkarPageFromHome(){
 
 }
 
-
 /* =========================
    OPEN QIBLA PAGE
    Full function name: openQiblaPage()
@@ -739,368 +511,17 @@ function openQiblaPage(){
 
 }
 
-
 /* =========================
    OPEN APP SETTINGS PAGE
    Full function name: openAppSettingsPage()
 ========================= */
 function openAppSettingsPage(){
 
-  localStorage.removeItem("ibadahOpenAppSettings");
+  clearOneTimeReturnKeys();
 
-  let loadingPage = document.getElementById("cleanLoadingPage");
-  let settingsPage = document.getElementById("appSettingsPage");
-
-  if(loadingPage) loadingPage.style.display = "none";
-  if(settingsPage) settingsPage.style.display = "block";
-
-  loadAppSettingsUI();
-
-  window.scrollTo(0,0);
+  window.location.href = getIbadahBasePath() + "appsettings/?from=main&v=" + Date.now();
 
 }
-
-
-/* =========================
-   CLOSE APP SETTINGS PAGE
-   Full function name: closeAppSettingsPage()
-========================= */
-function closeAppSettingsPage(){
-
-  openSelectedDefaultPage();
-
-}
-
-
-/* =========================
-   LOAD APP SETTINGS UI
-   Full function name: loadAppSettingsUI()
-========================= */
-function loadAppSettingsUI(){
-
-  let select = document.getElementById("defaultPageSelect");
-  if(!select) return;
-
-  select.value = getDefaultPage();
-
-}
-
-
-/* =========================
-   SAVE DEFAULT PAGE SETTING
-   Full function name: saveDefaultPageSetting()
-========================= */
-function saveDefaultPageSetting(){
-
-  let select = document.getElementById("defaultPageSelect");
-  if(!select) return;
-
-  localStorage.setItem("defaultPage", select.value);
-
-  showAppToast("Default page saved");
-
-}
-
-
-/* =========================
-   EXPORT BACKUP DATA
-   Full function name: exportBackupData()
-========================= */
-function exportBackupData(){
-
-  let backup = {
-    app:"Ibadah Tracker",
-    createdAt:new Date().toISOString(),
-    localStorage:{}
-  };
-
-  for(let i = 0; i < localStorage.length; i++){
-
-    let key = localStorage.key(i);
-
-    if(key){
-      backup.localStorage[key] = localStorage.getItem(key);
-    }
-
-  }
-
-  let text = JSON.stringify(backup, null, 2);
-  let blob = new Blob([text], {type:"application/json"});
-  let url = URL.createObjectURL(blob);
-
-  let a = document.createElement("a");
-  a.href = url;
-  a.download = "ibadah-tracker-backup.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  URL.revokeObjectURL(url);
-
-  showAppToast("Backup file created");
-
-}
-
-
-/* =========================
-   OPEN IMPORT BACKUP FILE
-   Full function name: openImportBackupFile()
-========================= */
-function openImportBackupFile(){
-
-  let input = document.getElementById("backupFileInput");
-  if(input){
-    input.click();
-  }
-
-}
-
-
-/* =========================
-   HANDLE IMPORT BACKUP FILE
-   Full function name: handleImportBackupFile()
-========================= */
-function handleImportBackupFile(event){
-
-  let file = event.target.files && event.target.files[0];
-
-  if(!file){
-    return;
-  }
-
-  let ok = confirm("Import this backup? This will replace saved data on this device.");
-
-  if(!ok){
-    event.target.value = "";
-    return;
-  }
-
-  let reader = new FileReader();
-
-  reader.onload = function(e){
-
-    try{
-
-      let backup = JSON.parse(e.target.result);
-
-      /*
-        This app has used more than one backup style before.
-
-        New backup style:
-        backup.localStorage
-
-        Old backup style:
-        backup.storage
-
-        Old tracker task style:
-        backup.taskList
-      */
-      let importedStorage = null;
-
-      if(backup && backup.localStorage && typeof backup.localStorage === "object"){
-        importedStorage = backup.localStorage;
-      }
-
-      if(backup && backup.storage && typeof backup.storage === "object"){
-        importedStorage = backup.storage;
-      }
-
-      if(!importedStorage){
-        importedStorage = {};
-      }
-
-      /*
-        Find tracker taskList first BEFORE clearing localStorage.
-        This is the important fix for Quran Class and Taraweh.
-      */
-      let restoredTaskList = null;
-
-      if(backup && Array.isArray(backup.taskList)){
-        restoredTaskList = backup.taskList;
-      }
-
-      if(!restoredTaskList && importedStorage.taskList){
-
-        if(Array.isArray(importedStorage.taskList)){
-          restoredTaskList = importedStorage.taskList;
-        }else{
-          try{
-            let parsedTaskList = JSON.parse(importedStorage.taskList);
-
-            if(Array.isArray(parsedTaskList)){
-              restoredTaskList = parsedTaskList;
-            }
-
-          }catch(error){
-            console.log("Could not parse importedStorage.taskList", error);
-          }
-        }
-
-      }
-
-      /*
-        Extra safety:
-        Look for old possible task names if they exist in another key.
-      */
-      if(!restoredTaskList){
-
-        let possibleTaskKeys = [
-          "taskList",
-          "tasks",
-          "trackerTasks",
-          "dailyTasks",
-          "ibadahTasks"
-        ];
-
-        possibleTaskKeys.forEach(function(possibleKey){
-
-          if(restoredTaskList) return;
-
-          if(backup[possibleKey] && Array.isArray(backup[possibleKey])){
-            restoredTaskList = backup[possibleKey];
-          }
-
-          if(importedStorage[possibleKey]){
-
-            if(Array.isArray(importedStorage[possibleKey])){
-              restoredTaskList = importedStorage[possibleKey];
-            }else{
-              try{
-                let parsed = JSON.parse(importedStorage[possibleKey]);
-
-                if(Array.isArray(parsed)){
-                  restoredTaskList = parsed;
-                }
-
-              }catch(error){}
-            }
-
-          }
-
-        });
-
-      }
-
-      /*
-        Now clear old data.
-      */
-      localStorage.clear();
-
-      /*
-        Restore every normal saved localStorage key.
-      */
-      Object.keys(importedStorage).forEach(function(key){
-
-        let value = importedStorage[key];
-
-        if(typeof value === "string"){
-          localStorage.setItem(key, value);
-        }else{
-          localStorage.setItem(key, JSON.stringify(value));
-        }
-
-      });
-
-      /*
-        Force save tracker taskList AFTER restoring storage.
-        This makes sure old backup.taskList wins.
-      */
-      if(restoredTaskList && Array.isArray(restoredTaskList)){
-
-        restoredTaskList = restoredTaskList.filter(function(task){
-          return task && task.name;
-        });
-
-        localStorage.setItem("taskList", JSON.stringify(restoredTaskList));
-
-      }
-
-      /*
-        Remove one-time return keys.
-      */
-      localStorage.removeItem("ibadahFolderReturnPage");
-      localStorage.removeItem("qazaReturnPage");
-      localStorage.removeItem("tasbihReturnPage");
-      localStorage.removeItem("appSettingsReturnPage");
-      localStorage.removeItem("ibadahOpenAppSettings");
-
-      /*
-        Check restored task names for confirmation.
-      */
-      let finalTaskList = [];
-
-      try{
-        finalTaskList = JSON.parse(localStorage.getItem("taskList") || "[]");
-      }catch(error){
-        finalTaskList = [];
-      }
-
-      let taskNames = finalTaskList.map(function(task){
-        return task.name;
-      }).join(", ");
-
-      alert(
-        "Backup imported successfully.\n\n" +
-        "Tasks restored: " + finalTaskList.length + "\n\n" +
-        taskNames
-      );
-
-      window.location.href = getIbadahBasePath() + "?v=" + Date.now();
-
-    }catch(error){
-
-      alert("Could not import backup file.");
-      console.log(error);
-
-    }
-
-  };
-
-  reader.readAsText(file);
-
-}
-
-/* =========================
-   RESET OFFLINE DOWNLOADS
-   Full function name: resetOfflineDownloads()
-========================= */
-async function resetOfflineDownloads(){
-
-  let ok = confirm("Remove all downloaded Quran files from this device cache?");
-
-  if(!ok) return;
-
-  try{
-
-    if("caches" in window){
-
-      let cacheNames = await caches.keys();
-
-      for(let cacheName of cacheNames){
-
-        if(cacheName === "ibadah-runtime-v1" || cacheName === "ibadah-test-runtime-v1"){
-          await caches.delete(cacheName);
-        }
-
-      }
-
-    }
-
-    localStorage.removeItem("juz30OfflineDownloaded");
-    localStorage.removeItem("quran16FullDownloaded");
-    localStorage.removeItem("quran15FullDownloaded");
-
-    showAppToast("Offline Quran downloads removed");
-
-  }catch(error){
-
-    console.log(error);
-    alert("Could not remove offline downloads.");
-
-  }
-
-}
-
 
 /* =========================
    REFRESH APP
@@ -1130,70 +551,30 @@ async function refreshApp(){
 
 }
 
-
-/* =========================
-   MASTER RESET APP
-   Full function name: masterResetApp()
-========================= */
-async function masterResetApp(){
-
-  let firstConfirm = confirm("Master reset will clear saved app data on this device. Continue?");
-  if(!firstConfirm) return;
-
-  let secondConfirm = confirm("Are you sure? Make a backup first if you need your data.");
-  if(!secondConfirm) return;
-
-  try{
-
-    localStorage.clear();
-
-    if("caches" in window){
-
-      let cacheNames = await caches.keys();
-
-      for(let cacheName of cacheNames){
-        await caches.delete(cacheName);
-      }
-
-    }
-
-    alert("App reset complete.");
-    window.location.href = getIbadahBasePath() + "?v=" + Date.now();
-
-  }catch(error){
-
-    console.log(error);
-    alert("Reset failed.");
-
-  }
-
-}
-
-
 /* =========================
    CLEAN STARTUP
    Full function name: cleanStartup()
 ========================= */
 function cleanStartup(){
 
+  /*
+    Old setting key support:
+    If any old page still sends ibadahOpenAppSettings=yes,
+    send user to the new separate appsettings folder.
+  */
   let shouldOpenSettings = localStorage.getItem("ibadahOpenAppSettings") === "yes";
 
   if(shouldOpenSettings){
-    openAppSettingsPage();
+    localStorage.removeItem("ibadahOpenAppSettings");
+    window.location.href = getIbadahBasePath() + "appsettings/?from=main&v=" + Date.now();
     return;
   }
 
-  /*
-    Do not wait 500ms.
-    This stops the clean starter message from showing
-    when another page accidentally opens main index.html.
-  */
   openSelectedDefaultPage();
 
 }
 
 document.addEventListener("DOMContentLoaded", cleanStartup);
-
 </script>
 
 </body>
