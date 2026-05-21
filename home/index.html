@@ -95,41 +95,6 @@ body{
 }
 
 /* =========================
-   LEFT MENU HANDLE
-========================= */
-#homeMenuHandle{
-  position:absolute;
-  top:20px;
-  left:0;
-  width:8.2%;
-  min-width:34px;
-  max-width:42px;
-  height:96px;
-  background:rgba(255,255,255,0.74);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-top-right-radius:22px;
-  border-bottom-right-radius:22px;
-  border:1px solid rgba(255,255,255,0.70);
-  box-shadow:0 7px 20px rgba(0,0,0,0.14);
-  z-index:20;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
-
-#homeMenuHandle span{
-  display:block;
-  text-align:center;
-  color:#3a3a3c;
-  font-size:11px;
-  font-weight:950;
-  letter-spacing:1.8px;
-  line-height:1.24;
-}
-
-/* =========================
    DATE / LOCATION TOP RIGHT - NO CARD
 ========================= */
 .homeInfoCard{
@@ -479,74 +444,6 @@ body{
 }
 
 /* =========================
-   SIDE MENU
-========================= */
-#homeMenuOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  z-index:9997;
-}
-
-#homeSideMenu{
-  position:fixed;
-  top:0;
-  left:-280px;
-  width:260px;
-  height:100%;
-  background:rgba(233,233,238,0.96);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  box-shadow:10px 0 30px rgba(0,0,0,0.16);
-  z-index:9998;
-  padding:108px 18px 20px 18px;
-  transition:left 0.28s ease;
-  border-top-right-radius:28px;
-  border-bottom-right-radius:28px;
-  border-right:1px solid rgba(255,255,255,0.55);
-}
-
-.menuTitle{
-  font-size:24px;
-  font-weight:950;
-  color:#111;
-  margin-bottom:22px;
-  text-align:center;
-}
-
-.menuCard{
-  width:100%;
-  border:none;
-  background:rgba(255,255,255,0.84);
-  padding:16px 18px;
-  border-radius:20px;
-  font-size:18px;
-  font-weight:900;
-  color:#111;
-  margin-bottom:14px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.08);
-  cursor:pointer;
-  border:1px solid rgba(255,255,255,0.55);
-  display:flex;
-  align-items:center;
-  gap:12px;
-  text-align:left;
-}
-
-.menuCardIcon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  background:#f2f2f7;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  flex-shrink:0;
-}
-
-/* =========================
    SMALL PHONE FIT
 ========================= */
 @media(max-width:390px){
@@ -562,11 +459,12 @@ body{
   #homeLocationName{
     font-size:18px;
   }
-     
- .homeBismillah{
+
+  .homeBismillah{
     font-size:19px;
     margin-top:88px;
   }
+
   #homeNextSalahName,
   .timeLeftLabel{
     font-size:15px;
@@ -622,35 +520,6 @@ body{
 <body>
 
 <!-- =========================
-     HOME SIDE MENU OVERLAY
-========================= -->
-<div id="homeMenuOverlay" onclick="closeHomeSideMenu()"></div>
-
-<div id="homeSideMenu">
-  <div class="menuTitle">Menu</div>
-
-  <button class="menuCard" onclick="goHomeMainPage()">
-    <div class="menuCardIcon">🏠</div>
-    <span>Main Page</span>
-  </button>
-
-  <button class="menuCard" onclick="refreshHomeApp()">
-    <div class="menuCardIcon">↻</div>
-    <span>Refresh App</span>
-  </button>
-
-  <button class="menuCard" onclick="openHomeAppSettings()">
-    <div class="menuCardIcon">⚙️</div>
-    <span>App Settings</span>
-  </button>
-
-  <button class="menuCard" onclick="goHomeMorePage()">
-    <div class="menuCardIcon">•••</div>
-    <span>More</span>
-  </button>
-</div>
-
-<!-- =========================
      HOME PAGE
 ========================= -->
 <div class="homeWrap">
@@ -659,10 +528,6 @@ body{
        HOME TOP HERO
   ========================= -->
   <div class="homeHero">
-
-    <div id="homeMenuHandle" onclick="toggleHomeSideMenu()">
-      <span>M<br>E<br>N<br>U</span>
-    </div>
 
     <div class="homeHeader">
       <img class="homeHeaderLogo" src="../Images/Icons/QuranTracker.png" alt="">
@@ -776,100 +641,34 @@ body{
      HOME PAGE JAVASCRIPT
 ========================= -->
 <script>
-// =========================
-// HOME SIDE MENU FUNCTIONS
-// Full function names:
-// openHomeSideMenu()
-// closeHomeSideMenu()
-// toggleHomeSideMenu()
-// =========================
-let homeSideMenuOpen = false;
+/* =========================
+   SHORTCUT ACTION FUNCTIONS
+========================= */
 
-function openHomeSideMenu(){
-  let overlay = document.getElementById("homeMenuOverlay");
-  let menu = document.getElementById("homeSideMenu");
-
-  if(overlay) overlay.style.display = "block";
-  if(menu) menu.style.left = "0";
-
-  homeSideMenuOpen = true;
-}
-
-function closeHomeSideMenu(){
-  let overlay = document.getElementById("homeMenuOverlay");
-  let menu = document.getElementById("homeSideMenu");
-
-  if(overlay) overlay.style.display = "none";
-  if(menu) menu.style.left = "-280px";
-
-  homeSideMenuOpen = false;
-}
-
-function toggleHomeSideMenu(){
-  if(homeSideMenuOpen){
-    closeHomeSideMenu();
-  }else{
-    openHomeSideMenu();
-  }
-}
-
-// =========================
-// MENU ACTION FUNCTIONS
-// Full function names:
-// goHomeMainPage()
-// refreshHomeApp()
-// openHomeAppSettings()
-// goHomeMorePage()
-// =========================
-function goHomeMainPage(){
-  closeHomeSideMenu();
-  window.location.href = "../home/";
-}
-
-function refreshHomeApp(){
-  closeHomeSideMenu();
-  window.location.href = "./?v=" + Date.now();
-}
-
-function openHomeAppSettings(){
-  closeHomeSideMenu();
-  localStorage.setItem("ibadahOpenAppSettings", "yes");
-  window.location.href = "../";
-}
-
-function goHomeMorePage(){
-  closeHomeSideMenu();
-  window.location.href = "../more/";
-}
-
-// =========================
-// SHORTCUT ACTION FUNCTIONS
-// =========================
-
-// =========================
-// OPEN HOME QURAN
-// Full function name: openHomeQuran()
-// =========================
+/* =========================
+   OPEN HOME QURAN
+   Full function name: openHomeQuran()
+========================= */
 function openHomeQuran(){
 
   window.location.href = "../quran/?from=home";
 
 }
 
-// =========================
-// OPEN HOME AZKAR
-// Full function name: openHomeAzkar()
-// =========================
+/* =========================
+   OPEN HOME AZKAR
+   Full function name: openHomeAzkar()
+========================= */
 function openHomeAzkar(){
 
   window.location.href = "../dailyazkar/?from=home&v=" + Date.now();
 
 }
 
-// =========================
-// OPEN HOME QAZA
-// Full function name: openHomeQaza()
-// =========================
+/* =========================
+   OPEN HOME QAZA
+   Full function name: openHomeQaza()
+========================= */
 function openHomeQaza(){
 
   localStorage.setItem("qazaReturnPage", "home");
@@ -877,60 +676,60 @@ function openHomeQaza(){
 
 }
 
-// =========================
-// OPEN HOME TASBIH
-// Full function name: openHomeTasbih()
-// =========================
+/* =========================
+   OPEN HOME TASBIH
+   Full function name: openHomeTasbih()
+========================= */
 function openHomeTasbih(){
 
   window.location.href = "../tasbih/?from=home";
 
 }
 
-// =========================
-// OPEN HOME QIBLA
-// Full function name: openHomeQibla()
-// =========================
+/* =========================
+   OPEN HOME QIBLA
+   Full function name: openHomeQibla()
+========================= */
 function openHomeQibla(){
 
   window.location.href = "../qibla/";
 
 }
 
-// =========================
-// OPEN HOME DUA
-// Full function name: openHomeDua()
-// =========================
+/* =========================
+   OPEN HOME DUA
+   Full function name: openHomeDua()
+========================= */
 function openHomeDua(){
 
   window.location.href = "../duapage/?from=home&v=" + Date.now();
 
 }
 
-// =========================
-// GO HOME SALAH
-// Full function name: goHomeSalah()
-// =========================
+/* =========================
+   GO HOME SALAH
+   Full function name: goHomeSalah()
+========================= */
 function goHomeSalah(){
 
   window.location.href = "../salah/";
 
 }
 
-// =========================
-// GO HOME TRACKER
-// Full function name: goHomeTracker()
-// =========================
+/* =========================
+   GO HOME TRACKER
+   Full function name: goHomeTracker()
+========================= */
 function goHomeTracker(){
 
   window.location.href = "../tracker/";
 
 }
 
-// =========================
-// UPDATE HOME PAGE SALAH SUMMARY
-// Full function name: updateHomePageSalahSummary()
-// =========================
+/* =========================
+   UPDATE HOME PAGE SALAH SUMMARY
+   Full function name: updateHomePageSalahSummary()
+========================= */
 async function updateHomePageSalahSummary(){
 
   let locationEl = document.getElementById("homeLocationName");
@@ -1061,10 +860,10 @@ async function updateHomePageSalahSummary(){
   }
 }
 
-// =========================
-// LOAD HOME LOCATION DATA
-// Full function name: loadHomeLocationData()
-// =========================
+/* =========================
+   LOAD HOME LOCATION DATA
+   Full function name: loadHomeLocationData()
+========================= */
 function loadHomeLocationData(){
 
   return new Promise(function(resolve, reject){
@@ -1122,10 +921,10 @@ function loadHomeLocationData(){
   });
 }
 
-// =========================
-// LOAD HOME SALAH TIMES
-// Full function name: loadHomeSalahTimes()
-// =========================
+/* =========================
+   LOAD HOME SALAH TIMES
+   Full function name: loadHomeSalahTimes()
+========================= */
 async function loadHomeSalahTimes(date, latitude, longitude){
 
   let day = String(date.getDate()).padStart(2, "0");
@@ -1156,18 +955,20 @@ async function loadHomeSalahTimes(date, latitude, longitude){
   };
 }
 
-// =========================
-// CLEAN TIME
-// Full function name: cleanTime()
-// =========================
+/* =========================
+   CLEAN TIME
+   Full function name: cleanTime()
+========================= */
 function cleanTime(value){
+
   return String(value || "").replace(/\s*\(.+?\)\s*/g, "").trim();
+
 }
 
-// =========================
-// TO 12 HOUR
-// Full function name: to12Hour()
-// =========================
+/* =========================
+   TO 12 HOUR
+   Full function name: to12Hour()
+========================= */
 function to12Hour(time24){
 
   let parts = String(time24 || "").split(":");
@@ -1181,12 +982,13 @@ function to12Hour(time24){
   if(hour === 0) hour = 12;
 
   return hour + ":" + minute + " " + ampm;
+
 }
 
-// =========================
-// LOAD QURAN AYAT OF THE DAY
-// Full function name: loadQuranAyatOfTheDay()
-// =========================
+/* =========================
+   LOAD QURAN AYAT OF THE DAY
+   Full function name: loadQuranAyatOfTheDay()
+========================= */
 async function loadQuranAyatOfTheDay(){
 
   let arabicBox = document.getElementById("quranAyatArabic");
@@ -1258,12 +1060,34 @@ async function loadQuranAyatOfTheDay(){
   }
 }
 
-// =========================
-// START HOME PAGE
-// =========================
+/* =========================
+   START HOME PAGE
+========================= */
 document.addEventListener("DOMContentLoaded", function(){
   updateHomePageSalahSummary();
   loadQuranAyatOfTheDay();
+});
+</script>
+
+<!-- =========================
+     UNIVERSAL MENU HANDLE SCRIPT
+     File used: shared/menu-handle.js
+========================= -->
+<script src="../shared/menu-handle.js?v=home-menu-1"></script>
+
+<script>
+/* =========================
+   START UNIVERSAL MENU HANDLE - HOME PAGE
+   Full function name: createUniversalMenuHandle()
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+
+  if(typeof createUniversalMenuHandle === "function"){
+    createUniversalMenuHandle({
+      iconBasePath:"../Images/Icons/"
+    });
+  }
+
 });
 </script>
 
@@ -1274,14 +1098,16 @@ document.addEventListener("DOMContentLoaded", function(){
 <script src="../shared/bottom-nav.js"></script>
 
 <script>
-// =========================
-// START UNIVERSAL BOTTOM NAV - HOME ACTIVE
-// Full function name: createUniversalBottomNav("home")
-// =========================
+/* =========================
+   START UNIVERSAL BOTTOM NAV - HOME ACTIVE
+   Full function name: createUniversalBottomNav("home")
+========================= */
 document.addEventListener("DOMContentLoaded", function(){
+
   if(typeof createUniversalBottomNav === "function"){
     createUniversalBottomNav("home");
   }
+
 });
 </script>
 
