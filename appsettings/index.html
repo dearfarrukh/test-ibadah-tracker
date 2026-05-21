@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     APP SETTINGS FOLDER PAGE
+     File: appsettings/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>App Settings - Ibadah Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="apple-touch-icon" href="../icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+/* =========================
+   BASIC RESET
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+}
+
+body{
+  padding:calc(env(safe-area-inset-top) + 18px) 4% 36px 4%;
+  background:linear-gradient(180deg,#f8f8fb 0%,#e9e9ee 100%);
+}
+
+/* =========================
+   SETTINGS TOP BAR
+========================= */
+.settingsTop{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.backCircle{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#111;
+  font-size:24px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,0.10);
+  cursor:pointer;
+}
+
+.settingsTitle{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-0.4px;
+}
+
+/* =========================
+   TOP HERO CARD
+========================= */
+.settingsHero{
+  width:100%;
+  background:white;
+  border-radius:30px;
+  padding:24px 5%;
+  margin-bottom:16px;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.settingsHeroIcon{
+  width:64px;
+  height:64px;
+  border-radius:22px;
+  background:#f2f2f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 12px auto;
+  overflow:hidden;
+}
+
+.settingsHeroIcon img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  display:block;
+}
+
+.settingsHeroTitle{
+  font-size:27px;
+  font-weight:950;
+  letter-spacing:-0.5px;
+  margin-bottom:6px;
+}
+
+.settingsHeroSub{
+  font-size:15px;
+  font-weight:650;
+  color:#666;
+  line-height:1.45;
+  max-width:330px;
+  margin:0 auto;
+}
+
+/* =========================
+   SETTINGS CARDS
+========================= */
+.settingsCard{
+  background:white;
+  border-radius:28px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.settingsCardTitle{
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.settingsCardText{
+  font-size:14px;
+  font-weight:650;
+  color:#666;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.settingsSelect{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  background:#f2f2f7;
+  padding:15px 14px;
+  font-size:17px;
+  font-weight:800;
+  color:#111;
+  outline:none;
+  margin-top:8px;
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.cleanButton{
+  width:100%;
+  border:none;
+  border-radius:22px;
+  padding:16px 14px;
+  font-size:18px;
+  font-weight:850;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.cleanButtonBlack{
+  background:#111;
+  color:white;
+}
+
+.cleanButtonLight{
+  background:#f2f2f7;
+  color:#111;
+}
+
+.cleanButtonRed{
+  background:#fff1f1;
+  color:#ff3b30;
+}
+
+/* =========================
+   TOAST MESSAGE
+========================= */
+.toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:28px;
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.94);
+  color:white;
+  padding:14px 18px;
+  border-radius:18px;
+  font-size:15px;
+  font-weight:800;
+  z-index:9999;
+  max-width:88%;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.22);
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+@media(max-width:390px){
+  body{
+    padding-left:3.5%;
+    padding-right:3.5%;
+  }
+
+  .settingsTitle{
+    font-size:23px;
+  }
+
+  .settingsHeroTitle{
+    font-size:25px;
+  }
+
+  .settingsCard{
+    padding:18px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     SETTINGS TOP BAR
+========================= -->
+<div class="settingsTop">
+  <button class="backCircle" onclick="goBackFromAppSettings()">‹</button>
+  <div class="settingsTitle">App Settings</div>
+  <div style="width:44px;height:44px;"></div>
+</div>
+
+<!-- =========================
+     SETTINGS HERO
+========================= -->
+<div class="settingsHero">
+  <div class="settingsHeroIcon">
+    <img src="../Images/Icons/settings.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='⚙️';">
+  </div>
+
+  <div class="settingsHeroTitle">Settings</div>
+
+  <div class="settingsHeroSub">
+    Manage your default page, backup, Quran downloads, refresh, and reset options.
+  </div>
+</div>
+
+<!-- =========================
+     DEFAULT PAGE
+========================= -->
+<div class="settingsCard">
+  <div class="settingsCardTitle">Default Start Page</div>
+  <div class="settingsCardText">
+    Choose which page opens first when the app starts.
+  </div>
+
+  <select id="defaultPageSelect" class="settingsSelect" onchange="saveDefaultPageSetting()">
+    <option value="home">Home</option>
+    <option value="tracker">Tracker</option>
+    <option value="salah">Salah</option>
+    <option value="more">More</option>
+    <option value="quran">Quran</option>
+  </select>
+</div>
+
+<!-- =========================
+     BACKUP
+========================= -->
+<div class="settingsCard">
+  <div class="settingsCardTitle">Backup & Restore</div>
+  <div class="settingsCardText">
+    Export your saved app data, or import a backup file.
+  </div>
+
+  <button class="cleanButton cleanButtonBlack" onclick="exportBackupData()">
+    Export Backup
+  </button>
+
+  <button class="cleanButton cleanButtonLight" onclick="openImportBackupFile()">
+    Import Backup
+  </button>
+
+  <input id="backupFileInput" type="file" accept=".json" style="display:none;" onchange="handleImportBackupFile(event)">
+</div>
+
+<!-- =========================
+     QURAN DOWNLOADS
+========================= -->
+<div class="settingsCard">
+  <div class="settingsCardTitle">Downloaded Quran Files</div>
+  <div class="settingsCardText">
+    This removes saved offline Quran downloads from the runtime cache only. It does not delete your folders from GitHub.
+  </div>
+
+  <button class="cleanButton cleanButtonLight" onclick="resetOfflineDownloads()">
+    Remove Offline Quran Downloads
+  </button>
+</div>
+
+<!-- =========================
+     REFRESH
+========================= -->
+<div class="settingsCard">
+  <div class="settingsCardTitle">Refresh App</div>
+  <div class="settingsCardText">
+    Use this after code changes if the browser is showing an old cached version.
+  </div>
+
+  <button class="cleanButton cleanButtonLight" onclick="refreshApp()">
+    Refresh App
+  </button>
+</div>
+
+<!-- =========================
+     MASTER RESET
+========================= -->
+<div class="settingsCard">
+  <div class="settingsCardTitle">Master Reset</div>
+  <div class="settingsCardText">
+    This clears local saved app data on this device. Use only after making a backup.
+  </div>
+
+  <button class="cleanButton cleanButtonRed" onclick="masterResetApp()">
+    Master Reset App
+  </button>
+</div>
+
+<!-- =========================
+     TOAST MESSAGE
+========================= -->
+<div id="appToast" class="toast"></div>
+
+<script>
+/* =========================
+   GET APP SETTINGS FROM PAGE
+   Full function name: getAppSettingsFromPage()
+========================= */
+function getAppSettingsFromPage(){
+
+  let params = new URLSearchParams(window.location.search);
+  let from = params.get("from");
+
+  if(from){
+    return String(from).trim().toLowerCase();
+  }
+
+  let savedFrom = localStorage.getItem("appSettingsReturnPage");
+
+  if(savedFrom){
+    return String(savedFrom).trim().toLowerCase();
+  }
+
+  return "more";
+
+}
+
+/* =========================
+   GO BACK FROM APP SETTINGS
+   Full function name: goBackFromAppSettings()
+========================= */
+function goBackFromAppSettings(){
+
+  let from = getAppSettingsFromPage();
+
+  localStorage.removeItem("appSettingsReturnPage");
+  localStorage.removeItem("ibadahOpenAppSettings");
+
+  if(from === "home"){
+    localStorage.setItem("ibadahFolderReturnPage","home");
+    window.location.href = "../";
+    return;
+  }
+
+  if(from === "tracker"){
+    localStorage.setItem("ibadahFolderReturnPage","tracker");
+    window.location.href = "../";
+    return;
+  }
+
+  if(from === "salah"){
+    localStorage.setItem("ibadahFolderReturnPage","salah");
+    window.location.href = "../";
+    return;
+  }
+
+  if(from === "quran"){
+    localStorage.setItem("ibadahFolderReturnPage","quran");
+    window.location.href = "../";
+    return;
+  }
+
+  window.location.href = "../more/";
+
+}
+
+/* =========================
+   GET IBADAH BASE PATH
+   Full function name: getIbadahBasePath()
+========================= */
+function getIbadahBasePath(){
+
+  if(window.location.pathname.includes("/test-ibadah-tracker/")){
+    return "/test-ibadah-tracker/";
+  }
+
+  if(window.location.pathname.includes("/ibadah-tracker/")){
+    return "/ibadah-tracker/";
+  }
+
+  return "/";
+
+}
+
+/* =========================
+   SHOW APP TOAST
+   Full function name: showAppToast()
+========================= */
+function showAppToast(message){
+
+  let toast = document.getElementById("appToast");
+  if(!toast) return;
+
+  toast.innerText = message || "";
+  toast.style.display = "block";
+
+  clearTimeout(window.appToastTimer);
+
+  window.appToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 2600);
+
+}
+
+/* =========================
+   GET DEFAULT PAGE
+   Full function name: getDefaultPage()
+========================= */
+function getDefaultPage(){
+
+  let saved = localStorage.getItem("defaultPage");
+
+  if(!saved){
+    localStorage.setItem("defaultPage", "home");
+    return "home";
+  }
+
+  saved = String(saved).trim().toLowerCase();
+
+  if(
+    saved !== "home" &&
+    saved !== "tracker" &&
+    saved !== "salah" &&
+    saved !== "more" &&
+    saved !== "quran"
+  ){
+    localStorage.setItem("defaultPage", "home");
+    return "home";
+  }
+
+  return saved;
+
+}
+
+/* =========================
+   LOAD APP SETTINGS UI
+   Full function name: loadAppSettingsUI()
+========================= */
+function loadAppSettingsUI(){
+
+  let select = document.getElementById("defaultPageSelect");
+  if(!select) return;
+
+  select.value = getDefaultPage();
+
+}
+
+/* =========================
+   SAVE DEFAULT PAGE SETTING
+   Full function name: saveDefaultPageSetting()
+========================= */
+function saveDefaultPageSetting(){
+
+  let select = document.getElementById("defaultPageSelect");
+  if(!select) return;
+
+  localStorage.setItem("defaultPage", select.value);
+
+  showAppToast("Default page saved");
+
+}
+
+/* =========================
+   EXPORT BACKUP DATA
+   Full function name: exportBackupData()
+========================= */
+function exportBackupData(){
+
+  let backup = {
+    app:"Ibadah Tracker",
+    createdAt:new Date().toISOString(),
+    localStorage:{}
+  };
+
+  for(let i = 0; i < localStorage.length; i++){
+
+    let key = localStorage.key(i);
+
+    if(key){
+      backup.localStorage[key] = localStorage.getItem(key);
+    }
+
+  }
+
+  /*
+    Extra safety:
+    Also save taskList at the top level so old/new import systems can read it.
+  */
+  try{
+    backup.taskList = JSON.parse(localStorage.getItem("taskList") || "[]");
+  }catch(error){
+    backup.taskList = [];
+  }
+
+  let text = JSON.stringify(backup, null, 2);
+  let blob = new Blob([text], {type:"application/json"});
+  let url = URL.createObjectURL(blob);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "ibadah-tracker-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+  showAppToast("Backup file created");
+
+}
+
+/* =========================
+   OPEN IMPORT BACKUP FILE
+   Full function name: openImportBackupFile()
+========================= */
+function openImportBackupFile(){
+
+  let input = document.getElementById("backupFileInput");
+  if(input){
+    input.value = "";
+    input.click();
+  }
+
+}
+
+/* =========================
+   HANDLE IMPORT BACKUP FILE
+   Full function name: handleImportBackupFile()
+========================= */
+function handleImportBackupFile(event){
+
+  let file = event.target.files && event.target.files[0];
+
+  if(!file){
+    return;
+  }
+
+  let ok = confirm("Import this backup? This will replace saved data on this device.");
+
+  if(!ok){
+    event.target.value = "";
+    return;
+  }
+
+  let reader = new FileReader();
+
+  reader.onload = function(e){
+
+    try{
+
+      let backup = JSON.parse(e.target.result);
+
+      /*
+        This app has used more than one backup style before.
+
+        New backup style:
+        backup.localStorage
+
+        Old backup style:
+        backup.storage
+
+        Old tracker task style:
+        backup.taskList
+      */
+      let importedStorage = null;
+
+      if(backup && backup.localStorage && typeof backup.localStorage === "object"){
+        importedStorage = backup.localStorage;
+      }
+
+      if(backup && backup.storage && typeof backup.storage === "object"){
+        importedStorage = backup.storage;
+      }
+
+      if(!importedStorage){
+        importedStorage = {};
+      }
+
+      /*
+        Find tracker taskList first BEFORE clearing localStorage.
+        This is important for Quran Class and Taraweh.
+      */
+      let restoredTaskList = null;
+
+      if(backup && Array.isArray(backup.taskList)){
+        restoredTaskList = backup.taskList;
+      }
+
+      if(!restoredTaskList && importedStorage.taskList){
+
+        if(Array.isArray(importedStorage.taskList)){
+          restoredTaskList = importedStorage.taskList;
+        }else{
+          try{
+            let parsedTaskList = JSON.parse(importedStorage.taskList);
+
+            if(Array.isArray(parsedTaskList)){
+              restoredTaskList = parsedTaskList;
+            }
+
+          }catch(error){
+            console.log("Could not parse importedStorage.taskList", error);
+          }
+        }
+
+      }
+
+      /*
+        Extra safety:
+        Look for old possible task names if they exist in another key.
+      */
+      if(!restoredTaskList){
+
+        let possibleTaskKeys = [
+          "taskList",
+          "tasks",
+          "trackerTasks",
+          "dailyTasks",
+          "ibadahTasks"
+        ];
+
+        possibleTaskKeys.forEach(function(possibleKey){
+
+          if(restoredTaskList) return;
+
+          if(backup[possibleKey] && Array.isArray(backup[possibleKey])){
+            restoredTaskList = backup[possibleKey];
+          }
+
+          if(importedStorage[possibleKey]){
+
+            if(Array.isArray(importedStorage[possibleKey])){
+              restoredTaskList = importedStorage[possibleKey];
+            }else{
+              try{
+                let parsed = JSON.parse(importedStorage[possibleKey]);
+
+                if(Array.isArray(parsed)){
+                  restoredTaskList = parsed;
+                }
+
+              }catch(error){}
+            }
+
+          }
+
+        });
+
+      }
+
+      /*
+        Now clear old data.
+      */
+      localStorage.clear();
+
+      /*
+        Restore every normal saved localStorage key.
+      */
+      Object.keys(importedStorage).forEach(function(key){
+
+        let value = importedStorage[key];
+
+        if(typeof value === "string"){
+          localStorage.setItem(key, value);
+        }else{
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+
+      });
+
+      /*
+        Force save tracker taskList AFTER restoring storage.
+        This makes sure old backup.taskList wins.
+      */
+      if(restoredTaskList && Array.isArray(restoredTaskList)){
+
+        restoredTaskList = restoredTaskList.filter(function(task){
+          return task && task.name;
+        });
+
+        localStorage.setItem("taskList", JSON.stringify(restoredTaskList));
+
+      }
+
+      /*
+        Remove one-time return keys.
+      */
+      localStorage.removeItem("ibadahFolderReturnPage");
+      localStorage.removeItem("qazaReturnPage");
+      localStorage.removeItem("tasbihReturnPage");
+      localStorage.removeItem("appSettingsReturnPage");
+      localStorage.removeItem("ibadahOpenAppSettings");
+
+      /*
+        Check restored task names for confirmation.
+      */
+      let finalTaskList = [];
+
+      try{
+        finalTaskList = JSON.parse(localStorage.getItem("taskList") || "[]");
+      }catch(error){
+        finalTaskList = [];
+      }
+
+      let taskNames = finalTaskList.map(function(task){
+        return task.name;
+      }).join(", ");
+
+      alert(
+        "Backup imported successfully.\n\n" +
+        "Tasks restored: " + finalTaskList.length + "\n\n" +
+        taskNames
+      );
+
+      window.location.href = getIbadahBasePath() + "appsettings/?from=" + getAppSettingsFromPage() + "&v=" + Date.now();
+
+    }catch(error){
+
+      alert("Could not import backup file.");
+      console.log(error);
+
+    }
+
+  };
+
+  reader.readAsText(file);
+
+}
+
+/* =========================
+   RESET OFFLINE DOWNLOADS
+   Full function name: resetOfflineDownloads()
+========================= */
+async function resetOfflineDownloads(){
+
+  let ok = confirm("Remove all downloaded Quran files from this device cache?");
+
+  if(!ok) return;
+
+  try{
+
+    if("caches" in window){
+
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+
+        if(cacheName === "ibadah-runtime-v1" || cacheName === "ibadah-test-runtime-v1"){
+          await caches.delete(cacheName);
+        }
+
+      }
+
+    }
+
+    localStorage.removeItem("juz30OfflineDownloaded");
+    localStorage.removeItem("quran16FullDownloaded");
+    localStorage.removeItem("quran15FullDownloaded");
+
+    showAppToast("Offline Quran downloads removed");
+
+  }catch(error){
+
+    console.log(error);
+    alert("Could not remove offline downloads.");
+
+  }
+
+}
+
+/* =========================
+   REFRESH APP
+   Full function name: refreshApp()
+========================= */
+async function refreshApp(){
+
+  try{
+
+    if("serviceWorker" in navigator){
+      let registrations = await navigator.serviceWorker.getRegistrations();
+
+      for(let registration of registrations){
+        if(registration && registration.update){
+          await registration.update();
+        }
+      }
+    }
+
+  }catch(error){
+    console.log("Refresh update failed:", error);
+  }
+
+  window.location.href = getIbadahBasePath() + "appsettings/?from=" + getAppSettingsFromPage() + "&v=" + Date.now();
+
+}
+
+/* =========================
+   MASTER RESET APP
+   Full function name: masterResetApp()
+========================= */
+async function masterResetApp(){
+
+  let firstConfirm = confirm("Master reset will clear saved app data on this device. Continue?");
+  if(!firstConfirm) return;
+
+  let secondConfirm = confirm("Are you sure? Make a backup first if you need your data.");
+  if(!secondConfirm) return;
+
+  try{
+
+    localStorage.clear();
+
+    if("caches" in window){
+
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+        await caches.delete(cacheName);
+      }
+
+    }
+
+    alert("App reset complete.");
+    window.location.href = getIbadahBasePath() + "appsettings/?from=more&v=" + Date.now();
+
+  }catch(error){
+
+    console.log(error);
+    alert("Reset failed.");
+
+  }
+
+}
+
+/* =========================
+   START APP SETTINGS PAGE
+   Full function name: loadAppSettingsUI()
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+  loadAppSettingsUI();
+});
+</script>
+
+</body>
+</html>
