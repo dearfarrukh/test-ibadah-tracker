@@ -434,6 +434,98 @@ function getDefaultPage(){
 
 
 /* =========================
+   CLEAR ONE-TIME RETURN KEYS
+   Full function name: clearOneTimeReturnKeys()
+========================= */
+function clearOneTimeReturnKeys(){
+
+  localStorage.removeItem("ibadahFolderReturnPage");
+  localStorage.removeItem("qazaReturnPage");
+  localStorage.removeItem("tasbihReturnPage");
+  localStorage.removeItem("appSettingsReturnPage");
+  localStorage.removeItem("ibadahOpenAppSettings");
+
+}
+
+/* =========================
+   SHOULD USE FOLDER RETURN KEYS
+   Full function name: shouldUseFolderReturnKeys()
+========================= */
+function shouldUseFolderReturnKeys(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  if(params.get("forceDefault") === "1"){
+    return false;
+  }
+
+  let ref = String(document.referrer || "").toLowerCase();
+
+  if(!ref){
+    return false;
+  }
+
+  /*
+    Use return keys only when user really came back from a folder page.
+    This stops old/stuck return keys from breaking your saved default page.
+  */
+  let folderNames = [
+    "/home/",
+    "/tracker/",
+    "/salah/",
+    "/more/",
+    "/quran/",
+    "/tasbih/",
+    "/qazatracker/",
+    "/duapage/",
+    "/dailyazkar/",
+    "/qibla/",
+    "/books/",
+    "/appsettings/",
+    "/16linequranpages/",
+    "/arabic-quran/",
+    "/quranpages/"
+  ];
+
+  return folderNames.some(function(folderName){
+    return ref.includes(folderName);
+  });
+
+}
+
+/* =========================
+   OPEN SAVED DEFAULT PAGE ONLY
+   Full function name: openSavedDefaultPageOnly()
+========================= */
+function openSavedDefaultPageOnly(){
+
+  let defaultPage = getDefaultPage();
+
+  if(defaultPage === "tracker"){
+    openTrackerPage();
+    return;
+  }
+
+  if(defaultPage === "salah"){
+    openSalahPage();
+    return;
+  }
+
+  if(defaultPage === "more"){
+    openMorePage();
+    return;
+  }
+
+  if(defaultPage === "quran"){
+    openQuranPage();
+    return;
+  }
+
+  openHomePage();
+
+}
+
+/* =========================
    OPEN SELECTED DEFAULT PAGE
    Full function name: openSelectedDefaultPage()
 ========================= */
@@ -445,9 +537,19 @@ function openSelectedDefaultPage(){
   }
 
   /*
-    Folder return should run only one time.
-    After using it, remove it so it does not keep overriding
-    your saved default page.
+    Powerful default page rule:
+    If app opens normally, or refresh sends forceDefault=1,
+    always clear old return keys and open saved default page.
+  */
+  if(!shouldUseFolderReturnKeys()){
+    clearOneTimeReturnKeys();
+    openSavedDefaultPageOnly();
+    return;
+  }
+
+  /*
+    Folder return should run only when user truly came back
+    from a folder page.
   */
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
@@ -482,9 +584,6 @@ function openSelectedDefaultPage(){
     }
   }
 
-  /*
-    Old Qaza return should also run one time only.
-  */
   let qazaReturnPage = localStorage.getItem("qazaReturnPage");
 
   if(qazaReturnPage){
@@ -508,9 +607,6 @@ function openSelectedDefaultPage(){
     }
   }
 
-  /*
-    Old Tasbih return should also run one time only.
-  */
   let tasbihReturnPage = localStorage.getItem("tasbihReturnPage");
 
   if(tasbihReturnPage){
@@ -529,32 +625,9 @@ function openSelectedDefaultPage(){
     }
   }
 
-  let defaultPage = getDefaultPage();
-
-  if(defaultPage === "tracker"){
-    openTrackerPage();
-    return;
-  }
-
-  if(defaultPage === "salah"){
-    openSalahPage();
-    return;
-  }
-
-  if(defaultPage === "more"){
-    openMorePage();
-    return;
-  }
-
-  if(defaultPage === "quran"){
-    openQuranPage();
-    return;
-  }
-
-  openHomePage();
+  openSavedDefaultPageOnly();
 
 }
-
 
 /* =========================
    OPEN HOME PAGE
@@ -1035,6 +1108,8 @@ async function resetOfflineDownloads(){
 ========================= */
 async function refreshApp(){
 
+  clearOneTimeReturnKeys();
+
   try{
 
     if("serviceWorker" in navigator){
@@ -1051,7 +1126,7 @@ async function refreshApp(){
     console.log("Refresh update failed:", error);
   }
 
-  window.location.href = getIbadahBasePath() + "?v=" + Date.now();
+  window.location.href = getIbadahBasePath() + "?forceDefault=1&v=" + Date.now();
 
 }
 
