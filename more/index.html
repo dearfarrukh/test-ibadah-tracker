@@ -346,7 +346,7 @@ body{
   <div class="heroTitle">More</div>
 
   <div class="heroSub">
-    Open your Ibadah tools, Quran pages, books, settings, and app utilities.
+    Open your Ibadah tools, Quran page, books, settings, and app utilities.
   </div>
 </div>
 
@@ -422,14 +422,6 @@ body{
     <div class="cardSub">Islamic books</div>
   </div>
 
-  <div class="moreCard" onclick="open16LineQuranFromMore()">
-    <div class="cardIconWrap">
-      <img src="../Images/Icons/quran.png" alt="">
-    </div>
-    <div class="cardTitle">16 Line Quran</div>
-    <div class="cardSub">Reader page</div>
-  </div>
-
 </div>
 
 <!-- =========================
@@ -444,11 +436,13 @@ body{
       <div class="listIcon">
         <img src="../Images/Icons/settings.png" alt="">
       </div>
+
       <div class="listText">
         <div class="listTitle">App Settings</div>
         <div class="listSub">Default page, backup, Quran downloads, and master reset</div>
       </div>
     </div>
+
     <div class="arrow">›</div>
   </div>
 
@@ -457,11 +451,13 @@ body{
       <div class="listIcon">
         <img src="../Images/Icons/refresh.png" alt="">
       </div>
+
       <div class="listText">
         <div class="listTitle">Refresh App</div>
         <div class="listSub">Reload app and clear old app cache safely</div>
       </div>
     </div>
+
     <div class="arrow">›</div>
   </div>
 
@@ -559,25 +555,13 @@ function openQuranFromMore(){
 }
 
 /* =========================
-   OPEN 16 LINE QURAN FROM MORE
-   Full function name: open16LineQuranFromMore()
-========================= */
-function open16LineQuranFromMore(){
-
-  localStorage.setItem("ibadahFolderReturnPage","more");
-  window.location.href = "../16linequranpages/";
-
-}
-
-/* =========================
    OPEN APP SETTINGS FROM MORE
    Full function name: openAppSettingsFromMore()
 ========================= */
 function openAppSettingsFromMore(){
 
-  localStorage.setItem("ibadahOpenAppSettings","yes");
   localStorage.setItem("appSettingsReturnPage","more");
-  window.location.href = "../";
+  window.location.href = "../appsettings/?from=more";
 
 }
 
