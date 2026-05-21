@@ -3,16 +3,26 @@
 // File: shared/menu-handle.js
 // Full function names:
 // createUniversalMenuHandle()
+// buildUniversalMenuCard()
 // openUniversalSideMenu()
 // closeUniversalSideMenu()
 // toggleUniversalSideMenu()
+// toggleSideMenu()
+// closeSideMenu()
+// openSideMenu()
 // setMainMenuHandleVisibility()
+// getUniversalBasePath()
+// getUniversalCurrentPageName()
+// universalMenuGoMainPage()
+// universalMenuRefreshApp()
+// universalMenuOpenAppSettings()
 // =========================
 
 let universalSideMenuOpen = false;
 
 // =========================
 // CREATE UNIVERSAL MENU HANDLE
+// Full function name: createUniversalMenuHandle()
 // =========================
 function createUniversalMenuHandle(options){
 
@@ -127,12 +137,6 @@ function createUniversalMenuHandle(options){
     })}
 
     ${buildUniversalMenuCard({
-      title:"Backup",
-      icon:iconBasePath + "backup.png",
-      onclick:"universalMenuOpenBackup()"
-    })}
-
-    ${buildUniversalMenuCard({
       title:"App Settings",
       icon:iconBasePath + "settings.png",
       onclick:"universalMenuOpenAppSettings()"
@@ -142,10 +146,12 @@ function createUniversalMenuHandle(options){
   document.body.appendChild(overlay);
   document.body.appendChild(handle);
   document.body.appendChild(menu);
+
 }
 
 // =========================
 // BUILD UNIVERSAL MENU CARD
+// Full function name: buildUniversalMenuCard()
 // =========================
 function buildUniversalMenuCard(item){
 
@@ -185,6 +191,7 @@ function buildUniversalMenuCard(item){
 
 // =========================
 // OPEN UNIVERSAL SIDE MENU
+// Full function name: openUniversalSideMenu()
 // =========================
 function openUniversalSideMenu(){
 
@@ -194,11 +201,13 @@ function openUniversalSideMenu(){
   if(overlay) overlay.style.display = "block";
   if(menu) menu.style.left = "0";
 
-  let universalSideMenuOpen = false; = true;
+  universalSideMenuOpen = true;
+
 }
 
 // =========================
 // CLOSE UNIVERSAL SIDE MENU
+// Full function name: closeUniversalSideMenu()
 // =========================
 function closeUniversalSideMenu(){
 
@@ -209,10 +218,12 @@ function closeUniversalSideMenu(){
   if(menu) menu.style.left = "-280px";
 
   universalSideMenuOpen = false;
+
 }
 
 // =========================
 // TOGGLE UNIVERSAL SIDE MENU
+// Full function name: toggleUniversalSideMenu()
 // =========================
 function toggleUniversalSideMenu(){
 
@@ -221,25 +232,42 @@ function toggleUniversalSideMenu(){
   }else{
     openUniversalSideMenu();
   }
+
 }
 
 // =========================
 // OLD FUNCTION NAME SUPPORT
+// Full function name: toggleSideMenu()
 // =========================
 function toggleSideMenu(){
+
   toggleUniversalSideMenu();
+
 }
 
+// =========================
+// OLD FUNCTION NAME SUPPORT
+// Full function name: closeSideMenu()
+// =========================
 function closeSideMenu(){
+
   closeUniversalSideMenu();
+
 }
 
+// =========================
+// OLD FUNCTION NAME SUPPORT
+// Full function name: openSideMenu()
+// =========================
 function openSideMenu(){
+
   openUniversalSideMenu();
+
 }
 
 // =========================
 // SET MAIN MENU HANDLE VISIBILITY
+// Full function name: setMainMenuHandleVisibility()
 // =========================
 function setMainMenuHandleVisibility(show){
 
@@ -247,66 +275,93 @@ function setMainMenuHandleVisibility(show){
   if(!handle) return;
 
   handle.style.display = show ? "flex" : "none";
+
+}
+
+// =========================
+// GET UNIVERSAL BASE PATH
+// Full function name: getUniversalBasePath()
+// =========================
+function getUniversalBasePath(){
+
+  if(window.location.pathname.includes("/test-ibadah-tracker/")){
+    return "/test-ibadah-tracker/";
+  }
+
+  if(window.location.pathname.includes("/ibadah-tracker/")){
+    return "/ibadah-tracker/";
+  }
+
+  return "./";
+
+}
+
+// =========================
+// GET UNIVERSAL CURRENT PAGE NAME
+// Full function name: getUniversalCurrentPageName()
+// =========================
+function getUniversalCurrentPageName(){
+
+  let path = window.location.pathname.toLowerCase();
+
+  if(path.includes("/home/")) return "home";
+  if(path.includes("/tracker/")) return "tracker";
+  if(path.includes("/salah/")) return "salah";
+  if(path.includes("/more/")) return "more";
+  if(path.includes("/quran/")) return "quran";
+  if(path.includes("/tasbih/")) return "tasbih";
+  if(path.includes("/qazatracker/")) return "qaza";
+  if(path.includes("/duapage/")) return "dua";
+  if(path.includes("/dailyazkar/")) return "dailyazkar";
+  if(path.includes("/qibla/")) return "qibla";
+  if(path.includes("/books/")) return "books";
+  if(path.includes("/appsettings/")) return "appsettings";
+
+  return "home";
+
 }
 
 // =========================
 // MENU ACTION: MAIN PAGE
+// Full function name: universalMenuGoMainPage()
 // =========================
 function universalMenuGoMainPage(){
 
   closeUniversalSideMenu();
 
-  if(typeof goToMainPage === "function"){
-    goToMainPage();
-    return;
-  }
-
   localStorage.setItem("ibadahFolderReturnPage", "home");
-  window.location.href = "./";
+  window.location.href = getUniversalBasePath();
+
 }
 
 // =========================
 // MENU ACTION: REFRESH APP
+// Full function name: universalMenuRefreshApp()
 // =========================
 function universalMenuRefreshApp(){
 
   closeUniversalSideMenu();
 
-  if(typeof refreshApp === "function"){
-    refreshApp();
-    return;
-  }
+  window.location.href = window.location.pathname + "?v=" + Date.now();
 
-  window.location.reload();
-}
-
-// =========================
-// MENU ACTION: BACKUP
-// =========================
-function universalMenuOpenBackup(){
-
-  closeUniversalSideMenu();
-
-  if(typeof openBackupPopup === "function"){
-    openBackupPopup();
-    return;
-  }
-
-  alert("Backup is not ready on this page yet.");
 }
 
 // =========================
 // MENU ACTION: APP SETTINGS
+// Full function name: universalMenuOpenAppSettings()
 // =========================
 function universalMenuOpenAppSettings(){
 
   closeUniversalSideMenu();
 
-  if(typeof openAppSettingsPage === "function"){
-    openAppSettingsPage();
-    return;
+  let currentPage = getUniversalCurrentPageName();
+
+  if(currentPage === "appsettings"){
+    currentPage = "more";
   }
 
-  localStorage.setItem("ibadahOpenAppSettings", "yes");
-  window.location.href = "./";
+  localStorage.setItem("appSettingsReturnPage", currentPage);
+
+  window.location.href = getUniversalBasePath() + "appsettings/?from=" + currentPage + "&v=" + Date.now();
+
 }
