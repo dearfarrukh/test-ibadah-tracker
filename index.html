@@ -810,6 +810,18 @@ function handleImportBackupFile(event){
 
       let backup = JSON.parse(e.target.result);
 
+      /*
+        This app has used more than one backup style before.
+
+        New backup style:
+        backup.localStorage
+
+        Old backup style:
+        backup.storage
+
+        Old tracker task style:
+        backup.taskList
+      */
       let importedStorage = null;
 
       if(backup && backup.localStorage && typeof backup.localStorage === "object"){
@@ -821,42 +833,20 @@ function handleImportBackupFile(event){
       }
 
       if(!importedStorage){
-        alert("This backup file is not valid.");
-        event.target.value = "";
-        return;
+        importedStorage = {};
       }
 
-      localStorage.clear();
-
       /*
-        Restore every saved localStorage key.
-
-        Important:
-        If backup value is an object or array, save it as JSON text.
-        This prevents [object Object] problem.
-      */
-      Object.keys(importedStorage).forEach(function(key){
-
-        let value = importedStorage[key];
-
-        if(typeof value === "string"){
-          localStorage.setItem(key, value);
-        }else{
-          localStorage.setItem(key, JSON.stringify(value));
-        }
-
-      });
-
-      /*
-        Restore taskList from every possible backup style.
+        Find tracker taskList first BEFORE clearing localStorage.
+        This is the important fix for Quran Class and Taraweh.
       */
       let restoredTaskList = null;
 
-      if(backup.taskList && Array.isArray(backup.taskList)){
+      if(backup && Array.isArray(backup.taskList)){
         restoredTaskList = backup.taskList;
       }
 
-      if(importedStorage.taskList){
+      if(!restoredTaskList && importedStorage.taskList){
 
         if(Array.isArray(importedStorage.taskList)){
           restoredTaskList = importedStorage.taskList;
@@ -869,16 +859,15 @@ function handleImportBackupFile(event){
             }
 
           }catch(error){
-            console.log("taskList was not JSON text", error);
+            console.log("Could not parse importedStorage.taskList", error);
           }
         }
 
       }
 
       /*
-        Extra protection:
-        If old backup saved tasks under another key,
-        search backup for any array that looks like tracker tasks.
+        Extra safety:
+        Look for old possible task names if they exist in another key.
       */
       if(!restoredTaskList){
 
@@ -920,10 +909,37 @@ function handleImportBackupFile(event){
       }
 
       /*
-        Save restored taskList if found.
+        Now clear old data.
+      */
+      localStorage.clear();
+
+      /*
+        Restore every normal saved localStorage key.
+      */
+      Object.keys(importedStorage).forEach(function(key){
+
+        let value = importedStorage[key];
+
+        if(typeof value === "string"){
+          localStorage.setItem(key, value);
+        }else{
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+
+      });
+
+      /*
+        Force save tracker taskList AFTER restoring storage.
+        This makes sure old backup.taskList wins.
       */
       if(restoredTaskList && Array.isArray(restoredTaskList)){
+
+        restoredTaskList = restoredTaskList.filter(function(task){
+          return task && task.name;
+        });
+
         localStorage.setItem("taskList", JSON.stringify(restoredTaskList));
+
       }
 
       /*
@@ -935,15 +951,26 @@ function handleImportBackupFile(event){
       localStorage.removeItem("appSettingsReturnPage");
       localStorage.removeItem("ibadahOpenAppSettings");
 
-      let taskCount = 0;
+      /*
+        Check restored task names for confirmation.
+      */
+      let finalTaskList = [];
 
       try{
-        taskCount = JSON.parse(localStorage.getItem("taskList") || "[]").length;
+        finalTaskList = JSON.parse(localStorage.getItem("taskList") || "[]");
       }catch(error){
-        taskCount = 0;
+        finalTaskList = [];
       }
 
-      alert("Backup imported successfully.\nTasks restored: " + taskCount);
+      let taskNames = finalTaskList.map(function(task){
+        return task.name;
+      }).join(", ");
+
+      alert(
+        "Backup imported successfully.\n\n" +
+        "Tasks restored: " + finalTaskList.length + "\n\n" +
+        taskNames
+      );
 
       window.location.href = getIbadahBasePath() + "?v=" + Date.now();
 
@@ -959,7 +986,6 @@ function handleImportBackupFile(event){
   reader.readAsText(file);
 
 }
-
 
 /* =========================
    RESET OFFLINE DOWNLOADS
