@@ -261,7 +261,7 @@ body{
   <div class="settingsHeroTitle">Settings</div>
 
   <div class="settingsHeroSub">
-    Manage your default page, backup, Quran downloads, refresh, and reset options.
+    Manage your default page, backup, Quran downloads, refresh, and safe reset options.
   </div>
 </div>
 
@@ -271,7 +271,7 @@ body{
 <div class="settingsCard">
   <div class="settingsCardTitle">Default Start Page</div>
   <div class="settingsCardText">
-    Choose which page opens first when the app starts.
+    Choose which page opens first when the app starts or refreshes.
   </div>
 
   <select id="defaultPageSelect" class="settingsSelect" onchange="saveDefaultPageSetting()">
@@ -323,7 +323,7 @@ body{
 <div class="settingsCard">
   <div class="settingsCardTitle">Refresh App</div>
   <div class="settingsCardText">
-    Use this after code changes if the browser is showing an old cached version.
+    Use this after code changes. It refreshes the app and opens your saved default page.
   </div>
 
   <button class="cleanButton cleanButtonLight" onclick="refreshApp()">
@@ -332,16 +332,16 @@ body{
 </div>
 
 <!-- =========================
-     MASTER RESET
+     SAFE RESET
 ========================= -->
 <div class="settingsCard">
-  <div class="settingsCardTitle">Master Reset</div>
+  <div class="settingsCardTitle">Safe Reset</div>
   <div class="settingsCardText">
-    This clears local saved app data on this device. Use only after making a backup.
+    This refreshes app/cache settings only. It will not delete tracker tasks, Quran bookmarks, Salah history, Qaza data, Tasbih counts, or already-done records.
   </div>
 
   <button class="cleanButton cleanButtonRed" onclick="masterResetApp()">
-    Master Reset App
+    Safe Reset App
   </button>
 </div>
 
@@ -375,6 +375,20 @@ function getAppSettingsFromPage(){
 }
 
 /* =========================
+   CLEAR ONE TIME RETURN KEYS
+   Full function name: clearOneTimeReturnKeys()
+========================= */
+function clearOneTimeReturnKeys(){
+
+  localStorage.removeItem("ibadahFolderReturnPage");
+  localStorage.removeItem("qazaReturnPage");
+  localStorage.removeItem("tasbihReturnPage");
+  localStorage.removeItem("appSettingsReturnPage");
+  localStorage.removeItem("ibadahOpenAppSettings");
+
+}
+
+/* =========================
    GO BACK FROM APP SETTINGS
    Full function name: goBackFromAppSettings()
 ========================= */
@@ -382,8 +396,7 @@ function goBackFromAppSettings(){
 
   let from = getAppSettingsFromPage();
 
-  localStorage.removeItem("appSettingsReturnPage");
-  localStorage.removeItem("ibadahOpenAppSettings");
+  clearOneTimeReturnKeys();
 
   if(from === "home"){
     localStorage.setItem("ibadahFolderReturnPage","home");
@@ -505,7 +518,9 @@ function saveDefaultPageSetting(){
 
   localStorage.setItem("defaultPage", select.value);
 
-  showAppToast("Default page saved");
+  clearOneTimeReturnKeys();
+
+  showAppToast("Default page saved. Refresh will open " + select.options[select.selectedIndex].text + ".");
 
 }
 
@@ -565,6 +580,7 @@ function exportBackupData(){
 function openImportBackupFile(){
 
   let input = document.getElementById("backupFileInput");
+
   if(input){
     input.value = "";
     input.click();
@@ -599,18 +615,6 @@ function handleImportBackupFile(event){
 
       let backup = JSON.parse(e.target.result);
 
-      /*
-        This app has used more than one backup style before.
-
-        New backup style:
-        backup.localStorage
-
-        Old backup style:
-        backup.storage
-
-        Old tracker task style:
-        backup.taskList
-      */
       let importedStorage = null;
 
       if(backup && backup.localStorage && typeof backup.localStorage === "object"){
@@ -627,7 +631,7 @@ function handleImportBackupFile(event){
 
       /*
         Find tracker taskList first BEFORE clearing localStorage.
-        This is important for Quran Class and Taraweh.
+        This is important for Quran Class, Taraweh, and custom tasks.
       */
       let restoredTaskList = null;
 
@@ -654,10 +658,6 @@ function handleImportBackupFile(event){
 
       }
 
-      /*
-        Extra safety:
-        Look for old possible task names if they exist in another key.
-      */
       if(!restoredTaskList){
 
         let possibleTaskKeys = [
@@ -698,13 +698,11 @@ function handleImportBackupFile(event){
       }
 
       /*
-        Now clear old data.
+        This import intentionally replaces saved data,
+        because user selected Import Backup.
       */
       localStorage.clear();
 
-      /*
-        Restore every normal saved localStorage key.
-      */
       Object.keys(importedStorage).forEach(function(key){
 
         let value = importedStorage[key];
@@ -717,10 +715,6 @@ function handleImportBackupFile(event){
 
       });
 
-      /*
-        Force save tracker taskList AFTER restoring storage.
-        This makes sure old backup.taskList wins.
-      */
       if(restoredTaskList && Array.isArray(restoredTaskList)){
 
         restoredTaskList = restoredTaskList.filter(function(task){
@@ -731,18 +725,8 @@ function handleImportBackupFile(event){
 
       }
 
-      /*
-        Remove one-time return keys.
-      */
-      localStorage.removeItem("ibadahFolderReturnPage");
-      localStorage.removeItem("qazaReturnPage");
-      localStorage.removeItem("tasbihReturnPage");
-      localStorage.removeItem("appSettingsReturnPage");
-      localStorage.removeItem("ibadahOpenAppSettings");
+      clearOneTimeReturnKeys();
 
-      /*
-        Check restored task names for confirmation.
-      */
       let finalTaskList = [];
 
       try{
@@ -823,6 +807,8 @@ async function resetOfflineDownloads(){
 ========================= */
 async function refreshApp(){
 
+  clearOneTimeReturnKeys();
+
   try{
 
     if("serviceWorker" in navigator){
@@ -839,7 +825,11 @@ async function refreshApp(){
     console.log("Refresh update failed:", error);
   }
 
-  window.location.href = getIbadahBasePath() + "appsettings/?from=" + getAppSettingsFromPage() + "&v=" + Date.now();
+  /*
+    Go to main index with forceDefault=1.
+    Main index should then open saved default page.
+  */
+  window.location.href = getIbadahBasePath() + "?forceDefault=1&v=" + Date.now();
 
 }
 
@@ -849,33 +839,76 @@ async function refreshApp(){
 ========================= */
 async function masterResetApp(){
 
-  let firstConfirm = confirm("Master reset will clear saved app data on this device. Continue?");
+  let firstConfirm = confirm(
+    "Safe reset will refresh app/cache settings only.\n\n" +
+    "It will NOT delete:\n" +
+    "• Tracker tasks\n" +
+    "• Quran bookmarks\n" +
+    "• Already-done tracker history\n" +
+    "• Salah history\n" +
+    "• Qaza data\n" +
+    "• Tasbih counts\n\n" +
+    "Continue?"
+  );
+
   if(!firstConfirm) return;
 
-  let secondConfirm = confirm("Are you sure? Make a backup first if you need your data.");
+  let secondConfirm = confirm("Are you sure you want to run Safe Reset?");
   if(!secondConfirm) return;
 
   try{
 
-    localStorage.clear();
+    /*
+      IMPORTANT:
+      Do NOT use localStorage.clear().
+      This keeps tasks, bookmarks, done history, Salah, Qaza, and Tasbih safe.
+    */
+    clearOneTimeReturnKeys();
+
+    /*
+      Keep default page as user selected.
+      If it is missing or bad, getDefaultPage() will repair it.
+    */
+    getDefaultPage();
 
     if("caches" in window){
 
       let cacheNames = await caches.keys();
 
       for(let cacheName of cacheNames){
+
+        let lower = String(cacheName).toLowerCase();
+
+        /*
+          Keep runtime/offline Quran downloads safer.
+          Delete only normal app shell caches.
+        */
+        if(
+          lower.includes("runtime") ||
+          lower.includes("quran") ||
+          lower.includes("mushaf") ||
+          lower.includes("surah") ||
+          lower.includes("ayat") ||
+          lower.includes("offline") ||
+          lower.includes("download")
+        ){
+          continue;
+        }
+
         await caches.delete(cacheName);
+
       }
 
     }
 
-    alert("App reset complete.");
-    window.location.href = getIbadahBasePath() + "appsettings/?from=more&v=" + Date.now();
+    alert("Safe reset complete. Your tasks, bookmarks, and history were not deleted.");
+
+    window.location.href = getIbadahBasePath() + "?forceDefault=1&v=" + Date.now();
 
   }catch(error){
 
     console.log(error);
-    alert("Reset failed.");
+    alert("Safe reset failed.");
 
   }
 
