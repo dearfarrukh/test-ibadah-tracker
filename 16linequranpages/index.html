@@ -2185,6 +2185,7 @@ function restoreTrackerMenuHandleAfterQuranShortcut(){
      
 // =========================
 // CLOSE 16 LINE READING PAGE
+// Full function name: closeQuran16ReadingPage()
 // =========================
 function closeQuran16ReadingPage(){
 
@@ -2194,6 +2195,7 @@ function closeQuran16ReadingPage(){
   window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
 }
+
 // =========================
 // HANDLE 16 LINE READING PAGE TAP
 // =========================
@@ -2426,7 +2428,7 @@ function renderQuran16JuzList(){
 
   for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
            let startPage = juzToQuran16PageMap[juzNumber] || 1;
-    let displayPage = startPage + 1;
+    let displayPage = startPage;
        let arabicName = juzNamesArabic[juzNumber] || "";
 
     let card = document.createElement("div");
@@ -2591,7 +2593,7 @@ function renderQuran16SurahList(){
   quran16SurahData.forEach(function(surah){
 
     let startPage = surahToQuran16PageMap[surah.num] || 1;
-    let displayPage = startPage + 1;
+    let displayPage = startPage;
 
     let card = document.createElement("div");
     card.onclick = function(){
@@ -3099,7 +3101,7 @@ function saveQuran16Bookmark(){
   let juzName = juzBox ? juzBox.innerText.trim() : "";
 
   let page = currentQuran16PageNumber || 1;
-  let displayPage = page + 1;
+  let displayPage = page;
 
   if(!customName){
     alert("Please enter bookmark name");
@@ -3838,14 +3840,16 @@ function openQuran16Page(){
 }
 
 // =========================
-// CLOSE 16 LINE QURAN PAGE TO MAIN APP
+// CLOSE 16 LINE QURAN PAGE TO MAIN QURAN HUB
+// Full function name: closeQuran16Page()
 // =========================
 function closeQuran16Page(){
-  let params = new URLSearchParams(window.location.search);
-  let from = params.get("from") || localStorage.getItem("ibadahFolderReturnPage") || "quran";
-  localStorage.setItem("ibadahFolderReturnPage", from);
-  window.location.href = "../";
+
+  let returnPage = getQuran16ReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
+
 }
+
 
 // =========================
 // OPEN 16 LINE SURAH PAGE
@@ -3951,22 +3955,17 @@ function openQuran16PageNumber(page){
 
 // =========================
 // CLOSE 16 LINE READING PAGE
+// Full function name: closeQuran16ReadingPage()
 // =========================
 function closeQuran16ReadingPage(){
 
   resetQuran16ReadingTopBar();
 
-  let params = new URLSearchParams(window.location.search);
-  let from = params.get("from") || "";
+  let returnPage = getQuran16ReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
-  if(from === "tracker"){
-    localStorage.setItem("ibadahFolderReturnPage", "tracker");
-    window.location.href = "../";
-    return;
-  }
-
-  openQuran16Page();
 }
+
 
 // =========================
 // START 16 LINE FOLDER PAGE
@@ -4022,9 +4021,7 @@ function openDirectQuran16ReaderIfPageWasSent(){
   let pageToOpen = pageFromUrl || pageFromStorage;
 
   if(!pageToOpen || pageToOpen < 1 || pageToOpen > totalQuran16Pages){
-    if(typeof openQuran16Page === "function"){
-      openQuran16Page();
-    }
+    openQuran16Page();
     return;
   }
 
@@ -4038,17 +4035,8 @@ function openDirectQuran16ReaderIfPageWasSent(){
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+
   openDirectQuran16ReaderIfPageWasSent();
-
-
-  let params = new URLSearchParams(window.location.search);
-  let page = parseInt(params.get("page") || "0", 10);
-
-  if(page && page >= 1){
-    openQuran16PageNumber(page);
-  }else{
-    openQuran16Page();
-  }
 
 });
 
