@@ -849,30 +849,714 @@ let currentDate;
 let deleteTargetTask = null;
 let currentTrackerPdfUrl = "";
 let currentTrackerPdfRenderToken = 0;
+let trackerCloudAutoSaveTimer = null;
+let trackerCloudAutoCheckDone = false;
+let trackerAllowIntentionalDeleteCloudSave = false;
+
+/* =========================
+   TRACKER CLOUD STORAGE KEYS
+========================= */
+const TRACKER_TASK_LIST_KEY = "taskList";
+const TRACKER_DELETED_TASK_IDS_KEY = "ibadahDeletedTaskIds";
+const TRACKER_CLOUD_APP_NAME = "ibadahTasks";
+
+/* =========================
+   DEFAULT TRACKER TASKS
+========================= */
+function getDefaultTrackerTasks(){
+
+  return [
+    {id:"default_surah_mulk", name:"Surah Mulk", start:0, end:null},
+    {id:"default_surah_sajdah", name:"Surah Sajdah", start:0, end:null},
+    {id:"default_surah_yaseen", name:"Surah Yaseen", start:0, end:null},
+    {id:"default_surah_rehman", name:"Surah Rehman", start:0, end:null},
+    {id:"default_surah_taghabun", name:"Surah Taghabun", start:0, end:null},
+    {id:"default_surah_waqiya", name:"Surah Waqiya", start:0, end:null},
+    {id:"default_surah_ikhlas", name:"Surah Ikhlas", start:0, end:null},
+    {id:"default_surah_ad_duha_to_surah_al_nas", name:"Surah Ad Duha to Surah Al Nas", start:0, end:null}
+  ];
+
+}
+
+/* =========================
+   MAKE TRACKER ID
+   Full function name: makeTrackerId()
+========================= */
+function makeTrackerId(prefix){
+
+  return String(prefix || "tracker") + "_" + Date.now() + "_" + Math.random().toString(16).slice(2);
+
+}
+
+/* =========================
+   SLUG TEXT
+   Full function name: slugText()
+========================= */
+function slugText(value){
+
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+}
+
+/* =========================
+   NORMALIZE TRACKER TASK
+   Full function name: normalizeTrackerTask()
+========================= */
+function normalizeTrackerTask(rawTask, index){
+
+  if(!rawTask || typeof rawTask !== "object"){
+    return null;
+  }
+
+  let name = String(rawTask.name || "").trim();
+
+  if(!name){
+    return null;
+  }
+
+  if(["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(name)){
+    return null;
+  }
+
+  let now = new Date().toISOString();
+  let id = rawTask.id || rawTask.taskId || "";
+
+  if(!id){
+    let defaultSlug = slugText(name);
+
+    if(isQuran16ShortcutReady(name)){
+      id = "default_" + defaultSlug;
+    }else{
+      id = "task_" + defaultSlug + "_" + index + "_" + Date.now();
+    }
+  }
+
+  let cleanTask = {
+    id:String(id),
+    name:name,
+    start:rawTask.start !== undefined ? rawTask.start : 0,
+    end:rawTask.end !== undefined ? rawTask.end : null,
+    createdAt:rawTask.createdAt || now,
+    updatedAt:rawTask.updatedAt || now
+  };
+
+  if(Array.isArray(rawTask.days)){
+    cleanTask.days = rawTask.days;
+  }
+
+  return cleanTask;
+
+}
+
+/* =========================
+   GET DELETED TASK IDS
+   Full function name: getDeletedTaskIds()
+========================= */
+function getDeletedTaskIds(){
+
+  try{
+    let saved = JSON.parse(localStorage.getItem(TRACKER_DELETED_TASK_IDS_KEY) || "[]");
+    return Array.isArray(saved) ? saved.map(String) : [];
+  }catch(error){
+    return [];
+  }
+
+}
+
+/* =========================
+   SAVE DELETED TASK IDS
+   Full function name: saveDeletedTaskIds()
+========================= */
+function saveDeletedTaskIds(ids){
+
+  let cleanIds = Array.from(new Set((Array.isArray(ids) ? ids : []).map(String).filter(Boolean)));
+  localStorage.setItem(TRACKER_DELETED_TASK_IDS_KEY, JSON.stringify(cleanIds));
+  return cleanIds;
+
+}
+
+/* =========================
+   ADD DELETED TASK ID
+   Full function name: addDeletedTaskId()
+========================= */
+function addDeletedTaskId(taskId){
+
+  if(!taskId) return;
+
+  let ids = getDeletedTaskIds();
+  ids.push(String(taskId));
+  saveDeletedTaskIds(ids);
+
+}
+
+/* =========================
+   MERGE DELETED TASK IDS
+   Full function name: mergeDeletedTaskIds()
+========================= */
+function mergeDeletedTaskIds(localIds, cloudIds){
+
+  return saveDeletedTaskIds([].concat(localIds || [], cloudIds || []));
+
+}
+
+/* =========================
+   FILTER OUT DELETED TASKS
+   Full function name: filterOutDeletedTasks()
+========================= */
+function filterOutDeletedTasks(tasks, deletedIds){
+
+  let deletedMap = {};
+
+  (deletedIds || getDeletedTaskIds()).forEach(function(id){
+    deletedMap[String(id)] = true;
+  });
+
+  return (Array.isArray(tasks) ? tasks : []).filter(function(task){
+    return task && !deletedMap[String(task.id || "")];
+  });
+
+}
+
+/* =========================
+   NORMALIZE DELETED TASK IDS FROM CLOUD
+   Full function name: normalizeDeletedTaskIdsFromCloud()
+========================= */
+function normalizeDeletedTaskIdsFromCloud(cloudData){
+
+  if(!cloudData) return [];
+
+  if(Array.isArray(cloudData.deletedTaskIds)){
+    return cloudData.deletedTaskIds.map(String);
+  }
+
+  if(cloudData.deletedIbadahIds && Array.isArray(cloudData.deletedIbadahIds.tasks)){
+    return cloudData.deletedIbadahIds.tasks.map(String);
+  }
+
+  return [];
+
+}
+
+/* =========================
+   DEDUPE TRACKER TASKS
+   Full function name: dedupeTrackerTasks()
+========================= */
+function dedupeTrackerTasks(tasks){
+
+  let taskMap = {};
+
+  (Array.isArray(tasks) ? tasks : []).forEach(function(task, index){
+
+    let cleanTask = normalizeTrackerTask(task, index);
+
+    if(!cleanTask || !cleanTask.id) return;
+
+    let existing = taskMap[String(cleanTask.id)];
+
+    if(!existing){
+      taskMap[String(cleanTask.id)] = cleanTask;
+      return;
+    }
+
+    let existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+    let cleanTime = new Date(cleanTask.updatedAt || cleanTask.createdAt || 0).getTime();
+
+    if(cleanTime >= existingTime){
+      taskMap[String(cleanTask.id)] = cleanTask;
+    }
+
+  });
+
+  return Object.values(taskMap);
+
+}
+
+/* =========================
+   SAVE TASK LIST DATA
+   Full function name: saveTaskListData()
+========================= */
+function saveTaskListData(shouldCloudSave){
+
+  taskList = filterOutDeletedTasks(dedupeTrackerTasks(taskList));
+
+  localStorage.setItem(TRACKER_TASK_LIST_KEY, JSON.stringify(taskList));
+  localStorage.setItem("ibadahTrackerTaskListBackup", JSON.stringify(taskList));
+
+  if(shouldCloudSave !== false){
+    scheduleTrackerCloudAutoSave();
+  }
+
+}
+
+/* =========================
+   READ TRACKER CHECK DATA
+   Full function name: readTrackerCheckData()
+========================= */
+function readTrackerCheckData(){
+
+  let taskChecks = {};
+  let salahChecks = {};
+
+  for(let i = 0; i < localStorage.length; i++){
+
+    let storageKey = localStorage.key(i);
+    if(!storageKey) continue;
+
+    if(/^\d{4}-\d{2}-\d{2}$/.test(storageKey)){
+      try{
+        let parsed = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        if(parsed && typeof parsed === "object" && !Array.isArray(parsed)){
+          taskChecks[storageKey] = parsed;
+        }
+      }catch(error){}
+    }
+
+    if(/^salah-\d{4}-\d{2}-\d{2}$/.test(storageKey)){
+      try{
+        let parsedSalah = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        if(parsedSalah && typeof parsedSalah === "object" && !Array.isArray(parsedSalah)){
+          salahChecks[storageKey] = parsedSalah;
+        }
+      }catch(error){}
+    }
+
+  }
+
+  return {
+    taskChecks:taskChecks,
+    salahChecks:salahChecks
+  };
+
+}
+
+/* =========================
+   SAVE TRACKER CHECK DATA
+   Full function name: saveTrackerCheckData()
+========================= */
+function saveTrackerCheckData(taskChecks, salahChecks){
+
+  Object.keys(taskChecks || {}).forEach(function(key){
+    if(/^\d{4}-\d{2}-\d{2}$/.test(key)){
+      localStorage.setItem(key, JSON.stringify(taskChecks[key] || {}));
+    }
+  });
+
+  Object.keys(salahChecks || {}).forEach(function(key){
+    if(/^salah-\d{4}-\d{2}-\d{2}$/.test(key)){
+      localStorage.setItem(key, JSON.stringify(salahChecks[key] || {}));
+    }
+  });
+
+}
+
+/* =========================
+   MERGE CHECK OBJECTS CLOUD WINS
+   Full function name: mergeCheckObjectsCloudWins()
+========================= */
+function mergeCheckObjectsCloudWins(localData, cloudData){
+
+  let merged = {};
+
+  Object.keys(localData || {}).forEach(function(key){
+    merged[key] = localData[key];
+  });
+
+  Object.keys(cloudData || {}).forEach(function(key){
+    merged[key] = cloudData[key];
+  });
+
+  return merged;
+
+}
+
+/* =========================
+   MERGE TRACKER TASKS CLOUD WINS
+   Full function name: mergeTrackerTasksCloudWins()
+========================= */
+function mergeTrackerTasksCloudWins(localTasks, cloudTasks, deletedIds){
+
+  let taskMap = {};
+
+  filterOutDeletedTasks(localTasks || [], deletedIds).forEach(function(task){
+    if(!task || !task.id) return;
+    taskMap[String(task.id)] = task;
+  });
+
+  filterOutDeletedTasks(cloudTasks || [], deletedIds).forEach(function(task){
+    if(!task || !task.id) return;
+    taskMap[String(task.id)] = task;
+  });
+
+  return filterOutDeletedTasks(dedupeTrackerTasks(Object.values(taskMap)), deletedIds);
+
+}
+
+/* =========================
+   GET TRACKER CLOUD TOTAL COUNT
+   Full function name: getTrackerCloudTotalCount()
+========================= */
+function getTrackerCloudTotalCount(data){
+
+  if(!data) return 0;
+
+  let taskCount = Array.isArray(data.tasks) ? data.tasks.length : 0;
+  let taskCheckCount = data.taskChecks ? Object.keys(data.taskChecks).length : 0;
+  let salahCheckCount = data.salahChecks ? Object.keys(data.salahChecks).length : 0;
+
+  return taskCount + taskCheckCount + salahCheckCount;
+
+}
+
+/* =========================
+   CLOUD HAS DATA NOT ON DEVICE
+   Full function name: cloudHasTrackerDataNotOnDevice()
+========================= */
+function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
+
+  if(!cloudData) return false;
+
+  let localTaskIds = {};
+  let deletedMap = {};
+
+  (deletedIds || []).forEach(function(id){
+    deletedMap[String(id)] = true;
+  });
+
+  (localData.tasks || []).forEach(function(task){
+    if(task && task.id){
+      localTaskIds[String(task.id)] = true;
+    }
+  });
+
+  let cloudTasks = Array.isArray(cloudData.tasks) ? cloudData.tasks : [];
+
+  for(let i = 0; i < cloudTasks.length; i++){
+    let cloudTask = cloudTasks[i];
+
+    if(!cloudTask || !cloudTask.id) continue;
+
+    if(deletedMap[String(cloudTask.id)]) continue;
+
+    if(!localTaskIds[String(cloudTask.id)]){
+      return true;
+    }
+  }
+
+  let localTaskChecks = localData.taskChecks || {};
+  let cloudTaskChecks = cloudData.taskChecks || {};
+
+  for(let dateKey in cloudTaskChecks){
+    if(!localTaskChecks[dateKey]){
+      return true;
+    }
+  }
+
+  let localSalahChecks = localData.salahChecks || {};
+  let cloudSalahChecks = cloudData.salahChecks || {};
+
+  for(let salahKey in cloudSalahChecks){
+    if(!localSalahChecks[salahKey]){
+      return true;
+    }
+  }
+
+  return false;
+
+}
+
+/* =========================
+   GET TRACKER LOCAL CLOUD DATA
+   Full function name: getTrackerLocalCloudData()
+========================= */
+function getTrackerLocalCloudData(){
+
+  let checkData = readTrackerCheckData();
+
+  return {
+    tasks:filterOutDeletedTasks(dedupeTrackerTasks(taskList)),
+    taskChecks:checkData.taskChecks,
+    salahChecks:checkData.salahChecks,
+    deletedTaskIds:getDeletedTaskIds(),
+    deletedIbadahIds:{
+      tasks:getDeletedTaskIds()
+    },
+    savedAt:new Date().toISOString(),
+    recordCount:taskList.length,
+    source:"Ibadah Tracker"
+  };
+
+}
+
+/* =========================
+   SET UNIVERSAL CLOUD MESSAGE
+   Full function name: setUniversalCloudMessage()
+========================= */
+function setUniversalCloudMessage(message){
+
+  let line = document.getElementById("universalCloudStatusLine");
+
+  if(line){
+    line.innerText = message;
+  }
+
+  showToast(message);
+
+}
+
+/* =========================
+   SCHEDULE TRACKER CLOUD AUTO SAVE
+   Full function name: scheduleTrackerCloudAutoSave()
+========================= */
+function scheduleTrackerCloudAutoSave(){
+
+  if(!window.ibadahCloud) return;
+
+  if(!window.ibadahCloud.getCurrentUser || !window.ibadahCloud.getCurrentUser()) return;
+
+  clearTimeout(trackerCloudAutoSaveTimer);
+
+  trackerCloudAutoSaveTimer = setTimeout(function(){
+    saveTrackerToCloud();
+  }, 1800);
+
+}
+
+/* =========================
+   SAVE TRACKER TO CLOUD
+   Full function name: saveTrackerToCloud()
+========================= */
+async function saveTrackerToCloud(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      setUniversalCloudMessage("Cloud file is not ready yet.");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user){
+      setUniversalCloudMessage("Please sign in before saving.");
+      return;
+    }
+
+    saveTaskListData(false);
+
+    let localData = getTrackerLocalCloudData();
+
+    setUniversalCloudMessage("Cloud: Checking before save...");
+
+    let cloudData = await window.ibadahCloud.loadAppData(TRACKER_CLOUD_APP_NAME);
+
+    let combinedDeletedIds = mergeDeletedTaskIds(localData.deletedTaskIds, normalizeDeletedTaskIdsFromCloud(cloudData));
+
+    localData.deletedTaskIds = combinedDeletedIds;
+    localData.deletedIbadahIds = {
+      tasks:combinedDeletedIds
+    };
+    localData.tasks = filterOutDeletedTasks(localData.tasks, combinedDeletedIds);
+
+    let cloudTotal = getTrackerCloudTotalCount(cloudData);
+    let localTotal = getTrackerCloudTotalCount(localData);
+    let cloudHasMissingData = cloudHasTrackerDataNotOnDevice(localData, cloudData, combinedDeletedIds);
+
+    if((cloudTotal > localTotal || cloudHasMissingData) && !trackerAllowIntentionalDeleteCloudSave){
+      setUniversalCloudMessage("Cloud has more tracker data. Load from Cloud first.");
+      alert("Cloud has more tracker data than this device.\n\nPlease press Download / Load from Cloud first, then save again.");
+      return;
+    }
+
+    setUniversalCloudMessage("Cloud: Saving tracker...");
+
+    await window.ibadahCloud.saveAppData(TRACKER_CLOUD_APP_NAME, localData);
+
+    trackerAllowIntentionalDeleteCloudSave = false;
+
+    setUniversalCloudMessage("Cloud: Tracker saved.");
+
+  }catch(error){
+
+    console.log(error);
+    setUniversalCloudMessage("Cloud save failed. Check internet and Firebase.");
+
+  }
+
+}
+
+/* =========================
+   LOAD TRACKER FROM CLOUD
+   Full function name: loadTrackerFromCloud()
+========================= */
+async function loadTrackerFromCloud(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      setUniversalCloudMessage("Cloud file is not ready yet.");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user){
+      setUniversalCloudMessage("Please sign in before loading.");
+      return;
+    }
+
+    setUniversalCloudMessage("Cloud: Loading tracker...");
+
+    let cloudData = await window.ibadahCloud.loadAppData(TRACKER_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      setUniversalCloudMessage("Cloud: No tracker data found. Save first.");
+      return;
+    }
+
+    localStorage.setItem("ibadahTrackerBackupBeforeCloudLoad", JSON.stringify(getTrackerLocalCloudData()));
+
+    let combinedDeletedIds = mergeDeletedTaskIds(getDeletedTaskIds(), normalizeDeletedTaskIdsFromCloud(cloudData));
+
+    let localData = getTrackerLocalCloudData();
+
+    let cloudTasks = Array.isArray(cloudData.tasks)
+      ? cloudData.tasks.map(function(item, index){
+          return normalizeTrackerTask(item, index);
+        }).filter(function(item){
+          return item !== null;
+        })
+      : [];
+
+    let mergedTasks = mergeTrackerTasksCloudWins(localData.tasks, cloudTasks, combinedDeletedIds);
+
+    let mergedTaskChecks = mergeCheckObjectsCloudWins(localData.taskChecks || {}, cloudData.taskChecks || {});
+    let mergedSalahChecks = mergeCheckObjectsCloudWins(localData.salahChecks || {}, cloudData.salahChecks || {});
+
+    taskList = mergedTasks;
+
+    saveTaskListData(false);
+    saveTrackerCheckData(mergedTaskChecks, mergedSalahChecks);
+
+    trackerAllowIntentionalDeleteCloudSave = false;
+
+    loadSalah();
+    loadTasks();
+
+    setUniversalCloudMessage("Cloud: Tracker loaded.");
+
+  }catch(error){
+
+    console.log(error);
+    setUniversalCloudMessage("Cloud load failed. Check internet and Firebase.");
+
+  }
+
+}
+
+/* =========================
+   AUTO CHECK TRACKER CLOUD
+   Full function name: autoCheckTrackerCloud()
+========================= */
+async function autoCheckTrackerCloud(){
+
+  try{
+
+    if(trackerCloudAutoCheckDone) return;
+    if(!window.ibadahCloud) return;
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user) return;
+
+    trackerCloudAutoCheckDone = true;
+
+    let cloudData = await window.ibadahCloud.loadAppData(TRACKER_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      return;
+    }
+
+    let localData = getTrackerLocalCloudData();
+
+    if(getTrackerCloudTotalCount(localData) === 0 && getTrackerCloudTotalCount(cloudData) > 0){
+      await loadTrackerFromCloud();
+      return;
+    }
+
+  }catch(error){
+    console.log(error);
+  }
+
+}
+
+/* =========================
+   WAIT FOR TRACKER CLOUD
+   Full function name: waitForTrackerCloud()
+========================= */
+function waitForTrackerCloud(){
+
+  let tries = 0;
+
+  let timer = setInterval(function(){
+
+    tries++;
+
+    if(window.ibadahCloud){
+      clearInterval(timer);
+
+      window.ibadahCloudSaveCurrentPage = saveTrackerToCloud;
+      window.ibadahCloudLoadCurrentPage = loadTrackerFromCloud;
+
+      autoCheckTrackerCloud();
+      return;
+    }
+
+    if(tries > 40){
+      clearInterval(timer);
+    }
+
+  }, 250);
+
+}
 
 /* =========================
    LOAD TASK LIST
 ========================= */
-let taskList = JSON.parse(localStorage.getItem("taskList") || "[]");
+let taskList = JSON.parse(localStorage.getItem(TRACKER_TASK_LIST_KEY) || "[]");
 
 taskList = taskList.filter(function(t){
-  return !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name);
+  return t && !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name);
 });
 
 if(!Array.isArray(taskList) || taskList.length === 0){
-  taskList = [
-    {name:"Surah Mulk",start:0,end:null},
-    {name:"Surah Sajdah",start:0,end:null},
-    {name:"Surah Yaseen",start:0,end:null},
-    {name:"Surah Rehman",start:0,end:null},
-    {name:"Surah Taghabun",start:0,end:null},
-    {name:"Surah Waqiya",start:0,end:null},
-    {name:"Surah Ikhlas",start:0,end:null},
-    {name:"Surah Ad Duha to Surah Al Nas",start:0,end:null}
-  ];
+  taskList = getDefaultTrackerTasks();
 }
 
-localStorage.setItem("taskList", JSON.stringify(taskList));
+taskList = taskList.map(function(task, index){
+  return normalizeTrackerTask(task, index);
+}).filter(function(task){
+  return task !== null;
+});
+
+taskList = filterOutDeletedTasks(dedupeTrackerTasks(taskList));
+
+saveTaskListData(false);
 
 /* =========================
    ISLAMIC TODAY
@@ -1008,6 +1692,8 @@ function toggleSalah(prayer, status){
 
   localStorage.setItem(key, JSON.stringify(saved));
 
+  scheduleTrackerCloudAutoSave();
+
   loadSalah();
 }
 
@@ -1068,6 +1754,8 @@ function loadTasks(){
   let selectedTime = new Date(currentDate).setHours(0,0,0,0);
   let visibleTotal = 0;
   let doneTotal = 0;
+
+  taskList = filterOutDeletedTasks(dedupeTrackerTasks(taskList));
 
   taskList.forEach(function(task){
 
@@ -1136,6 +1824,8 @@ function toggleTask(task, status){
   saved[task] = status;
 
   localStorage.setItem(key, JSON.stringify(saved));
+
+  scheduleTrackerCloudAutoSave();
 
   loadTasks();
 }
@@ -1291,7 +1981,15 @@ function createTask(){
     return;
   }
 
-  let task = { name:name };
+  let now = new Date().toISOString();
+
+  let task = {
+    id:makeTrackerId("task"),
+    name:name,
+    createdAt:now,
+    updatedAt:now
+  };
+
   let today = new Date(currentDate).setHours(0,0,0,0);
 
   if(type === "range"){
@@ -1331,7 +2029,7 @@ function createTask(){
   }
 
   taskList.push(task);
-  localStorage.setItem("taskList", JSON.stringify(taskList));
+  saveTaskListData(true);
 
   loadTasks();
   manageTasks();
@@ -1406,7 +2104,7 @@ function showRenameTask(){
   }
 
   let options = visibleTasks.map(function(t){
-    return `<option>${escapeHtml(t.name)}</option>`;
+    return `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`;
   }).join("");
 
   content.innerHTML = `
@@ -1433,7 +2131,14 @@ function confirmRenameTask(){
 
   if(!renameSelect || !renameInput) return;
 
-  let oldName = renameSelect.value;
+  let taskId = renameSelect.value;
+  let selectedTask = taskList.find(function(t){
+    return String(t.id) === String(taskId);
+  });
+
+  if(!selectedTask) return;
+
+  let oldName = selectedTask.name;
   let newName = renameInput.value.trim();
 
   if(!newName){
@@ -1456,13 +2161,16 @@ function confirmRenameTask(){
   }
 
   taskList = taskList.map(function(t){
-    if(t.name === oldName){
-      return Object.assign({}, t, {name:newName});
+    if(String(t.id) === String(taskId)){
+      return Object.assign({}, t, {
+        name:newName,
+        updatedAt:new Date().toISOString()
+      });
     }
     return t;
   });
 
-  localStorage.setItem("taskList", JSON.stringify(taskList));
+  saveTaskListData(true);
 
   renameSavedCheckboxData(oldName, newName);
 
@@ -1506,6 +2214,9 @@ function renameSavedCheckboxData(oldName, newName){
     }
 
   });
+
+  scheduleTrackerCloudAutoSave();
+
 }
 
 /* =========================
@@ -1528,7 +2239,7 @@ function showRemoveTask(){
   }
 
   let options = visibleTasks.map(function(t){
-    return `<option>${escapeHtml(t.name)}</option>`;
+    return `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`;
   }).join("");
 
   content.innerHTML = `
@@ -1578,11 +2289,21 @@ function deleteFromBeginning(){
 
   if(!deleteTargetTask) return;
 
-  taskList = taskList.filter(function(t){
-    return t.name !== deleteTargetTask;
+  let targetTask = taskList.find(function(t){
+    return String(t.id) === String(deleteTargetTask) || String(t.name) === String(deleteTargetTask);
   });
 
-  localStorage.setItem("taskList", JSON.stringify(taskList));
+  if(targetTask && targetTask.id){
+    addDeletedTaskId(targetTask.id);
+  }
+
+  taskList = taskList.filter(function(t){
+    return String(t.id) !== String(deleteTargetTask) && String(t.name) !== String(deleteTargetTask);
+  });
+
+  trackerAllowIntentionalDeleteCloudSave = true;
+
+  saveTaskListData(true);
 
   closeDeletePopup();
   loadTasks();
@@ -1602,13 +2323,16 @@ function deleteFromToday(){
   yesterday.setDate(yesterday.getDate() - 1);
 
   taskList = taskList.map(function(t){
-    if(t.name === deleteTargetTask){
-      return Object.assign({}, t, {end:yesterday.setHours(0,0,0,0)});
+    if(String(t.id) === String(deleteTargetTask) || String(t.name) === String(deleteTargetTask)){
+      return Object.assign({}, t, {
+        end:yesterday.setHours(0,0,0,0),
+        updatedAt:new Date().toISOString()
+      });
     }
     return t;
   });
 
-  localStorage.setItem("taskList", JSON.stringify(taskList));
+  saveTaskListData(true);
 
   closeDeletePopup();
   loadTasks();
@@ -1884,7 +2608,7 @@ function showToast(message){
 
   window.trackerToastTimer = setTimeout(function(){
     toast.style.display = "none";
-  }, 1800);
+  }, 2200);
 }
 
 /* =========================
@@ -1909,10 +2633,20 @@ function escapeJs(text){
 }
 
 /* =========================
+   CLOUD USER CHANGE LISTENER
+   Full listener name: ibadahCloudUserChanged
+========================= */
+window.addEventListener("ibadahCloudUserChanged", function(){
+  trackerCloudAutoCheckDone = false;
+  autoCheckTrackerCloud();
+});
+
+/* =========================
    START TRACKER PAGE
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
   setDate(islamicToday());
+  waitForTrackerCloud();
 });
 </script>
 
@@ -1920,25 +2654,7 @@ document.addEventListener("DOMContentLoaded", function(){
      UNIVERSAL MENU HANDLE SCRIPT
      File used: shared/menu-handle.js
 ========================= -->
-<script src="../shared/menu-handle.js"></script>
-
-<script>
-// =========================
-// START UNIVERSAL MENU HANDLE - TRACKER PAGE
-// Full function name: createUniversalMenuHandle()
-// =========================
-document.addEventListener("DOMContentLoaded", function(){
-  createUniversalMenuHandle({
-    iconBasePath:"../Images/Icons/"
-  });
-});
-</script>
-
-<!-- =========================
-     UNIVERSAL MENU HANDLE SCRIPT
-     File used: shared/menu-handle.js
-========================= -->
-<script src="../shared/menu-handle.js?v=tracker-menu-1"></script>
+<script src="../shared/menu-handle.js?v=tracker-cloud-1"></script>
 
 <script>
 // =========================
