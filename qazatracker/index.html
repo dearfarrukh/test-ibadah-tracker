@@ -1011,15 +1011,18 @@ function waitForQazaCloud(){
 
     tries++;
 
-    if(window.ibadahCloud){
-      clearInterval(timer);
+   if(window.ibadahCloud){
+  clearInterval(timer);
 
-      window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
-      window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+  window.saveQazaToCloud = saveQazaToCloud;
+  window.loadQazaFromCloud = loadQazaFromCloud;
 
-      autoCheckQazaCloud();
-      return;
-    }
+  window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+  window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+
+  autoCheckQazaCloud();
+  return;
+}
 
     if(tries > 40){
       clearInterval(timer);
@@ -1762,20 +1765,56 @@ window.addEventListener("load", startQazaTrackerPage);
      UNIVERSAL MENU HANDLE SCRIPT
      File used: shared/menu-handle.js
 ========================= -->
-<script src="../shared/menu-handle.js?v=qaza-cloud-2"></script>
+<script src="../shared/menu-handle.js?v=qaza-cloud-4"></script>
 
 <script>
+// =========================
+// CONNECT QAZA CLOUD TO UNIVERSAL MENU
+// Full function name: connectQazaCloudToUniversalMenu()
+// =========================
+function connectQazaCloudToUniversalMenu(){
+
+  if(typeof saveQazaToCloud === "function"){
+    window.saveQazaToCloud = saveQazaToCloud;
+    window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+  }
+
+  if(typeof loadQazaFromCloud === "function"){
+    window.loadQazaFromCloud = loadQazaFromCloud;
+    window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+  }
+
+}
+
 // =========================
 // START UNIVERSAL MENU HANDLE - QAZA PAGE
 // Full function name: createUniversalMenuHandle()
 // =========================
 document.addEventListener("DOMContentLoaded", function(){
 
+  connectQazaCloudToUniversalMenu();
+
   if(typeof createUniversalMenuHandle === "function"){
     createUniversalMenuHandle({
       iconBasePath:"../Images/Icons/"
     });
   }
+
+  connectQazaCloudToUniversalMenu();
+
+  let qazaCloudConnectTries = 0;
+
+  let qazaCloudConnectTimer = setInterval(function(){
+
+    qazaCloudConnectTries++;
+
+    connectQazaCloudToUniversalMenu();
+
+    if(qazaCloudConnectTries > 30){
+      clearInterval(qazaCloudConnectTimer);
+    }
+
+  }, 300);
 
 });
 </script>
