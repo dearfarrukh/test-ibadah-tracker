@@ -1263,12 +1263,20 @@ function getTrackerCloudTotalCount(data){
 /* =========================
    CLOUD HAS DATA NOT ON DEVICE
    Full function name: cloudHasTrackerDataNotOnDevice()
+
+   Important fix:
+   - If cloud has duplicate task with same name, do NOT block save.
+   - Example:
+     Cloud has Quran Class twice.
+     Local has Quran Class once.
+     Save should be allowed so local can clean cloud.
 ========================= */
 function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
 
   if(!cloudData) return false;
 
   let localTaskIds = {};
+  let localTaskNames = {};
   let deletedMap = {};
 
   (deletedIds || []).forEach(function(id){
@@ -1276,23 +1284,47 @@ function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
   });
 
   (localData.tasks || []).forEach(function(task){
-    if(task && task.id){
+    if(!task) return;
+
+    if(task.id){
       localTaskIds[String(task.id)] = true;
+    }
+
+    if(task.name){
+      let localNameKey = String(task.name)
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+
+      localTaskNames[localNameKey] = true;
     }
   });
 
   let cloudTasks = Array.isArray(cloudData.tasks) ? cloudData.tasks : [];
 
   for(let i = 0; i < cloudTasks.length; i++){
-    let cloudTask = cloudTasks[i];
+
+    let cloudTask = normalizeTrackerTask(cloudTasks[i], i);
 
     if(!cloudTask || !cloudTask.id) continue;
 
     if(deletedMap[String(cloudTask.id)]) continue;
 
-    if(!localTaskIds[String(cloudTask.id)]){
+    let cloudNameKey = String(cloudTask.name || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+
+    /*
+      Old strict rule checked only ID.
+      New safer rule:
+      If same name exists locally, it is not missing.
+      This lets us clean old duplicate cloud records.
+    */
+    if(!localTaskIds[String(cloudTask.id)] && !localTaskNames[cloudNameKey]){
       return true;
     }
+
   }
 
   let localTaskChecks = localData.taskChecks || {};
@@ -1316,7 +1348,6 @@ function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
   return false;
 
 }
-
 /* =========================
    GET TRACKER LOCAL CLOUD DATA
    Full function name: getTrackerLocalCloudData()
