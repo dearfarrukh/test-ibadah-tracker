@@ -88,15 +88,35 @@ font-size:20px;
 font-weight:900;
 letter-spacing:-0.3px;
 text-align:center;
-max-width:62%;
+max-width:50%;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 }
 
-.duaTopHeart{
+.duaTopCloud{
 position:absolute;
 right:4%;
+bottom:10px;
+width:42px;
+height:42px;
+border:none;
+border-radius:50%;
+background:white;
+color:#111;
+font-size:20px;
+font-weight:800;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.10);
+cursor:pointer;
+-webkit-tap-highlight-color:transparent;
+}
+
+.duaTopHeart{
+position:absolute;
+right:17%;
 bottom:10px;
 width:42px;
 height:42px;
@@ -596,6 +616,97 @@ color:#666;
 }
 
 /* =========================
+   DUA DIRECT CLOUD SHEET
+========================= */
+.duaCloudOverlay{
+display:none;
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+z-index:12000;
+align-items:flex-end;
+justify-content:center;
+padding:0 4% calc(env(safe-area-inset-bottom) + 18px) 4%;
+box-sizing:border-box;
+}
+
+.duaCloudSheet{
+width:100%;
+max-width:430px;
+background:rgba(255,255,255,0.96);
+border-radius:30px;
+padding:14px 4% 18px 4%;
+box-shadow:0 -18px 48px rgba(0,0,0,0.22);
+border:1px solid rgba(255,255,255,0.70);
+box-sizing:border-box;
+}
+
+.duaCloudHandle{
+width:44px;
+height:5px;
+background:#c9c9cf;
+border-radius:99px;
+margin:0 auto 16px auto;
+}
+
+.duaCloudTitle{
+font-size:26px;
+font-weight:950;
+color:#111;
+text-align:center;
+margin-bottom:8px;
+letter-spacing:-0.5px;
+}
+
+.duaCloudStatus{
+font-size:14px;
+font-weight:750;
+color:#666;
+text-align:center;
+line-height:1.4;
+margin-bottom:16px;
+}
+
+.duaCloudActionBtn{
+width:100%;
+border:none;
+border-radius:18px;
+padding:15px;
+color:white;
+font-size:17px;
+font-weight:900;
+cursor:pointer;
+margin-bottom:10px;
+}
+
+.duaCloudActionBtn.black{
+background:#111;
+}
+
+.duaCloudActionBtn.green{
+background:#16a34a;
+}
+
+.duaCloudActionBtn.orange{
+background:#f97316;
+}
+
+.duaCloudActionBtn.red{
+background:#ff3b30;
+}
+
+.duaCloudActionBtn.gray{
+background:#e9e9ee;
+color:#111;
+}
+
+     
+
+/* =========================
    TOAST MESSAGE
 ========================= */
 .duaToast{
@@ -636,8 +747,8 @@ transform:translateX(-50%) translateY(0);
   <button class="duaBackBtn" onclick="handleDuaBack()">←</button>
   <div id="duaTopTitle" class="duaTopTitle">🤲 Masnoon Dua</div>
   <button id="duaTopHeartBtn" class="duaTopHeart" onclick="showFavoriteDuas()">❤️</button>
+  <button id="duaTopCloudBtn" class="duaTopCloud" onclick="openDuaDirectCloudMenu()">☁️</button>
 </div>
-
 <!-- =========================
      DUA MAIN PAGE
 ========================= -->
@@ -707,10 +818,52 @@ transform:translateX(-50%) translateY(0);
 </div>
 
 <!-- =========================
+     DIRECT DUA CLOUD MENU
+========================= -->
+<div id="duaDirectCloudOverlay" class="duaCloudOverlay" onclick="closeDuaDirectCloudMenuFromOverlay(event)">
+  <div class="duaCloudSheet" onclick="event.stopPropagation();">
+
+    <div class="duaCloudHandle"></div>
+
+    <div class="duaCloudTitle">☁️ Dua Cloud Sync</div>
+
+    <div id="duaDirectCloudStatus" class="duaCloudStatus">
+      Dua Cloud: Ready
+    </div>
+
+    <button class="duaCloudActionBtn black" onclick="duaDirectCloudSignIn()">
+      Sign in with Google
+    </button>
+
+    <button class="duaCloudActionBtn green" onclick="duaDirectCloudSave()">
+      Upload / Save Dua
+    </button>
+
+    <button class="duaCloudActionBtn orange" onclick="duaDirectCloudLoad()">
+      Download / Load Dua
+    </button>
+
+    <button class="duaCloudActionBtn red" onclick="duaDirectCloudSignOut()">
+      Sign Out
+    </button>
+
+    <button class="duaCloudActionBtn gray" onclick="closeDuaDirectCloudMenu()">
+      Close
+    </button>
+
+  </div>
+</div>
+
+<!-- =========================
      TOAST MESSAGE
 ========================= -->
 <div id="duaToast" class="duaToast"></div>
 
+<!-- =========================
+     DUA CLOUD SYNC SCRIPT
+     File used: shared/cloud-sync.js
+========================= -->
+<script type="module" src="../shared/cloud-sync.js?v=dua-cloud-1"></script>
 <script>
 
 /* =========================
@@ -721,6 +874,617 @@ let currentDuaTab = "All";
 let currentDuaId = null;
 let currentFavoriteMode = false;
 let currentSearchText = "";
+let duaCloudAutoSaveTimer = null;
+let duaCloudAutoCheckDone = false;
+let duaAllowIntentionalDeleteCloudSave = false;
+let duaCloudSuppressAutoSave = false;
+
+const DUA_CLOUD_APP_NAME = "duaPage";
+const DUA_DELETED_IDS_KEY = "ibadahDeletedDuaIds";
+
+
+
+/* =========================
+   OPEN DUA DIRECT CLOUD MENU
+   Full function name: openDuaDirectCloudMenu()
+========================= */
+function openDuaDirectCloudMenu(){
+
+  let overlay = document.getElementById("duaDirectCloudOverlay");
+
+  if(overlay){
+    overlay.style.display = "flex";
+  }
+
+  updateDuaDirectCloudStatus();
+
+}
+
+/* =========================
+   CLOSE DUA DIRECT CLOUD MENU
+   Full function name: closeDuaDirectCloudMenu()
+========================= */
+function closeDuaDirectCloudMenu(){
+
+  let overlay = document.getElementById("duaDirectCloudOverlay");
+
+  if(overlay){
+    overlay.style.display = "none";
+  }
+
+}
+
+/* =========================
+   CLOSE DUA DIRECT CLOUD MENU FROM OVERLAY
+   Full function name: closeDuaDirectCloudMenuFromOverlay()
+========================= */
+function closeDuaDirectCloudMenuFromOverlay(event){
+
+  if(event.target && event.target.id === "duaDirectCloudOverlay"){
+    closeDuaDirectCloudMenu();
+  }
+
+}
+
+/* =========================
+   UPDATE DUA DIRECT CLOUD STATUS
+   Full function name: updateDuaDirectCloudStatus()
+========================= */
+function updateDuaDirectCloudStatus(message){
+
+  let line = document.getElementById("duaDirectCloudStatus");
+
+  if(!line) return;
+
+  if(message){
+    line.innerText = message;
+    return;
+  }
+
+  if(!window.ibadahCloud){
+    line.innerText = "Dua Cloud: Cloud file not ready yet.";
+    return;
+  }
+
+  let user = null;
+
+  try{
+    if(window.ibadahCloud.getCurrentUser){
+      user = window.ibadahCloud.getCurrentUser();
+    }
+  }catch(error){
+    user = null;
+  }
+
+  if(user){
+    line.innerText = "Dua Cloud: Signed in as " + (user.email || "Google user");
+  }else{
+    line.innerText = "Dua Cloud: Not signed in";
+  }
+
+}
+
+/* =========================
+   DUA DIRECT CLOUD SIGN IN
+   Full function name: duaDirectCloudSignIn()
+========================= */
+async function duaDirectCloudSignIn(){
+
+  try{
+
+    if(!window.ibadahCloud || !window.ibadahCloud.signIn){
+      updateDuaDirectCloudStatus("Cloud file is not ready yet.");
+      showDuaToast("Cloud file is not ready yet");
+      return;
+    }
+
+    updateDuaDirectCloudStatus("Opening Google sign-in...");
+
+    await window.ibadahCloud.signIn();
+
+    duaCloudAutoCheckDone = false;
+    await autoCheckDuaCloud();
+
+    updateDuaDirectCloudStatus();
+    showDuaToast("Signed in");
+
+  }catch(error){
+
+    console.log(error);
+    updateDuaDirectCloudStatus("Google sign-in failed.");
+    showDuaToast("Google sign-in failed");
+
+  }
+
+}
+
+/* =========================
+   DUA DIRECT CLOUD SIGN OUT
+   Full function name: duaDirectCloudSignOut()
+========================= */
+async function duaDirectCloudSignOut(){
+
+  try{
+
+    if(!window.ibadahCloud || !window.ibadahCloud.signOut){
+      updateDuaDirectCloudStatus("Cloud file is not ready yet.");
+      return;
+    }
+
+    await window.ibadahCloud.signOut();
+
+    updateDuaDirectCloudStatus("Signed out.");
+    showDuaToast("Signed out");
+
+  }catch(error){
+
+    console.log(error);
+    updateDuaDirectCloudStatus("Sign out failed.");
+    showDuaToast("Sign out failed");
+
+  }
+
+}
+
+/* =========================
+   DUA DIRECT CLOUD SAVE
+   Full function name: duaDirectCloudSave()
+========================= */
+async function duaDirectCloudSave(){
+
+  await saveDuaToCloud();
+
+}
+
+/* =========================
+   DUA DIRECT CLOUD LOAD
+   Full function name: duaDirectCloudLoad()
+========================= */
+async function duaDirectCloudLoad(){
+
+  await loadDuaFromCloud();
+
+}
+
+/* =========================
+   GET DELETED DUA IDS
+   Full function name: getDeletedDuaIds()
+========================= */
+function getDeletedDuaIds(){
+
+  try{
+    let saved = JSON.parse(localStorage.getItem(DUA_DELETED_IDS_KEY) || "[]");
+    return Array.isArray(saved) ? saved.map(String) : [];
+  }catch(error){
+    return [];
+  }
+
+}
+
+/* =========================
+   SAVE DELETED DUA IDS
+   Full function name: saveDeletedDuaIds()
+========================= */
+function saveDeletedDuaIds(ids){
+
+  let cleanIds = Array.from(new Set((Array.isArray(ids) ? ids : []).map(String).filter(Boolean)));
+  localStorage.setItem(DUA_DELETED_IDS_KEY, JSON.stringify(cleanIds));
+  return cleanIds;
+
+}
+
+/* =========================
+   ADD DELETED DUA ID
+   Full function name: addDeletedDuaId()
+========================= */
+function addDeletedDuaId(duaId){
+
+  if(!duaId) return;
+
+  let ids = getDeletedDuaIds();
+  ids.push(String(duaId));
+  saveDeletedDuaIds(ids);
+
+}
+
+/* =========================
+   NORMALIZE CUSTOM DUA ITEM
+   Full function name: normalizeCustomDuaItem()
+========================= */
+function normalizeCustomDuaItem(item, index){
+
+  if(!item || typeof item !== "object") return null;
+
+  let title = String(item.title || "").trim();
+
+  if(!title) return null;
+
+  let now = new Date().toISOString();
+
+  return {
+    id:String(item.id || ("custom-" + Date.now() + "-" + index)),
+    source:"custom",
+    type:item.type || "text",
+    category:"Custom",
+    icon:item.icon || "🤲",
+    title:title,
+    subtitle:item.subtitle || "Your custom dua",
+    arabic:item.arabic || "",
+    urdu:item.urdu || "",
+    english:item.english || "",
+    explanation:item.explanation || "",
+    reference:item.reference || "",
+    createdAt:item.createdAt || now,
+    updatedAt:item.updatedAt || item.createdAt || now
+  };
+
+}
+
+/* =========================
+   GET DUA LOCAL CLOUD DATA
+   Full function name: getDuaLocalCloudData()
+========================= */
+function getDuaLocalCloudData(){
+
+  let deletedIds = getDeletedDuaIds();
+
+  let customDuas = getCustomDuas()
+    .map(function(item, index){
+      return normalizeCustomDuaItem(item, index);
+    })
+    .filter(function(item){
+      return item !== null && !deletedIds.includes(String(item.id));
+    });
+
+  let favoriteIds = getFavoriteDuaIds().filter(function(id){
+    return !deletedIds.includes(String(id));
+  });
+
+  return {
+    customDuas:customDuas,
+    favoriteDuaIds:favoriteIds,
+    deletedDuaIds:deletedIds,
+    deletedIbadahIds:{
+      duas:deletedIds
+    },
+    savedAt:new Date().toISOString(),
+    source:"Ibadah Dua Page"
+  };
+
+}
+
+/* =========================
+   CLOUD HAS DUA DATA NOT ON DEVICE
+   Full function name: cloudHasDuaDataNotOnDevice()
+========================= */
+function cloudHasDuaDataNotOnDevice(localData, cloudData){
+
+  if(!cloudData || typeof cloudData !== "object") return false;
+
+  let localCustomIds = {};
+  let localFavoriteIds = {};
+  let localDeletedIds = {};
+
+  (localData.deletedDuaIds || []).forEach(function(id){
+    localDeletedIds[String(id)] = true;
+  });
+
+  (localData.customDuas || []).forEach(function(dua){
+    if(dua && dua.id){
+      localCustomIds[String(dua.id)] = true;
+    }
+  });
+
+  (localData.favoriteDuaIds || []).forEach(function(id){
+    localFavoriteIds[String(id)] = true;
+  });
+
+  let cloudCustomDuas = Array.isArray(cloudData.customDuas) ? cloudData.customDuas : [];
+
+  for(let i = 0; i < cloudCustomDuas.length; i++){
+    let cloudDua = normalizeCustomDuaItem(cloudCustomDuas[i], i);
+
+    if(!cloudDua || !cloudDua.id) continue;
+    if(localDeletedIds[String(cloudDua.id)]) continue;
+
+    if(!localCustomIds[String(cloudDua.id)]){
+      return true;
+    }
+  }
+
+  let cloudFavoriteIds = Array.isArray(cloudData.favoriteDuaIds) ? cloudData.favoriteDuaIds : [];
+
+  for(let f = 0; f < cloudFavoriteIds.length; f++){
+    let favId = String(cloudFavoriteIds[f]);
+
+    if(localDeletedIds[favId]) continue;
+
+    if(!localFavoriteIds[favId]){
+      return true;
+    }
+  }
+
+  return false;
+
+}
+
+/* =========================
+   APPLY DUA CLOUD DATA LOCALLY
+   Full function name: applyDuaCloudDataLocally()
+========================= */
+function applyDuaCloudDataLocally(data){
+
+  duaCloudSuppressAutoSave = true;
+
+  saveCustomDuas(data.customDuas || []);
+  saveFavoriteDuaIds(data.favoriteDuaIds || []);
+  saveDeletedDuaIds(data.deletedDuaIds || []);
+
+  duaCloudSuppressAutoSave = false;
+
+  renderDuaTabs();
+  renderDuaList();
+
+  if(currentDuaSubPage === "detail" && currentDuaId){
+    let dua = getAllDuas().find(function(item){
+      return item.id === currentDuaId;
+    });
+
+    if(dua){
+      renderDuaDetailContent(dua);
+    }else{
+      openDuaMainPage();
+    }
+  }
+
+}
+
+/* =========================
+   SCHEDULE DUA CLOUD AUTO SAVE
+   Full function name: scheduleDuaCloudAutoSave()
+========================= */
+function scheduleDuaCloudAutoSave(){
+
+  if(duaCloudSuppressAutoSave) return;
+
+  if(!window.ibadahCloud) return;
+
+  if(!window.ibadahCloud.getCurrentUser || !window.ibadahCloud.getCurrentUser()) return;
+
+  clearTimeout(duaCloudAutoSaveTimer);
+
+  duaCloudAutoSaveTimer = setTimeout(function(){
+    saveDuaToCloud();
+  }, 1800);
+
+}
+
+/* =========================
+   SAVE DUA TO CLOUD
+   Full function name: saveDuaToCloud()
+========================= */
+async function saveDuaToCloud(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      updateDuaDirectCloudStatus("Cloud file is not ready yet.");
+      showDuaToast("Cloud file is not ready yet");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user){
+      updateDuaDirectCloudStatus("Please sign in before saving Dua.");
+      showDuaToast("Please sign in first");
+      return;
+    }
+
+    let localData = getDuaLocalCloudData();
+
+    updateDuaDirectCloudStatus("Checking Dua cloud...");
+
+    let cloudData = await window.ibadahCloud.loadAppData(DUA_CLOUD_APP_NAME);
+
+    if(cloudHasDuaDataNotOnDevice(localData, cloudData) && !duaAllowIntentionalDeleteCloudSave){
+      updateDuaDirectCloudStatus("Cloud has more Dua data. Download first.");
+      showDuaToast("Cloud has more Dua data");
+      alert("Cloud has more Dua data than this device.\n\nPlease press Download / Load Dua first, then save again.");
+      return;
+    }
+
+    updateDuaDirectCloudStatus("Saving Dua...");
+
+    await window.ibadahCloud.saveAppData(DUA_CLOUD_APP_NAME, localData);
+
+    duaAllowIntentionalDeleteCloudSave = false;
+
+    updateDuaDirectCloudStatus("Dua saved to cloud.");
+    showDuaToast("Dua saved");
+
+  }catch(error){
+
+    console.log(error);
+    updateDuaDirectCloudStatus("Dua save failed.");
+    showDuaToast("Dua save failed");
+
+  }
+
+}
+
+/* =========================
+   LOAD DUA FROM CLOUD
+   Full function name: loadDuaFromCloud()
+========================= */
+async function loadDuaFromCloud(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      updateDuaDirectCloudStatus("Cloud file is not ready yet.");
+      showDuaToast("Cloud file is not ready yet");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user){
+      updateDuaDirectCloudStatus("Please sign in before loading Dua.");
+      showDuaToast("Please sign in first");
+      return;
+    }
+
+    updateDuaDirectCloudStatus("Loading Dua...");
+
+    let cloudData = await window.ibadahCloud.loadAppData(DUA_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      updateDuaDirectCloudStatus("No Dua cloud data found. Save first.");
+      showDuaToast("No Dua cloud data found");
+      return;
+    }
+
+    localStorage.setItem("ibadahDuaBackupBeforeCloudLoad", JSON.stringify(getDuaLocalCloudData()));
+
+    let localData = getDuaLocalCloudData();
+
+    let mergedCustomDuas = (localData.customDuas || []).concat(cloudData.customDuas || []);
+    let customMap = {};
+
+    mergedCustomDuas.forEach(function(dua, index){
+      let cleanDua = normalizeCustomDuaItem(dua, index);
+      if(cleanDua && cleanDua.id){
+        customMap[String(cleanDua.id)] = cleanDua;
+      }
+    });
+
+    let favMap = {};
+
+    (localData.favoriteDuaIds || []).concat(cloudData.favoriteDuaIds || []).forEach(function(id){
+      favMap[String(id)] = true;
+    });
+
+    let deletedIds = Array.from(new Set(
+      (localData.deletedDuaIds || []).concat(cloudData.deletedDuaIds || [])
+    ));
+
+    let mergedData = {
+      customDuas:Object.values(customMap).filter(function(dua){
+        return !deletedIds.includes(String(dua.id));
+      }),
+      favoriteDuaIds:Object.keys(favMap).filter(function(id){
+        return !deletedIds.includes(String(id));
+      }),
+      deletedDuaIds:deletedIds
+    };
+
+    applyDuaCloudDataLocally(mergedData);
+
+    duaAllowIntentionalDeleteCloudSave = false;
+
+    updateDuaDirectCloudStatus("Dua loaded from cloud.");
+    showDuaToast("Dua loaded");
+
+  }catch(error){
+
+    console.log(error);
+    updateDuaDirectCloudStatus("Dua load failed.");
+    showDuaToast("Dua load failed");
+
+  }
+
+}
+
+/* =========================
+   AUTO CHECK DUA CLOUD
+   Full function name: autoCheckDuaCloud()
+========================= */
+async function autoCheckDuaCloud(){
+
+  try{
+
+    if(duaCloudAutoCheckDone) return;
+    if(!window.ibadahCloud) return;
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user) return;
+
+    duaCloudAutoCheckDone = true;
+
+    let cloudData = await window.ibadahCloud.loadAppData(DUA_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      updateDuaDirectCloudStatus();
+      return;
+    }
+
+    if(cloudHasDuaDataNotOnDevice(getDuaLocalCloudData(), cloudData)){
+      updateDuaDirectCloudStatus("Cloud has more Dua data. Download first.");
+      showDuaToast("Cloud has more Dua data");
+      return;
+    }
+
+    updateDuaDirectCloudStatus();
+
+  }catch(error){
+    console.log(error);
+  }
+
+}
+
+/* =========================
+   WAIT FOR DUA CLOUD
+   Full function name: waitForDuaCloud()
+========================= */
+function waitForDuaCloud(){
+
+  let tries = 0;
+
+  let timer = setInterval(function(){
+
+    tries++;
+
+    if(window.ibadahCloud){
+      clearInterval(timer);
+      autoCheckDuaCloud();
+      updateDuaDirectCloudStatus();
+      return;
+    }
+
+    if(tries > 40){
+      clearInterval(timer);
+      updateDuaDirectCloudStatus("Cloud file is not ready yet.");
+    }
+
+  }, 250);
+
+}
+
+/* =========================
+   CLOUD USER CHANGE LISTENER
+   Full listener name: ibadahCloudUserChanged
+========================= */
+window.addEventListener("ibadahCloudUserChanged", function(){
+  duaCloudAutoCheckDone = false;
+  autoCheckDuaCloud();
+  updateDuaDirectCloudStatus();
+});
+
+     
 
 /* =========================
    TAB ORDER
@@ -1166,7 +1930,17 @@ function getCustomDuas(){
 ========================= */
 function saveCustomDuas(customDuas){
 
-  localStorage.setItem("ibadahCustomDuas", JSON.stringify(customDuas));
+  let cleanList = (Array.isArray(customDuas) ? customDuas : []).map(function(item, index){
+
+    let cleanItem = normalizeCustomDuaItem(item, index);
+
+    return cleanItem || item;
+
+  });
+
+  localStorage.setItem("ibadahCustomDuas", JSON.stringify(cleanList));
+
+  scheduleDuaCloudAutoSave();
 
 }
 
@@ -1199,7 +1973,11 @@ function getFavoriteDuaIds(){
 ========================= */
 function saveFavoriteDuaIds(favIds){
 
-  localStorage.setItem("ibadahDuaFavorites", JSON.stringify(favIds));
+  let cleanFavIds = Array.from(new Set((Array.isArray(favIds) ? favIds : []).map(String).filter(Boolean)));
+
+  localStorage.setItem("ibadahDuaFavorites", JSON.stringify(cleanFavIds));
+
+  scheduleDuaCloudAutoSave();
 
 }
 
@@ -1641,6 +2419,9 @@ function deleteCustomDua(duaId){
 
   if(!confirmDelete) return;
 
+  addDeletedDuaId(duaId);
+  duaAllowIntentionalDeleteCloudSave = true;
+
   let customDuas = getCustomDuas().filter(function(dua){
     return dua.id !== duaId;
   });
@@ -1670,10 +2451,11 @@ function toggleDuaFavorite(duaId){
   let favIds = getFavoriteDuaIds();
   let index = favIds.indexOf(duaId);
 
-  if(index === -1){
+   if(index === -1){
     favIds.push(duaId);
     showDuaToast("Added to favorites");
   }else{
+    duaAllowIntentionalDeleteCloudSave = true;
     favIds.splice(index, 1);
     showDuaToast("Removed from favorites");
   }
@@ -1888,11 +2670,11 @@ function loadDuaPage(){
   currentSearchText = "";
 
   openDuaMainPage();
+  waitForDuaCloud();
 
 }
 
 loadDuaPage();
-
 </script>
 
 </body>
