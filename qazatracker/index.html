@@ -1765,24 +1765,45 @@ window.addEventListener("load", startQazaTrackerPage);
      UNIVERSAL MENU HANDLE SCRIPT
      File used: shared/menu-handle.js
 ========================= -->
-<script src="../shared/menu-handle.js?v=qaza-cloud-4"></script>
+<script src="../shared/menu-handle.js?v=qaza-cloud-10"></script>
 
 <script>
 // =========================
-// CONNECT QAZA CLOUD TO UNIVERSAL MENU
-// Full function name: connectQazaCloudToUniversalMenu()
+// FORCE CONNECT QAZA CLOUD TO UNIVERSAL MENU
+// Full function name: forceConnectQazaCloudToUniversalMenu()
 // =========================
-function connectQazaCloudToUniversalMenu(){
+function forceConnectQazaCloudToUniversalMenu(){
 
-  if(typeof saveQazaToCloud === "function"){
-    window.saveQazaToCloud = saveQazaToCloud;
-    window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
-  }
+  window.saveQazaToCloud = saveQazaToCloud;
+  window.loadQazaFromCloud = loadQazaFromCloud;
 
-  if(typeof loadQazaFromCloud === "function"){
-    window.loadQazaFromCloud = loadQazaFromCloud;
-    window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
-  }
+  window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+  window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+
+  /*
+    Strong fix:
+    Override the universal menu cloud buttons directly on Qaza page.
+    This stops the "This page is not connected" message.
+  */
+  window.universalMenuCloudSave = async function(){
+
+    if(typeof saveQazaToCloud === "function"){
+      await saveQazaToCloud();
+      return;
+    }
+
+    alert("Qaza save function not found.");
+  };
+
+  window.universalMenuCloudLoad = async function(){
+
+    if(typeof loadQazaFromCloud === "function"){
+      await loadQazaFromCloud();
+      return;
+    }
+
+    alert("Qaza load function not found.");
+  };
 
 }
 
@@ -1792,7 +1813,7 @@ function connectQazaCloudToUniversalMenu(){
 // =========================
 document.addEventListener("DOMContentLoaded", function(){
 
-  connectQazaCloudToUniversalMenu();
+  forceConnectQazaCloudToUniversalMenu();
 
   if(typeof createUniversalMenuHandle === "function"){
     createUniversalMenuHandle({
@@ -1800,21 +1821,25 @@ document.addEventListener("DOMContentLoaded", function(){
     });
   }
 
-  connectQazaCloudToUniversalMenu();
+  forceConnectQazaCloudToUniversalMenu();
 
+  /*
+    Strong safety:
+    Keep reconnecting for a few seconds because the menu script and cloud file load at different speeds.
+  */
   let qazaCloudConnectTries = 0;
 
   let qazaCloudConnectTimer = setInterval(function(){
 
     qazaCloudConnectTries++;
 
-    connectQazaCloudToUniversalMenu();
+    forceConnectQazaCloudToUniversalMenu();
 
-    if(qazaCloudConnectTries > 30){
+    if(qazaCloudConnectTries > 40){
       clearInterval(qazaCloudConnectTimer);
     }
 
-  }, 300);
+  }, 250);
 
 });
 </script>
