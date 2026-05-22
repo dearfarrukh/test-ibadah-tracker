@@ -1240,8 +1240,8 @@ function openHomePage(){
 ========================= */
 function goBackToMainApp(){
 
-  localStorage.setItem("ibadahFolderReturnPage", "quran");
-  window.location.href = "../";
+  let returnPage = getQuran9ReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
 }
 
@@ -1749,13 +1749,8 @@ function closeReadingPage(event){
     event.stopPropagation();
   }
 
-  let readingPage = document.getElementById("readingPage");
-  if(readingPage){
-    readingPage.style.display = "none";
-  }
-
-  resetReaderTopBar();
-  openHomePage();
+  let returnPage = getQuran9ReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
 }
 
@@ -2277,11 +2272,53 @@ function resetQuranFlipPosition(){
 }
 
 /* =========================
+   GET QURAN 9 READER RETURN PAGE
+   Full function name: getQuran9ReaderReturnPage()
+========================= */
+function getQuran9ReaderReturnPage(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  return (
+    params.get("from") ||
+    localStorage.getItem("ibadahQuranBackPage") ||
+    "home"
+  );
+
+}
+
+/* =========================
+   OPEN DIRECT 9 LINE READER IF PAGE WAS SENT
+   Full function name: openDirectQuran9ReaderIfPageWasSent()
+========================= */
+function openDirectQuran9ReaderIfPageWasSent(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  let pageFromUrl = parseInt(params.get("page") || "0", 10);
+  let pageFromStorage = parseInt(localStorage.getItem("openQuran9PageNumber") || "0", 10);
+
+  let pageToOpen = pageFromUrl || pageFromStorage;
+
+  if(!pageToOpen || pageToOpen < 1 || pageToOpen > totalPages){
+    return;
+  }
+
+  localStorage.removeItem("openQuran9PageNumber");
+
+  setTimeout(function(){
+    openReadingPage(pageToOpen, "quran");
+  }, 80);
+
+}
+
+/* =========================
    START APP
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
 
   updateResumeText();
+  openDirectQuran9ReaderIfPageWasSent();
 
 });
 
