@@ -767,13 +767,22 @@ async function universalMenuCloudSave(){
       return;
     }
 
-    /*
-      Each page will provide its own save function later.
-      Example for tracker page:
-      window.ibadahCloudSaveCurrentPage = saveTrackerToCloud;
-    */
     if(typeof window.ibadahCloudSaveCurrentPage === "function"){
       await window.ibadahCloudSaveCurrentPage();
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    let currentPage = getUniversalCurrentPageName();
+
+    if(currentPage === "qaza" && typeof window.saveQazaToCloud === "function"){
+      await window.saveQazaToCloud();
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    if(currentPage === "tracker" && typeof window.saveTrackerToCloud === "function"){
+      await window.saveTrackerToCloud();
       universalMenuUpdateCloudStatus();
       return;
     }
@@ -811,13 +820,22 @@ async function universalMenuCloudLoad(){
       return;
     }
 
-    /*
-      Each page will provide its own load function later.
-      Example for tracker page:
-      window.ibadahCloudLoadCurrentPage = loadTrackerFromCloud;
-    */
     if(typeof window.ibadahCloudLoadCurrentPage === "function"){
       await window.ibadahCloudLoadCurrentPage();
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    let currentPage = getUniversalCurrentPageName();
+
+    if(currentPage === "qaza" && typeof window.loadQazaFromCloud === "function"){
+      await window.loadQazaFromCloud();
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    if(currentPage === "tracker" && typeof window.loadTrackerFromCloud === "function"){
+      await window.loadTrackerFromCloud();
       universalMenuUpdateCloudStatus();
       return;
     }
