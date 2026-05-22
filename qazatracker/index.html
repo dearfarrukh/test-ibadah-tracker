@@ -1718,11 +1718,24 @@ document.addEventListener("click", function(e){
 }, true);
 
 /* =========================
+   CONNECT QAZA PAGE TO UNIVERSAL CLOUD MENU
+   Full function names:
+   saveQazaToCloud()
+   loadQazaFromCloud()
+========================= */
+window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+
+/* =========================
    CLOUD USER CHANGE LISTENER
    Full listener name: ibadahCloudUserChanged
 ========================= */
 window.addEventListener("ibadahCloudUserChanged", function(){
   qazaCloudAutoCheckDone = false;
+
+  window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+  window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+
   autoCheckQazaCloud();
 });
 
@@ -1749,7 +1762,7 @@ window.addEventListener("load", startQazaTrackerPage);
      UNIVERSAL MENU HANDLE SCRIPT
      File used: shared/menu-handle.js
 ========================= -->
-<script src="../shared/menu-handle.js?v=qaza-cloud-1"></script>
+<script src="../shared/menu-handle.js?v=qaza-cloud-2"></script>
 
 <script>
 // =========================
