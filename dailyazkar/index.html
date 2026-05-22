@@ -1235,6 +1235,7 @@ let editingCustomZikrId = "";
 let currentAzkarTab = "My List";
 let dailyAzkarCloudAutoSaveTimer = null;
 let dailyAzkarCloudAutoCheckDone = false;
+let dailyAzkarAllowIntentionalDeleteCloudSave = false;
 
 const DAILY_AZKAR_CLOUD_APP_NAME = "dailyAzkar";
 
@@ -1671,6 +1672,171 @@ function getDailyAzkarLocalCloudData(){
 }
 
 /* =========================
+   GET DAILY AZKAR CLOUD TOTAL COUNT
+   Full function name: getDailyAzkarCloudTotalCount()
+========================= */
+function getDailyAzkarCloudTotalCount(data){
+
+  if(!data || typeof data !== "object") return 0;
+
+  let total = 0;
+
+  if(Array.isArray(data.myListLibraryIds)){
+    total += data.myListLibraryIds.length;
+  }
+
+  if(Array.isArray(data.customZikrList)){
+    total += data.customZikrList.length;
+  }
+
+  if(data.zikrState && typeof data.zikrState === "object"){
+    Object.keys(data.zikrState).forEach(function(id){
+
+      let item = data.zikrState[id] || {};
+
+      total++;
+
+      if(parseInt(item.count || 0, 10) > 0){
+        total++;
+      }
+
+      if(item.manualDone === true){
+        total++;
+      }
+
+      if(parseInt(item.target || 0, 10) > 0){
+        total++;
+      }
+
+    });
+  }
+
+  return total;
+
+}
+
+/* =========================
+   MAKE DAILY AZKAR NAME KEY
+   Full function name: makeDailyAzkarNameKey()
+========================= */
+function makeDailyAzkarNameKey(value){
+
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+}
+
+/* =========================
+   CLOUD HAS DAILY AZKAR DATA NOT ON DEVICE
+   Full function name: cloudHasDailyAzkarDataNotOnDevice()
+
+   Safety rule:
+   - If cloud has a custom zikr this device does not have, block save.
+   - If cloud has a library zikr in My List this device does not have, block save.
+   - If cloud has higher count/manual done for a zikr, block save.
+   - This prevents one device from overwriting another device.
+========================= */
+function cloudHasDailyAzkarDataNotOnDevice(localData, cloudData){
+
+  if(!cloudData || typeof cloudData !== "object") return false;
+
+  let localMyListMap = {};
+  let localCustomIdMap = {};
+  let localCustomNameMap = {};
+
+  (Array.isArray(localData.myListLibraryIds) ? localData.myListLibraryIds : []).forEach(function(id){
+    localMyListMap[String(id)] = true;
+  });
+
+  (Array.isArray(localData.customZikrList) ? localData.customZikrList : []).forEach(function(item){
+    if(!item) return;
+
+    if(item.id){
+      localCustomIdMap[String(item.id)] = true;
+    }
+
+    if(item.englishName){
+      localCustomNameMap[makeDailyAzkarNameKey(item.englishName)] = true;
+    }
+  });
+
+  let cloudMyList = Array.isArray(cloudData.myListLibraryIds) ? cloudData.myListLibraryIds : [];
+
+  for(let i = 0; i < cloudMyList.length; i++){
+    let cloudId = String(cloudMyList[i]);
+
+    if(!localMyListMap[cloudId]){
+      return true;
+    }
+  }
+
+  let cloudCustomList = Array.isArray(cloudData.customZikrList) ? cloudData.customZikrList : [];
+
+  for(let c = 0; c < cloudCustomList.length; c++){
+
+    let cloudItem = cloudCustomList[c] || {};
+    let cloudIdKey = String(cloudItem.id || "");
+    let cloudNameKey = makeDailyAzkarNameKey(cloudItem.englishName || "");
+
+    if(cloudIdKey && localCustomIdMap[cloudIdKey]){
+      continue;
+    }
+
+    /*
+      Same custom zikr name but different ID means probably duplicate
+      from two devices. Do not block save only because of same name.
+    */
+    if(cloudNameKey && localCustomNameMap[cloudNameKey]){
+      continue;
+    }
+
+    return true;
+
+  }
+
+  let localState = localData.zikrState || {};
+  let cloudState = cloudData.zikrState || {};
+
+  for(let zikrId in cloudState){
+
+    let cloudZikr = cloudState[zikrId] || {};
+    let localZikr = localState[zikrId] || null;
+
+    if(!localZikr){
+
+      if(
+        parseInt(cloudZikr.count || 0, 10) > 0 ||
+        cloudZikr.manualDone === true ||
+        parseInt(cloudZikr.target || 0, 10) > 0
+      ){
+        return true;
+      }
+
+      continue;
+    }
+
+    let cloudCount = parseInt(cloudZikr.count || 0, 10) || 0;
+    let localCount = parseInt(localZikr.count || 0, 10) || 0;
+
+    if(cloudCount > localCount){
+      return true;
+    }
+
+    if(cloudZikr.manualDone === true && localZikr.manualDone !== true){
+      return true;
+    }
+
+  }
+
+  return false;
+
+}
+
+
+     
+/* =========================
    APPLY DAILY AZKAR CLOUD DATA LOCALLY
    Full function name: applyDailyAzkarCloudDataLocally()
 ========================= */
@@ -1720,6 +1886,10 @@ function applyDailyAzkarCloudDataLocally(cloudData){
 /* =========================
    SAVE DAILY AZKAR TO CLOUD
    Full function name: saveDailyAzkarToCloud()
+
+   Safety fix:
+   Checks cloud first before saving.
+   If another device has more Daily Zikr data, user must download first.
 ========================= */
 async function saveDailyAzkarToCloud(){
 
@@ -1743,9 +1913,26 @@ async function saveDailyAzkarToCloud(){
       return;
     }
 
+    let localData = getDailyAzkarLocalCloudData();
+
+    updateDailyAzkarCloudStatus("Checking Daily Azkar cloud...");
+
+    let cloudData = await window.ibadahCloud.loadAppData(DAILY_AZKAR_CLOUD_APP_NAME);
+
+    let cloudHasMore = cloudHasDailyAzkarDataNotOnDevice(localData, cloudData);
+
+    if(cloudHasMore && !dailyAzkarAllowIntentionalDeleteCloudSave){
+      updateDailyAzkarCloudStatus("Cloud has more Daily Zikr data. Download first.");
+      showAzkarToast("Cloud has more data. Download first.");
+      alert("Cloud has more Daily Zikr data than this device.\n\nPlease press Download / Load Daily Azkar first, then save again.");
+      return;
+    }
+
     updateDailyAzkarCloudStatus("Saving Daily Azkar...");
 
-    await window.ibadahCloud.saveAppData(DAILY_AZKAR_CLOUD_APP_NAME, getDailyAzkarLocalCloudData());
+    await window.ibadahCloud.saveAppData(DAILY_AZKAR_CLOUD_APP_NAME, localData);
+
+    dailyAzkarAllowIntentionalDeleteCloudSave = false;
 
     updateDailyAzkarCloudStatus("Daily Azkar saved to cloud.");
     showAzkarToast("Daily Azkar saved");
@@ -1759,7 +1946,6 @@ async function saveDailyAzkarToCloud(){
   }
 
 }
-
 /* =========================
    LOAD DAILY AZKAR FROM CLOUD
    Full function name: loadDailyAzkarFromCloud()
@@ -1833,6 +2019,9 @@ function scheduleDailyAzkarCloudAutoSave(){
 /* =========================
    AUTO CHECK DAILY AZKAR CLOUD
    Full function name: autoCheckDailyAzkarCloud()
+
+   This does not auto-download.
+   It only warns if cloud has more Daily Zikr data.
 ========================= */
 async function autoCheckDailyAzkarCloud(){
 
@@ -1850,6 +2039,21 @@ async function autoCheckDailyAzkarCloud(){
     if(!user) return;
 
     dailyAzkarCloudAutoCheckDone = true;
+
+    let cloudData = await window.ibadahCloud.loadAppData(DAILY_AZKAR_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      updateDailyAzkarCloudStatus();
+      return;
+    }
+
+    let localData = getDailyAzkarLocalCloudData();
+
+    if(cloudHasDailyAzkarDataNotOnDevice(localData, cloudData)){
+      updateDailyAzkarCloudStatus("Cloud has more Daily Zikr data. Download first.");
+      showAzkarToast("Cloud has more Daily Zikr data");
+      return;
+    }
 
     updateDailyAzkarCloudStatus();
 
@@ -2161,7 +2365,9 @@ function addLibraryZikrToMyList(name){
 
   if(!list.includes(name)){
     list.push(name);
-    saveMyListLibraryZikrIds(list);
+   dailyAzkarAllowIntentionalDeleteCloudSave = true;
+
+saveMyListLibraryZikrIds(list);
 
     let defaultTarget = zikrData[name].defaultTarget || 33;
 
@@ -3227,7 +3433,9 @@ function deleteCustomZikrFromMenu(){
     return zikrItem.id !== name;
   });
 
-  saveCustomZikrList(list);
+  dailyAzkarAllowIntentionalDeleteCloudSave = true;
+
+saveCustomZikrList(list);
 
   localStorage.removeItem(getZikrCardCountKey(name));
   localStorage.removeItem(getZikrCardTargetKey(name));
