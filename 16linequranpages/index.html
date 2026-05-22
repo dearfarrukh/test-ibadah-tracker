@@ -1971,17 +1971,9 @@ quran16BackDestination = "quran16Page";
 // =========================
 function closeQuran16Page(){
 
-  let quranPage = document.getElementById("quranPage");
-  let quran16Page = document.getElementById("quran16Page");
+  let returnPage = getQuran16ReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
-
-  if(quran16Page) quran16Page.style.display = "none";
-  if(quranPage) quranPage.style.display = "block";
-  setBottomNavVisibility(true);
-
-   restoreTrackerMenuHandleAfterQuranShortcut();
-
-  window.scrollTo(0,0);
 }
 
 // =========================
@@ -2198,33 +2190,9 @@ function closeQuran16ReadingPage(){
 
   resetQuran16ReadingTopBar();
 
-  // =========================
-  // RETURN TO TRACKER IF OPENED FROM TRACKER SHORTCUT
-  // =========================
-  if(quran16BackDestination === "tracker"){
+  let returnPage = getQuran16ReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
-    quran16BackDestination = "quran16Page";
-
-    if(typeof openTrackerPage === "function"){
-      openTrackerPage();
-      return;
-    }
-
-  }
-
-  // =========================
-  // NORMAL 16 LINE BACK BEHAVIOR
-  // =========================
-  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
-  let quran16Page = document.getElementById("quran16Page");
-
-  if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
-  if(quran16Page) quran16Page.style.display = "block";
-
-  setBottomNavVisibility(true);
-  setMainMenuHandleVisibility(false);
-
-  window.scrollTo(0,0);
 }
 // =========================
 // HANDLE 16 LINE READING PAGE TAP
@@ -4003,7 +3971,75 @@ function closeQuran16ReadingPage(){
 // =========================
 // START 16 LINE FOLDER PAGE
 // =========================
+
+// =========================
+// SAFE 16 LINE STANDALONE HELPERS
+// Full function name: setBottomNavVisibility()
+// =========================
+if(typeof setBottomNavVisibility !== "function"){
+  function setBottomNavVisibility(show){
+    return;
+  }
+}
+
+// =========================
+// SAFE MAIN MENU HANDLE HELPER
+// Full function name: setMainMenuHandleVisibility()
+// =========================
+if(typeof setMainMenuHandleVisibility !== "function"){
+  function setMainMenuHandleVisibility(show){
+    return;
+  }
+}
+
+// =========================
+// GET QURAN 16 READER RETURN PAGE
+// Full function name: getQuran16ReaderReturnPage()
+// =========================
+function getQuran16ReaderReturnPage(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  return (
+    params.get("from") ||
+    localStorage.getItem("ibadahQuranBackPage") ||
+    "home"
+  );
+
+}
+
+// =========================
+// OPEN DIRECT 16 LINE READER IF PAGE WAS SENT
+// Full function name: openDirectQuran16ReaderIfPageWasSent()
+// =========================
+function openDirectQuran16ReaderIfPageWasSent(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  let pageFromUrl = parseInt(params.get("page") || "0", 10);
+  let pageFromStorage = parseInt(localStorage.getItem("openQuran16PageNumber") || "0", 10);
+
+  let pageToOpen = pageFromUrl || pageFromStorage;
+
+  if(!pageToOpen || pageToOpen < 1 || pageToOpen > totalQuran16Pages){
+    if(typeof openQuran16Page === "function"){
+      openQuran16Page();
+    }
+    return;
+  }
+
+  localStorage.removeItem("openQuran16PageNumber");
+
+  setTimeout(function(){
+    quran16BackDestination = "quran";
+    openQuran16PageNumber(pageToOpen);
+  }, 80);
+
+}
+
 document.addEventListener("DOMContentLoaded", function(){
+  openDirectQuran16ReaderIfPageWasSent();
+
 
   let params = new URLSearchParams(window.location.search);
   let page = parseInt(params.get("page") || "0", 10);
