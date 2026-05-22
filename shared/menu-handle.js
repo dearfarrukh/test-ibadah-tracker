@@ -16,9 +16,21 @@
 // universalMenuGoMainPage()
 // universalMenuRefreshApp()
 // universalMenuOpenAppSettings()
+// universalMenuOpenCloudMenu()
+// universalMenuCloseCloudMenu()
+// universalMenuToggleCloudMenu()
+// universalMenuCloudSignIn()
+// universalMenuCloudSignOut()
+// universalMenuCloudSave()
+// universalMenuCloudLoad()
+// universalMenuUpdateCloudStatus()
+// universalMenuWaitForCloudFile()
+// universalMenuLoadCloudSyncFile()
 // =========================
 
 let universalSideMenuOpen = false;
+let universalCloudMenuOpen = false;
+let universalCloudFileStarted = false;
 
 // =========================
 // CREATE UNIVERSAL MENU HANDLE
@@ -33,10 +45,14 @@ function createUniversalMenuHandle(options){
   let oldOverlay = document.getElementById("sideMenuOverlay");
   let oldHandle = document.getElementById("menuHandle");
   let oldMenu = document.getElementById("sideMenu");
+  let oldCloudOverlay = document.getElementById("universalCloudOverlay");
 
   if(oldOverlay) oldOverlay.remove();
   if(oldHandle) oldHandle.remove();
   if(oldMenu) oldMenu.remove();
+  if(oldCloudOverlay) oldCloudOverlay.remove();
+
+  universalMenuLoadCloudSyncFile();
 
   let overlay = document.createElement("div");
   overlay.id = "sideMenuOverlay";
@@ -109,7 +125,8 @@ function createUniversalMenuHandle(options){
     border-top-right-radius:28px;
     border-bottom-right-radius:28px;
     border-right:1px solid rgba(255,255,255,0.55);
-    overflow:hidden;
+    overflow-y:auto;
+    overflow-x:hidden;
   `;
 
   menu.innerHTML = `
@@ -141,11 +158,171 @@ function createUniversalMenuHandle(options){
       icon:iconBasePath + "settings.png",
       onclick:"universalMenuOpenAppSettings()"
     })}
+
+    ${buildUniversalMenuCard({
+      title:"Cloud Sync",
+      icon:iconBasePath + "settings.png",
+      onclick:"universalMenuOpenCloudMenu()"
+    })}
+  `;
+
+  let cloudOverlay = document.createElement("div");
+  cloudOverlay.id = "universalCloudOverlay";
+  cloudOverlay.onclick = function(event){
+    if(event.target && event.target.id === "universalCloudOverlay"){
+      universalMenuCloseCloudMenu();
+    }
+  };
+  cloudOverlay.style.cssText = `
+    display:none;
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    z-index:12000;
+    align-items:flex-end;
+    justify-content:center;
+    padding:0 4% calc(env(safe-area-inset-bottom) + 18px) 4%;
+    box-sizing:border-box;
+  `;
+
+  cloudOverlay.innerHTML = `
+    <div onclick="event.stopPropagation();" style="
+    width:100%;
+    max-width:430px;
+    background:rgba(255,255,255,0.96);
+    border-radius:30px;
+    padding:14px 4% 18px 4%;
+    box-shadow:0 -18px 48px rgba(0,0,0,0.22);
+    border:1px solid rgba(255,255,255,0.70);
+    box-sizing:border-box;
+    ">
+      <div style="
+      width:44px;
+      height:5px;
+      background:#c9c9cf;
+      border-radius:99px;
+      margin:0 auto 16px auto;
+      "></div>
+
+      <div style="
+      font-size:26px;
+      font-weight:950;
+      color:#111;
+      text-align:center;
+      margin-bottom:8px;
+      letter-spacing:-0.5px;
+      ">
+        ☁️ Cloud Sync
+      </div>
+
+      <div id="universalCloudStatusLine" style="
+      font-size:14px;
+      font-weight:750;
+      color:#666;
+      text-align:center;
+      line-height:1.4;
+      margin-bottom:16px;
+      ">
+        Cloud: Checking...
+      </div>
+
+      <button onclick="universalMenuCloudSignIn()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:15px;
+      background:#111;
+      color:white;
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      margin-bottom:10px;
+      ">
+        Sign in with Google
+      </button>
+
+      <button onclick="universalMenuCloudSave()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:15px;
+      background:#16a34a;
+      color:white;
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      margin-bottom:10px;
+      ">
+        Upload / Save to Cloud
+      </button>
+
+      <button onclick="universalMenuCloudLoad()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:15px;
+      background:#f97316;
+      color:white;
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      margin-bottom:10px;
+      ">
+        Download / Load from Cloud
+      </button>
+
+      <button onclick="universalMenuCloudSignOut()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:15px;
+      background:#fff1f1;
+      color:#d11a2a;
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      margin-bottom:10px;
+      ">
+        Sign out
+      </button>
+
+      <button onclick="universalMenuCloseCloudMenu()" style="
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:15px;
+      background:#e9e9ee;
+      color:#111;
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      ">
+        Close
+      </button>
+
+      <div style="
+      font-size:12px;
+      font-weight:650;
+      color:#777;
+      text-align:center;
+      line-height:1.4;
+      margin-top:12px;
+      ">
+        This cloud menu is shared. Each page will connect its own save/load system.
+      </div>
+    </div>
   `;
 
   document.body.appendChild(overlay);
   document.body.appendChild(handle);
   document.body.appendChild(menu);
+  document.body.appendChild(cloudOverlay);
+
+  universalMenuWaitForCloudFile();
 
 }
 
@@ -171,7 +348,7 @@ function buildUniversalMenuCard(item){
     align-items:center;
     gap:12px;
     ">
-      <img src="${item.icon}" style="
+      <img src="${item.icon}" onerror="this.style.display='none'" style="
       width:30px;
       height:30px;
       display:block;
@@ -365,3 +542,301 @@ function universalMenuOpenAppSettings(){
   window.location.href = getUniversalBasePath() + "appsettings/?from=" + currentPage + "&v=" + Date.now();
 
 }
+
+// =========================
+// LOAD CLOUD SYNC FILE
+// Full function name: universalMenuLoadCloudSyncFile()
+// =========================
+function universalMenuLoadCloudSyncFile(){
+
+  if(universalCloudFileStarted){
+    return;
+  }
+
+  universalCloudFileStarted = true;
+
+  let oldScript = document.querySelector('script[data-ibadah-cloud-sync="yes"]');
+  if(oldScript){
+    return;
+  }
+
+  let script = document.createElement("script");
+  script.type = "module";
+  script.src = getUniversalBasePath() + "shared/cloud-sync.js?v=" + Date.now();
+  script.setAttribute("data-ibadah-cloud-sync", "yes");
+
+  script.onerror = function(){
+    universalMenuUpdateCloudStatus("Cloud file not found yet. Next step is shared/cloud-sync.js.");
+  };
+
+  document.head.appendChild(script);
+
+}
+
+// =========================
+// WAIT FOR CLOUD FILE
+// Full function name: universalMenuWaitForCloudFile()
+// =========================
+function universalMenuWaitForCloudFile(){
+
+  let tries = 0;
+
+  let timer = setInterval(function(){
+
+    tries++;
+
+    universalMenuUpdateCloudStatus();
+
+    if(window.ibadahCloud){
+      clearInterval(timer);
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    if(tries > 40){
+      clearInterval(timer);
+      universalMenuUpdateCloudStatus("Cloud file not ready. We still need shared/cloud-sync.js.");
+    }
+
+  }, 250);
+
+}
+
+// =========================
+// OPEN CLOUD MENU
+// Full function name: universalMenuOpenCloudMenu()
+// =========================
+function universalMenuOpenCloudMenu(){
+
+  closeUniversalSideMenu();
+
+  let cloudOverlay = document.getElementById("universalCloudOverlay");
+  if(cloudOverlay){
+    cloudOverlay.style.display = "flex";
+  }
+
+  universalCloudMenuOpen = true;
+
+  universalMenuUpdateCloudStatus();
+
+}
+
+// =========================
+// CLOSE CLOUD MENU
+// Full function name: universalMenuCloseCloudMenu()
+// =========================
+function universalMenuCloseCloudMenu(){
+
+  let cloudOverlay = document.getElementById("universalCloudOverlay");
+  if(cloudOverlay){
+    cloudOverlay.style.display = "none";
+  }
+
+  universalCloudMenuOpen = false;
+
+}
+
+// =========================
+// TOGGLE CLOUD MENU
+// Full function name: universalMenuToggleCloudMenu()
+// =========================
+function universalMenuToggleCloudMenu(){
+
+  if(universalCloudMenuOpen){
+    universalMenuCloseCloudMenu();
+  }else{
+    universalMenuOpenCloudMenu();
+  }
+
+}
+
+// =========================
+// UPDATE CLOUD STATUS
+// Full function name: universalMenuUpdateCloudStatus()
+// =========================
+function universalMenuUpdateCloudStatus(customMessage){
+
+  let line = document.getElementById("universalCloudStatusLine");
+  if(!line) return;
+
+  if(customMessage){
+    line.innerText = customMessage;
+    line.style.color = "#9a3412";
+    return;
+  }
+
+  if(!window.ibadahCloud){
+    line.innerText = "Cloud: File not loaded yet.";
+    line.style.color = "#9a3412";
+    return;
+  }
+
+  let user = null;
+
+  try{
+    if(window.ibadahCloud.getCurrentUser){
+      user = window.ibadahCloud.getCurrentUser();
+    }
+  }catch(error){
+    user = null;
+  }
+
+  if(user){
+    line.innerText = "Cloud: Signed in as " + (user.email || "Google user");
+    line.style.color = "#166534";
+  }else{
+    line.innerText = "Cloud: Not signed in";
+    line.style.color = "#9a3412";
+  }
+
+}
+
+// =========================
+// CLOUD SIGN IN
+// Full function name: universalMenuCloudSignIn()
+// =========================
+async function universalMenuCloudSignIn(){
+
+  try{
+
+    if(!window.ibadahCloud || !window.ibadahCloud.signIn){
+      universalMenuUpdateCloudStatus("Cloud file missing. Create shared/cloud-sync.js first.");
+      return;
+    }
+
+    universalMenuUpdateCloudStatus("Cloud: Opening Google sign-in...");
+
+    await window.ibadahCloud.signIn();
+
+    universalMenuUpdateCloudStatus();
+
+  }catch(error){
+
+    console.log(error);
+    universalMenuUpdateCloudStatus("Cloud sign-in failed. Check popup blocker or Firebase setup.");
+
+  }
+
+}
+
+// =========================
+// CLOUD SIGN OUT
+// Full function name: universalMenuCloudSignOut()
+// =========================
+async function universalMenuCloudSignOut(){
+
+  try{
+
+    if(!window.ibadahCloud || !window.ibadahCloud.signOut){
+      universalMenuUpdateCloudStatus("Cloud file missing. Create shared/cloud-sync.js first.");
+      return;
+    }
+
+    await window.ibadahCloud.signOut();
+
+    universalMenuUpdateCloudStatus("Cloud: Signed out. Local app data is still saved.");
+
+  }catch(error){
+
+    console.log(error);
+    universalMenuUpdateCloudStatus("Cloud sign-out failed.");
+
+  }
+
+}
+
+// =========================
+// CLOUD SAVE CURRENT PAGE
+// Full function name: universalMenuCloudSave()
+// =========================
+async function universalMenuCloudSave(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      universalMenuUpdateCloudStatus("Cloud file missing. Create shared/cloud-sync.js first.");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    if(!window.ibadahCloud.getCurrentUser || !window.ibadahCloud.getCurrentUser()){
+      universalMenuUpdateCloudStatus("Please sign in first.");
+      return;
+    }
+
+    /*
+      Each page will provide its own save function later.
+      Example for tracker page:
+      window.ibadahCloudSaveCurrentPage = saveTrackerToCloud;
+    */
+    if(typeof window.ibadahCloudSaveCurrentPage === "function"){
+      await window.ibadahCloudSaveCurrentPage();
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    universalMenuUpdateCloudStatus("This page is not connected to cloud save yet.");
+
+  }catch(error){
+
+    console.log(error);
+    universalMenuUpdateCloudStatus("Cloud save failed.");
+
+  }
+
+}
+
+// =========================
+// CLOUD LOAD CURRENT PAGE
+// Full function name: universalMenuCloudLoad()
+// =========================
+async function universalMenuCloudLoad(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      universalMenuUpdateCloudStatus("Cloud file missing. Create shared/cloud-sync.js first.");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    if(!window.ibadahCloud.getCurrentUser || !window.ibadahCloud.getCurrentUser()){
+      universalMenuUpdateCloudStatus("Please sign in first.");
+      return;
+    }
+
+    /*
+      Each page will provide its own load function later.
+      Example for tracker page:
+      window.ibadahCloudLoadCurrentPage = loadTrackerFromCloud;
+    */
+    if(typeof window.ibadahCloudLoadCurrentPage === "function"){
+      await window.ibadahCloudLoadCurrentPage();
+      universalMenuUpdateCloudStatus();
+      return;
+    }
+
+    universalMenuUpdateCloudStatus("This page is not connected to cloud load yet.");
+
+  }catch(error){
+
+    console.log(error);
+    universalMenuUpdateCloudStatus("Cloud load failed.");
+
+  }
+
+}
+
+// =========================
+// CLOUD USER CHANGE LISTENER
+// Full listener name: ibadahCloudUserChanged
+// =========================
+window.addEventListener("ibadahCloudUserChanged", function(){
+  universalMenuUpdateCloudStatus();
+});
