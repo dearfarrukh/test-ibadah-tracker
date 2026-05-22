@@ -1153,30 +1153,71 @@ function getDuaLocalCloudData(){
 
 }
 
+
+/* =========================
+   NORMALIZE DELETED DUA IDS FROM CLOUD
+   Full function name: normalizeDeletedDuaIdsFromCloud()
+========================= */
+function normalizeDeletedDuaIdsFromCloud(cloudData){
+
+  if(!cloudData || typeof cloudData !== "object") return [];
+
+  if(Array.isArray(cloudData.deletedDuaIds)){
+    return cloudData.deletedDuaIds.map(String);
+  }
+
+  if(cloudData.deletedIbadahIds && Array.isArray(cloudData.deletedIbadahIds.duas)){
+    return cloudData.deletedIbadahIds.duas.map(String);
+  }
+
+  return [];
+
+}
+
+
+     
+
 /* =========================
    CLOUD HAS DUA DATA NOT ON DEVICE
    Full function name: cloudHasDuaDataNotOnDevice()
+========================= */
+/* =========================
+   CLOUD HAS DUA DATA NOT ON DEVICE
+   Full function name: cloudHasDuaDataNotOnDevice()
+
+   Delete-safe rule:
+   - Deleted IDs from local and cloud are combined.
+   - If a dua is deleted anywhere, it should not be treated as missing data.
+   - Deleted cloud data should not block save after download.
 ========================= */
 function cloudHasDuaDataNotOnDevice(localData, cloudData){
 
   if(!cloudData || typeof cloudData !== "object") return false;
 
-  let localCustomIds = {};
-  let localFavoriteIds = {};
-  let localDeletedIds = {};
+  let combinedDeletedIds = Array.from(new Set(
+    (localData.deletedDuaIds || [])
+      .concat(normalizeDeletedDuaIdsFromCloud(cloudData))
+      .map(String)
+  ));
 
-  (localData.deletedDuaIds || []).forEach(function(id){
-    localDeletedIds[String(id)] = true;
+  let deletedMap = {};
+  combinedDeletedIds.forEach(function(id){
+    deletedMap[String(id)] = true;
   });
 
+  let localCustomIds = {};
+  let localFavoriteIds = {};
+
   (localData.customDuas || []).forEach(function(dua){
-    if(dua && dua.id){
+    if(dua && dua.id && !deletedMap[String(dua.id)]){
       localCustomIds[String(dua.id)] = true;
     }
   });
 
   (localData.favoriteDuaIds || []).forEach(function(id){
-    localFavoriteIds[String(id)] = true;
+    if(!deletedMap[String(id)]){
+      localFavoriteIds[String(id)] = true;
+    }
   });
 
   let cloudCustomDuas = Array.isArray(cloudData.customDuas) ? cloudData.customDuas : [];
@@ -1185,7 +1226,12 @@ function cloudHasDuaDataNotOnDevice(localData, cloudData){
     let cloudDua = normalizeCustomDuaItem(cloudCustomDuas[i], i);
 
     if(!cloudDua || !cloudDua.id) continue;
-    if(localDeletedIds[String(cloudDua.id)]) continue;
+
+    /*
+      Deleted ID wins.
+      If this dua was deleted on any device, do not block save.
+    */
+    if(deletedMap[String(cloudDua.id)]) continue;
 
     if(!localCustomIds[String(cloudDua.id)]){
       return true;
@@ -1197,7 +1243,10 @@ function cloudHasDuaDataNotOnDevice(localData, cloudData){
   for(let f = 0; f < cloudFavoriteIds.length; f++){
     let favId = String(cloudFavoriteIds[f]);
 
-    if(localDeletedIds[favId]) continue;
+    /*
+      Deleted favorite/custom ID wins.
+    */
+    if(deletedMap[favId]) continue;
 
     if(!localFavoriteIds[favId]){
       return true;
@@ -1211,14 +1260,40 @@ function cloudHasDuaDataNotOnDevice(localData, cloudData){
 /* =========================
    APPLY DUA CLOUD DATA LOCALLY
    Full function name: applyDuaCloudDataLocally()
+
+   Delete-safe:
+   deletedDuaIds always removes matching custom duas and favorites.
 ========================= */
 function applyDuaCloudDataLocally(data){
 
   duaCloudSuppressAutoSave = true;
 
-  saveCustomDuas(data.customDuas || []);
-  saveFavoriteDuaIds(data.favoriteDuaIds || []);
-  saveDeletedDuaIds(data.deletedDuaIds || []);
+  let deletedIds = Array.from(new Set(
+    (data.deletedDuaIds || []).map(String)
+  ));
+
+  let deletedMap = {};
+  deletedIds.forEach(function(id){
+    deletedMap[String(id)] = true;
+  });
+
+  let cleanCustomDuas = (Array.isArray(data.customDuas) ? data.customDuas : [])
+    .map(function(item, index){
+      return normalizeCustomDuaItem(item, index);
+    })
+    .filter(function(item){
+      return item && item.id && !deletedMap[String(item.id)];
+    });
+
+  let cleanFavoriteIds = (Array.isArray(data.favoriteDuaIds) ? data.favoriteDuaIds : [])
+    .map(String)
+    .filter(function(id){
+      return !deletedMap[String(id)];
+    });
+
+  saveDeletedDuaIds(deletedIds);
+  saveCustomDuas(cleanCustomDuas);
+  saveFavoriteDuaIds(cleanFavoriteIds);
 
   duaCloudSuppressAutoSave = false;
 
@@ -1320,6 +1395,9 @@ async function saveDuaToCloud(){
 /* =========================
    LOAD DUA FROM CLOUD
    Full function name: loadDuaFromCloud()
+
+   Delete-safe:
+   If a custom dua was deleted on any device, deleted ID wins.
 ========================= */
 async function loadDuaFromCloud(){
 
@@ -1357,33 +1435,59 @@ async function loadDuaFromCloud(){
 
     let localData = getDuaLocalCloudData();
 
+    let deletedIds = Array.from(new Set(
+      (localData.deletedDuaIds || [])
+        .concat(normalizeDeletedDuaIdsFromCloud(cloudData))
+        .map(String)
+    ));
+
+    let deletedMap = {};
+    deletedIds.forEach(function(id){
+      deletedMap[String(id)] = true;
+    });
+
     let mergedCustomDuas = (localData.customDuas || []).concat(cloudData.customDuas || []);
     let customMap = {};
 
     mergedCustomDuas.forEach(function(dua, index){
       let cleanDua = normalizeCustomDuaItem(dua, index);
-      if(cleanDua && cleanDua.id){
+
+      if(!cleanDua || !cleanDua.id) return;
+
+      /*
+        Deleted ID always wins.
+      */
+      if(deletedMap[String(cleanDua.id)]) return;
+
+      if(!customMap[String(cleanDua.id)]){
+        customMap[String(cleanDua.id)] = cleanDua;
+        return;
+      }
+
+      let existing = customMap[String(cleanDua.id)];
+
+      let existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+      let cleanTime = new Date(cleanDua.updatedAt || cleanDua.createdAt || 0).getTime();
+
+      if(cleanTime >= existingTime){
         customMap[String(cleanDua.id)] = cleanDua;
       }
+
     });
 
     let favMap = {};
 
     (localData.favoriteDuaIds || []).concat(cloudData.favoriteDuaIds || []).forEach(function(id){
-      favMap[String(id)] = true;
+      let cleanId = String(id);
+
+      if(deletedMap[cleanId]) return;
+
+      favMap[cleanId] = true;
     });
 
-    let deletedIds = Array.from(new Set(
-      (localData.deletedDuaIds || []).concat(cloudData.deletedDuaIds || [])
-    ));
-
     let mergedData = {
-      customDuas:Object.values(customMap).filter(function(dua){
-        return !deletedIds.includes(String(dua.id));
-      }),
-      favoriteDuaIds:Object.keys(favMap).filter(function(id){
-        return !deletedIds.includes(String(id));
-      }),
+      customDuas:Object.values(customMap),
+      favoriteDuaIds:Object.keys(favMap),
       deletedDuaIds:deletedIds
     };
 
