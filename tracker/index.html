@@ -1449,7 +1449,7 @@ async function saveTrackerToCloud(){
     let localTotal = getTrackerCloudTotalCount(localData);
     let cloudHasMissingData = cloudHasTrackerDataNotOnDevice(localData, cloudData, combinedDeletedIds);
 
-    if((cloudTotal > localTotal || cloudHasMissingData) && !trackerAllowIntentionalDeleteCloudSave){
+    if(cloudHasMissingData && !trackerAllowIntentionalDeleteCloudSave){
       setUniversalCloudMessage("Cloud has more tracker data. Load from Cloud first.");
       alert("Cloud has more tracker data than this device.\n\nPlease press Download / Load from Cloud first, then save again.");
       return;
