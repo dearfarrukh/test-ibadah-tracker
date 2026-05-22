@@ -143,6 +143,7 @@ button{
   line-height:1;
   transform:translateY(-2px);
 }
+
 .qazaPageWrap{
   width:100%;
   min-height:100vh;
@@ -497,13 +498,10 @@ button{
 /* =========================
    QAZA TOP BAR SPACING FIX
 ========================= */
-
-/* Move the whole Qaza page content lower so Prayer / Progress tabs do not hide under top bar */
 body{
   padding-top:calc(12% + env(safe-area-inset-top)) !important;
 }
 
-/* Extra safety: keep first Qaza card/tab area lower on small phones */
 #qazaPrayerTabBtn,
 #qazaProgressTabBtn{
   position:relative;
@@ -605,6 +603,27 @@ body{
 
 </div>
 
+<!-- =========================
+     QAZA TOAST
+========================= -->
+<div id="qazaToast" style="
+display:none;
+position:fixed;
+left:50%;
+bottom:100px;
+transform:translateX(-50%);
+background:rgba(17,17,17,0.92);
+color:white;
+border-radius:18px;
+padding:13px 16px;
+font-size:15px;
+font-weight:850;
+z-index:13000;
+max-width:88%;
+text-align:center;
+box-shadow:0 10px 28px rgba(0,0,0,0.20);
+"></div>
+
 <script>
 /* =========================
    QAZA TRACKER JAVASCRIPT
@@ -634,6 +653,381 @@ let qazaHoldTimer = null;
 let qazaHoldInterval = null;
 let qazaHoldStarted = false;
 let qazaLockMessageTimer = null;
+let qazaCloudAutoSaveTimer = null;
+let qazaCloudAutoCheckDone = false;
+
+const QAZA_CLOUD_APP_NAME = "qazaTracker";
+
+/* =========================
+   SHOW QAZA TOAST
+   Full function name: showQazaToast()
+========================= */
+function showQazaToast(message){
+
+  let toast = document.getElementById("qazaToast");
+  if(!toast) return;
+
+  toast.innerText = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.qazaToastTimer);
+
+  window.qazaToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 2200);
+
+}
+
+/* =========================
+   SET UNIVERSAL CLOUD MESSAGE
+   Full function name: setQazaCloudMessage()
+========================= */
+function setQazaCloudMessage(message){
+
+  let line = document.getElementById("universalCloudStatusLine");
+
+  if(line){
+    line.innerText = message;
+  }
+
+  showQazaToast(message);
+
+}
+
+/* =========================
+   GET QAZA LOCAL CLOUD DATA
+   Full function name: getQazaLocalCloudData()
+========================= */
+function getQazaLocalCloudData(){
+
+  let prayers = {};
+
+  qazaPrayerNames.forEach(function(prayer){
+
+    let lastUpdated = localStorage.getItem(prayer + "LastUpdated") || "";
+
+    prayers[prayer] = {
+      id:prayer,
+      name:qazaPrayerLabels[prayer] || prayer,
+      total:parseInt(qazaData[prayer].total || 0, 10) || 0,
+      done:parseInt(qazaData[prayer].done || 0, 10) || 0,
+      lastUpdated:lastUpdated
+    };
+
+  });
+
+  return {
+    prayers:prayers,
+    goalPerDay:getQazaGoalPerDay(),
+    locked:getQazaLockState(),
+    deletedQazaIds:[],
+    deletedIbadahIds:{
+      qaza:[]
+    },
+    savedAt:new Date().toISOString(),
+    source:"Ibadah Qaza Tracker"
+  };
+
+}
+
+/* =========================
+   GET QAZA LOCAL TOTAL COUNT
+   Full function name: getQazaLocalTotalCount()
+========================= */
+function getQazaLocalTotalCount(data){
+
+  if(!data || !data.prayers) return 0;
+
+  let total = 0;
+
+  qazaPrayerNames.forEach(function(prayer){
+    if(data.prayers[prayer]){
+      total += Number(data.prayers[prayer].total || 0);
+      total += Number(data.prayers[prayer].done || 0);
+    }
+  });
+
+  total += Number(data.goalPerDay || 0);
+
+  return total;
+
+}
+
+/* =========================
+   NORMALIZE QAZA CLOUD DATA
+   Full function name: normalizeQazaCloudData()
+========================= */
+function normalizeQazaCloudData(cloudData){
+
+  let clean = {
+    prayers:{},
+    goalPerDay:1,
+    locked:true,
+    deletedQazaIds:[],
+    deletedIbadahIds:{
+      qaza:[]
+    },
+    savedAt:"",
+    source:"Ibadah Qaza Tracker"
+  };
+
+  if(!cloudData || typeof cloudData !== "object"){
+    return clean;
+  }
+
+  qazaPrayerNames.forEach(function(prayer){
+
+    let cloudPrayer = null;
+
+    if(cloudData.prayers && cloudData.prayers[prayer]){
+      cloudPrayer = cloudData.prayers[prayer];
+    }
+
+    clean.prayers[prayer] = {
+      id:prayer,
+      name:qazaPrayerLabels[prayer] || prayer,
+      total:parseInt((cloudPrayer && cloudPrayer.total) || 0, 10) || 0,
+      done:parseInt((cloudPrayer && cloudPrayer.done) || 0, 10) || 0,
+      lastUpdated:(cloudPrayer && cloudPrayer.lastUpdated) || ""
+    };
+
+    if(clean.prayers[prayer].done > clean.prayers[prayer].total){
+      clean.prayers[prayer].done = clean.prayers[prayer].total;
+    }
+
+  });
+
+  clean.goalPerDay = parseInt(cloudData.goalPerDay || "1", 10) || 1;
+  if(clean.goalPerDay < 1) clean.goalPerDay = 1;
+
+  clean.locked = cloudData.locked === false ? false : true;
+
+  if(Array.isArray(cloudData.deletedQazaIds)){
+    clean.deletedQazaIds = cloudData.deletedQazaIds.map(String);
+  }
+
+  if(cloudData.deletedIbadahIds && Array.isArray(cloudData.deletedIbadahIds.qaza)){
+    clean.deletedIbadahIds.qaza = cloudData.deletedIbadahIds.qaza.map(String);
+  }
+
+  clean.savedAt = cloudData.savedAt || "";
+
+  return clean;
+
+}
+
+/* =========================
+   APPLY QAZA CLOUD DATA LOCALLY
+   Full function name: applyQazaCloudDataLocally()
+========================= */
+function applyQazaCloudDataLocally(cloudData){
+
+  let clean = normalizeQazaCloudData(cloudData);
+
+  qazaPrayerNames.forEach(function(prayer){
+
+    qazaData[prayer].total = clean.prayers[prayer].total;
+    qazaData[prayer].done = clean.prayers[prayer].done;
+
+    localStorage.setItem(prayer + "Total", qazaData[prayer].total);
+    localStorage.setItem(prayer + "Done", qazaData[prayer].done);
+
+    if(clean.prayers[prayer].lastUpdated){
+      localStorage.setItem(prayer + "LastUpdated", clean.prayers[prayer].lastUpdated);
+    }else{
+      localStorage.removeItem(prayer + "LastUpdated");
+    }
+
+  });
+
+  localStorage.setItem("qazaGoalPerDay", clean.goalPerDay);
+  localStorage.setItem("qazaLocked", clean.locked ? "true" : "false");
+
+  loadAllQazaData();
+  updateQazaProgressTabUI();
+  updateQazaLockButtonUI();
+  updateQazaTotalInputsLockState();
+
+}
+
+/* =========================
+   SCHEDULE QAZA CLOUD AUTO SAVE
+   Full function name: scheduleQazaCloudAutoSave()
+========================= */
+function scheduleQazaCloudAutoSave(){
+
+  if(!window.ibadahCloud) return;
+
+  if(!window.ibadahCloud.getCurrentUser || !window.ibadahCloud.getCurrentUser()) return;
+
+  clearTimeout(qazaCloudAutoSaveTimer);
+
+  qazaCloudAutoSaveTimer = setTimeout(function(){
+    saveQazaToCloud();
+  }, 1800);
+
+}
+
+/* =========================
+   SAVE QAZA TO CLOUD
+   Full function name: saveQazaToCloud()
+========================= */
+async function saveQazaToCloud(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      setQazaCloudMessage("Cloud file is not ready yet.");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user){
+      setQazaCloudMessage("Please sign in before saving Qaza.");
+      return;
+    }
+
+    let localData = getQazaLocalCloudData();
+
+    setQazaCloudMessage("Cloud: Saving Qaza...");
+
+    await window.ibadahCloud.saveAppData(QAZA_CLOUD_APP_NAME, localData);
+
+    setQazaCloudMessage("Cloud: Qaza saved.");
+
+  }catch(error){
+
+    console.log(error);
+    setQazaCloudMessage("Cloud Qaza save failed.");
+
+  }
+
+}
+
+/* =========================
+   LOAD QAZA FROM CLOUD
+   Full function name: loadQazaFromCloud()
+========================= */
+async function loadQazaFromCloud(){
+
+  try{
+
+    if(!window.ibadahCloud){
+      setQazaCloudMessage("Cloud file is not ready yet.");
+      return;
+    }
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user){
+      setQazaCloudMessage("Please sign in before loading Qaza.");
+      return;
+    }
+
+    setQazaCloudMessage("Cloud: Loading Qaza...");
+
+    let cloudData = await window.ibadahCloud.loadAppData(QAZA_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      setQazaCloudMessage("Cloud: No Qaza data found. Save first.");
+      return;
+    }
+
+    localStorage.setItem("ibadahQazaBackupBeforeCloudLoad", JSON.stringify(getQazaLocalCloudData()));
+
+    applyQazaCloudDataLocally(cloudData);
+
+    setQazaCloudMessage("Cloud: Qaza loaded.");
+
+  }catch(error){
+
+    console.log(error);
+    setQazaCloudMessage("Cloud Qaza load failed.");
+
+  }
+
+}
+
+/* =========================
+   AUTO CHECK QAZA CLOUD
+   Full function name: autoCheckQazaCloud()
+========================= */
+async function autoCheckQazaCloud(){
+
+  try{
+
+    if(qazaCloudAutoCheckDone) return;
+    if(!window.ibadahCloud) return;
+
+    if(window.ibadahCloud.waitForAuthReady){
+      await window.ibadahCloud.waitForAuthReady();
+    }
+
+    let user = window.ibadahCloud.getCurrentUser ? window.ibadahCloud.getCurrentUser() : null;
+
+    if(!user) return;
+
+    qazaCloudAutoCheckDone = true;
+
+    let cloudData = await window.ibadahCloud.loadAppData(QAZA_CLOUD_APP_NAME);
+
+    if(!cloudData){
+      return;
+    }
+
+    let localData = getQazaLocalCloudData();
+    let cleanCloud = normalizeQazaCloudData(cloudData);
+
+    if(getQazaLocalTotalCount(localData) === 1 && getQazaLocalTotalCount(cleanCloud) > 1){
+      applyQazaCloudDataLocally(cleanCloud);
+      setQazaCloudMessage("Cloud: Auto-loaded Qaza.");
+      return;
+    }
+
+  }catch(error){
+    console.log(error);
+  }
+
+}
+
+/* =========================
+   WAIT FOR QAZA CLOUD
+   Full function name: waitForQazaCloud()
+========================= */
+function waitForQazaCloud(){
+
+  let tries = 0;
+
+  let timer = setInterval(function(){
+
+    tries++;
+
+    if(window.ibadahCloud){
+      clearInterval(timer);
+
+      window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+      window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+
+      autoCheckQazaCloud();
+      return;
+    }
+
+    if(tries > 40){
+      clearInterval(timer);
+    }
+
+  }, 250);
+
+}
 
 /* =========================
    GO BACK TO MAIN IBADAH APP
@@ -747,6 +1141,7 @@ function setupQazaTotalInputs(){
       saveQazaPrayerData(prayer);
       updateSingleQazaUI(prayer);
       updateQazaProgressTabUI();
+      scheduleQazaCloudAutoSave();
     });
 
     input.addEventListener("focus", function(){
@@ -905,6 +1300,7 @@ function adjustQazaPrayer(prayer, amount){
   saveQazaPrayerData(prayer);
   updateSingleQazaUI(prayer);
   updateQazaProgressTabUI();
+  scheduleQazaCloudAutoSave();
 }
 
 /* =========================
@@ -1084,6 +1480,7 @@ function setQazaGoalPerDay(goal){
   localStorage.setItem("qazaGoalPerDay", goal);
 
   updateQazaGoalEstimate();
+  scheduleQazaCloudAutoSave();
 }
 
 /* =========================
@@ -1166,6 +1563,8 @@ function setQazaLockState(isLocked){
   if(!isLocked){
     hideQazaLockMessage();
   }
+
+  scheduleQazaCloudAutoSave();
 }
 
 /* =========================
@@ -1319,6 +1718,15 @@ document.addEventListener("click", function(e){
 }, true);
 
 /* =========================
+   CLOUD USER CHANGE LISTENER
+   Full listener name: ibadahCloudUserChanged
+========================= */
+window.addEventListener("ibadahCloudUserChanged", function(){
+  qazaCloudAutoCheckDone = false;
+  autoCheckQazaCloud();
+});
+
+/* =========================
    START QAZA PAGE
 ========================= */
 function startQazaTrackerPage(){
@@ -1329,11 +1737,34 @@ function startQazaTrackerPage(){
   updateQazaLockButtonUI();
   updateQazaTotalInputsLockState();
   showQazaPrayerTab();
+  waitForQazaCloud();
 
   window.scrollTo(0,0);
 }
 
 window.addEventListener("load", startQazaTrackerPage);
+</script>
+
+<!-- =========================
+     UNIVERSAL MENU HANDLE SCRIPT
+     File used: shared/menu-handle.js
+========================= -->
+<script src="../shared/menu-handle.js?v=qaza-cloud-1"></script>
+
+<script>
+// =========================
+// START UNIVERSAL MENU HANDLE - QAZA PAGE
+// Full function name: createUniversalMenuHandle()
+// =========================
+document.addEventListener("DOMContentLoaded", function(){
+
+  if(typeof createUniversalMenuHandle === "function"){
+    createUniversalMenuHandle({
+      iconBasePath:"../Images/Icons/"
+    });
+  }
+
+});
 </script>
 
 </body>
