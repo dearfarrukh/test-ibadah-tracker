@@ -1239,8 +1239,8 @@ function openHomePage(){
 ========================= */
 function goBackToMainApp(){
 
-  localStorage.setItem("ibadahFolderReturnPage", "quran");
-  window.location.href = "../";
+  let returnPage = getQuranReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
 }
 
@@ -1722,13 +1722,8 @@ function closeReadingPage(event){
     event.stopPropagation();
   }
 
-  let readingPage = document.getElementById("readingPage");
-  if(readingPage){
-    readingPage.style.display = "none";
-  }
-
-  resetReaderTopBar();
-  openHomePage();
+  let returnPage = getQuranReaderReturnPage();
+  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
 
 }
 
@@ -2250,11 +2245,53 @@ function resetQuranFlipPosition(){
 }
 
 /* =========================
+   GET QURAN READER RETURN PAGE
+   Full function name: getQuranReaderReturnPage()
+========================= */
+function getQuranReaderReturnPage(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  return (
+    params.get("from") ||
+    localStorage.getItem("ibadahQuranBackPage") ||
+    "home"
+  );
+
+}
+
+/* =========================
+   OPEN DIRECT READER IF PAGE WAS SENT
+   Full function name: openDirectReaderIfPageWasSent()
+========================= */
+function openDirectReaderIfPageWasSent(){
+
+  let params = new URLSearchParams(window.location.search);
+
+  let pageFromUrl = parseInt(params.get("page") || "0", 10);
+  let pageFromStorage = parseInt(localStorage.getItem("openQuran15PageNumber") || "0", 10);
+
+  let pageToOpen = pageFromUrl || pageFromStorage;
+
+  if(!pageToOpen || pageToOpen < 1 || pageToOpen > totalPages){
+    return;
+  }
+
+  localStorage.removeItem("openQuran15PageNumber");
+
+  setTimeout(function(){
+    openReadingPage(pageToOpen, "quran");
+  }, 80);
+
+}
+
+/* =========================
    START APP
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
 
   updateResumeText();
+  openDirectReaderIfPageWasSent();
 
 });
 
