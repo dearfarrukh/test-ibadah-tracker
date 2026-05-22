@@ -1044,15 +1044,17 @@ function normalizeDeletedTaskIdsFromCloud(cloudData){
 /* =========================
    DEDUPE TRACKER TASKS
    Full function name: dedupeTrackerTasks()
-   What it fixes:
-   - Same ID duplicate removed
-   - Same task name duplicate removed
-   - Example: Quran Class on two devices will show only once
+
+   Important rename sync rule:
+   - Same task ID = same task
+   - Newer updatedAt wins
+   - Name can change without creating another task
+   - Name matching is used only to clean true duplicate tasks with different IDs
 ========================= */
 function dedupeTrackerTasks(tasks){
 
-  let taskMapById = {};
-  let taskMapByName = {};
+  let byId = {};
+  let noIdTasks = [];
 
   (Array.isArray(tasks) ? tasks : []).forEach(function(task, index){
 
@@ -1061,69 +1063,80 @@ function dedupeTrackerTasks(tasks){
     if(!cleanTask || !cleanTask.id || !cleanTask.name) return;
 
     let idKey = String(cleanTask.id);
-    let nameKey = String(cleanTask.name || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " ");
 
-    let existingById = taskMapById[idKey];
-    let existingByName = taskMapByName[nameKey];
-
-    let existing = existingById || existingByName || null;
-
-    if(!existing){
-
-      taskMapById[idKey] = cleanTask;
-      taskMapByName[nameKey] = cleanTask;
+    if(!idKey){
+      noIdTasks.push(cleanTask);
       return;
-
     }
+
+    if(!byId[idKey]){
+      byId[idKey] = cleanTask;
+      return;
+    }
+
+    let existing = byId[idKey];
 
     let existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
     let cleanTime = new Date(cleanTask.updatedAt || cleanTask.createdAt || 0).getTime();
 
-    let winningTask = existing;
-
-    if(cleanTime >= existingTime){
-      winningTask = cleanTask;
-    }
-
     /*
-      Important:
-      If same task exists with different IDs on two devices,
-      keep one task only.
-      We keep the older/existing ID when possible so old checkmarks stay safer.
+      Same ID means same task.
+      Keep the newer name/details.
     */
-    if(existing.id && cleanTask.id && String(existing.id) !== String(cleanTask.id)){
-      winningTask.id = existing.id;
+    if(cleanTime >= existingTime){
+      byId[idKey] = Object.assign({}, existing, cleanTask, {
+        id:existing.id
+      });
     }
-
-    taskMapById[String(winningTask.id)] = winningTask;
-    taskMapByName[nameKey] = winningTask;
 
   });
 
-  let finalTasks = [];
-  let usedNames = {};
+  let idCleanedTasks = Object.values(byId).concat(noIdTasks);
 
-  Object.values(taskMapByName).forEach(function(task){
+  /*
+    Second pass:
+    Remove only real duplicate names with different IDs.
+    This is for old cloud duplicates like Quran Class + Quran Class.
+    If names are different, do not merge them.
+  */
+  let byName = {};
 
-    let nameKey = String(task.name || "")
+  idCleanedTasks.forEach(function(task){
+
+    if(!task || !task.name) return;
+
+    let nameKey = String(task.name)
       .trim()
       .toLowerCase()
       .replace(/\s+/g, " ");
 
-    if(usedNames[nameKey]) return;
+    if(!byName[nameKey]){
+      byName[nameKey] = task;
+      return;
+    }
 
-    usedNames[nameKey] = true;
-    finalTasks.push(task);
+    let existing = byName[nameKey];
+
+    let existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+    let taskTime = new Date(task.updatedAt || task.createdAt || 0).getTime();
+
+    /*
+      Same name but different IDs:
+      keep the newer task data, but keep existing ID if possible
+      so older checkmarks stay safer.
+    */
+    if(taskTime >= existingTime){
+      byName[nameKey] = Object.assign({}, existing, task, {
+        id:existing.id || task.id
+      });
+    }
 
   });
 
-  return finalTasks;
+  return Object.values(byName);
 
 }
-
+     
 /* =========================
    SAVE TASK LIST DATA
    Full function name: saveTaskListData()
@@ -1223,21 +1236,52 @@ function mergeCheckObjectsCloudWins(localData, cloudData){
 }
 
 /* =========================
-   MERGE TRACKER TASKS CLOUD WINS
+   MERGE TRACKER TASKS NEWEST WINS
    Full function name: mergeTrackerTasksCloudWins()
+
+   Important:
+   Function name stays same so old code still works.
+   But logic is now:
+   - Same ID = same task
+   - Newest updatedAt wins
+   - Cloud does NOT blindly overwrite local renamed task
 ========================= */
 function mergeTrackerTasksCloudWins(localTasks, cloudTasks, deletedIds){
 
   let taskMap = {};
 
-  filterOutDeletedTasks(localTasks || [], deletedIds).forEach(function(task){
-    if(!task || !task.id) return;
-    taskMap[String(task.id)] = task;
+  function putTask(task, index){
+
+    let cleanTask = normalizeTrackerTask(task, index);
+
+    if(!cleanTask || !cleanTask.id) return;
+
+    let idKey = String(cleanTask.id);
+
+    if(!taskMap[idKey]){
+      taskMap[idKey] = cleanTask;
+      return;
+    }
+
+    let existing = taskMap[idKey];
+
+    let existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+    let cleanTime = new Date(cleanTask.updatedAt || cleanTask.createdAt || 0).getTime();
+
+    if(cleanTime >= existingTime){
+      taskMap[idKey] = Object.assign({}, existing, cleanTask, {
+        id:existing.id
+      });
+    }
+
+  }
+
+  filterOutDeletedTasks(localTasks || [], deletedIds).forEach(function(task, index){
+    putTask(task, index);
   });
 
-  filterOutDeletedTasks(cloudTasks || [], deletedIds).forEach(function(task){
-    if(!task || !task.id) return;
-    taskMap[String(task.id)] = task;
+  filterOutDeletedTasks(cloudTasks || [], deletedIds).forEach(function(task, index){
+    putTask(task, index);
   });
 
   return filterOutDeletedTasks(dedupeTrackerTasks(Object.values(taskMap)), deletedIds);
@@ -1264,12 +1308,10 @@ function getTrackerCloudTotalCount(data){
    CLOUD HAS DATA NOT ON DEVICE
    Full function name: cloudHasTrackerDataNotOnDevice()
 
-   Important fix:
-   - If cloud has duplicate task with same name, do NOT block save.
-   - Example:
-     Cloud has Quran Class twice.
-     Local has Quran Class once.
-     Save should be allowed so local can clean cloud.
+   Rename-safe rule:
+   - If same task ID exists locally, cloud is not "missing"
+   - Different name with same ID is only a rename
+   - Same name duplicate in cloud should not block cleanup save
 ========================= */
 function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
 
@@ -1284,14 +1326,15 @@ function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
   });
 
   (localData.tasks || []).forEach(function(task){
-    if(!task) return;
+    let cleanTask = normalizeTrackerTask(task, 0);
+    if(!cleanTask) return;
 
-    if(task.id){
-      localTaskIds[String(task.id)] = true;
+    if(cleanTask.id){
+      localTaskIds[String(cleanTask.id)] = true;
     }
 
-    if(task.name){
-      let localNameKey = String(task.name)
+    if(cleanTask.name){
+      let localNameKey = String(cleanTask.name)
         .trim()
         .toLowerCase()
         .replace(/\s+/g, " ");
@@ -1316,14 +1359,27 @@ function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
       .replace(/\s+/g, " ");
 
     /*
-      Old strict rule checked only ID.
-      New safer rule:
-      If same name exists locally, it is not missing.
-      This lets us clean old duplicate cloud records.
+      Same ID means same task.
+      It can be old name or new name.
+      Do not block save.
     */
-    if(!localTaskIds[String(cloudTask.id)] && !localTaskNames[cloudNameKey]){
-      return true;
+    if(localTaskIds[String(cloudTask.id)]){
+      continue;
     }
+
+    /*
+      Same name with different ID is probably an old duplicate.
+      Do not block save because save can clean it.
+    */
+    if(localTaskNames[cloudNameKey]){
+      continue;
+    }
+
+    /*
+      Different ID and different name means cloud has real data
+      this device does not have.
+    */
+    return true;
 
   }
 
@@ -1348,6 +1404,8 @@ function cloudHasTrackerDataNotOnDevice(localData, cloudData, deletedIds){
   return false;
 
 }
+
+     
 /* =========================
    GET TRACKER LOCAL CLOUD DATA
    Full function name: getTrackerLocalCloudData()
