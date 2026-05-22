@@ -88,6 +88,96 @@ button{
   right:4%;
 }
 
+/* =========================
+   QAZA DIRECT CLOUD BUTTON
+========================= */
+.qazaCloudBtn{
+  position:absolute;
+  bottom:10px;
+  right:17%;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#111;
+  font-size:22px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+}
+
+.qazaCloudOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  z-index:12000;
+  align-items:flex-end;
+  justify-content:center;
+  padding:0 4% calc(env(safe-area-inset-bottom) + 18px) 4%;
+}
+
+.qazaCloudSheet{
+  width:100%;
+  max-width:430px;
+  background:rgba(255,255,255,0.96);
+  border-radius:30px;
+  padding:14px 4% 18px 4%;
+  box-shadow:0 -18px 48px rgba(0,0,0,0.22);
+  border:1px solid rgba(255,255,255,0.70);
+}
+
+.qazaCloudHandle{
+  width:44px;
+  height:5px;
+  background:#c9c9cf;
+  border-radius:99px;
+  margin:0 auto 16px auto;
+}
+
+.qazaCloudTitle{
+  font-size:26px;
+  font-weight:950;
+  color:#111;
+  text-align:center;
+  margin-bottom:8px;
+  letter-spacing:-0.5px;
+}
+
+.qazaCloudStatus{
+  font-size:14px;
+  font-weight:750;
+  color:#666;
+  text-align:center;
+  line-height:1.4;
+  margin-bottom:16px;
+}
+
+.qazaCloudActionBtn{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:15px;
+  color:white;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
+.qazaCloudActionBtn.black{ background:#111; }
+.qazaCloudActionBtn.green{ background:#16a34a; }
+.qazaCloudActionBtn.orange{ background:#f97316; }
+.qazaCloudActionBtn.red{ background:#fff1f1; color:#d11a2a; }
+.qazaCloudActionBtn.gray{ background:#e9e9ee; color:#111; }
+
 .qazaTitle{
   font-size:20px;
   font-weight:900;
@@ -518,6 +608,7 @@ body{
 <div class="qazaTopBar">
   <button class="qazaBackBtn" onclick="goBackToMainIbadahApp()">←</button>
   <div class="qazaTitle">Qaza Tracker</div>
+  <button id="qazaDirectCloudBtn" class="qazaCloudBtn" onclick="openQazaDirectCloudMenu()">☁️</button>
   <button id="qazaLockBtn" class="qazaLockBtn" onclick="toggleQazaLockState()">🔒</button>
 </div>
 
@@ -604,6 +695,42 @@ body{
 </div>
 
 <!-- =========================
+     DIRECT QAZA CLOUD MENU
+========================= -->
+<div id="qazaDirectCloudOverlay" class="qazaCloudOverlay" onclick="closeQazaDirectCloudMenuFromOverlay(event)">
+  <div class="qazaCloudSheet" onclick="event.stopPropagation();">
+
+    <div class="qazaCloudHandle"></div>
+    <div class="qazaCloudTitle">☁️ Qaza Cloud Sync</div>
+
+    <div id="qazaDirectCloudStatus" class="qazaCloudStatus">
+      Qaza Cloud: Checking...
+    </div>
+
+    <button class="qazaCloudActionBtn black" onclick="qazaDirectCloudSignIn()">
+      Sign in with Google
+    </button>
+
+    <button class="qazaCloudActionBtn green" onclick="qazaDirectCloudSave()">
+      Upload / Save Qaza
+    </button>
+
+    <button class="qazaCloudActionBtn orange" onclick="qazaDirectCloudLoad()">
+      Download / Load Qaza
+    </button>
+
+    <button class="qazaCloudActionBtn red" onclick="qazaDirectCloudSignOut()">
+      Sign out
+    </button>
+
+    <button class="qazaCloudActionBtn gray" onclick="closeQazaDirectCloudMenu()">
+      Close
+    </button>
+
+  </div>
+</div>
+
+<!-- =========================
      QAZA TOAST
 ========================= -->
 <div id="qazaToast" style="
@@ -659,6 +786,194 @@ let qazaCloudAutoCheckDone = false;
 const QAZA_CLOUD_APP_NAME = "qazaTracker";
 
 /* =========================
+   OPEN QAZA DIRECT CLOUD MENU
+   Full function name: openQazaDirectCloudMenu()
+========================= */
+function openQazaDirectCloudMenu(){
+
+  let overlay = document.getElementById("qazaDirectCloudOverlay");
+
+  if(overlay){
+    overlay.style.display = "flex";
+  }
+
+  updateQazaDirectCloudStatus();
+
+}
+
+/* =========================
+   CLOSE QAZA DIRECT CLOUD MENU
+   Full function name: closeQazaDirectCloudMenu()
+========================= */
+function closeQazaDirectCloudMenu(){
+
+  let overlay = document.getElementById("qazaDirectCloudOverlay");
+
+  if(overlay){
+    overlay.style.display = "none";
+  }
+
+}
+
+/* =========================
+   CLOSE QAZA DIRECT CLOUD MENU FROM OVERLAY
+   Full function name: closeQazaDirectCloudMenuFromOverlay()
+========================= */
+function closeQazaDirectCloudMenuFromOverlay(event){
+
+  if(event.target && event.target.id === "qazaDirectCloudOverlay"){
+    closeQazaDirectCloudMenu();
+  }
+
+}
+
+/* =========================
+   UPDATE QAZA DIRECT CLOUD STATUS
+   Full function name: updateQazaDirectCloudStatus()
+========================= */
+function updateQazaDirectCloudStatus(message){
+
+  let line = document.getElementById("qazaDirectCloudStatus");
+
+  if(!line) return;
+
+  if(message){
+    line.innerText = message;
+    return;
+  }
+
+  if(!window.ibadahCloud){
+    line.innerText = "Qaza Cloud: Cloud file loading...";
+    return;
+  }
+
+  let user = null;
+
+  try{
+    if(window.ibadahCloud.getCurrentUser){
+      user = window.ibadahCloud.getCurrentUser();
+    }
+  }catch(error){
+    user = null;
+  }
+
+  if(user){
+    line.innerText = "Qaza Cloud: Signed in as " + (user.email || "Google user");
+  }else{
+    line.innerText = "Qaza Cloud: Not signed in";
+  }
+
+}
+
+/* =========================
+   QAZA DIRECT CLOUD SIGN IN
+   Full function name: qazaDirectCloudSignIn()
+========================= */
+async function qazaDirectCloudSignIn(){
+
+  try{
+
+    if(!window.ibadahCloud || !window.ibadahCloud.signIn){
+      updateQazaDirectCloudStatus("Cloud file is not ready yet.");
+      showQazaToast("Cloud file is not ready yet.");
+      return;
+    }
+
+    updateQazaDirectCloudStatus("Opening Google sign-in...");
+
+    await window.ibadahCloud.signIn();
+
+    updateQazaDirectCloudStatus();
+    showQazaToast("Signed in");
+
+  }catch(error){
+
+    console.log(error);
+    updateQazaDirectCloudStatus("Google sign-in failed.");
+    showQazaToast("Google sign-in failed.");
+
+  }
+
+}
+
+/* =========================
+   QAZA DIRECT CLOUD SIGN OUT
+   Full function name: qazaDirectCloudSignOut()
+========================= */
+async function qazaDirectCloudSignOut(){
+
+  try{
+
+    if(!window.ibadahCloud || !window.ibadahCloud.signOut){
+      updateQazaDirectCloudStatus("Cloud file is not ready yet.");
+      showQazaToast("Cloud file is not ready yet.");
+      return;
+    }
+
+    await window.ibadahCloud.signOut();
+
+    updateQazaDirectCloudStatus("Qaza Cloud: Signed out");
+    showQazaToast("Signed out");
+
+  }catch(error){
+
+    console.log(error);
+    updateQazaDirectCloudStatus("Sign out failed.");
+    showQazaToast("Sign out failed.");
+
+  }
+
+}
+
+/* =========================
+   QAZA DIRECT CLOUD SAVE
+   Full function name: qazaDirectCloudSave()
+========================= */
+async function qazaDirectCloudSave(){
+
+  try{
+
+    updateQazaDirectCloudStatus("Saving Qaza...");
+
+    await saveQazaToCloud();
+
+    updateQazaDirectCloudStatus("Qaza saved to cloud.");
+
+  }catch(error){
+
+    console.log(error);
+    updateQazaDirectCloudStatus("Qaza save failed.");
+    showQazaToast("Qaza save failed.");
+
+  }
+
+}
+
+/* =========================
+   QAZA DIRECT CLOUD LOAD
+   Full function name: qazaDirectCloudLoad()
+========================= */
+async function qazaDirectCloudLoad(){
+
+  try{
+
+    updateQazaDirectCloudStatus("Loading Qaza...");
+
+    await loadQazaFromCloud();
+
+    updateQazaDirectCloudStatus("Qaza loaded from cloud.");
+
+  }catch(error){
+
+    console.log(error);
+    updateQazaDirectCloudStatus("Qaza load failed.");
+    showQazaToast("Qaza load failed.");
+
+  }
+
+}
+
+/* =========================
    SHOW QAZA TOAST
    Full function name: showQazaToast()
 ========================= */
@@ -690,6 +1005,7 @@ function setQazaCloudMessage(message){
     line.innerText = message;
   }
 
+  updateQazaDirectCloudStatus(message);
   showQazaToast(message);
 
 }
@@ -1011,18 +1327,20 @@ function waitForQazaCloud(){
 
     tries++;
 
-   if(window.ibadahCloud){
-  clearInterval(timer);
+    if(window.ibadahCloud){
+      clearInterval(timer);
 
-  window.saveQazaToCloud = saveQazaToCloud;
-  window.loadQazaFromCloud = loadQazaFromCloud;
+      window.saveQazaToCloud = saveQazaToCloud;
+      window.loadQazaFromCloud = loadQazaFromCloud;
 
-  window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
-  window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
+      window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
+      window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
 
-  autoCheckQazaCloud();
-  return;
-}
+      updateQazaDirectCloudStatus();
+
+      autoCheckQazaCloud();
+      return;
+    }
 
     if(tries > 40){
       clearInterval(timer);
@@ -1762,85 +2080,20 @@ window.addEventListener("load", startQazaTrackerPage);
 </script>
 
 <!-- =========================
-     UNIVERSAL MENU HANDLE SCRIPT
-     File used: shared/menu-handle.js
+     SHARED CLOUD SYNC SCRIPT
+     File used: shared/cloud-sync.js
 ========================= -->
-<script src="../shared/menu-handle.js?v=qaza-cloud-10"></script>
+<script type="module" src="../shared/cloud-sync.js?v=qaza-direct-cloud-1"></script>
 
 <script>
 // =========================
-// FORCE CONNECT QAZA CLOUD TO UNIVERSAL MENU
-// Full function name: forceConnectQazaCloudToUniversalMenu()
+// QAZA CLOUD USER CHANGE LISTENER
+// Full listener name: ibadahCloudUserChanged
 // =========================
-function forceConnectQazaCloudToUniversalMenu(){
-
-  window.saveQazaToCloud = saveQazaToCloud;
-  window.loadQazaFromCloud = loadQazaFromCloud;
-
-  window.ibadahCloudSaveCurrentPage = saveQazaToCloud;
-  window.ibadahCloudLoadCurrentPage = loadQazaFromCloud;
-
-  /*
-    Strong fix:
-    Override the universal menu cloud buttons directly on Qaza page.
-    This stops the "This page is not connected" message.
-  */
-  window.universalMenuCloudSave = async function(){
-
-    if(typeof saveQazaToCloud === "function"){
-      await saveQazaToCloud();
-      return;
-    }
-
-    alert("Qaza save function not found.");
-  };
-
-  window.universalMenuCloudLoad = async function(){
-
-    if(typeof loadQazaFromCloud === "function"){
-      await loadQazaFromCloud();
-      return;
-    }
-
-    alert("Qaza load function not found.");
-  };
-
-}
-
-// =========================
-// START UNIVERSAL MENU HANDLE - QAZA PAGE
-// Full function name: createUniversalMenuHandle()
-// =========================
-document.addEventListener("DOMContentLoaded", function(){
-
-  forceConnectQazaCloudToUniversalMenu();
-
-  if(typeof createUniversalMenuHandle === "function"){
-    createUniversalMenuHandle({
-      iconBasePath:"../Images/Icons/"
-    });
-  }
-
-  forceConnectQazaCloudToUniversalMenu();
-
-  /*
-    Strong safety:
-    Keep reconnecting for a few seconds because the menu script and cloud file load at different speeds.
-  */
-  let qazaCloudConnectTries = 0;
-
-  let qazaCloudConnectTimer = setInterval(function(){
-
-    qazaCloudConnectTries++;
-
-    forceConnectQazaCloudToUniversalMenu();
-
-    if(qazaCloudConnectTries > 40){
-      clearInterval(qazaCloudConnectTimer);
-    }
-
-  }, 250);
-
+window.addEventListener("ibadahCloudUserChanged", function(){
+  qazaCloudAutoCheckDone = false;
+  updateQazaDirectCloudStatus();
+  autoCheckQazaCloud();
 });
 </script>
 
