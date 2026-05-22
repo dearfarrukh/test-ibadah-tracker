@@ -1971,9 +1971,17 @@ quran16BackDestination = "quran16Page";
 // =========================
 function closeQuran16Page(){
 
-  let returnPage = getQuran16ReaderReturnPage();
-  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
+  let quranPage = document.getElementById("quranPage");
+  let quran16Page = document.getElementById("quran16Page");
 
+
+  if(quran16Page) quran16Page.style.display = "none";
+  if(quranPage) quranPage.style.display = "block";
+  setBottomNavVisibility(true);
+
+   restoreTrackerMenuHandleAfterQuranShortcut();
+
+  window.scrollTo(0,0);
 }
 
 // =========================
@@ -2185,17 +2193,39 @@ function restoreTrackerMenuHandleAfterQuranShortcut(){
      
 // =========================
 // CLOSE 16 LINE READING PAGE
-// Full function name: closeQuran16ReadingPage()
 // =========================
 function closeQuran16ReadingPage(){
 
   resetQuran16ReadingTopBar();
 
-  let returnPage = getQuran16ReaderReturnPage();
-  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
+  // =========================
+  // RETURN TO TRACKER IF OPENED FROM TRACKER SHORTCUT
+  // =========================
+  if(quran16BackDestination === "tracker"){
 
+    quran16BackDestination = "quran16Page";
+
+    if(typeof openTrackerPage === "function"){
+      openTrackerPage();
+      return;
+    }
+
+  }
+
+  // =========================
+  // NORMAL 16 LINE BACK BEHAVIOR
+  // =========================
+  let quran16ReadingPage = document.getElementById("quran16ReadingPage");
+  let quran16Page = document.getElementById("quran16Page");
+
+  if(quran16ReadingPage) quran16ReadingPage.style.display = "none";
+  if(quran16Page) quran16Page.style.display = "block";
+
+  setBottomNavVisibility(true);
+  setMainMenuHandleVisibility(false);
+
+  window.scrollTo(0,0);
 }
-
 // =========================
 // HANDLE 16 LINE READING PAGE TAP
 // =========================
@@ -2428,7 +2458,7 @@ function renderQuran16JuzList(){
 
   for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
            let startPage = juzToQuran16PageMap[juzNumber] || 1;
-    let displayPage = startPage;
+    let displayPage = startPage + 1;
        let arabicName = juzNamesArabic[juzNumber] || "";
 
     let card = document.createElement("div");
@@ -2593,7 +2623,7 @@ function renderQuran16SurahList(){
   quran16SurahData.forEach(function(surah){
 
     let startPage = surahToQuran16PageMap[surah.num] || 1;
-    let displayPage = startPage;
+    let displayPage = startPage + 1;
 
     let card = document.createElement("div");
     card.onclick = function(){
@@ -3101,7 +3131,7 @@ function saveQuran16Bookmark(){
   let juzName = juzBox ? juzBox.innerText.trim() : "";
 
   let page = currentQuran16PageNumber || 1;
-  let displayPage = page;
+  let displayPage = page + 1;
 
   if(!customName){
     alert("Please enter bookmark name");
@@ -3850,7 +3880,6 @@ function closeQuran16Page(){
 
 }
 
-
 // =========================
 // OPEN 16 LINE SURAH PAGE
 // =========================
@@ -3966,31 +3995,6 @@ function closeQuran16ReadingPage(){
 
 }
 
-
-// =========================
-// START 16 LINE FOLDER PAGE
-// =========================
-
-// =========================
-// SAFE 16 LINE STANDALONE HELPERS
-// Full function name: setBottomNavVisibility()
-// =========================
-if(typeof setBottomNavVisibility !== "function"){
-  function setBottomNavVisibility(show){
-    return;
-  }
-}
-
-// =========================
-// SAFE MAIN MENU HANDLE HELPER
-// Full function name: setMainMenuHandleVisibility()
-// =========================
-if(typeof setMainMenuHandleVisibility !== "function"){
-  function setMainMenuHandleVisibility(show){
-    return;
-  }
-}
-
 // =========================
 // GET QURAN 16 READER RETURN PAGE
 // Full function name: getQuran16ReaderReturnPage()
@@ -4008,35 +4012,18 @@ function getQuran16ReaderReturnPage(){
 }
 
 // =========================
-// OPEN DIRECT 16 LINE READER IF PAGE WAS SENT
-// Full function name: openDirectQuran16ReaderIfPageWasSent()
+// START 16 LINE FOLDER PAGE
 // =========================
-function openDirectQuran16ReaderIfPageWasSent(){
-
-  let params = new URLSearchParams(window.location.search);
-
-  let pageFromUrl = parseInt(params.get("page") || "0", 10);
-  let pageFromStorage = parseInt(localStorage.getItem("openQuran16PageNumber") || "0", 10);
-
-  let pageToOpen = pageFromUrl || pageFromStorage;
-
-  if(!pageToOpen || pageToOpen < 1 || pageToOpen > totalQuran16Pages){
-    openQuran16Page();
-    return;
-  }
-
-  localStorage.removeItem("openQuran16PageNumber");
-
-  setTimeout(function(){
-    quran16BackDestination = "quran";
-    openQuran16PageNumber(pageToOpen);
-  }, 80);
-
-}
-
 document.addEventListener("DOMContentLoaded", function(){
 
-  openDirectQuran16ReaderIfPageWasSent();
+  let params = new URLSearchParams(window.location.search);
+  let page = parseInt(params.get("page") || "0", 10);
+
+  if(page && page >= 1){
+    openQuran16PageNumber(page);
+  }else{
+    openQuran16Page();
+  }
 
 });
 
