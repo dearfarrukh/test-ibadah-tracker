@@ -1044,34 +1044,83 @@ function normalizeDeletedTaskIdsFromCloud(cloudData){
 /* =========================
    DEDUPE TRACKER TASKS
    Full function name: dedupeTrackerTasks()
+   What it fixes:
+   - Same ID duplicate removed
+   - Same task name duplicate removed
+   - Example: Quran Class on two devices will show only once
 ========================= */
 function dedupeTrackerTasks(tasks){
 
-  let taskMap = {};
+  let taskMapById = {};
+  let taskMapByName = {};
 
   (Array.isArray(tasks) ? tasks : []).forEach(function(task, index){
 
     let cleanTask = normalizeTrackerTask(task, index);
 
-    if(!cleanTask || !cleanTask.id) return;
+    if(!cleanTask || !cleanTask.id || !cleanTask.name) return;
 
-    let existing = taskMap[String(cleanTask.id)];
+    let idKey = String(cleanTask.id);
+    let nameKey = String(cleanTask.name || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+
+    let existingById = taskMapById[idKey];
+    let existingByName = taskMapByName[nameKey];
+
+    let existing = existingById || existingByName || null;
 
     if(!existing){
-      taskMap[String(cleanTask.id)] = cleanTask;
+
+      taskMapById[idKey] = cleanTask;
+      taskMapByName[nameKey] = cleanTask;
       return;
+
     }
 
     let existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
     let cleanTime = new Date(cleanTask.updatedAt || cleanTask.createdAt || 0).getTime();
 
+    let winningTask = existing;
+
     if(cleanTime >= existingTime){
-      taskMap[String(cleanTask.id)] = cleanTask;
+      winningTask = cleanTask;
     }
+
+    /*
+      Important:
+      If same task exists with different IDs on two devices,
+      keep one task only.
+      We keep the older/existing ID when possible so old checkmarks stay safer.
+    */
+    if(existing.id && cleanTask.id && String(existing.id) !== String(cleanTask.id)){
+      winningTask.id = existing.id;
+    }
+
+    taskMapById[String(winningTask.id)] = winningTask;
+    taskMapByName[nameKey] = winningTask;
 
   });
 
-  return Object.values(taskMap);
+  let finalTasks = [];
+  let usedNames = {};
+
+  Object.values(taskMapByName).forEach(function(task){
+
+    let nameKey = String(task.name || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+
+    if(usedNames[nameKey]) return;
+
+    usedNames[nameKey] = true;
+    finalTasks.push(task);
+
+  });
+
+  return finalTasks;
 
 }
 
