@@ -3873,9 +3873,7 @@ function openQuran16Page(){
 // CLOSE 16 LINE QURAN PAGE TO MAIN APP
 // =========================
 function closeQuran16Page(){
-  let params = new URLSearchParams(window.location.search);
-  let from = params.get("from") || localStorage.getItem("ibadahFolderReturnPage") || "quran";
-  localStorage.setItem("ibadahFolderReturnPage", from);
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
   window.location.href = "../";
 }
 
