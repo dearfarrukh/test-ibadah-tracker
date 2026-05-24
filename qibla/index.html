@@ -497,16 +497,36 @@ function onLocationFound() {
   const coordEl = document.getElementById('dir-coords');
   if (coordEl) coordEl.textContent = userLat.toFixed(2) + '° N, ' + userLon.toFixed(2) + '° E';
 
-  // City name
-  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`)
+   // =========================
+  // GET CURRENT LOCATION NAME
+  // Full logic inside: onLocationFound()
+  // =========================
+  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json&addressdetails=1`)
     .then(r => r.json())
     .then(d => {
-      const city = d.address.city || d.address.town || d.address.village || 'Your Location';
+
+      const address = d.address || {};
+
+      const city =
+        address.city ||
+        address.town ||
+        address.village ||
+        address.hamlet ||
+        address.municipality ||
+        address.suburb ||
+        address.city_district ||
+        address.neighbourhood ||
+        address.county ||
+        address.state ||
+        'Your Location';
+
       localStorage.setItem('userCity', city);
+
       ['city-name','city-name-2','city-name-ios'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = city;
       });
+
     })
     .catch(() => {
       ['city-name','city-name-2','city-name-ios'].forEach(id => {
@@ -514,7 +534,6 @@ function onLocationFound() {
         if (el) el.textContent = 'Your Location';
       });
     });
-
   // Now start compass
   startCompass();
 }
