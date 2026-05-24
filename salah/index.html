@@ -1388,9 +1388,25 @@ function applySalahDataToScreen(data){
   };
 
   Object.keys(map).forEach(function(id){
-    let el = document.getElementById(id);
-    if(el) el.innerText = map[id] || "--:--";
-  });
+  let el = document.getElementById(id);
+  if(el) el.innerText = map[id] || "--:--";
+});
+
+/* =========================
+   SAVE CURRENT SALAH DATA
+   Full function name: applySalahDataToScreen(data)
+========================= */
+localStorage.setItem("ibadahHomeSalahData", JSON.stringify({
+  locationName: data.locationName || "",
+  sourceLabel: data.sourceLabel || "",
+  fajr: data.fajr || "--:--",
+  sunrise: data.sunrise || "--:--",
+  dhuhr: data.dhuhr || "--:--",
+  asr: data.asr || "--:--",
+  maghrib: data.maghrib || "--:--",
+  isha: data.isha || "--:--",
+  savedAt: Date.now()
+}));
 }
 
 async function fetchSalahForLocation(dateObj, locationObj){
