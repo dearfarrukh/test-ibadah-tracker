@@ -948,8 +948,15 @@ function normalizeTrackerTask(rawTask, index){
     cleanTask.days = rawTask.days;
   }
 
-  return cleanTask;
+  if(rawTask.quranLine){
+    cleanTask.quranLine = String(rawTask.quranLine);
+  }
 
+  if(rawTask.quranPage !== undefined && rawTask.quranPage !== null && rawTask.quranPage !== ""){
+    cleanTask.quranPage = Number(rawTask.quranPage);
+  }
+
+  return cleanTask;
 }
 
 /* =========================
@@ -1919,12 +1926,15 @@ function loadTasks(){
 
     let shortcutHtml = "";
 
-    if(isSurah(task.name)){
+       if(isSurah(task.name) || isTrackerQuranShortcutReady(task)){
       shortcutHtml = `
         <div class="taskShortcutWrap">
-          <button class="pdfBtn" onclick="event.stopPropagation();handleTaskClick('${escapeJs(task.name)}')">📄 PDF</button>
-          ${isQuran16ShortcutReady(task.name) ? `
-            <button class="quranBtn" onclick="event.stopPropagation();openTrackerQuran16Shortcut('${escapeJs(task.name)}')">📖</button>
+          ${isSurah(task.name) ? `
+            <button class="pdfBtn" onclick="event.stopPropagation();handleTaskClick('${escapeJs(task.name)}')">📄 PDF</button>
+          ` : ``}
+
+          ${isTrackerQuranShortcutReady(task) ? `
+            <button class="quranBtn" onclick="event.stopPropagation();openTrackerQuranShortcut('${escapeJs(task.id)}','${escapeJs(task.name)}')">📖</button>
           ` : ``}
         </div>
       `;
@@ -2030,11 +2040,12 @@ function showAddTask(){
 
     <input id="taskNameInput" class="formInput" placeholder="Task name">
 
-    <select id="taskTypeSelect" class="formSelect" onchange="showTaskOptions()">
+      <select id="taskTypeSelect" class="formSelect" onchange="showTaskOptions()">
       <option value="">Select Type</option>
       <option value="range">Date Range</option>
       <option value="today">Start Today</option>
       <option value="days">Specific Days</option>
+      <option value="quran">Quran Surah Shortcut</option>
     </select>
 
     <div id="taskExtra"></div>
@@ -2084,9 +2095,28 @@ function showTaskOptions(){
     return;
   }
 
+  if(type === "quran"){
+    area.innerHTML = `
+      <div class="formLabel">Quran Style</div>
+      <select id="quranLineSelect" class="formSelect">
+        <option value="16">16 Line Quran</option>
+        <option value="15">15 Line Quran</option>
+      </select>
+
+      <div class="formLabel">Starting Page Number</div>
+      <input type="number" id="quranPageInput" class="formInput" placeholder="Example: 508">
+
+      <div class="smallText" style="margin-bottom:12px;">
+        Type the page number where this Surah starts. The task will start from today.
+      </div>
+    `;
+    return;
+  }
+
   area.innerHTML = "";
 }
 
+     
 /* =========================
    CREATE TASK
 ========================= */
@@ -2151,7 +2181,7 @@ function createTask(){
     task.end = null;
   }
 
-  if(type === "days"){
+   if(type === "days"){
     let days = Array.from(document.querySelectorAll("#taskExtra input:checked")).map(function(d){
       return d.value;
     });
@@ -2162,6 +2192,29 @@ function createTask(){
     }
 
     task.days = days;
+    task.start = today;
+    task.end = null;
+  }
+
+  if(type === "quran"){
+    let quranLineSelect = document.getElementById("quranLineSelect");
+    let quranPageInput = document.getElementById("quranPageInput");
+
+    if(!quranLineSelect || !quranPageInput){
+      showToast("Quran shortcut options are missing");
+      return;
+    }
+
+    let quranLine = quranLineSelect.value;
+    let quranPage = Number(quranPageInput.value);
+
+    if(!quranPage || quranPage < 1){
+      showToast("Please enter Quran page number");
+      return;
+    }
+
+    task.quranLine = quranLine;
+    task.quranPage = quranPage;
     task.start = today;
     task.end = null;
   }
@@ -2479,25 +2532,10 @@ function deleteFromToday(){
 }
 
 /* =========================
-   QURAN 16 SHORTCUT READY
+   GET TRACKER DEFAULT QURAN PAGE
+   Full function name: getTrackerDefaultQuranPage()
 ========================= */
-function isQuran16ShortcutReady(name){
-  return [
-    "Surah Mulk",
-    "Surah Sajdah",
-    "Surah Yaseen",
-    "Surah Rehman",
-    "Surah Taghabun",
-    "Surah Waqiya",
-    "Surah Ikhlas",
-    "Surah Ad Duha to Surah Al Nas"
-  ].includes(name);
-}
-
-/* =========================
-   OPEN TRACKER QURAN 16 SHORTCUT
-========================= */
-function openTrackerQuran16Shortcut(name){
+function getTrackerDefaultQuranPage(name, quranLine){
 
   let quran16SurahPageMap = {
     "Surah Sajdah":373,
@@ -2510,15 +2548,109 @@ function openTrackerQuran16Shortcut(name){
     "Surah Ikhlas":547
   };
 
-  let page = quran16SurahPageMap[name];
+  if(String(quranLine) === "16"){
+    return quran16SurahPageMap[name] || 0;
+  }
 
-  if(!page){
-    showToast("16 Line shortcut could not open");
+  return 0;
+
+}
+
+/* =========================
+   GET TRACKER QURAN SHORTCUT INFO
+   Full function name: getTrackerQuranShortcutInfo()
+========================= */
+function getTrackerQuranShortcutInfo(task){
+
+  if(!task) return null;
+
+  let name = String(task.name || "");
+  let quranLine = String(task.quranLine || "16");
+  let quranPage = Number(task.quranPage || 0);
+
+  if(!quranPage){
+    quranPage = getTrackerDefaultQuranPage(name, quranLine);
+  }
+
+  if(!quranPage){
+    return null;
+  }
+
+  let folderPath = "../16linequranpages/";
+
+  if(quranLine === "15"){
+    folderPath = "../QuranPages/";
+  }
+
+  return {
+    quranLine:quranLine,
+    quranPage:quranPage,
+    folderPath:folderPath
+  };
+
+}
+
+/* =========================
+   IS TRACKER QURAN SHORTCUT READY
+   Full function name: isTrackerQuranShortcutReady()
+========================= */
+function isTrackerQuranShortcutReady(task){
+
+  return getTrackerQuranShortcutInfo(task) !== null;
+
+}
+
+/* =========================
+   QURAN 16 SHORTCUT READY
+   Full function name: isQuran16ShortcutReady()
+   Kept for old code safety
+========================= */
+function isQuran16ShortcutReady(name){
+
+  return getTrackerDefaultQuranPage(name, "16") > 0;
+
+}
+
+/* =========================
+   OPEN TRACKER QURAN SHORTCUT
+   Full function name: openTrackerQuranShortcut()
+========================= */
+function openTrackerQuranShortcut(taskId, fallbackName){
+
+  let task = taskList.find(function(item){
+    return String(item.id) === String(taskId);
+  });
+
+  if(!task){
+    task = {
+      id:String(taskId || ""),
+      name:String(fallbackName || ""),
+      quranLine:"16"
+    };
+  }
+
+  let info = getTrackerQuranShortcutInfo(task);
+
+  if(!info){
+    showToast("Quran shortcut could not open");
     return;
   }
 
   localStorage.setItem("ibadahFolderReturnPage", "tracker");
-  window.location.href = "../16linequranpages/?page=" + page + "&from=tracker";
+
+  window.location.href = info.folderPath + "?page=" + info.quranPage + "&from=tracker";
+
+}
+
+/* =========================
+   OPEN TRACKER QURAN 16 SHORTCUT
+   Full function name: openTrackerQuran16Shortcut()
+   Kept for old code safety
+========================= */
+function openTrackerQuran16Shortcut(name){
+
+  openTrackerQuranShortcut("", name);
+
 }
 
 /* =========================
