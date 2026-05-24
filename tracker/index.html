@@ -948,8 +948,12 @@ function normalizeTrackerTask(rawTask, index){
     cleanTask.days = rawTask.days;
   }
 
-  if(rawTask.quranLine){
+   if(rawTask.quranLine){
     cleanTask.quranLine = String(rawTask.quranLine);
+  }
+
+  if(rawTask.quranSurahNumber !== undefined && rawTask.quranSurahNumber !== null && rawTask.quranSurahNumber !== ""){
+    cleanTask.quranSurahNumber = Number(rawTask.quranSurahNumber);
   }
 
   if(rawTask.quranPage !== undefined && rawTask.quranPage !== null && rawTask.quranPage !== ""){
@@ -2062,10 +2066,18 @@ function showAddTask(){
 ========================= */
 function showTaskOptions(){
 
-  let type = document.getElementById("taskTypeSelect").value;
+  let typeSelect = document.getElementById("taskTypeSelect");
   let area = document.getElementById("taskExtra");
+  let nameInput = document.getElementById("taskNameInput");
 
-  if(!area) return;
+  if(!typeSelect || !area) return;
+
+  let type = typeSelect.value;
+
+  if(nameInput){
+    nameInput.readOnly = false;
+    nameInput.placeholder = "Task name";
+  }
 
   if(type === "range"){
     area.innerHTML = `
@@ -2096,20 +2108,32 @@ function showTaskOptions(){
   }
 
   if(type === "quran"){
+
+    if(nameInput){
+      nameInput.value = "";
+      nameInput.readOnly = true;
+      nameInput.placeholder = "Surah name will fill automatically";
+    }
+
     area.innerHTML = `
       <div class="formLabel">Quran Style</div>
-      <select id="quranLineSelect" class="formSelect">
+      <select id="quranLineSelect" class="formSelect" onchange="renderQuranSurahOptions()">
         <option value="16">16 Line Quran</option>
         <option value="15">15 Line Quran</option>
       </select>
 
+      <div class="formLabel">Select Surah</div>
+      <select id="quranSurahSelect" class="formSelect" onchange="updateQuranPageFromSurah()"></select>
+
       <div class="formLabel">Starting Page Number</div>
-      <input type="number" id="quranPageInput" class="formInput" placeholder="Example: 508">
+      <input type="number" id="quranPageInput" class="formInput" readonly placeholder="Auto page number">
 
       <div class="smallText" style="margin-bottom:12px;">
-        Type the page number where this Surah starts. The task will start from today.
+        Select Quran style and Surah. Page number will fill automatically.
       </div>
     `;
+
+    renderQuranSurahOptions();
     return;
   }
 
@@ -2127,16 +2151,46 @@ function createTask(){
 
   if(!nameInput || !typeSelect) return;
 
-  let name = nameInput.value.trim();
   let type = typeSelect.value;
-
-  if(!name){
-    showToast("Please enter task name");
-    return;
-  }
+  let name = nameInput.value.trim();
 
   if(!type){
     showToast("Please select a task type");
+    return;
+  }
+
+  if(type === "quran"){
+
+    let quranLineSelect = document.getElementById("quranLineSelect");
+    let quranSurahSelect = document.getElementById("quranSurahSelect");
+    let quranPageInput = document.getElementById("quranPageInput");
+
+    if(!quranLineSelect || !quranSurahSelect || !quranPageInput){
+      showToast("Quran shortcut options are missing");
+      return;
+    }
+
+    let quranLine = quranLineSelect.value;
+    let quranSurahNumber = Number(quranSurahSelect.value);
+    let quranPage = Number(quranPageInput.value);
+    let surahName = getTrackerSurahNameByNumber(quranSurahNumber);
+
+    if(!quranSurahNumber || !surahName){
+      showToast("Please select Surah");
+      return;
+    }
+
+    if(!quranPage || quranPage < 1){
+      showToast("Quran page number is missing");
+      return;
+    }
+
+    name = surahName;
+    nameInput.value = name;
+  }
+
+  if(!name){
+    showToast("Please enter task name");
     return;
   }
 
@@ -2181,7 +2235,7 @@ function createTask(){
     task.end = null;
   }
 
-   if(type === "days"){
+  if(type === "days"){
     let days = Array.from(document.querySelectorAll("#taskExtra input:checked")).map(function(d){
       return d.value;
     });
@@ -2198,23 +2252,12 @@ function createTask(){
 
   if(type === "quran"){
     let quranLineSelect = document.getElementById("quranLineSelect");
+    let quranSurahSelect = document.getElementById("quranSurahSelect");
     let quranPageInput = document.getElementById("quranPageInput");
 
-    if(!quranLineSelect || !quranPageInput){
-      showToast("Quran shortcut options are missing");
-      return;
-    }
-
-    let quranLine = quranLineSelect.value;
-    let quranPage = Number(quranPageInput.value);
-
-    if(!quranPage || quranPage < 1){
-      showToast("Please enter Quran page number");
-      return;
-    }
-
-    task.quranLine = quranLine;
-    task.quranPage = quranPage;
+    task.quranLine = quranLineSelect.value;
+    task.quranSurahNumber = Number(quranSurahSelect.value);
+    task.quranPage = Number(quranPageInput.value);
     task.start = today;
     task.end = null;
   }
@@ -2532,27 +2575,490 @@ function deleteFromToday(){
 }
 
 /* =========================
+   TRACKER SURAH LIST
+   Full function name: getTrackerSurahList()
+========================= */
+function getTrackerSurahList(){
+
+  return [
+    {number:1, name:"Surah Fatiha"},
+    {number:2, name:"Surah Baqarah"},
+    {number:3, name:"Surah Aal Imran"},
+    {number:4, name:"Surah Nisa"},
+    {number:5, name:"Surah Maidah"},
+    {number:6, name:"Surah Anam"},
+    {number:7, name:"Surah Araf"},
+    {number:8, name:"Surah Anfal"},
+    {number:9, name:"Surah Taubah"},
+    {number:10, name:"Surah Yunus"},
+    {number:11, name:"Surah Hud"},
+    {number:12, name:"Surah Yusuf"},
+    {number:13, name:"Surah Raad"},
+    {number:14, name:"Surah Ibrahim"},
+    {number:15, name:"Surah Hijr"},
+    {number:16, name:"Surah Nahl"},
+    {number:17, name:"Surah Isra"},
+    {number:18, name:"Surah Kahf"},
+    {number:19, name:"Surah Maryam"},
+    {number:20, name:"Surah Taha"},
+    {number:21, name:"Surah Anbiya"},
+    {number:22, name:"Surah Hajj"},
+    {number:23, name:"Surah Muminoon"},
+    {number:24, name:"Surah Noor"},
+    {number:25, name:"Surah Furqan"},
+    {number:26, name:"Surah Shuara"},
+    {number:27, name:"Surah Naml"},
+    {number:28, name:"Surah Qasas"},
+    {number:29, name:"Surah Ankabut"},
+    {number:30, name:"Surah Rum"},
+    {number:31, name:"Surah Luqman"},
+    {number:32, name:"Surah Sajdah"},
+    {number:33, name:"Surah Ahzab"},
+    {number:34, name:"Surah Saba"},
+    {number:35, name:"Surah Fatir"},
+    {number:36, name:"Surah Yaseen"},
+    {number:37, name:"Surah Saffat"},
+    {number:38, name:"Surah Sad"},
+    {number:39, name:"Surah Zumar"},
+    {number:40, name:"Surah Ghafir"},
+    {number:41, name:"Surah Fussilat"},
+    {number:42, name:"Surah Shura"},
+    {number:43, name:"Surah Zukhruf"},
+    {number:44, name:"Surah Dukhan"},
+    {number:45, name:"Surah Jathiyah"},
+    {number:46, name:"Surah Ahqaf"},
+    {number:47, name:"Surah Muhammad"},
+    {number:48, name:"Surah Fath"},
+    {number:49, name:"Surah Hujurat"},
+    {number:50, name:"Surah Qaf"},
+    {number:51, name:"Surah Dhariyat"},
+    {number:52, name:"Surah Tur"},
+    {number:53, name:"Surah Najm"},
+    {number:54, name:"Surah Qamar"},
+    {number:55, name:"Surah Rehman"},
+    {number:56, name:"Surah Waqiya"},
+    {number:57, name:"Surah Hadid"},
+    {number:58, name:"Surah Mujadilah"},
+    {number:59, name:"Surah Hashr"},
+    {number:60, name:"Surah Mumtahanah"},
+    {number:61, name:"Surah Saff"},
+    {number:62, name:"Surah Jumuah"},
+    {number:63, name:"Surah Munafiqun"},
+    {number:64, name:"Surah Taghabun"},
+    {number:65, name:"Surah Talaq"},
+    {number:66, name:"Surah Tahrim"},
+    {number:67, name:"Surah Mulk"},
+    {number:68, name:"Surah Qalam"},
+    {number:69, name:"Surah Haqqah"},
+    {number:70, name:"Surah Maarij"},
+    {number:71, name:"Surah Nuh"},
+    {number:72, name:"Surah Jinn"},
+    {number:73, name:"Surah Muzammil"},
+    {number:74, name:"Surah Muddathir"},
+    {number:75, name:"Surah Qiyamah"},
+    {number:76, name:"Surah Insan"},
+    {number:77, name:"Surah Mursalat"},
+    {number:78, name:"Surah Naba"},
+    {number:79, name:"Surah Naziat"},
+    {number:80, name:"Surah Abasa"},
+    {number:81, name:"Surah Takwir"},
+    {number:82, name:"Surah Infitar"},
+    {number:83, name:"Surah Mutaffifin"},
+    {number:84, name:"Surah Inshiqaq"},
+    {number:85, name:"Surah Buruj"},
+    {number:86, name:"Surah Tariq"},
+    {number:87, name:"Surah Ala"},
+    {number:88, name:"Surah Ghashiyah"},
+    {number:89, name:"Surah Fajr"},
+    {number:90, name:"Surah Balad"},
+    {number:91, name:"Surah Shams"},
+    {number:92, name:"Surah Lail"},
+    {number:93, name:"Surah Duha"},
+    {number:94, name:"Surah Inshirah"},
+    {number:95, name:"Surah Tin"},
+    {number:96, name:"Surah Alaq"},
+    {number:97, name:"Surah Qadr"},
+    {number:98, name:"Surah Bayyinah"},
+    {number:99, name:"Surah Zilzal"},
+    {number:100, name:"Surah Adiyat"},
+    {number:101, name:"Surah Qariah"},
+    {number:102, name:"Surah Takathur"},
+    {number:103, name:"Surah Asr"},
+    {number:104, name:"Surah Humazah"},
+    {number:105, name:"Surah Fil"},
+    {number:106, name:"Surah Quraish"},
+    {number:107, name:"Surah Maun"},
+    {number:108, name:"Surah Kausar"},
+    {number:109, name:"Surah Kafirun"},
+    {number:110, name:"Surah Nasr"},
+    {number:111, name:"Surah Lahab"},
+    {number:112, name:"Surah Ikhlas"},
+    {number:113, name:"Surah Falaq"},
+    {number:114, name:"Surah Nas"}
+  ];
+
+}
+
+/* =========================
+   GET TRACKER SURAH NAME BY NUMBER
+   Full function name: getTrackerSurahNameByNumber()
+========================= */
+function getTrackerSurahNameByNumber(number){
+
+  let found = getTrackerSurahList().find(function(item){
+    return Number(item.number) === Number(number);
+  });
+
+  return found ? found.name : "";
+
+}
+
+/* =========================
+   GET TRACKER SURAH NUMBER BY NAME
+   Full function name: getTrackerSurahNumberByName()
+========================= */
+function getTrackerSurahNumberByName(name){
+
+  let cleanName = String(name || "").trim().toLowerCase();
+
+  let found = getTrackerSurahList().find(function(item){
+    return String(item.name || "").trim().toLowerCase() === cleanName;
+  });
+
+  return found ? Number(found.number) : 0;
+
+}
+
+/* =========================
+   GET TRACKER 16 LINE SURAH PAGE MAP
+   Full function name: getTrackerQuran16SurahPageMap()
+========================= */
+function getTrackerQuran16SurahPageMap(){
+
+  return {
+    1:1,
+    2:2,
+    3:45,
+    4:69,
+    5:96,
+    6:115,
+    7:136,
+    8:159,
+    9:168,
+    10:187,
+    11:199,
+    12:212,
+    13:224,
+    14:230,
+    15:235,
+    16:240,
+    17:254,
+    18:264,
+    19:275,
+    20:281,
+    21:290,
+    22:299,
+    23:308,
+    24:315,
+    25:324,
+    26:333,
+    27:339,
+    28:347,
+    29:357,
+    30:364,
+    31:370,
+    32:373,
+    33:376,
+    34:385,
+    35:391,
+    36:396,
+    37:401,
+    38:408,
+    39:412,
+    40:420,
+    41:429,
+    42:434,
+    43:440,
+    44:446,
+    45:448,
+    46:452,
+    47:456,
+    48:460,
+    49:463,
+    50:466,
+    51:468,
+    52:471,
+    53:473,
+    54:475,
+    55:478,
+    56:481,
+    57:484,
+    58:488,
+    59:491,
+    60:495,
+    61:497,
+    62:499,
+    63:500,
+    64:502,
+    65:504,
+    66:506,
+    67:508,
+    68:510,
+    69:512,
+    70:514,
+    71:516,
+    72:518,
+    73:520,
+    74:521,
+    75:523,
+    76:524,
+    77:526,
+    78:528,
+    79:529,
+    80:530,
+    81:532,
+    82:532,
+    83:533,
+    84:534,
+    85:535,
+    86:536,
+    87:537,
+    88:537,
+    89:538,
+    90:539,
+    91:540,
+    92:540,
+    93:541,
+    94:541,
+    95:542,
+    96:542,
+    97:543,
+    98:543,
+    99:544,
+    100:544,
+    101:545,
+    102:545,
+    103:545,
+    104:545,
+    105:546,
+    106:546,
+    107:546,
+    108:546,
+    109:547,
+    110:547,
+    111:547,
+    112:547,
+    113:548,
+    114:548
+  };
+
+}
+
+/* =========================
+   GET TRACKER 15 LINE SURAH PAGE MAP
+   Full function name: getTrackerQuran15SurahPageMap()
+========================= */
+function getTrackerQuran15SurahPageMap(){
+
+  return {
+    1:1,
+    2:2,
+    3:67,
+    4:105,
+    5:146,
+    6:176,
+    7:208,
+    8:245,
+    9:259,
+    10:287,
+    11:307,
+    12:327,
+    13:345,
+    14:354,
+    15:363,
+    16:371,
+    17:392,
+    18:407,
+    19:424,
+    20:434,
+    21:448,
+    22:461,
+    23:476,
+    24:486,
+    25:500,
+    26:510,
+    27:524,
+    28:536,
+    29:551,
+    30:561,
+    31:570,
+    32:576,
+    33:580,
+    34:594,
+    35:602,
+    36:610,
+    37:617,
+    38:627,
+    39:634,
+    40:646,
+    41:658,
+    42:667,
+    43:676,
+    44:685,
+    45:690,
+    46:696,
+    47:703,
+    48:709,
+    49:715,
+    50:720,
+    51:724,
+    52:728,
+    53:731,
+    54:735,
+    55:739,
+    56:744,
+    57:749,
+    58:756,
+    59:760,
+    60:765,
+    61:769,
+    62:772,
+    63:774,
+    64:776,
+    65:779,
+    66:782,
+    67:786,
+    68:789,
+    69:793,
+    70:796,
+    71:799,
+    72:802,
+    73:805,
+    74:807,
+    75:810,
+    76:812,
+    77:815,
+    78:818,
+    79:819,
+    80:821,
+    81:823,
+    82:824,
+    83:825,
+    84:827,
+    85:828,
+    86:829,
+    87:830,
+    88:831,
+    89:832,
+    90:834,
+    91:835,
+    92:836,
+    93:837,
+    94:837,
+    95:838,
+    96:838,
+    97:839,
+    98:839,
+    99:840,
+    100:841,
+    101:842,
+    102:842,
+    103:843,
+    104:843,
+    105:843,
+    106:844,
+    107:844,
+    108:845,
+    109:845,
+    110:845,
+    111:846,
+    112:846,
+    113:846,
+    114:847
+  };
+
+}
+
+/* =========================
+   GET TRACKER SURAH PAGE BY LINE
+   Full function name: getTrackerSurahPageByLine()
+========================= */
+function getTrackerSurahPageByLine(surahNumber, quranLine){
+
+  let map = getTrackerQuran16SurahPageMap();
+
+  if(String(quranLine) === "15"){
+    map = getTrackerQuran15SurahPageMap();
+  }
+
+  return Number(map[Number(surahNumber)] || 0);
+
+}
+
+/* =========================
+   RENDER QURAN SURAH OPTIONS
+   Full function name: renderQuranSurahOptions()
+========================= */
+function renderQuranSurahOptions(){
+
+  let quranLineSelect = document.getElementById("quranLineSelect");
+  let quranSurahSelect = document.getElementById("quranSurahSelect");
+
+  if(!quranLineSelect || !quranSurahSelect) return;
+
+  let quranLine = quranLineSelect.value;
+
+  quranSurahSelect.innerHTML = getTrackerSurahList().map(function(item){
+
+    let page = getTrackerSurahPageByLine(item.number, quranLine);
+
+    return `<option value="${item.number}">${item.number}. ${escapeHtml(item.name)} — Page ${page}</option>`;
+
+  }).join("");
+
+  updateQuranPageFromSurah();
+
+}
+
+/* =========================
+   UPDATE QURAN PAGE FROM SURAH
+   Full function name: updateQuranPageFromSurah()
+========================= */
+function updateQuranPageFromSurah(){
+
+  let quranLineSelect = document.getElementById("quranLineSelect");
+  let quranSurahSelect = document.getElementById("quranSurahSelect");
+  let quranPageInput = document.getElementById("quranPageInput");
+  let nameInput = document.getElementById("taskNameInput");
+
+  if(!quranLineSelect || !quranSurahSelect || !quranPageInput) return;
+
+  let quranLine = quranLineSelect.value;
+  let surahNumber = Number(quranSurahSelect.value);
+  let page = getTrackerSurahPageByLine(surahNumber, quranLine);
+  let surahName = getTrackerSurahNameByNumber(surahNumber);
+
+  quranPageInput.value = page || "";
+
+  if(nameInput && surahName){
+    nameInput.value = surahName;
+  }
+
+}
+
+/* =========================
    GET TRACKER DEFAULT QURAN PAGE
    Full function name: getTrackerDefaultQuranPage()
 ========================= */
 function getTrackerDefaultQuranPage(name, quranLine){
 
-  let quran16SurahPageMap = {
-    "Surah Sajdah":373,
-    "Surah Yaseen":396,
-    "Surah Rehman":478,
-    "Surah Waqiya":481,
-    "Surah Taghabun":502,
-    "Surah Mulk":508,
-    "Surah Ad Duha to Surah Al Nas":541,
-    "Surah Ikhlas":547
-  };
+  let surahNumber = getTrackerSurahNumberByName(name);
 
-  if(String(quranLine) === "16"){
-    return quran16SurahPageMap[name] || 0;
+  if(!surahNumber){
+    return 0;
   }
 
-  return 0;
+  return getTrackerSurahPageByLine(surahNumber, quranLine);
 
 }
 
@@ -2566,7 +3072,16 @@ function getTrackerQuranShortcutInfo(task){
 
   let name = String(task.name || "");
   let quranLine = String(task.quranLine || "16");
+  let quranSurahNumber = Number(task.quranSurahNumber || 0);
   let quranPage = Number(task.quranPage || 0);
+
+  if(!quranSurahNumber){
+    quranSurahNumber = getTrackerSurahNumberByName(name);
+  }
+
+  if(!quranPage && quranSurahNumber){
+    quranPage = getTrackerSurahPageByLine(quranSurahNumber, quranLine);
+  }
 
   if(!quranPage){
     quranPage = getTrackerDefaultQuranPage(name, quranLine);
@@ -2584,6 +3099,7 @@ function getTrackerQuranShortcutInfo(task){
 
   return {
     quranLine:quranLine,
+    quranSurahNumber:quranSurahNumber,
     quranPage:quranPage,
     folderPath:folderPath
   };
