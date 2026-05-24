@@ -67,12 +67,7 @@ body{
    HEADER LOGO SAME STYLE AS TRACKER
 ========================= */
 .homeHeader{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  margin-bottom:18px;
+  display:none;
 }
 
 .homeHeaderLogo{
@@ -99,9 +94,9 @@ body{
 ========================= */
 .homeInfoCard{
   position:absolute;
-  top:calc(env(safe-area-inset-top) + 58px);
+  top:calc(env(safe-area-inset-top) + 18px);
   right:4%;
-  width:56%;
+  width:62%;
   background:transparent;
   border:none;
   border-radius:0;
@@ -113,35 +108,22 @@ body{
   text-align:right;
   z-index:6;
 }
-
-#homeIslamicDate{
-  margin-top:5px;
-  font-size:15px;
-  font-weight:950;
-  line-height:1.12;
-  text-shadow:0 3px 10px rgba(0,0,0,0.28);
+#homeLocationName,
+#homeIslamicDate,
+#homeNormalDate{
+  margin-top:2px;
+  font-size:12px;
+  font-weight:900;
+  line-height:1.15;
+  color:rgba(255,255,255,0.84);
+  text-shadow:0 3px 10px rgba(0,0,0,0.24);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
-#homeIslamicDate{
-  margin-top:5px;
-  font-size:15px;
-  font-weight:900;
-  line-height:1.15;
-  color:rgba(255,255,255,0.82);
-  text-shadow:0 3px 10px rgba(0,0,0,0.24);
-}
+     
 
-#homeNormalDate{
-  margin-top:2px;
-  font-size:13px;
-  font-weight:900;
-  line-height:1.15;
-  color:rgba(255,255,255,0.82);
-  text-shadow:0 3px 10px rgba(0,0,0,0.24);
-}
 
 /* =========================
    BISMILLAH
@@ -151,12 +133,12 @@ body{
   text-align:center;
   font-family:"Amiri","Noto Naskh Arabic",serif;
   direction:rtl;
-  font-size:21px;
+  font-size:25px;
   font-weight:500;
-  color:rgba(255,255,255,0.72);
+  color:rgba(255,255,255,0.78);
   text-shadow:0 2px 8px rgba(0,0,0,0.14);
   white-space:nowrap;
-  margin:92px 0 16px 0;
+  margin:78px 0 18px 0;
 }
 
 /* =========================
@@ -461,10 +443,10 @@ body{
     font-size:18px;
   }
 
-  .homeBismillah{
-    font-size:19px;
-    margin-top:88px;
-  }
+ .homeBismillah{
+  font-size:23px;
+  margin-top:76px;
+}
 
   #homeNextSalahName,
   .timeLeftLabel{
