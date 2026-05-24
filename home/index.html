@@ -235,35 +235,36 @@ body{
 }
 
 /* =========================
-   TOP SHORTCUTS - SAME ICON CARD STYLE
+   TOP SHORTCUTS - NEW SAMPLE STYLE
 ========================= */
 .topShortcutCard{
   width:100%;
-  background:white;
-  border-radius:26px;
-  padding:18px 5%;
-  margin-bottom:15px;
-  box-shadow:0 9px 24px rgba(0,0,0,0.08);
-  border:1px solid rgba(0,0,0,0.04);
+  background:transparent;
+  border-radius:0;
+  padding:0;
+  margin-bottom:14px;
+  box-shadow:none;
+  border:none;
 }
 
 .topShortcutGrid{
+  width:100%;
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:10px;
+  gap:12px;
   align-items:stretch;
 }
 
 .topShortcutBtn{
   width:100%;
   border:none;
-  background:#f7f7fa;
-  border-radius:22px;
+  background:white;
+  border-radius:24px;
   text-align:center;
   cursor:pointer;
-  padding:14px 6px;
-  min-height:92px;
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03);
+  padding:17px 6px 15px 6px;
+  min-height:104px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -275,16 +276,16 @@ body{
 }
 
 .topShortcutIconBox{
-  width:44px;
-  height:44px;
-  border-radius:16px;
-  background:white;
+  width:50px;
+  height:50px;
+  border-radius:18px;
+  background:#f4f4f7;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 5px 14px rgba(0,0,0,0.07);
-  margin-bottom:8px;
-  font-size:24px;
+  box-shadow:none;
+  margin-bottom:10px;
+  font-size:27px;
   line-height:1;
 }
 
@@ -297,16 +298,16 @@ body{
 }
 
 /* =========================
-   GOLD SHORTCUT CARD - CLEAN MATCHING STYLE
+   GOLD SHORTCUT CARD - NEW SAMPLE STYLE
 ========================= */
 .goldShortcutCard{
   width:100%;
-  background:white;
-  border-radius:26px;
-  padding:18px 5%;
+  background:linear-gradient(135deg, #fff9e7 0%, #f5d77d 48%, #d5a832 100%);
+  border-radius:28px;
+  padding:15px;
   margin-bottom:15px;
-  box-shadow:0 9px 24px rgba(0,0,0,0.08);
-  border:1px solid rgba(0,0,0,0.04);
+  box-shadow:0 9px 24px rgba(0,0,0,0.10);
+  border:1px solid rgba(184,139,31,0.22);
 }
 
 .goldGrid{
@@ -317,16 +318,18 @@ body{
 
 .goldBtn{
   border:none;
-  background:#fff8e1;
+  background:rgba(255,255,255,0.62);
   border-radius:22px;
   min-height:92px;
   padding:14px 6px;
   cursor:pointer;
-  box-shadow:inset 0 0 0 1px rgba(205,162,55,0.20);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.38);
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
 }
 
 .goldBtn:active{
@@ -334,17 +337,17 @@ body{
 }
 
 .goldEmoji{
-  width:44px;
-  height:44px;
-  border-radius:16px;
+  width:46px;
+  height:46px;
+  border-radius:17px;
   background:white;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:24px;
+  font-size:26px;
   line-height:1;
-  margin-bottom:8px;
-  box-shadow:0 5px 14px rgba(0,0,0,0.07);
+  margin-bottom:9px;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
 }
 
 .goldBtn span{
@@ -354,6 +357,7 @@ body{
   line-height:1.15;
 }
 
+     
 /* =========================
    QURAN AYAT CARD
 ========================= */
