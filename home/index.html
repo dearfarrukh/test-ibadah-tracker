@@ -766,7 +766,38 @@ async function updateHomePageSalahSummary(){
     let loc = await loadHomeLocationData();
     locationEl.innerText = loc.city || "My Location";
 
-    let liveData = await loadHomeSalahTimes(now, loc.latitude, loc.longitude);
+    /* =========================
+   LOAD SALAH TIMES FROM SALAH PAGE CACHE
+========================= */
+let savedSalahData = localStorage.getItem("ibadahHomeSalahData");
+
+let liveData = null;
+
+if(savedSalahData){
+
+  try{
+
+    let parsed = JSON.parse(savedSalahData);
+
+    liveData = {
+      fajr: parsed.fajr,
+      dhuhr: parsed.dhuhr,
+      asr: parsed.asr,
+      maghrib: parsed.maghrib,
+      isha: parsed.isha
+    };
+
+  }catch(error){
+
+    liveData = await loadHomeSalahTimes(now, loc.latitude, loc.longitude);
+
+  }
+
+}else{
+
+  liveData = await loadHomeSalahTimes(now, loc.latitude, loc.longitude);
+
+}
 
     let salahList = [
       {name:"Fajr", time: liveData.fajr},
