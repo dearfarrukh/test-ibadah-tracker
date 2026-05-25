@@ -1559,15 +1559,6 @@ let audioPaused = true;
 let ayahAudioUrlCache = {};
 let activeSheetType = "";
 
-/* =========================
-   TRANSLATION SPEECH STATE
-   Full variables used by:
-   speakSelectedTranslationsAfterAyah()
-   stopTranslationSpeech()
-========================= */
-let translationSpeechToken = 0;
-let translationSpeechIsPlaying = false;
-
 const QURAN_API_BASE = "https://api.alquran.cloud/v1";
 const QURAN_COM_API_BASE = "https://api.quran.com/api/v4";
 
@@ -2208,6 +2199,8 @@ async function openArabicReadingPage(surahNumber, backPage, targetAyahNumber){
     readingPage.style.display = "block";
   }
 
+  setupAudioEndedListener();
+
   arabicReadingPageIsOpen = true;
   document.body.classList.remove("quran-global-mini-on");
 
@@ -2606,200 +2599,6 @@ function updateTranslationToggleUI(){
 }
 
 /* =========================
-   STOP TRANSLATION SPEECH
-   Full function name: stopTranslationSpeech()
-========================= */
-function stopTranslationSpeech(){
-
-  translationSpeechToken++;
-
-  translationSpeechIsPlaying = false;
-
-  if("speechSynthesis" in window){
-    window.speechSynthesis.cancel();
-  }
-
-}
-
-/* =========================
-   SPEAK ONE TRANSLATION TEXT
-   Full function name: speakOneTranslationText(text, lang, label)
-========================= */
-function speakOneTranslationText(text, lang, label){
-
-  return new Promise(function(resolve){
-
-    if(!("speechSynthesis" in window)){
-      resolve();
-      return;
-    }
-
-    let cleanText = String(text || "").trim();
-
-    if(!cleanText){
-      resolve();
-      return;
-    }
-
-    /* =========================
-       IMPORTANT FIX
-       iPhone/Safari sometimes does not fire speech onend.
-       This timer continues to next ayah if voice gets stuck.
-    ========================= */
-    let alreadyResolved = false;
-
-    function finishSpeechStep(){
-      if(alreadyResolved) return;
-
-      alreadyResolved = true;
-
-      clearTimeout(window.translationSpeechSafetyTimer);
-
-      resolve();
-    }
-
-    let utterance = new SpeechSynthesisUtterance(cleanText);
-
-    utterance.lang = lang;
-    utterance.rate = 0.88;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
-    let voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
-
-    let matchingVoice = voices.find(function(voice){
-      return String(voice.lang || "").toLowerCase().startsWith(String(lang || "").toLowerCase().slice(0,2));
-    });
-
-    if(matchingVoice){
-      utterance.voice = matchingVoice;
-    }
-
-    utterance.onend = function(){
-      finishSpeechStep();
-    };
-
-    utterance.onerror = function(){
-      finishSpeechStep();
-    };
-
-    updateAudioStatus("Reciting " + label + " translation...");
-
-    window.speechSynthesis.cancel();
-
-    setTimeout(function(){
-
-      window.speechSynthesis.speak(utterance);
-
-      let estimatedTime = Math.max(2500, Math.min(14000, cleanText.length * 95));
-
-      window.translationSpeechSafetyTimer = setTimeout(function(){
-        finishSpeechStep();
-      }, estimatedTime);
-
-    }, 120);
-
-  });
-
-}
-/* =========================
-   SPEAK SELECTED TRANSLATIONS AFTER AYAH
-   Full function name: speakSelectedTranslationsAfterAyah(index)
-========================= */
-async function speakSelectedTranslationsAfterAyah(index){
-
-  if(!urduTranslationOn && !englishTranslationOn){
-    return;
-  }
-
-  if(index < 0 || index >= currentArabicAyahs.length){
-    return;
-  }
-
-  if(!("speechSynthesis" in window)){
-    updateAudioStatus("Translation voice is not supported on this browser.");
-    return;
-  }
-
-  let myToken = ++translationSpeechToken;
-
-  translationSpeechIsPlaying = true;
-
-  let urduAyah = currentUrduAyahs[index] || {};
-  let englishAyah = currentArabicAyahs[index] || {};
-
-  if(urduTranslationOn && String(urduAyah.text || "").trim()){
-    await speakOneTranslationText(urduAyah.text, "ur-PK", "Urdu");
-
-    if(myToken !== translationSpeechToken){
-      translationSpeechIsPlaying = false;
-      return;
-    }
-  }
-
-  if(englishTranslationOn && String(englishAyah.english || "").trim()){
-    await speakOneTranslationText(englishAyah.english, "en-US", "English");
-
-    if(myToken !== translationSpeechToken){
-      translationSpeechIsPlaying = false;
-      return;
-    }
-  }
-
-  translationSpeechIsPlaying = false;
-
-}
-
-/* =========================
-   CONTINUE AUDIO AFTER TRANSLATION
-   Full function name: continueAudioAfterTranslation()
-========================= */
-async function continueAudioAfterTranslation(){
-
-  if(currentAudioMode !== "ayah"){
-    audioPaused = true;
-    updateCompactAudioUI();
-    updateGlobalMiniPlayerUI();
-    return;
-  }
-
-  let finishedIndex = currentPlayingAyahIndex;
-
-  try{
-    await speakSelectedTranslationsAfterAyah(finishedIndex);
-  }catch(error){
-    console.log("Translation speech skipped:", error);
-  }
-
-  if(currentAudioMode !== "ayah"){
-    return;
-  }
-
-  if(isRepeatRangeActive()){
-    let start = Math.min(repeatRangeStartIndex, repeatRangeEndIndex);
-    let end = Math.max(repeatRangeStartIndex, repeatRangeEndIndex);
-
-    if(finishedIndex < end){
-      playAyahAudioByIndex(finishedIndex + 1);
-    }else{
-      playAyahAudioByIndex(start);
-    }
-
-    return;
-  }
-
-  if(autoContinueAyahs){
-    playAyahAudioByIndex(finishedIndex + 1);
-  }else{
-    audioPaused = true;
-    refreshAyahAudioButtons();
-    updateCompactAudioUI();
-    updateGlobalMiniPlayerUI();
-  }
-
-}
-     
-/* =========================
    QURAN AUDIO FUNCTIONS
 ========================= */
 function getSelectedReciterKey(){
@@ -2925,6 +2724,9 @@ function toggleAyahAudio(event, index){
 }
 
 async function playAyahAudioByIndex(index){
+
+  setupAudioEndedListener();
+
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
 
@@ -3025,7 +2827,6 @@ function toggleAyahRepeat(event, index){
 }
 
 function handleQuranAudioEnded(){
-
   if(currentAudioMode === "bismillah"){
     playBismillahBeforeSurah = false;
     playAyahAudioByIndex(0);
@@ -3039,8 +2840,26 @@ function handleQuranAudioEnded(){
     return;
   }
 
-  continueAudioAfterTranslation();
+  if(isRepeatRangeActive()){
+    let start = Math.min(repeatRangeStartIndex, repeatRangeEndIndex);
+    let end = Math.max(repeatRangeStartIndex, repeatRangeEndIndex);
 
+    if(currentPlayingAyahIndex < end){
+      playAyahAudioByIndex(currentPlayingAyahIndex + 1);
+    }else{
+      playAyahAudioByIndex(start);
+    }
+    return;
+  }
+
+  if(autoContinueAyahs){
+    playAyahAudioByIndex(currentPlayingAyahIndex + 1);
+  }else{
+    audioPaused = true;
+    refreshAyahAudioButtons();
+    updateCompactAudioUI();
+    updateGlobalMiniPlayerUI();
+  }
 }
 
 function toggleCurrentAudioPlayback(event){
@@ -3050,22 +2869,6 @@ function toggleCurrentAudioPlayback(event){
 
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
-
-  if("speechSynthesis" in window && window.speechSynthesis.speaking && audio.paused){
-    if(window.speechSynthesis.paused){
-      window.speechSynthesis.resume();
-      audioPaused = false;
-      updateAudioStatus("Translation resumed.");
-    }else{
-      window.speechSynthesis.pause();
-      audioPaused = true;
-      updateAudioStatus("Translation paused.");
-    }
-
-    updateCompactAudioUI();
-    refreshAyahAudioButtons();
-    return;
-  }
 
   if(!audio.src){
     startSurahAudioFromBeginning();
@@ -3081,11 +2884,6 @@ function toggleCurrentAudioPlayback(event){
     });
   }else{
     audio.pause();
-
-    if("speechSynthesis" in window && window.speechSynthesis.speaking){
-      window.speechSynthesis.pause();
-    }
-
     audioPaused = true;
     updateAudioStatus("Paused.");
     updateCompactAudioUI();
@@ -3097,22 +2895,17 @@ function pauseCurrentSurahAudio(){
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
 
-  if("speechSynthesis" in window && window.speechSynthesis.speaking){
-    window.speechSynthesis.pause();
-  }
-
   audio.pause();
   audioPaused = true;
   updateAudioStatus("Paused.");
   updateCompactAudioUI();
   refreshAyahAudioButtons();
 }
+
 function stopCurrentSurahAudio(){
-
-  stopTranslationSpeech();
-
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
+
   audio.pause();
   audio.currentTime = 0;
   audio.removeAttribute("src");
@@ -3302,6 +3095,9 @@ function shouldShowBismillahCard(){
 }
 
 async function playBismillahAudioThenAyahOne(){
+
+  setupAudioEndedListener();
+
   let audio = document.getElementById("quranAudioPlayer");
   if(!audio) return;
 
@@ -3621,6 +3417,8 @@ function escapeHtml(value){
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
 
+  setupAudioEndedListener();
+  loadSavedReciter();
   updateResumeText();
   loadOnlineSurahList();
   updateUrduToggleUI();
