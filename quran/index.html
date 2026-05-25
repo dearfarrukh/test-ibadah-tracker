@@ -41,6 +41,7 @@ body{position:fixed;inset:0;}
 .quranTypeBtn.active{background:linear-gradient(135deg,#005ee8,#08b6ff);color:white;box-shadow:0 7px 16px rgba(0,101,220,.22);}
 .quranTopToolCard{background:rgba(255,255,255,.88);border-radius:28px;border:1px solid rgba(28,126,205,.12);box-shadow:0 12px 28px rgba(28,126,205,.13);padding:10px;margin-bottom:0;}
 .quranToolRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.quranToolRowFour{grid-template-columns:repeat(4,1fr);}
 .quranToolBtn{height:48px;border:none;border-radius:18px;background:#f1f9ff;color:#08396f;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:950;cursor:pointer;white-space:nowrap;}
 .quranToolIcon{font-size:18px;}
 .quranStickyTools{position:sticky;top:68px;z-index:45;padding:10px 0;background:linear-gradient(180deg,rgba(234,246,255,.98),rgba(234,246,255,.82));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
@@ -80,7 +81,6 @@ body{position:fixed;inset:0;}
   <div class="quranTopBar">
     <button class="quranBackBtn" onclick="goBackFromQuranPage()">←</button>
     <div class="quranTopTitle"><div class="quranLogoCircle">📖</div><div id="quranTopTitleText">15 Line Quran</div></div>
-    <button class="quranSearchBtn" onclick="toggleQuranSearch()">⌕</button>
   </div>
 
   <div class="quranContent">
@@ -104,10 +104,11 @@ body{position:fixed;inset:0;}
     </div>
 
     <div class="quranTopToolCard">
-      <div class="quranToolRow">
+      <div class="quranToolRow quranToolRowFour">
         <button class="quranToolBtn" onclick="openSelectedQuranOption('bookmark')"><span class="quranToolIcon">🔖</span><span>Bookmark</span></button>
         <button class="quranToolBtn" onclick="openSelectedQuranOption('resume')"><span class="quranToolIcon">▶</span><span>Resume</span></button>
-        <button class="quranToolBtn" onclick="openSelectedQuranOption('goto')"><span class="quranToolIcon">#</span><span>Go Page</span></button>
+        <button class="quranToolBtn" onclick="openSelectedQuranOption('goto')"><span class="quranToolIcon">#</span><span>Go To</span></button>
+        <button class="quranToolBtn" onclick="toggleQuranSearch()"><span class="quranToolIcon">⌕</span><span>Search</span></button>
       </div>
     </div>
 
