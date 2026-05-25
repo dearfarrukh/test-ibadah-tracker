@@ -5,13 +5,15 @@
 <!-- =========================
      SALAH FOLDER PAGE
      File: salah/index.html
-     Restyled to match Ibadah Tracker dark navy design
+     White iOS-style Salah page matching Claude design
 ========================= -->
 
 <meta charset="UTF-8">
 <title>Salah Times</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f1d35">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e9e9ee">
 <link rel="apple-touch-icon" href="../icon.png">
 <link rel="manifest" href="../manifest.webmanifest">
 
@@ -21,15 +23,28 @@
   -webkit-tap-highlight-color:transparent;
 }
 
+:root{
+  --bg:#e9e9ee;
+  --border:#d8d8de;
+  --text:#111111;
+  --text-secondary:#6b6b72;
+  --primary:#0a84ff;
+  --green:#34c759;
+  --radius:20px;
+  --radius-lg:26px;
+  --shadow:0 8px 24px rgba(0,0,0,0.08);
+  --navbar-height:86px;
+}
+
 html,
 body{
   margin:0;
   padding:0;
   width:100%;
-  min-height:100%;
-  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
-  background:#f5f5f7;
-  color:#111;
+  height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
   overflow:hidden;
 }
 
@@ -43,507 +58,611 @@ body{
   inset:0;
   width:100%;
   height:100%;
-  background:#f5f5f7;
+  background:var(--bg);
   overflow:auto;
   -webkit-overflow-scrolling:touch;
-  padding:calc(env(safe-area-inset-top) + 0px) 0 calc(120px + env(safe-area-inset-bottom)) 0;
+  padding-bottom:calc(var(--navbar-height) + env(safe-area-inset-bottom));
 }
 
-.topBar{
+.salah-header{
   width:100%;
-  background:linear-gradient(180deg, #0f1d35 0%, #1a2f4a 100%);
-  padding:16px 4% calc(24px + env(safe-area-inset-top)) 4%;
+  padding:12px 4%;
+  padding-top:calc(env(safe-area-inset-top, 16px) + 12px);
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  position:relative;
+  justify-content:flex-end;
 }
 
-.topTitle{
-  font-size:28px;
-  font-weight:900;
-  color:white;
-  letter-spacing:-0.5px;
-}
-
-.roundBtn{
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,0.15);
-  color:white;
-  font-size:22px;
-  font-weight:900;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  backdrop-filter:blur(8px);
-}
-
-.roundBtn:active{
-  background:rgba(255,255,255,0.25);
-}
-
-.heroCard{
-  width:100%;
-  background:linear-gradient(135deg, #2a4a7a 0%, #1f3a5a 100%);
-  border-radius:0 0 40px 40px;
-  padding:28px 4%;
-  color:white;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-
-.heroCard::before{
-  content:'';
-  position:absolute;
-  top:-50%;
-  right:-20%;
-  width:300px;
-  height:300px;
-  background:radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-  border-radius:50%;
-  pointer-events:none;
-}
-
-.heroCard > *{
-  position:relative;
-  z-index:1;
-}
-
-.cityName{
-  font-size:32px;
-  font-weight:900;
-  letter-spacing:-0.7px;
-  line-height:1.2;
-  margin-bottom:6px;
-}
-
-.cityHint{
-  font-size:14px;
-  font-weight:600;
-  color:rgba(255,255,255,0.85);
-  cursor:pointer;
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:8px;
-  transition:background 0.2s ease;
-}
-
-.cityHint:active{
-  background:rgba(255,255,255,0.15);
-}
-
-.sourceLabel{
-  font-size:12px;
-  font-weight:700;
-  color:rgba(255,255,255,0.75);
-  margin-top:12px;
-  line-height:1.4;
-  text-transform:uppercase;
-  letter-spacing:0.3px;
-}
-
-.dateCard{
-  width:100%;
-  background:white;
-  border-radius:24px;
-  padding:14px 4%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  margin:16px 0 16px 0;
-}
-
-.dateBtn{
+.gear-btn{
   width:38px;
   height:38px;
   border:none;
   border-radius:50%;
-  background:#f2f2f7;
+  background:white;
   color:#111;
-  font-size:23px;
+  font-size:20px;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.gear-btn:active{
+  transform:scale(0.94);
+}
+
+.location-block{
+  width:100%;
+  text-align:center;
+  padding:8px 4% 4px 4%;
+  cursor:pointer;
+}
+
+.location-city{
+  font-size:22px;
+  font-weight:800;
+  color:var(--text);
+  line-height:1.2;
+  letter-spacing:-0.25px;
+}
+
+.location-tap{
+  font-size:13px;
+  color:var(--text-secondary);
+  margin-top:4px;
+  font-weight:500;
+}
+
+.location-method{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-secondary);
+  margin-top:3px;
+  line-height:1.35;
+}
+
+.content{
+  width:100%;
+  padding:12px 4% 0 4%;
+}
+
+.date-nav{
+  width:100%;
+  background:white;
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 3%;
+  margin-bottom:14px;
+}
+
+.date-nav-btn{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:var(--bg);
+  color:#111;
+  font-size:24px;
   font-weight:900;
   cursor:pointer;
-  flex-shrink:0;
-  transition:background 0.2s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
 }
 
-.dateBtn:active{
-  background:#e0e0e5;
-}
-
-.dateTextWrap{
+.date-nav-center{
   flex:1;
   min-width:0;
   text-align:center;
 }
 
-.dateMain{
+.date-nav-main{
   font-size:16px;
-  font-weight:900;
+  font-weight:800;
+  color:var(--text);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  color:#111;
 }
 
-.dateHijri{
-  margin-top:3px;
+.date-nav-sub{
   font-size:13px;
-  font-weight:700;
-  color:#777;
+  font-weight:600;
+  color:var(--text-secondary);
+  margin-top:3px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
-.contentWrapper{
-  padding:0 4%;
-}
-
-.infoCard{
+.prayer-list-card{
   width:100%;
   background:white;
-  border-radius:28px;
-  padding:22px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  overflow:hidden;
   margin-bottom:14px;
 }
 
-.timesTitle{
-  font-size:20px;
-  font-weight:900;
+.prayer-list-title{
+  font-size:17px;
+  font-weight:700;
   text-align:center;
-  margin-bottom:14px;
-  color:#111;
+  padding:16px;
+  border-bottom:1px solid var(--border);
 }
 
-.salahRow{
-  width:100%;
+.prayer-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:13px 0;
-  border-bottom:1px solid rgba(0,0,0,0.06);
+  padding:15px 5%;
+  border-bottom:1px solid var(--border);
 }
 
-.salahRow:last-child{
+.prayer-row:last-child{
   border-bottom:none;
 }
 
-.salahName{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  font-size:17px;
-  font-weight:800;
-  color:#111;
+.prayer-row.current{
+  background:#f0f7ff;
 }
 
-.salahIcon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  background:#f2f2f7;
+.prayer-row-left{
   display:flex;
   align-items:center;
-  justify-content:center;
-  font-size:18px;
+  gap:12px;
+  min-width:0;
 }
 
-.salahTime{
-  font-size:18px;
-  font-weight:900;
-  color:#111;
-  min-width:70px;
+.prayer-emoji{
+  font-size:24px;
+  width:28px;
+  text-align:center;
+  flex-shrink:0;
+}
+
+.prayer-row-name,
+.prayer-row-time{
+  font-size:16px;
+  font-weight:700;
+  color:var(--text);
+}
+
+.prayer-row-time{
   text-align:right;
+  min-width:88px;
 }
 
-.actionGrid{
-  width:100%;
+.prayer-row.current .prayer-row-name,
+.prayer-row.current .prayer-row-time{
+  color:var(--primary);
+}
+
+.sun-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-bottom:20px;
+  margin-bottom:16px;
 }
 
-.actionBtn{
-  border:none;
-  border-radius:20px;
+.sun-card{
   background:white;
+  border-radius:var(--radius);
+  padding:20px 4%;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.sun-icon{
+  font-size:32px;
+  margin-bottom:8px;
+}
+
+.sun-label{
+  font-size:14px;
+  font-weight:600;
+  color:var(--text-secondary);
+  margin-bottom:4px;
+}
+
+.sun-time{
+  font-size:26px;
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:-0.4px;
+}
+
+/* SETTINGS PAGE — FULL SCREEN LIKE CLAUDE STYLE */
+.settingsPage{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#f7f7fa;
+  z-index:99999;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.settingsPage.show{
+  display:block;
+}
+
+.settings-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 4%;
+  padding-top:calc(env(safe-area-inset-top, 16px) + 12px);
+  background:white;
+  box-shadow:0 1px 0 var(--border);
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.settings-top-title{
+  font-size:18px;
+  font-weight:800;
+  color:var(--text);
+}
+
+.settings-close-btn{
+  width:36px;
+  height:36px;
+  border:none;
+  border-radius:50%;
+  background:var(--bg);
   color:#111;
-  padding:16px 12px;
+  font-size:22px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.settings-body{
+  padding:14px 3% calc(90px + env(safe-area-inset-bottom)) 3%;
+}
+
+.s-section{
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.05);
+}
+
+.s-header{
+  padding:14px 4%;
+  font-size:13px;
+  font-weight:700;
+  color:var(--text-secondary);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  background:var(--bg);
+}
+
+.s-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 4%;
+  cursor:pointer;
+  border-bottom:1px solid var(--border);
+  gap:10px;
+}
+
+.s-row:last-child{
+  border-bottom:none;
+}
+
+.s-row:active{
+  background:var(--bg);
+}
+
+.s-row-left{
+  flex:1;
+  min-width:0;
+}
+
+.s-row-title{
   font-size:16px;
+  font-weight:700;
+  color:var(--text);
+}
+
+.s-row-sub{
+  font-size:13px;
+  color:var(--text-secondary);
+  margin-top:2px;
+  line-height:1.3;
+}
+
+.s-check{
+  font-size:22px;
   font-weight:900;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  color:var(--text);
+  opacity:0;
+  width:24px;
+  text-align:center;
+  flex-shrink:0;
+}
+
+.s-check.on{
+  opacity:1;
+}
+
+.s-toggle{
+  width:44px;
+  height:26px;
+  border-radius:999px;
+  background:#d1d1d6;
+  position:relative;
   cursor:pointer;
-  transition:transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink:0;
+  transition:background 0.2s ease, opacity 0.2s ease;
 }
 
-.actionBtn:active{
-  transform:scale(0.95);
+.s-toggle.on{
+  background:#111;
 }
 
-.primaryBtn{
-  width:100%;
-  border:none;
-  border-radius:20px;
-  background:#0f1d35;
-  color:white;
-  padding:16px;
-  font-size:17px;
-  font-weight:900;
-  cursor:pointer;
-  transition:background 0.2s ease;
+.s-toggle.disabled{
+  opacity:0.4;
 }
 
-.primaryBtn:active{
-  background:#051027;
+.s-toggle-knob,
+.knob{
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  transition:left 0.22s ease, transform 0.22s ease;
 }
 
-.secondaryBtn{
-  width:100%;
-  border:none;
-  border-radius:20px;
-  background:#f2f2f7;
-  color:#111;
-  padding:16px;
-  font-size:17px;
-  font-weight:900;
-  cursor:pointer;
-  transition:background 0.2s ease;
+.s-toggle.on .s-toggle-knob,
+.s-toggle.on .knob{
+  left:20px;
 }
 
-.secondaryBtn:active{
-  background:#e0e0e5;
+.hiddenSelects{
+  display:none !important;
 }
 
+/* LOCATION MODAL */
 .sheetOverlay{
   display:none;
   position:fixed;
   inset:0;
-  z-index:8000;
-  background:rgba(0,0,0,0.35);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  align-items:flex-end;
+  z-index:100000;
+  background:rgba(0,0,0,0.40);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
 .sheetOverlay.show{
   display:flex;
 }
 
-.bottomSheet{
+.locationModalCard{
+  background:white;
+  border-radius:24px;
+  padding:22px 5%;
   width:100%;
-  height:86%;
-  max-height:86%;
-  background:rgba(248,248,251,0.98);
-  border-radius:34px 34px 0 0;
-  box-shadow:0 -20px 45px rgba(0,0,0,0.22);
-  animation:slideUp 0.24s ease forwards;
-  overflow:hidden;
-  border-top:1px solid rgba(255,255,255,0.9);
-  display:flex;
-  flex-direction:column;
+  max-width:340px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.20);
+  max-height:86vh;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
-@keyframes slideUp{
-  from{transform:translateY(100%);}
-  to{transform:translateY(0);}
+.modalTitle{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:14px;
+  text-align:center;
+}
+
+.modal-input,
+.inputBox{
+  width:100%;
+  padding:13px 16px;
+  border-radius:14px;
+  border:none;
+  background:var(--bg);
+  font-size:16px;
+  font-family:inherit;
+  font-weight:700;
+  outline:none;
+  box-sizing:border-box;
+  margin-bottom:10px;
+}
+
+.modal-btn,
+.primaryBtn,
+.secondaryBtn{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  font-family:inherit;
+  margin-bottom:8px;
+}
+
+.primaryBtn{
+  background:#111;
+  color:white;
+}
+
+.secondaryBtn{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.savedTitle{
+  font-size:12px;
+  font-weight:800;
+  color:var(--text-secondary);
+  margin:10px 0 8px 2px;
+  text-transform:uppercase;
+  letter-spacing:0.4px;
+}
+
+.sheetCard{
+  width:100%;
+  border:none;
+  background:var(--bg);
+  border-radius:14px;
+  padding:13px 14px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  text-align:left;
+  color:var(--text);
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.sheetSub{
+  font-size:12px;
+  font-weight:600;
+  color:var(--text-secondary);
+  margin-top:3px;
+  line-height:1.3;
+}
+
+/* MONTHLY TIMETABLE PICKER - kept working with your existing logic */
+.month-picker{
+  align-items:flex-end;
+  justify-content:center;
+  padding:14px;
+}
+
+.month-picker .bottomSheet{
+  background:#f7f7fa;
+  border-radius:24px;
+  padding:18px;
+  width:100%;
+  max-width:460px;
+  max-height:88vh;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  box-shadow:0 20px 50px rgba(0,0,0,0.20);
 }
 
 .sheetTop{
-  flex-shrink:0;
-  background:rgba(248,248,251,0.98);
-  padding:12px 4% 12px 4%;
-  border-bottom:1px solid rgba(0,0,0,0.06);
+  padding:0;
 }
 
 .sheetHandle{
-  width:42px;
-  height:5px;
-  background:#c9c9cf;
-  border-radius:99px;
-  margin:0 auto 12px auto;
+  display:none;
 }
 
 .sheetTitleRow{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
+  margin-bottom:12px;
 }
 
 .sheetTitle{
-  font-size:22px;
-  font-weight:900;
+  font-size:18px;
+  font-weight:800;
   color:#111;
 }
 
 .sheetClose{
-  width:38px;
-  height:38px;
+  width:36px;
+  height:36px;
   border:none;
   border-radius:50%;
-  background:#e9e9ee;
+  background:var(--bg);
+  color:#111;
   font-size:22px;
-  font-weight:900;
   cursor:pointer;
-  transition:background 0.2s ease;
-}
-
-.sheetClose:active{
-  background:#d5d5db;
 }
 
 .sheetBody{
-  flex:1;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch;
-  padding:16px 4% calc(120px + env(safe-area-inset-bottom)) 4%;
-}
-
-.inputBox{
-  width:100%;
-  border:none;
-  outline:none;
-  border-radius:18px;
-  background:white;
-  padding:16px;
-  font-size:18px;
-  font-weight:800;
-  color:#111;
-  box-shadow:0 4px 12px rgba(0,0,0,0.07);
-  margin-bottom:12px;
-}
-
-.sheetCard{
-  width:100%;
-  border:none;
-  border-radius:22px;
-  background:white;
-  padding:18px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  font-size:17px;
-  font-weight:900;
-  color:#111;
-  box-shadow:0 4px 12px rgba(0,0,0,0.07);
-  margin-bottom:12px;
-  cursor:pointer;
-  text-align:left;
-  transition:background 0.2s ease;
-}
-
-.sheetCard:active{
-  background:#f5f5f7;
-}
-
-.sheetSub{
-  font-size:13px;
-  font-weight:700;
-  color:#666;
-  margin-top:4px;
-  line-height:1.35;
-}
-
-.settingRow{
-  background:white;
-  border-radius:22px;
-  padding:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.07);
-  margin-bottom:12px;
-}
-
-.settingLabel{
-  font-size:16px;
-  font-weight:900;
-  color:#111;
-  margin-bottom:10px;
-}
-
-.selectBox{
-  width:100%;
-  border:none;
-  outline:none;
-  border-radius:16px;
-  background:#f2f2f7;
-  padding:14px;
-  font-size:17px;
-  font-weight:800;
-  color:#111;
-}
-
-.toggleRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.switch{
-  width:54px;
-  height:32px;
-  border-radius:999px;
-  background:#d1d1d6;
-  padding:3px;
-  flex-shrink:0;
-  cursor:pointer;
-  transition:background 0.2s ease;
-}
-
-.switch.on{
-  background:#34c759;
-}
-
-.knob{
-  width:26px;
-  height:26px;
-  background:white;
-  border-radius:50%;
-  transition:transform 0.2s ease;
-  box-shadow:0 2px 6px rgba(0,0,0,0.18);
-}
-
-.switch.on .knob{
-  transform:translateX(22px);
+  padding:0;
 }
 
 .monthChoiceGrid{
   width:100%;
   display:grid;
   grid-template-columns:1fr;
-  gap:10px;
-  margin-bottom:14px;
+  gap:8px;
+  margin-bottom:10px;
 }
 
 .monthChoiceBtn{
   width:100%;
+  padding:14px;
   border:none;
-  border-radius:20px;
+  border-radius:14px;
   background:white;
   color:#111;
-  padding:16px;
   font-size:16px;
-  font-weight:900;
-  box-shadow:0 4px 12px rgba(0,0,0,0.07);
+  font-weight:700;
   cursor:pointer;
-  text-align:center;
-  transition:all 0.2s ease;
+  font-family:inherit;
 }
 
 .monthChoiceBtn.active{
-  background:#0f1d35;
+  background:#111;
   color:white;
-  box-shadow:0 6px 18px rgba(15,29,53,0.28);
+}
+
+.monthTable{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 8px;
+}
+
+.monthTable th{
+  font-size:12px;
+  color:#666;
+  text-align:center;
+  padding:0 6px 6px 6px;
+  font-weight:900;
+}
+
+.monthTable td{
+  background:white;
+  padding:10px 6px;
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+  color:#111;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+
+.monthTable td:first-child{
+  border-radius:12px 0 0 12px;
+  text-align:left;
+}
+
+.monthTable td:last-child{
+  border-radius:0 12px 12px 0;
 }
 
 .monthPrintHeader{
@@ -565,63 +684,30 @@ body{
   margin-bottom:5px;
 }
 
-.monthTable{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0 8px;
-}
-
-.monthTable th{
-  font-size:12px;
-  color:#666;
-  text-align:center;
-  padding:0 8px 6px 8px;
-  font-weight:900;
-}
-
-.monthTable td{
-  background:white;
-  padding:10px 8px;
-  font-size:13px;
-  font-weight:800;
-  text-align:center;
-  color:#111;
-  box-shadow:0 2px 6px rgba(0,0,0,0.06);
-}
-
-.monthTable td:first-child{
-  border-radius:12px 0 0 12px;
-  text-align:left;
-}
-
-.monthTable td:last-child{
-  border-radius:0 12px 12px 0;
-}
-
 #toast{
   display:none;
   position:fixed;
   left:50%;
   bottom:100px;
   transform:translateX(-50%);
-  background:rgba(15,29,53,0.95);
+  background:rgba(0,0,0,0.88);
   color:white;
   padding:12px 16px;
   border-radius:18px;
   font-size:15px;
   font-weight:800;
-  z-index:9999;
+  z-index:200000;
   max-width:88%;
   text-align:center;
 }
 
 @media(max-width:390px){
-  .cityName{font-size:28px;}
-  .topTitle{font-size:26px;}
+  .location-city{font-size:21px;}
+  .prayer-row{padding:14px 5%;}
+  .sun-time{font-size:23px;}
 }
 
 @media print{
-
   @page{
     size:landscape;
     margin:0.16in;
@@ -713,159 +799,242 @@ body{
 
 <div id="salahPage">
 
-  <div class="topBar">
-    <div class="topTitle">Salah</div>
-    <button class="roundBtn settingsBtn" onclick="openSettingsSheet()">⚙️</button>
+  <!-- =========================
+       SALAH HEADER
+  ========================== -->
+  <div class="salah-header">
+    <button class="gear-btn" onclick="openSettingsSheet()">⚙️</button>
   </div>
 
-  <div class="heroCard" onclick="openLocationSheet()">
-    <div id="salahCityName" class="cityName">Loading location...</div>
-    <div class="cityHint">🔎 Tap to change location</div>
-    <div id="salahSourceLabel" class="sourceLabel">Refreshing current city...</div>
+  <!-- =========================
+       LOCATION BLOCK
+  ========================== -->
+  <div class="location-block" onclick="openLocationSheet()">
+    <div class="location-city" id="salahCityName">Loading...</div>
+    <div class="location-tap">🔍 Tap to change location</div>
+    <div class="location-method" id="salahSourceLabel">Live Salah Times – Hanafi</div>
   </div>
 
-  <div class="dateCard">
-    <button id="salahPrevDayBtn" class="dateBtn" onclick="changeSalahDay(-1)">‹</button>
-    <div class="dateTextWrap">
-      <div id="salahSelectedDate" class="dateMain">Today</div>
-      <div id="salahSelectedHijri" class="dateHijri">Loading Hijri date...</div>
-    </div>
-    <button id="salahNextDayBtn" class="dateBtn" onclick="changeSalahDay(1)">›</button>
-  </div>
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <div class="content content-with-navbar">
 
-  <div class="contentWrapper">
-
-    <div class="infoCard">
-      <div class="timesTitle">Salah Times</div>
-
-      <div class="salahRow">
-        <div class="salahName"><span class="salahIcon">🌅</span>Fajr</div>
-        <div id="fajrTime" class="salahTime">--:--</div>
+    <div class="date-nav">
+      <button id="salahPrevDayBtn" class="date-nav-btn" onclick="changeSalahDay(-1)">‹</button>
+      <div class="date-nav-center">
+        <div class="date-nav-main" id="salahSelectedDate">Today</div>
+        <div class="date-nav-sub" id="salahSelectedHijri">Loading...</div>
       </div>
-
-      <div class="salahRow">
-        <div class="salahName"><span class="salahIcon">🌄</span>Sunrise</div>
-        <div id="sunriseTime" class="salahTime">--:--</div>
-      </div>
-
-      <div class="salahRow">
-        <div class="salahName"><span class="salahIcon">☀️</span>Dhuhr</div>
-        <div id="dhuhrTime" class="salahTime">--:--</div>
-      </div>
-
-      <div class="salahRow">
-        <div class="salahName"><span class="salahIcon">🌤️</span>Asr</div>
-        <div id="asrTime" class="salahTime">--:--</div>
-      </div>
-
-      <div class="salahRow">
-        <div class="salahName"><span class="salahIcon">🌇</span>Maghrib</div>
-        <div id="maghribTime" class="salahTime">--:--</div>
-      </div>
-
-      <div class="salahRow">
-        <div class="salahName"><span class="salahIcon">🌙</span>Isha</div>
-        <div id="ishaTime" class="salahTime">--:--</div>
-      </div>
+      <button id="salahNextDayBtn" class="date-nav-btn" onclick="changeSalahDay(1)">›</button>
     </div>
 
-    <div class="actionGrid">
-      <button class="actionBtn" onclick="openMonthlySheet()">📅 Monthly</button>
-      <button class="actionBtn" onclick="refreshCurrentLocationAndTimes()">🔄 Refresh</button>
+    <div class="prayer-list-card">
+      <div class="prayer-list-title">Salah Times</div>
+
+      <div class="prayer-row" id="row-fajr">
+        <div class="prayer-row-left"><div class="prayer-emoji">🌄</div><div class="prayer-row-name">Fajr</div></div>
+        <div class="prayer-row-time" id="fajrTime">--:--</div>
+      </div>
+
+      <div class="prayer-row" id="row-sunrise">
+        <div class="prayer-row-left"><div class="prayer-emoji">🌅</div><div class="prayer-row-name">Sunrise</div></div>
+        <div class="prayer-row-time" id="sunriseTime">--:--</div>
+      </div>
+
+      <div class="prayer-row" id="row-dhuhr">
+        <div class="prayer-row-left"><div class="prayer-emoji">☀️</div><div class="prayer-row-name">Dhuhr</div></div>
+        <div class="prayer-row-time" id="dhuhrTime">--:--</div>
+      </div>
+
+      <div class="prayer-row" id="row-asr">
+        <div class="prayer-row-left"><div class="prayer-emoji">🌤️</div><div class="prayer-row-name">Asr</div></div>
+        <div class="prayer-row-time" id="asrTime">--:--</div>
+      </div>
+
+      <div class="prayer-row" id="row-maghrib">
+        <div class="prayer-row-left"><div class="prayer-emoji">🌆</div><div class="prayer-row-name">Maghrib</div></div>
+        <div class="prayer-row-time" id="maghribTime">--:--</div>
+      </div>
+
+      <div class="prayer-row" id="row-isha">
+        <div class="prayer-row-left"><div class="prayer-emoji">🌙</div><div class="prayer-row-name">Isha</div></div>
+        <div class="prayer-row-time" id="ishaTime">--:--</div>
+      </div>
+    </div>
+
+    <div class="sun-grid">
+      <div class="sun-card">
+        <div class="sun-icon">🌅</div>
+        <div class="sun-label">Sunrise</div>
+        <div class="sun-time" id="sunRiseCardTime">--:--</div>
+      </div>
+      <div class="sun-card">
+        <div class="sun-icon">🌇</div>
+        <div class="sun-label">Sunset</div>
+        <div class="sun-time" id="sunSetCardTime">--:--</div>
+      </div>
     </div>
 
   </div>
 
 </div>
 
+<!-- =========================
+     SETTINGS PAGE - FULL SCREEN
+========================== -->
+<div id="settingsSheet" class="settingsPage">
+  <div class="settings-top">
+    <button class="settings-close-btn" onclick="closeSettingsSheet()">←</button>
+    <div class="settings-top-title">Salah Settings</div>
+    <div style="width:36px;"></div>
+  </div>
+
+  <div class="settings-body">
+
+    <div class="hiddenSelects">
+      <select id="calculationMethodSelect" onchange="saveSettingsAndRefresh()">
+        <option value="auto">Auto Recommended</option>
+        <option value="isna">ISNA</option>
+        <option value="mwl">Muslim World League</option>
+        <option value="ummalqura">Umm al-Qura Makkah</option>
+        <option value="karachi">Karachi</option>
+        <option value="1815">18° / 15°</option>
+      </select>
+      <select id="asrMethodSelect" onchange="saveSettingsAndRefresh()">
+        <option value="hanafi">Hanafi</option>
+        <option value="shafi">Shafi</option>
+      </select>
+    </div>
+
+    <div class="s-section">
+      <div class="s-header">Calculation Method</div>
+
+      <div class="s-row" onclick="setSalahCalculationMethod('auto')">
+        <div class="s-row-left">
+          <div class="s-row-title">Auto (Recommended)</div>
+          <div class="s-row-sub">Best for your location</div>
+        </div>
+        <div class="s-check" id="check-auto">✓</div>
+      </div>
+
+      <div class="s-row">
+        <div class="s-row-left" onclick="setSalahCalculationMethod('isna')">
+          <div class="s-row-title">ISNA</div>
+          <div class="s-row-sub">North America</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-size:12px;font-weight:700;color:var(--text-secondary);" id="fajr18-label">Fajr 18°</div>
+          <div class="s-toggle disabled" id="isnaFajr18Switch" onclick="event.stopPropagation(); toggleIsnaFajr18();">
+            <div class="s-toggle-knob"></div>
+          </div>
+          <div class="s-check" id="check-isna">✓</div>
+        </div>
+      </div>
+
+      <div class="s-row" onclick="setSalahCalculationMethod('karachi')">
+        <div class="s-row-left">
+          <div class="s-row-title">Karachi</div>
+          <div class="s-row-sub">Pakistan / Hanafi</div>
+        </div>
+        <div class="s-check" id="check-karachi">✓</div>
+      </div>
+
+      <div class="s-row" onclick="setSalahCalculationMethod('mwl')">
+        <div class="s-row-left">
+          <div class="s-row-title">Muslim World League</div>
+          <div class="s-row-sub">Widely used globally</div>
+        </div>
+        <div class="s-check" id="check-mwl">✓</div>
+      </div>
+
+      <div class="s-row" onclick="setSalahCalculationMethod('ummalqura')">
+        <div class="s-row-left">
+          <div class="s-row-title">Umm al-Qura (Makkah)</div>
+          <div class="s-row-sub">Saudi Arabia</div>
+        </div>
+        <div class="s-check" id="check-ummalqura">✓</div>
+      </div>
+
+      <div class="s-row" onclick="setSalahCalculationMethod('1815')">
+        <div class="s-row-left">
+          <div class="s-row-title">18° / 15°</div>
+          <div class="s-row-sub">Fixed angle</div>
+        </div>
+        <div class="s-check" id="check-1815">✓</div>
+      </div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-header">Asr Calculation</div>
+
+      <div class="s-row" onclick="setSalahAsrMethod('hanafi')">
+        <div class="s-row-left">
+          <div class="s-row-title">Hanafi</div>
+          <div class="s-row-sub">Later Asr time</div>
+        </div>
+        <div class="s-check" id="check-hanafi">✓</div>
+      </div>
+
+      <div class="s-row" onclick="setSalahAsrMethod('shafi')">
+        <div class="s-row-left">
+          <div class="s-row-title">Shafi</div>
+          <div class="s-row-sub">Earlier Asr time</div>
+        </div>
+        <div class="s-check" id="check-shafi">✓</div>
+      </div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-header">Timetables</div>
+
+      <div class="s-row" onclick="openMonthlySheet()">
+        <div class="s-row-left">
+          <div class="s-row-title">📄 Monthly Timetable</div>
+          <div class="s-row-sub">Pick last, current, or next month and print/save PDF</div>
+        </div>
+        <div style="font-size:18px;color:var(--text-secondary);">›</div>
+      </div>
+
+      <div class="s-row" onclick="openRamadanSheet()">
+        <div class="s-row-left">
+          <div class="s-row-title">🌙 Ramadan Timetable</div>
+          <div class="s-row-sub">Ramadan month — print/save PDF</div>
+        </div>
+        <div style="font-size:18px;color:var(--text-secondary);">›</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========================
+     LOCATION MODAL
+========================== -->
 <div id="locationSheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'locationSheet')">
-  <div class="bottomSheet" onclick="event.stopPropagation()">
-    <div class="sheetTop">
-      <div class="sheetHandle"></div>
-      <div class="sheetTitleRow">
-        <div class="sheetTitle">Location</div>
-        <button class="sheetClose" onclick="closeLocationSheet()">×</button>
-      </div>
-    </div>
+  <div class="locationModalCard" onclick="event.stopPropagation()">
+    <div class="modalTitle">Change Location</div>
 
-    <div class="sheetBody">
-      <button class="sheetCard" onclick="useCurrentLocation()">
-        <div>
-          📍 Use Current Location
-          <div class="sheetSub">Refreshes city from your phone/browser location</div>
-        </div>
-        <span>›</span>
-      </button>
+    <button class="primaryBtn" onclick="useCurrentLocation()">📍 Use Current Location</button>
 
-      <input id="locationSearchInput" class="inputBox" placeholder="Enter city, example: Mineola, NY">
-      <button class="primaryBtn" onclick="searchEnteredLocation()">Search & Save Location</button>
+    <input id="locationSearchInput" class="inputBox" placeholder="Search city..." autocomplete="off">
+    <button class="secondaryBtn" onclick="searchEnteredLocation()">Search & Save Location</button>
 
-      <div style="height:18px;"></div>
+    <div class="savedTitle">Saved Locations</div>
+    <div id="savedSalahLocationListArea"></div>
 
-      <div style="font-size:13px;font-weight:900;color:#777;margin:0 0 10px 4px;text-transform:uppercase;">
-        Saved Locations
-      </div>
-
-      <div id="savedSalahLocationListArea"></div>
-    </div>
+    <button class="secondaryBtn" onclick="closeLocationSheet()">Cancel</button>
   </div>
 </div>
 
-<div id="settingsSheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'settingsSheet')">
+<!-- =========================
+     MONTHLY TIMETABLE MODAL
+========================== -->
+<div id="monthlySheet" class="sheetOverlay month-picker" onclick="closeSheetFromOverlay(event, 'monthlySheet')">
   <div class="bottomSheet" onclick="event.stopPropagation()">
     <div class="sheetTop">
-      <div class="sheetHandle"></div>
       <div class="sheetTitleRow">
-        <div class="sheetTitle">Salah Settings</div>
-        <button class="sheetClose" onclick="closeSettingsSheet()">×</button>
-      </div>
-    </div>
-
-    <div class="sheetBody">
-
-      <div class="settingRow">
-        <div class="settingLabel">Calculation Method</div>
-        <select id="calculationMethodSelect" class="selectBox" onchange="saveSettingsAndRefresh()">
-          <option value="auto">Auto Recommended</option>
-          <option value="isna">ISNA</option>
-          <option value="mwl">Muslim World League</option>
-          <option value="makkah">Umm al-Qura Makkah</option>
-          <option value="karachi">Karachi</option>
-        </select>
-      </div>
-
-      <div class="settingRow">
-        <div class="settingLabel">Asr Method</div>
-        <select id="asrMethodSelect" class="selectBox" onchange="saveSettingsAndRefresh()">
-          <option value="hanafi">Hanafi</option>
-          <option value="shafi">Shafi</option>
-        </select>
-      </div>
-
-      <div class="settingRow">
-        <div class="toggleRow">
-          <div>
-            <div class="settingLabel" style="margin-bottom:4px;">ISNA Fajr 18°</div>
-            <div class="sheetSub">Only applies when calculation method is ISNA</div>
-          </div>
-          <div id="isnaFajr18Switch" class="switch" onclick="toggleIsnaFajr18()">
-            <div class="knob"></div>
-          </div>
-        </div>
-      </div>
-
-      <button class="secondaryBtn" onclick="closeSettingsSheet()">Done</button>
-
-    </div>
-  </div>
-</div>
-
-<div id="monthlySheet" class="sheetOverlay" onclick="closeSheetFromOverlay(event, 'monthlySheet')">
-  <div class="bottomSheet" onclick="event.stopPropagation()">
-    <div class="sheetTop">
-      <div class="sheetHandle"></div>
-      <div class="sheetTitleRow">
-        <div class="sheetTitle">Monthly Timetable</div>
+        <div class="sheetTitle">📄 Monthly Timetable</div>
         <button class="sheetClose" onclick="closeMonthlySheet()">×</button>
       </div>
     </div>
@@ -879,10 +1048,9 @@ body{
       </div>
 
       <button class="primaryBtn" onclick="loadMonthlyTimetable()">Load Monthly Timetable</button>
-      <div style="height:10px;"></div>
       <button class="secondaryBtn" onclick="printMonthlyTimetable()">🖨️ Print Timetable</button>
 
-      <div id="monthlyStatus" class="sheetSub" style="margin:14px 4px;">Choose last, current, or next month.</div>
+      <div id="monthlyStatus" class="sheetSub" style="margin:10px 2px 12px 2px;">Choose last, current, or next month.</div>
 
       <div id="monthlyPrintArea">
         <div class="monthPrintHeader">
@@ -896,9 +1064,53 @@ body{
   </div>
 </div>
 
+
+<!-- =========================
+     RAMADAN TIMETABLE MODAL
+========================== -->
+<div id="ramadanSheet" class="sheetOverlay month-picker" onclick="closeSheetFromOverlay(event, 'ramadanSheet')">
+  <div class="bottomSheet" onclick="event.stopPropagation()">
+    <div class="sheetTop">
+      <div class="sheetTitleRow">
+        <div class="sheetTitle">🌙 Ramadan Timetable</div>
+        <button class="sheetClose" onclick="closeRamadanSheet()">×</button>
+      </div>
+    </div>
+
+    <div class="sheetBody">
+      <select id="ramadanYearSelect" class="monthChoiceBtn" style="text-align:center;margin-bottom:10px;"></select>
+
+      <div class="s-row" style="background:white;border-radius:14px;margin-bottom:10px;border-bottom:none;">
+        <div class="s-row-left">
+          <div class="s-row-title">Customize Days</div>
+          <div class="s-row-sub">Use your own start/end dates</div>
+        </div>
+        <div class="s-toggle" id="ramadanCustomSwitch" onclick="toggleRamadanCustomDates()">
+          <div class="s-toggle-knob"></div>
+        </div>
+      </div>
+
+      <div id="ramadanCustomDateArea" style="display:none;">
+        <div class="savedTitle">Start Date</div>
+        <input type="date" id="ramadanStartDate" class="inputBox">
+        <div class="savedTitle">End Date</div>
+        <input type="date" id="ramadanEndDate" class="inputBox">
+      </div>
+
+      <div id="ramadanAutoInfo" class="sheetSub" style="background:var(--bg);padding:10px;border-radius:12px;margin-bottom:10px;text-align:center;">
+        Auto detects Ramadan from Hijri calendar
+      </div>
+
+      <button class="primaryBtn" onclick="generateRamadanTimetable()">Generate PDF</button>
+      <button class="secondaryBtn" onclick="closeRamadanSheet()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast">Saved</div>
 
 <script>
+
 let salahDayOffset = 0;
 let salahSource = localStorage.getItem("salahLocationMode") || "current";
 let selectedMonthlyOption = "current";
@@ -2050,6 +2262,549 @@ document.addEventListener("touchend", function(e){
     changeSalahDay(-1);
   }
 }, {passive:true});
+
+
+
+/* =========================
+   CLAUDE STYLE UI BRIDGE
+   Full function name: setSalahCalculationMethod(method)
+========================= */
+async function setSalahCalculationMethod(method){
+  localStorage.setItem("salahCalculationMethod", method);
+
+  let methodSelect = document.getElementById("calculationMethodSelect");
+  if(methodSelect) methodSelect.value = method;
+
+  monthlyTableLoaded = false;
+  loadSettingsUI();
+  clearMonthlyTimetableBecauseSettingsChanged();
+  showToast("Updating Salah times...");
+
+  await new Promise(function(resolve){ setTimeout(resolve, 80); });
+  await reloadSalahTimes();
+}
+
+/* =========================
+   CLAUDE STYLE UI BRIDGE
+   Full function name: setSalahAsrMethod(method)
+========================= */
+async function setSalahAsrMethod(method){
+  localStorage.setItem("asrMethod", method);
+
+  let asrSelect = document.getElementById("asrMethodSelect");
+  if(asrSelect) asrSelect.value = method;
+
+  monthlyTableLoaded = false;
+  loadSettingsUI();
+  clearMonthlyTimetableBecauseSettingsChanged();
+  showToast("Updating Salah times...");
+
+  await new Promise(function(resolve){ setTimeout(resolve, 80); });
+  await reloadSalahTimes();
+}
+
+/* =========================
+   LOAD SETTINGS UI
+   Full function name: loadSettingsUI()
+========================= */
+function loadSettingsUI(){
+  let method = localStorage.getItem("salahCalculationMethod") || "auto";
+  let asr = localStorage.getItem("asrMethod") || "hanafi";
+
+  let methodSelect = document.getElementById("calculationMethodSelect");
+  let asrSelect = document.getElementById("asrMethodSelect");
+
+  if(methodSelect) methodSelect.value = method;
+  if(asrSelect) asrSelect.value = asr;
+
+  ["auto","isna","karachi","mwl","ummalqura","1815"].forEach(function(item){
+    let check = document.getElementById("check-" + item);
+    if(check) check.classList.toggle("on", method === item);
+  });
+
+  let hanafiCheck = document.getElementById("check-hanafi");
+  let shafiCheck = document.getElementById("check-shafi");
+
+  if(hanafiCheck) hanafiCheck.classList.toggle("on", asr === "hanafi");
+  if(shafiCheck) shafiCheck.classList.toggle("on", asr === "shafi");
+
+  let fajrSwitch = document.getElementById("isnaFajr18Switch");
+  let fajrLabel = document.getElementById("fajr18-label");
+  let isIsna = method === "isna";
+
+  if(fajrSwitch){
+    fajrSwitch.classList.toggle("disabled", !isIsna);
+    fajrSwitch.classList.toggle("on", isIsna && getIsnaFajr18Enabled());
+  }
+
+  if(fajrLabel){
+    fajrLabel.style.opacity = isIsna ? "1" : "0.4";
+  }
+}
+
+/* =========================
+   SALAH LOADING STATE
+   Full function name: setSalahLoadingState()
+========================= */
+function setSalahLoadingState(){
+  ["fajrTime","sunriseTime","dhuhrTime","asrTime","maghribTime","ishaTime","sunRiseCardTime","sunSetCardTime"].forEach(function(id){
+    let el = document.getElementById(id);
+    if(el) el.innerText = "--:--";
+  });
+
+  clearCurrentSalahHighlight();
+}
+
+/* =========================
+   APPLY SALAH DATA TO SCREEN
+   Full function name: applySalahDataToScreen(data)
+========================= */
+function applySalahDataToScreen(data){
+  let city = document.getElementById("salahCityName");
+  let source = document.getElementById("salahSourceLabel");
+
+  if(city) city.innerText = data.locationName || "Salah Times";
+  if(source) source.innerText = data.sourceLabel || "Live Salah Times";
+
+  let map = {
+    fajrTime: data.fajr,
+    sunriseTime: data.sunrise,
+    dhuhrTime: data.dhuhr,
+    asrTime: data.asr,
+    maghribTime: data.maghrib,
+    ishaTime: data.isha,
+    sunRiseCardTime: data.sunrise,
+    sunSetCardTime: data.maghrib
+  };
+
+  Object.keys(map).forEach(function(id){
+    let el = document.getElementById(id);
+    if(el) el.innerText = map[id] || "--:--";
+  });
+
+  highlightCurrentSalahRows(data);
+
+  localStorage.setItem("ibadahHomeSalahData", JSON.stringify({
+    locationName: data.locationName || "",
+    sourceLabel: data.sourceLabel || "",
+    fajr: data.fajr || "--:--",
+    sunrise: data.sunrise || "--:--",
+    dhuhr: data.dhuhr || "--:--",
+    asr: data.asr || "--:--",
+    maghrib: data.maghrib || "--:--",
+    isha: data.isha || "--:--",
+    savedAt: Date.now()
+  }));
+}
+
+/* =========================
+   CLEAR CURRENT SALAH HIGHLIGHT
+   Full function name: clearCurrentSalahHighlight()
+========================= */
+function clearCurrentSalahHighlight(){
+  ["row-fajr","row-sunrise","row-dhuhr","row-asr","row-maghrib","row-isha"].forEach(function(id){
+    let row = document.getElementById(id);
+    if(row) row.classList.remove("current");
+  });
+}
+
+/* =========================
+   CONVERT 12 HOUR TIME TO MINUTES
+   Full function name: salahTimeTextToMinutes(timeText)
+========================= */
+function salahTimeTextToMinutes(timeText){
+  if(!timeText || timeText === "--:--") return null;
+
+  let text = String(timeText).trim().toUpperCase();
+  let isPM = text.includes("PM");
+  let isAM = text.includes("AM");
+  text = text.replace("AM", "").replace("PM", "").trim();
+
+  let parts = text.split(":");
+  if(parts.length < 2) return null;
+
+  let hour = parseInt(parts[0], 10);
+  let minute = parseInt(parts[1], 10);
+
+  if(Number.isNaN(hour) || Number.isNaN(minute)) return null;
+
+  if(isPM && hour !== 12) hour += 12;
+  if(isAM && hour === 12) hour = 0;
+
+  return (hour * 60) + minute;
+}
+
+/* =========================
+   HIGHLIGHT CURRENT SALAH ROW
+   Full function name: highlightCurrentSalahRows(data)
+========================= */
+function highlightCurrentSalahRows(data){
+  clearCurrentSalahHighlight();
+
+  if(salahDayOffset !== 0) return;
+
+  let now = new Date();
+  let nowMinutes = (now.getHours() * 60) + now.getMinutes();
+
+  let prayers = [
+    {id:"row-fajr", time:data.fajr},
+    {id:"row-sunrise", time:data.sunrise},
+    {id:"row-dhuhr", time:data.dhuhr},
+    {id:"row-asr", time:data.asr},
+    {id:"row-maghrib", time:data.maghrib},
+    {id:"row-isha", time:data.isha}
+  ];
+
+  let currentIndex = -1;
+
+  prayers.forEach(function(item, index){
+    let mins = salahTimeTextToMinutes(item.time);
+    if(mins !== null && nowMinutes >= mins){
+      currentIndex = index;
+    }
+  });
+
+  if(currentIndex < 0) currentIndex = prayers.length - 1;
+
+  let row = document.getElementById(prayers[currentIndex].id);
+  if(row) row.classList.add("current");
+}
+
+/* =========================
+   RAMADAN TIMETABLE NOTICE
+   Full function name: openRamadanTimetableNotice()
+========================= */
+
+
+/* =========================
+   OPEN RAMADAN SHEET
+   Full function name: openRamadanSheet()
+========================= */
+function openRamadanSheet(){
+  let select = document.getElementById("ramadanYearSelect");
+  let now = new Date();
+
+  if(select){
+    select.innerHTML = "";
+    for(let y = now.getFullYear() - 1; y <= now.getFullYear() + 5; y++){
+      let opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      if(y === now.getFullYear()) opt.selected = true;
+      select.appendChild(opt);
+    }
+  }
+
+  let customSwitch = document.getElementById("ramadanCustomSwitch");
+  let customArea = document.getElementById("ramadanCustomDateArea");
+  let autoInfo = document.getElementById("ramadanAutoInfo");
+
+  if(customSwitch) customSwitch.classList.remove("on");
+  if(customArea) customArea.style.display = "none";
+  if(autoInfo) autoInfo.style.display = "block";
+
+  let sheet = document.getElementById("ramadanSheet");
+  if(sheet) sheet.classList.add("show");
+}
+
+/* =========================
+   CLOSE RAMADAN SHEET
+   Full function name: closeRamadanSheet()
+========================= */
+function closeRamadanSheet(){
+  let sheet = document.getElementById("ramadanSheet");
+  if(sheet) sheet.classList.remove("show");
+}
+
+/* =========================
+   TOGGLE RAMADAN CUSTOM DATES
+   Full function name: toggleRamadanCustomDates()
+========================= */
+function toggleRamadanCustomDates(){
+  let customSwitch = document.getElementById("ramadanCustomSwitch");
+  let customArea = document.getElementById("ramadanCustomDateArea");
+  let autoInfo = document.getElementById("ramadanAutoInfo");
+
+  if(!customSwitch) return;
+
+  let isOn = customSwitch.classList.toggle("on");
+
+  if(customArea) customArea.style.display = isOn ? "block" : "none";
+  if(autoInfo) autoInfo.style.display = isOn ? "none" : "block";
+}
+
+/* =========================
+   CLEAN API TIME
+   Full function name: cleanSalahApiTime(timeText)
+========================= */
+function cleanSalahApiTime(timeText){
+  if(!timeText) return "-";
+  return String(timeText).split(" ")[0].replace(/\s*\(.*?\)/, "");
+}
+
+/* =========================
+   CALCULATE FASTING DURATION
+   Full function name: calculateRamadanDuration(startText, endText)
+========================= */
+function calculateRamadanDuration(startText, endText){
+  if(!startText || !endText || startText === "-" || endText === "-") return "-";
+
+  let s = startText.split(":").map(Number);
+  let e = endText.split(":").map(Number);
+
+  if(s.length < 2 || e.length < 2) return "-";
+
+  let mins = (e[0] * 60 + e[1]) - (s[0] * 60 + s[1]);
+  if(mins < 0) mins += 24 * 60;
+
+  return Math.floor(mins / 60) + "h " + (mins % 60) + "m";
+}
+
+/* =========================
+   FETCH RAMADAN DATE RANGE
+   Full function name: fetchRamadanDateRange(startDate, endDate, method, school, loc)
+========================= */
+async function fetchRamadanDateRange(startDate, endDate, method, school, loc){
+  let data = [];
+  let current = new Date(startDate);
+
+  while(current <= endDate){
+    let apiDate = formatSalahApiDate(current);
+    let url =
+      "https://api.aladhan.com/v1/timings/" + apiDate
+      + "?latitude=" + encodeURIComponent(loc.lat)
+      + "&longitude=" + encodeURIComponent(loc.lon)
+      + "&method=" + method
+      + "&school=" + school
+      + getSalahCacheBuster();
+
+    try{
+      let res = await fetch(url, {method:"GET", cache:"no-store"});
+      let json = await res.json();
+      if(json && json.data) data.push(json.data);
+    }catch(error){}
+
+    current.setDate(current.getDate() + 1);
+  }
+
+  return data;
+}
+
+/* =========================
+   FETCH AUTO RAMADAN DAYS
+   Full function name: fetchAutoRamadanDays(year, method, school, loc)
+========================= */
+async function fetchAutoRamadanDays(year, method, school, loc){
+  let data = [];
+  let expectedMonths = {
+    2024:[3,4],
+    2025:[2,3],
+    2026:[2,3],
+    2027:[2,3],
+    2028:[1,2],
+    2029:[1,2],
+    2030:[1,2],
+    2031:[12,1],
+    2032:[11,12]
+  };
+
+  let months = expectedMonths[year] || [1,2,3,4];
+
+  for(let i = 0; i < months.length; i++){
+    let month = months[i];
+    let requestYear = year;
+
+    if(month === 12 && i === 0 && year >= 2031){
+      requestYear = year - 1;
+    }
+
+    let url =
+      "https://api.aladhan.com/v1/calendar/" + requestYear + "/" + month
+      + "?latitude=" + encodeURIComponent(loc.lat)
+      + "&longitude=" + encodeURIComponent(loc.lon)
+      + "&method=" + method
+      + "&school=" + school
+      + getSalahCacheBuster();
+
+    try{
+      let res = await fetch(url, {method:"GET", cache:"no-store"});
+      let json = await res.json();
+
+      if(json && json.data && Array.isArray(json.data)){
+        json.data.forEach(function(day){
+          if(day.date && day.date.hijri && Number(day.date.hijri.month.number) === 9){
+            data.push(day);
+          }
+        });
+      }
+    }catch(error){}
+  }
+
+  return data;
+}
+
+/* =========================
+   GENERATE RAMADAN TIMETABLE
+   Full function name: generateRamadanTimetable()
+========================= */
+async function generateRamadanTimetable(){
+  closeRamadanSheet();
+  showToast("Preparing Ramadan timetable...");
+
+  try{
+    let loc = await getActiveMonthlyLocation();
+
+    if(!loc || !loc.lat || !loc.lon){
+      showToast("Please set location first");
+      return;
+    }
+
+    let yearSelect = document.getElementById("ramadanYearSelect");
+    let year = yearSelect ? parseInt(yearSelect.value, 10) : new Date().getFullYear();
+    let method = getAladhanMethodNumber(loc.country || loc.name || "");
+    let school = getAsrMethod() === "hanafi" ? "1" : "0";
+    let customOn = document.getElementById("ramadanCustomSwitch") && document.getElementById("ramadanCustomSwitch").classList.contains("on");
+    let data = [];
+
+    if(customOn){
+      let startInput = document.getElementById("ramadanStartDate");
+      let endInput = document.getElementById("ramadanEndDate");
+      let startDate = startInput && startInput.value ? new Date(startInput.value) : null;
+      let endDate = endInput && endInput.value ? new Date(endInput.value) : null;
+
+      if(!startDate || !endDate || isNaN(startDate) || isNaN(endDate)){
+        showToast("Pick valid start and end dates");
+        return;
+      }
+
+      data = await fetchRamadanDateRange(startDate, endDate, method, school, loc);
+    }else{
+      data = await fetchAutoRamadanDays(year, method, school, loc);
+    }
+
+    if(!data || !data.length){
+      showToast("Could not find Ramadan days");
+      return;
+    }
+
+    if((localStorage.getItem("salahCalculationMethod") || "auto") === "isna" && getIsnaFajr18Enabled()){
+      let overrideData = [];
+
+      if(customOn){
+        let startDate = new Date(document.getElementById("ramadanStartDate").value);
+        let endDate = new Date(document.getElementById("ramadanEndDate").value);
+        overrideData = await fetchRamadanDateRange(startDate, endDate, 13, school, loc);
+      }else{
+        overrideData = await fetchAutoRamadanDays(year, 13, school, loc);
+      }
+
+      data.forEach(function(day, index){
+        if(overrideData[index] && overrideData[index].timings && overrideData[index].timings.Fajr){
+          day.timings.Fajr = overrideData[index].timings.Fajr;
+        }
+      });
+    }
+
+    printRamadanTimetable(data, loc, year);
+
+  }catch(error){
+    showToast("Could not prepare Ramadan timetable");
+  }
+}
+
+/* =========================
+   PRINT RAMADAN TIMETABLE
+   Full function name: printRamadanTimetable(data, loc, year)
+========================= */
+function printRamadanTimetable(data, loc, year){
+  let city = loc.name || loc.city || "My Location";
+  let asrLabel = getAsrMethod() === "hanafi" ? "Hanafi" : "Shafi";
+  let settingsLine = getCalculationMethodSourceLabel(loc.country || loc.name || "") + " • " + asrLabel;
+
+  if((localStorage.getItem("salahCalculationMethod") || "auto") === "isna" && getIsnaFajr18Enabled()){
+    settingsLine += " • Fajr 18°";
+  }
+
+  let firstG = data[0].date.gregorian.date.split("-");
+  let lastG = data[data.length - 1].date.gregorian.date.split("-");
+  let firstDate = new Date(firstG[2], firstG[1] - 1, firstG[0]);
+  let lastDate = new Date(lastG[2], lastG[1] - 1, lastG[0]);
+  let range = firstDate.toLocaleDateString("en-US", {month:"short", day:"numeric"}) + " — " + lastDate.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+
+  let rowsHtml = data.map(function(day, index){
+    let t = day.timings;
+    let g = day.date.gregorian;
+    let h = day.date.hijri;
+    let parts = g.date.split("-");
+    let jsDate = new Date(parts[2], parts[1] - 1, parts[0]);
+    let dayName = jsDate.toLocaleDateString("en-US", {weekday:"short"});
+    let dateLabel = jsDate.toLocaleDateString("en-US", {month:"short", day:"numeric"});
+    let fajr = cleanSalahApiTime(t.Fajr);
+    let maghrib = cleanSalahApiTime(t.Maghrib);
+    let duration = calculateRamadanDuration(fajr, maghrib);
+    let bg = index % 2 === 0 ? "#fafafa" : "white";
+
+    return '<tr style="background:' + bg + ';">'
+      + '<td>' + (index + 1) + '</td>'
+      + '<td>' + dayName + '</td>'
+      + '<td>' + h.day + '</td>'
+      + '<td>' + dateLabel + '</td>'
+      + '<td style="background:#fff8e1;font-weight:700;">' + fajr + '</td>'
+      + '<td>' + cleanSalahApiTime(t.Sunrise) + '</td>'
+      + '<td>' + cleanSalahApiTime(t.Dhuhr) + '</td>'
+      + '<td>' + cleanSalahApiTime(t.Asr) + '</td>'
+      + '<td style="background:#e8f5e9;font-weight:700;">' + maghrib + '</td>'
+      + '<td>' + cleanSalahApiTime(t.Isha) + '</td>'
+      + '<td style="font-size:8px;color:#666;">' + duration + '</td>'
+      + '</tr>';
+  }).join("");
+
+  let win = window.open("", "_blank");
+
+  if(!win){
+    showToast("Please allow popups");
+    return;
+  }
+
+  win.document.write(
+    '<!DOCTYPE html><html><head><title>Ramadan Timetable</title>'
+    + '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    + '<style>'
+    + 'body{margin:0;padding:12px;font-family:Arial,sans-serif;background:#eee;}'
+    + '.top{max-width:210mm;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}'
+    + '.action-btn{border:none;border-radius:12px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;}'
+    + '.page{width:100%;max-width:194mm;margin:0 auto;background:white;padding:6mm;box-sizing:border-box;box-shadow:0 8px 24px rgba(0,0,0,0.1);border-radius:12px;}'
+    + '.hdr{text-align:center;margin-bottom:8px;}'
+    + '.hdr-title{font-size:20px;font-weight:800;color:#111;margin-bottom:2px;}'
+    + '.hdr-city{font-size:14px;font-weight:700;color:#333;}'
+    + '.hdr-range{font-size:12px;color:#666;margin-top:2px;}'
+    + '.hdr-settings{font-size:10px;color:#888;margin-top:3px;font-style:italic;}'
+    + 'table{width:100%;border-collapse:collapse;font-size:8px;table-layout:fixed;}'
+    + 'th{background:#222;color:white;border:1px solid #444;padding:2px 1px;font-size:8px;font-weight:700;}'
+    + 'td{border:1px solid #ccc;padding:2px 1px;text-align:center;font-size:8px;}'
+    + '.foot{text-align:center;font-size:9px;color:#999;margin-top:5px;}'
+    + '@media print{body{background:white;padding:0;margin:0;}.top{display:none;}.page{box-shadow:none;border-radius:0;max-width:100%;width:100%;padding:5mm;page-break-inside:avoid;}@page{size:A4 portrait;margin:5mm;}}'
+    + '</style></head><body>'
+    + '<div class="top"><div style="font-size:16px;font-weight:700;">Ramadan Timetable</div><div>'
+    + '<button class="action-btn" style="background:#111;color:white;margin-right:8px;" onclick="window.print()">🖨️ Print</button>'
+    + '<button class="action-btn" style="background:#ddd;color:#111;" onclick="window.close()">✕ Close</button>'
+    + '</div></div>'
+    + '<div class="page"><div class="hdr">'
+    + '<div class="hdr-title">🌙 Ramadan Timetable 🌙</div>'
+    + '<div class="hdr-city">' + city + '</div>'
+    + '<div class="hdr-range">' + range + '</div>'
+    + '<div class="hdr-settings">' + settingsLine + '</div>'
+    + '</div>'
+    + '<table><thead><tr><th>#</th><th>Day</th><th>Hijri</th><th>Date</th><th style="background:#5d4037;">Sehri</th><th>Sunrise</th><th>Dhuhr</th><th>Asr</th><th style="background:#2e7d32;">Iftar</th><th>Isha</th><th>Hours</th></tr></thead><tbody>'
+    + rowsHtml
+    + '</tbody></table>'
+    + '<div class="foot">Generated by IbadahHub • Times based on ' + settingsLine + '</div>'
+    + '</div></body></html>'
+  );
+
+  win.document.close();
+}
+
 </script>
 
 <script src="../shared/bottom-nav.js"></script>
