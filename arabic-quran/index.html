@@ -1349,11 +1349,19 @@ body.quran-global-mini-on .globalQuranMiniPlayer{
     <div id="quranAudioCard" class="audioCard" onclick="event.stopPropagation()">
       <div class="compactAudioRow">
         <div id="compactAudioTitle" class="compactAudioTitle">Quran Audio</div>
-        <div class="compactAudioButtons">
-          <button id="compactPlayPauseBtn" class="compactAudioBtn" onclick="toggleCurrentAudioPlayback()">▶</button>
-          <button id="compactUrduBtn" class="compactAudioBtn" onclick="toggleUrduTranslation()">Urdu OFF</button>
-          <button id="compactEnglishBtn" class="compactAudioBtn" onclick="toggleEnglishTranslation()">English OFF</button>
-        </div>
+        <div class="audioBtns">
+  <button id="surahPlayPauseBtn" class="audioBtn" onclick="toggleSurahAudioMainButton()">▶ Play Surah</button>
+  <button id="urduToggleBtn" class="translationToggleBtn" onclick="toggleUrduTranslation()">Urdu OFF</button>
+  <button id="englishToggleBtn" class="translationToggleBtn" onclick="toggleEnglishTranslation()">English OFF</button>
+</div>
+
+<!-- =========================
+     TEST URDU VOICE BUTTON
+     Page: arabic-quran/index.html
+========================= -->
+<button id="testUrduVoiceBtn" class="translationToggleBtn" onclick="testUrduVoice()" style="width:100%;margin-top:10px;background:#111827;color:white;">
+  Test Urdu Voice
+</button>
       </div>
 
       <div class="audioTitle">🎧 Quran Audio</div>
@@ -2547,6 +2555,58 @@ function updateResumeText(){
   }
 }
 
+/* =========================
+   TEST URDU VOICE
+   Full function name: testUrduVoice()
+========================= */
+function testUrduVoice(){
+
+  if(!("speechSynthesis" in window)){
+    showToast("This browser does not support voice speech.");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  let text = "السلام علیکم۔ یہ اردو آواز کا ٹیسٹ ہے۔";
+
+  let utterance = new SpeechSynthesisUtterance(text);
+
+  utterance.lang = "ur-PK";
+  utterance.rate = 0.85;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+
+  let voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+
+  let urduVoice = voices.find(function(voice){
+    return String(voice.lang || "").toLowerCase().startsWith("ur");
+  });
+
+  if(urduVoice){
+    utterance.voice = urduVoice;
+  }
+
+  utterance.onstart = function(){
+    updateAudioStatus("Testing Urdu voice...");
+    showToast("Testing Urdu voice");
+  };
+
+  utterance.onend = function(){
+    updateAudioStatus("Urdu voice test finished.");
+  };
+
+  utterance.onerror = function(){
+    updateAudioStatus("Urdu voice failed on this browser.");
+    showToast("Urdu voice failed");
+  };
+
+  setTimeout(function(){
+    window.speechSynthesis.speak(utterance);
+  }, 150);
+
+}
+     
 /* =========================
    TRANSLATION TOGGLE BUTTONS
 ========================= */
