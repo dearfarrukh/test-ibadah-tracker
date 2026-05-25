@@ -2641,6 +2641,23 @@ function speakOneTranslationText(text, lang, label){
       return;
     }
 
+    /* =========================
+       IMPORTANT FIX
+       iPhone/Safari sometimes does not fire speech onend.
+       This timer continues to next ayah if voice gets stuck.
+    ========================= */
+    let alreadyResolved = false;
+
+    function finishSpeechStep(){
+      if(alreadyResolved) return;
+
+      alreadyResolved = true;
+
+      clearTimeout(window.translationSpeechSafetyTimer);
+
+      resolve();
+    }
+
     let utterance = new SpeechSynthesisUtterance(cleanText);
 
     utterance.lang = lang;
@@ -2659,21 +2676,32 @@ function speakOneTranslationText(text, lang, label){
     }
 
     utterance.onend = function(){
-      resolve();
+      finishSpeechStep();
     };
 
     utterance.onerror = function(){
-      resolve();
+      finishSpeechStep();
     };
 
     updateAudioStatus("Reciting " + label + " translation...");
 
-    window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.cancel();
+
+    setTimeout(function(){
+
+      window.speechSynthesis.speak(utterance);
+
+      let estimatedTime = Math.max(2500, Math.min(14000, cleanText.length * 95));
+
+      window.translationSpeechSafetyTimer = setTimeout(function(){
+        finishSpeechStep();
+      }, estimatedTime);
+
+    }, 120);
 
   });
 
 }
-
 /* =========================
    SPEAK SELECTED TRANSLATIONS AFTER AYAH
    Full function name: speakSelectedTranslationsAfterAyah(index)
@@ -2737,7 +2765,15 @@ async function continueAudioAfterTranslation(){
 
   let finishedIndex = currentPlayingAyahIndex;
 
-  await speakSelectedTranslationsAfterAyah(finishedIndex);
+  try{
+    await speakSelectedTranslationsAfterAyah(finishedIndex);
+  }catch(error){
+    console.log("Translation speech skipped:", error);
+  }
+
+  if(currentAudioMode !== "ayah"){
+    return;
+  }
 
   if(isRepeatRangeActive()){
     let start = Math.min(repeatRangeStartIndex, repeatRangeEndIndex);
