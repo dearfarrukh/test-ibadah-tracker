@@ -64,13 +64,19 @@ body{
   padding-bottom:calc(var(--navbar-height) + env(safe-area-inset-bottom));
 }
 
+/* =========================
+   SALAH TOP BLUE THEME
+   Page: salah/index.html
+========================= */
+
 .salah-header{
   width:100%;
-  padding:12px 4%;
+  padding:12px 4% 8px 4%;
   padding-top:calc(env(safe-area-inset-top, 16px) + 12px);
   display:flex;
   align-items:center;
   justify-content:flex-end;
+  background:linear-gradient(180deg, #0f1d35 0%, #1a2f4a 100%);
 }
 
 .gear-btn{
@@ -78,53 +84,106 @@ body{
   height:38px;
   border:none;
   border-radius:50%;
-  background:white;
-  color:#111;
+  background:rgba(255,255,255,0.16);
+  color:white;
   font-size:20px;
   cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,0.10);
+  box-shadow:0 4px 12px rgba(0,0,0,0.16);
   display:flex;
   align-items:center;
   justify-content:center;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
 }
 
 .gear-btn:active{
   transform:scale(0.94);
+  background:rgba(255,255,255,0.24);
 }
 
 .location-block{
   width:100%;
   text-align:center;
-  padding:8px 4% 4px 4%;
+  padding:8px 4% 22px 4%;
   cursor:pointer;
+  background:linear-gradient(180deg, #1a2f4a 0%, #203f63 100%);
+  border-radius:0 0 34px 34px;
+  box-shadow:0 10px 22px rgba(15,29,53,0.18);
+  margin-bottom:12px;
 }
 
 .location-city{
-  font-size:22px;
-  font-weight:800;
-  color:var(--text);
+  font-size:23px;
+  font-weight:900;
+  color:white;
   line-height:1.2;
   letter-spacing:-0.25px;
 }
 
 .location-tap{
   font-size:13px;
-  color:var(--text-secondary);
-  margin-top:4px;
-  font-weight:500;
+  color:rgba(255,255,255,0.86);
+  margin-top:5px;
+  font-weight:600;
 }
 
 .location-method{
-  font-size:13px;
-  font-weight:600;
-  color:var(--text-secondary);
-  margin-top:3px;
+  font-size:12px;
+  font-weight:700;
+  color:rgba(255,255,255,0.76);
+  margin-top:5px;
   line-height:1.35;
 }
-
+     
 .content{
   width:100%;
-  padding:12px 4% 0 4%;
+  padding:4px 4% 0 4%;
+}
+
+/* =========================
+   BOTTOM NAV POSITION FIX
+   Page: salah/index.html
+   This keeps shared bottom nav icons/text lower and centered.
+========================= */
+
+#salahPage nav,
+#salahPage .navbar,
+#salahPage .bottomNav,
+#salahPage .bottom-nav,
+#salahPage #bottomNav,
+#salahPage .universalBottomNav,
+#salahPage .universal-bottom-nav{
+  padding-top:6px !important;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom)) !important;
+  align-items:center !important;
+}
+
+#salahPage .nav-item,
+#salahPage .bottomNavItem,
+#salahPage .bottom-nav-item,
+#salahPage .universalNavItem,
+#salahPage .universal-nav-item{
+  justify-content:center !important;
+  align-items:center !important;
+  transform:translateY(3px) !important;
+}
+
+#salahPage .nav-icon,
+#salahPage .navIcon,
+#salahPage .nav-icon-box,
+#salahPage .bottomNavIcon,
+#salahPage .bottom-nav-icon,
+#salahPage .universalNavIcon,
+#salahPage .universal-nav-icon{
+  transform:translateY(2px) !important;
+}
+
+#salahPage .nav-label,
+#salahPage .bottomNavLabel,
+#salahPage .bottom-nav-label,
+#salahPage .universalNavLabel,
+#salahPage .universal-nav-label{
+  margin-top:2px !important;
 }
 
 .date-nav{
