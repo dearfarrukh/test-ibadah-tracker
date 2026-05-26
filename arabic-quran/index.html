@@ -2355,29 +2355,17 @@ function scrollToBookmarkedAyah(ayahNumber){
    CLOSE ARABIC READING PAGE
 ========================= */
 function closeArabicReadingPage(event){
+
   if(event){
     event.stopPropagation();
   }
 
-  updateGlobalMiniPlayerUI();
+  stopCurrentSurahAudio();
 
-  let readingPage = document.getElementById("arabicReadingPage");
-  if(readingPage){
-    readingPage.style.display = "none";
-  }
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
 
-  arabicReadingPageIsOpen = false;
-  resetArabicReaderTopBar();
-  document.body.classList.remove("quran-audio-compact");
-  updateGlobalMiniPlayerUI();
+  window.location.href = "../quran/?from=quran";
 
-  if(arabicReadingBackPage === "bookmark"){
-    openBookmarkPage();
-  }else if(arabicReadingBackPage === "surahIndex"){
-    openSurahIndexPage();
-  }else{
-    openArabicHomePage();
-  }
 }
 
 /* =========================
