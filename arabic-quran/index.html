@@ -1613,60 +1613,6 @@ const audioReciters = {
   }
 };
 
-
-/* =========================
-   GET ARABIC QURAN READER RETURN PAGE
-   Full function name: getArabicQuranReaderReturnPage()
-========================= */
-function getArabicQuranReaderReturnPage(){
-
-  let params = new URLSearchParams(window.location.search);
-
-  return (
-    params.get("from") ||
-    localStorage.getItem("ibadahQuranBackPage") ||
-    "home"
-  );
-
-}
-
-/* =========================
-   OPEN DIRECT ARABIC QURAN READER IF SURAH WAS SENT
-   Full function name: openDirectArabicQuranReaderIfSurahWasSent()
-========================= */
-function openDirectArabicQuranReaderIfSurahWasSent(){
-
-  let params = new URLSearchParams(window.location.search);
-
-  let surahFromUrl = parseInt(params.get("surah") || "0", 10);
-  let ayahFromUrl = parseInt(params.get("ayah") || "0", 10);
-
-  let surahFromStorage = parseInt(localStorage.getItem("openArabicQuranSurahNumber") || "0", 10);
-  let ayahFromStorage = parseInt(localStorage.getItem("openArabicQuranAyahNumber") || "0", 10);
-
-  let surahToOpen = surahFromUrl || surahFromStorage;
-  let ayahToOpen = ayahFromUrl || ayahFromStorage;
-
-  if(!surahToOpen || surahToOpen < 1 || surahToOpen > 114){
-    return;
-  }
-
-  localStorage.removeItem("openArabicQuranSurahNumber");
-  localStorage.removeItem("openArabicQuranAyahNumber");
-
-  setTimeout(function(){
-
-    if(ayahToOpen && ayahToOpen > 0){
-      openArabicReadingPage(surahToOpen, "quran", ayahToOpen);
-    }else{
-      openArabicReadingPage(surahToOpen, "quran");
-    }
-
-  }, 80);
-
-}
-
-
 /* =========================
    HIDE ALL APP PAGES
 ========================= */
@@ -1905,10 +1851,8 @@ function deleteArabicBookmarkFromSheet(event, bookmarkId){
    GO BACK TO MAIN APP
 ========================= */
 function goBackToMainApp(){
-
-  let returnPage = getArabicQuranReaderReturnPage();
-  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
-
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+  window.location.href = "../";
 }
 
 /* =========================
@@ -2411,16 +2355,29 @@ function scrollToBookmarkedAyah(ayahNumber){
    CLOSE ARABIC READING PAGE
 ========================= */
 function closeArabicReadingPage(event){
-
   if(event){
     event.stopPropagation();
   }
 
-  stopCurrentSurahAudio();
+  updateGlobalMiniPlayerUI();
 
-  let returnPage = getArabicQuranReaderReturnPage();
-  window.location.href = "../quran/?from=" + encodeURIComponent(returnPage);
+  let readingPage = document.getElementById("arabicReadingPage");
+  if(readingPage){
+    readingPage.style.display = "none";
+  }
 
+  arabicReadingPageIsOpen = false;
+  resetArabicReaderTopBar();
+  document.body.classList.remove("quran-audio-compact");
+  updateGlobalMiniPlayerUI();
+
+  if(arabicReadingBackPage === "bookmark"){
+    openBookmarkPage();
+  }else if(arabicReadingBackPage === "surahIndex"){
+    openSurahIndexPage();
+  }else{
+    openArabicHomePage();
+  }
 }
 
 /* =========================
@@ -3408,12 +3365,12 @@ function escapeHtml(value){
    START APP
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
-
-  updateResumeText();
-  loadOnlineSurahList();
+  loadSavedReciter();
+  setupAudioEndedListener();
   updateUrduToggleUI();
-  openDirectArabicQuranReaderIfSurahWasSent();
-
+  updateResumeText();
+  renderSurahList();
+  loadOnlineSurahList();
 });
 
 </script>
