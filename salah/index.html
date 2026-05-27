@@ -2842,15 +2842,15 @@ function fixSalahBottomNavOnly(){
   let nav = document.getElementById("universalBottomNav");
   if(!nav) return;
 
-  nav.style.height = "86px";
-  nav.style.minHeight = "86px";
-  nav.style.maxHeight = "86px";
-  nav.style.paddingTop = "8px";
-  nav.style.paddingLeft = "3%";
-  nav.style.paddingRight = "3%";
-  nav.style.paddingBottom = "calc(env(safe-area-inset-bottom) + 8px)";
-  nav.style.alignItems = "center";
-  nav.style.overflow = "hidden";
+  nav.style.height = "auto";
+nav.style.minHeight = "86px";
+nav.style.maxHeight = "none";
+nav.style.paddingTop = "8px";
+nav.style.paddingLeft = "3%";
+nav.style.paddingRight = "3%";
+nav.style.paddingBottom = "calc(env(safe-area-inset-bottom) + 8px)";
+nav.style.alignItems = "center";
+nav.style.overflow = "visible";
 
   let navItems = nav.children;
 
