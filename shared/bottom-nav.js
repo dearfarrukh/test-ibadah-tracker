@@ -3,7 +3,6 @@
 // File: shared/bottom-nav.js
 // Full function names:
 // createUniversalBottomNav()
-// buildUniversalBottomNavItem()
 // goUniversalBottomHome()
 // goUniversalBottomSalah()
 // goUniversalBottomTracker()
@@ -24,16 +23,8 @@ function createUniversalBottomNav(activePage){
   nav.style.left = "0";
   nav.style.right = "0";
   nav.style.bottom = "0";
-  nav.style.width = "100%";
-
-  /*
-    iPhone safe-area fix:
-    Bar height now grows with safe-area instead of squeezing icons upward.
-  */
-  nav.style.minHeight = "86px";
-  nav.style.height = "calc(76px + env(safe-area-inset-bottom))";
-  nav.style.padding = "7px 3% calc(env(safe-area-inset-bottom) + 7px) 3%";
-
+  nav.style.height = "86px";
+  nav.style.padding = "8px 3% calc(env(safe-area-inset-bottom) + 8px) 3%";
   nav.style.background = "rgba(255,255,255,0.94)";
   nav.style.backdropFilter = "blur(22px)";
   nav.style.webkitBackdropFilter = "blur(22px)";
@@ -81,16 +72,11 @@ function createUniversalBottomNav(activePage){
 
   document.body.appendChild(nav);
 
-  /*
-    Give page content enough space above bottom bar.
-    This avoids content hiding behind the nav on iPhone.
-  */
-  document.body.style.paddingBottom = "calc(112px + env(safe-area-inset-bottom))";
+  document.body.style.paddingBottom = "110px";
 }
 
 // =========================
 // BUILD UNIVERSAL BOTTOM NAV ITEM
-// Full function name: buildUniversalBottomNavItem()
 // =========================
 function buildUniversalBottomNavItem(item){
 
@@ -100,47 +86,36 @@ function buildUniversalBottomNavItem(item){
     return `
       <div onclick="${item.onclick}" style="
       flex:1;
-      min-width:0;
-      height:100%;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:2px;
+      gap:3px;
       cursor:pointer;
-      box-sizing:border-box;
       ">
         <div style="
-        width:48px;
-        height:48px;
-        border-radius:20px;
+        width:54px;
+        height:54px;
+        border-radius:22px;
         background:#e9e9ee;
         display:flex;
         align-items:center;
         justify-content:center;
         box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
-        flex-shrink:0;
-        box-sizing:border-box;
         ">
           <img src="${item.icon}" style="
-          width:40px;
-          height:40px;
+          width:48px;
+          height:48px;
           object-fit:contain;
           display:block;
-          flex-shrink:0;
           ">
         </div>
 
         <div style="
-        font-size:10.5px;
+        font-size:11px;
         font-weight:900;
         color:#111;
         line-height:1;
-        height:12px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        white-space:nowrap;
         ">
           ${item.label}
         </div>
@@ -151,35 +126,26 @@ function buildUniversalBottomNavItem(item){
   return `
     <div onclick="${item.onclick}" style="
     flex:1;
-    min-width:0;
-    height:100%;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:2px;
+    gap:3px;
     cursor:pointer;
-    box-sizing:border-box;
     ">
       <img src="${item.icon}" style="
-      width:38px;
-      height:38px;
+      width:42px;
+      height:42px;
       object-fit:contain;
       display:block;
       opacity:0.72;
-      flex-shrink:0;
       ">
 
       <div style="
-      font-size:10.5px;
+      font-size:11px;
       font-weight:800;
       color:#666;
       line-height:1;
-      height:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
       ">
         ${item.label}
       </div>
@@ -189,7 +155,6 @@ function buildUniversalBottomNavItem(item){
 
 // =========================
 // GO UNIVERSAL BOTTOM HOME
-// Full function name: goUniversalBottomHome()
 // =========================
 function goUniversalBottomHome(){
 
@@ -199,7 +164,6 @@ function goUniversalBottomHome(){
 
 // =========================
 // GO UNIVERSAL BOTTOM SALAH
-// Full function name: goUniversalBottomSalah()
 // =========================
 function goUniversalBottomSalah(){
 
@@ -209,7 +173,6 @@ function goUniversalBottomSalah(){
 
 // =========================
 // GO UNIVERSAL BOTTOM TRACKER
-// Full function name: goUniversalBottomTracker()
 // =========================
 function goUniversalBottomTracker(){
 
@@ -219,7 +182,6 @@ function goUniversalBottomTracker(){
 
 // =========================
 // GO UNIVERSAL BOTTOM MORE
-// Full function name: goUniversalBottomMore()
 // =========================
 function goUniversalBottomMore(){
 
