@@ -23,12 +23,8 @@ function createUniversalBottomNav(activePage){
   nav.style.left = "0";
   nav.style.right = "0";
   nav.style.bottom = "0";
-  nav.style.minHeight = "86px";
-  nav.style.height = "auto";
-  nav.style.paddingTop = "8px";
-  nav.style.paddingBottom = "calc(env(safe-area-inset-bottom, 0px) + 8px)";
-  nav.style.paddingLeft = "3%";
-  nav.style.paddingRight = "3%";
+  nav.style.height = "86px";
+  nav.style.padding = "8px 3%";
   nav.style.background = "rgba(255,255,255,0.94)";
   nav.style.backdropFilter = "blur(22px)";
   nav.style.webkitBackdropFilter = "blur(22px)";
@@ -76,7 +72,7 @@ function createUniversalBottomNav(activePage){
 
   document.body.appendChild(nav);
 
-  document.body.style.paddingBottom = "110px";
+  document.body.style.paddingBottom = "calc(86px + env(safe-area-inset-bottom, 0px))";
 }
 
 // =========================
@@ -96,7 +92,6 @@ function buildUniversalBottomNavItem(item){
       justify-content:center;
       gap:3px;
       cursor:pointer;
-      padding:2px 0;
       ">
         <div style="
         width:54px;
@@ -137,7 +132,6 @@ function buildUniversalBottomNavItem(item){
     justify-content:center;
     gap:3px;
     cursor:pointer;
-    padding:2px 0;
     ">
       <img src="${item.icon}" style="
       width:42px;
