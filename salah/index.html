@@ -2829,8 +2829,41 @@ function printRamadanTimetable(data, loc, year){
 document.addEventListener("DOMContentLoaded", function(){
   if(typeof createUniversalBottomNav === "function"){
     createUniversalBottomNav("salah");
+    fixSalahBottomNavOnly();
   }
 });
+
+/* =========================
+   FIX SALAH BOTTOM NAV ONLY
+   Full function name: fixSalahBottomNavOnly()
+========================= */
+function fixSalahBottomNavOnly(){
+
+  let nav = document.getElementById("universalBottomNav");
+  if(!nav) return;
+
+  nav.style.height = "86px";
+  nav.style.minHeight = "86px";
+  nav.style.maxHeight = "86px";
+  nav.style.paddingTop = "8px";
+  nav.style.paddingLeft = "3%";
+  nav.style.paddingRight = "3%";
+  nav.style.paddingBottom = "calc(env(safe-area-inset-bottom) + 8px)";
+  nav.style.alignItems = "center";
+  nav.style.overflow = "hidden";
+
+  let navItems = nav.children;
+
+  for(let i = 0; i < navItems.length; i++){
+    navItems[i].style.height = "64px";
+    navItems[i].style.maxHeight = "64px";
+    navItems[i].style.justifyContent = "center";
+    navItems[i].style.transform = "translateY(0)";
+    navItems[i].style.marginTop = "0";
+    navItems[i].style.marginBottom = "0";
+  }
+
+}
 </script>
 
 </body>
