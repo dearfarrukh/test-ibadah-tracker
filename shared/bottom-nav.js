@@ -23,8 +23,12 @@ function createUniversalBottomNav(activePage){
   nav.style.left = "0";
   nav.style.right = "0";
   nav.style.bottom = "0";
-  nav.style.height = "86px";
-  nav.style.padding = "8px 3% calc(env(safe-area-inset-bottom) + 8px) 3%";
+  nav.style.minHeight = "86px";
+  nav.style.height = "auto";
+  nav.style.paddingTop = "8px";
+  nav.style.paddingBottom = "calc(env(safe-area-inset-bottom, 0px) + 8px)";
+  nav.style.paddingLeft = "3%";
+  nav.style.paddingRight = "3%";
   nav.style.background = "rgba(255,255,255,0.94)";
   nav.style.backdropFilter = "blur(22px)";
   nav.style.webkitBackdropFilter = "blur(22px)";
@@ -92,6 +96,7 @@ function buildUniversalBottomNavItem(item){
       justify-content:center;
       gap:3px;
       cursor:pointer;
+      padding:2px 0;
       ">
         <div style="
         width:54px;
@@ -102,6 +107,7 @@ function buildUniversalBottomNavItem(item){
         align-items:center;
         justify-content:center;
         box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05);
+        flex-shrink:0;
         ">
           <img src="${item.icon}" style="
           width:48px;
@@ -110,7 +116,6 @@ function buildUniversalBottomNavItem(item){
           display:block;
           ">
         </div>
-
         <div style="
         font-size:11px;
         font-weight:900;
@@ -132,6 +137,7 @@ function buildUniversalBottomNavItem(item){
     justify-content:center;
     gap:3px;
     cursor:pointer;
+    padding:2px 0;
     ">
       <img src="${item.icon}" style="
       width:42px;
@@ -139,8 +145,8 @@ function buildUniversalBottomNavItem(item){
       object-fit:contain;
       display:block;
       opacity:0.72;
+      flex-shrink:0;
       ">
-
       <div style="
       font-size:11px;
       font-weight:800;
@@ -157,34 +163,26 @@ function buildUniversalBottomNavItem(item){
 // GO UNIVERSAL BOTTOM HOME
 // =========================
 function goUniversalBottomHome(){
-
   window.location.href = "../home/";
-
 }
 
 // =========================
 // GO UNIVERSAL BOTTOM SALAH
 // =========================
 function goUniversalBottomSalah(){
-
   window.location.href = "../salah/";
-
 }
 
 // =========================
 // GO UNIVERSAL BOTTOM TRACKER
 // =========================
 function goUniversalBottomTracker(){
-
   window.location.href = "../tracker/";
-
 }
 
 // =========================
 // GO UNIVERSAL BOTTOM MORE
 // =========================
 function goUniversalBottomMore(){
-
   window.location.href = "../more/";
-
 }
