@@ -3350,15 +3350,38 @@ function escapeHtml(value){
 }
 
 /* =========================
-   START APP
+   START AUDIO QURAN FOLDER PAGE
+   Full event name: DOMContentLoaded
+   Purpose: Open Audio Quran Surah directly when quran/index.html sends surah number
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
+
   loadSavedReciter();
   setupAudioEndedListener();
   updateUrduToggleUI();
   updateResumeText();
   renderSurahList();
+
+  let params = new URLSearchParams(window.location.search);
+
+  let urlSurah = parseInt(params.get("surah") || "0", 10);
+  let savedSurah = parseInt(localStorage.getItem("openArabicQuranSurahNumber") || "0", 10);
+
+  let cameFromQuranIndexByUrl = params.get("from") === "quran";
+  let cameFromQuranIndexByStorage = localStorage.getItem("openArabicQuranDirectFromQuranIndex") === "yes";
+
+  let surahToOpen = urlSurah || savedSurah || 0;
+
+  if((cameFromQuranIndexByUrl || cameFromQuranIndexByStorage) && surahToOpen && surahToOpen >= 1 && surahToOpen <= 114){
+
+    localStorage.removeItem("openArabicQuranDirectFromQuranIndex");
+
+    openArabicReadingPage(surahToOpen, "quran");
+
+  }
+
   loadOnlineSurahList();
+
 });
 
 </script>
