@@ -2351,21 +2351,75 @@ function resetQuranFlipPosition(){
 }
 
 /* =========================
-   START APP
+   START 9 LINE FOLDER PAGE
    Full event name: DOMContentLoaded
-   Purpose: If quran/index.html sends ?from=quran&page=number, open 9 Line reader directly
+   Purpose: Open 9 Line Surah directly when quran/index.html sends page number
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
 
   updateResumeText();
 
   let params = new URLSearchParams(window.location.search);
-  let cameFromQuranIndex = params.get("from") === "quran";
-  let pageFromQuranIndex = parseInt(params.get("page") || "0", 10);
 
-  if(cameFromQuranIndex && pageFromQuranIndex && pageFromQuranIndex >= 1 && pageFromQuranIndex <= totalPages){
+  let urlPage = parseInt(params.get("page") || "0", 10);
+  let savedPage = parseInt(localStorage.getItem("openQuran9PageNumber") || "0", 10);
 
-    open9LinePageNumberFromQuranIndex(pageFromQuranIndex);
+  let cameFromQuranIndexByUrl = params.get("from") === "quran";
+  let cameFromQuranIndexByStorage = localStorage.getItem("openQuran9DirectFromQuranIndex") === "yes";
+
+  let pageToOpen = urlPage || savedPage || 0;
+
+  if((cameFromQuranIndexByUrl || cameFromQuranIndexByStorage) && pageToOpen && pageToOpen >= 1 && pageToOpen <= totalPages){
+
+    localStorage.removeItem("openQuran9DirectFromQuranIndex");
+
+    setTimeout(function(){
+
+      hideAllPages();
+      closeBottomSheet();
+
+      let homePage = document.getElementById("homePage");
+      let readingPage = document.getElementById("readingPage");
+
+      if(homePage){
+        homePage.classList.remove("active");
+        homePage.style.display = "none";
+      }
+
+      if(readingPage){
+        readingPage.style.display = "block";
+      }
+
+      resetReaderTopBar();
+
+      currentPage = pageToOpen;
+      readingBackPage = "quran";
+
+      loadPage(pageToOpen);
+
+      setupInteractiveQuranFlip({
+        stage: document.getElementById("quranFlipStage"),
+        sheet: document.getElementById("quranFlipSheet"),
+        underPage: document.getElementById("quranFlipUnderPage"),
+        frontImage: document.getElementById("pageImage"),
+        underImage: document.getElementById("quranUnderImage"),
+        shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+        onNext: function(){
+          previousPage();
+        },
+        onPrev: function(){
+          nextPage();
+        },
+        getNextImageSrc: function(){
+          return getPreviousImageSrc();
+        },
+        getPrevImageSrc: function(){
+          return getNextImageSrc();
+        }
+      });
+
+    }, 150);
+
     return;
 
   }
@@ -2373,6 +2427,7 @@ document.addEventListener("DOMContentLoaded", function(){
   openHomePage();
 
 });
+     
 </script>
 
 </body>
