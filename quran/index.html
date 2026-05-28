@@ -307,8 +307,72 @@ function selectQuranType(type){selectedQuranType=type;localStorage.setItem("sele
 function updateQuranTypeButtons(){[{id:"quranType9",type:"9line"},{id:"quranType15",type:"15line"},{id:"quranType16",type:"16line"},{id:"quranTypeAudio",type:"audio"}].forEach(function(item){let btn=document.getElementById(item.id);if(btn){btn.classList.toggle("active",item.type===selectedQuranType);}});let text=document.getElementById("selectedQuranTypeText");if(text){text.innerText=getSelectedQuranLabel();}let topTitle=document.getElementById("quranTopTitleText");if(topTitle){topTitle.innerText=getSelectedQuranLabel();}let juzBtn=document.getElementById("toolJuzBtn");if(juzBtn){if(selectedQuranType==="audio"){juzBtn.classList.add("disabled");juzBtn.setAttribute("aria-disabled","true");}else{juzBtn.classList.remove("disabled");juzBtn.removeAttribute("aria-disabled");}}}
 function showQuranListMode(mode){if(mode==="juz"&&selectedQuranType==="audio"){showToast("Juz is not available for Audio Quran");return;}selectedListMode=mode;localStorage.setItem("selectedQuranListMode",selectedListMode);let juzBtn=document.getElementById("toolJuzBtn");let surahBtn=document.getElementById("toolSurahBtn");let favoriteBtn=document.getElementById("toolFavoriteBtn");if(juzBtn)juzBtn.classList.remove("active");if(surahBtn)surahBtn.classList.remove("active");if(favoriteBtn)favoriteBtn.classList.remove("active");if(mode==="juz"&&juzBtn)juzBtn.classList.add("active");if(mode==="surah"&&surahBtn)surahBtn.classList.add("active");if(mode==="favorite"&&favoriteBtn)favoriteBtn.classList.add("active");renderCurrentQuranList();}
 function renderCurrentQuranList(){updateQuranTypeButtons();if(selectedQuranType==="audio"&&selectedListMode==="juz"){selectedListMode="surah";localStorage.setItem("selectedQuranListMode",selectedListMode);}let title=document.getElementById("quranListTitle");let downloadArea=document.getElementById("downloadArea");if(downloadArea)downloadArea.style.display="none";let juzBtn=document.getElementById("toolJuzBtn");let surahBtn=document.getElementById("toolSurahBtn");let favoriteBtn=document.getElementById("toolFavoriteBtn");if(juzBtn)juzBtn.classList.remove("active");if(surahBtn)surahBtn.classList.remove("active");if(favoriteBtn)favoriteBtn.classList.remove("active");if(selectedListMode==="juz"){if(juzBtn)juzBtn.classList.add("active");if(title)title.innerText="Juz List";renderJuzList();return;}if(selectedListMode==="favorite"){if(favoriteBtn)favoriteBtn.classList.add("active");if(title)title.innerText="Favorites";renderFavoriteList();return;}if(surahBtn)surahBtn.classList.add("active");if(title)title.innerText="Surah List";renderSurahList();}
-function renderSurahList(){let container=document.getElementById("quranList");if(!container)return;let query=getQuranSearchQuery();container.innerHTML="";surahData.forEach(function(surah){let searchText=(surah.num+" "+surah.en+" "+surah.ar+" "+surah.verses).toLowerCase();if(query&&!searchText.includes(query)){return;}let page=getSurahStartPageForSelectedQuran(surah.num);let displayPage=page;if(selectedQuranType==="16line"){displayPage=page+1;}let card=document.createElement("button");card.className="quranListCard";card.onclick=function(){openSelectedQuranAtPage(page,surah.num);};let subText="Page "+displayPage+" • "+surah.verses+" verses";if(selectedQuranType==="audio"){subText=surah.verses+" verses • Audio Quran";}card.innerHTML=`<div class="quranListBadge">${surah.num}</div><div class="quranListInfo"><div class="quranListTitle">${surah.en}</div><div class="quranListSub">${subText}</div></div><div class="quranListArabic">${surah.ar}</div><div class="quranChevron">›</div>`;container.appendChild(card);});if(!container.innerHTML){container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No Surah found</div><div class="quranNoResultSub">Try another Surah name or number.</div></div>`;}}
-function renderJuzList(){let container=document.getElementById("quranList");if(!container)return;container.innerHTML="";if(selectedQuranType==="audio"){container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">Juz not available</div><div class="quranNoResultSub">Audio Quran opens by Surah, Bookmark, Resume, or Go Page.</div></div>`;return;}let query=getQuranSearchQuery();for(let juzNumber=1;juzNumber<=30;juzNumber++){let searchText=("juz "+juzNumber+" جزء "+juzNumber).toLowerCase();if(query&&!searchText.includes(query)){continue;}let page=getJuzStartPageForSelectedQuran(juzNumber);let displayPage=page;if(selectedQuranType==="16line"){displayPage=page+1;}let card=document.createElement("button");card.className="quranListCard";card.onclick=function(){openSelectedQuranAtPage(page,null);};card.innerHTML=`<div class="quranListBadge">${juzNumber}</div><div class="quranListInfo"><div class="quranListTitle">Juz ${juzNumber}</div><div class="quranListSub">Page ${displayPage} • Open ${getSelectedQuranLabel()}</div></div><div class="quranListArabic">الجزء ${juzNumber}</div><div class="quranChevron">›</div>`;container.appendChild(card);}if(!container.innerHTML){container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No Juz found</div><div class="quranNoResultSub">Try a number like 1, 2, or 30.</div></div>`;}}
+/* =========================
+   RENDER SURAH LIST
+   Full function name: renderSurahList()
+   Purpose: Opens Surah correctly for 15 Line, 16 Line, 9 Line, and Audio Quran
+========================= */
+function renderSurahList(){
+
+  let container=document.getElementById("quranList");
+  if(!container)return;
+
+  let query=getQuranSearchQuery();
+  container.innerHTML="";
+
+  surahData.forEach(function(surah){
+
+    let searchText=(surah.num+" "+surah.en+" "+surah.ar+" "+surah.verses).toLowerCase();
+
+    if(query&&!searchText.includes(query)){
+      return;
+    }
+
+    let page=getSurahStartPageForSelectedQuran(surah.num);
+    let displayPage=page;
+
+    if(selectedQuranType==="16line"){
+      displayPage=page+1;
+    }
+
+    let card=document.createElement("button");
+    card.className="quranListCard";
+
+    card.onclick=function(){
+
+      if(selectedQuranType==="audio"){
+
+        localStorage.setItem("selectedQuranType","audio");
+        localStorage.setItem("openArabicQuranSurahNumber",String(surah.num));
+        localStorage.setItem("openArabicQuranDirectFromQuranIndex","yes");
+
+        window.location.href="../arabic-quran/?from=quran&surah="+encodeURIComponent(surah.num);
+        return;
+
+      }
+
+      openSelectedQuranAtPage(page,surah.num);
+
+    };
+
+    let subText="Page "+displayPage+" • "+surah.verses+" verses";
+
+    if(selectedQuranType==="audio"){
+      subText=surah.verses+" verses • Audio Quran";
+    }
+
+    card.innerHTML=`<div class="quranListBadge">${surah.num}</div><div class="quranListInfo"><div class="quranListTitle">${surah.en}</div><div class="quranListSub">${subText}</div></div><div class="quranListArabic">${surah.ar}</div><div class="quranChevron">›</div>`;
+
+    container.appendChild(card);
+
+  });
+
+  if(!container.innerHTML){
+    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No Surah found</div><div class="quranNoResultSub">Try another Surah name or number.</div></div>`;
+  }
+
+}
+     function renderJuzList(){let container=document.getElementById("quranList");if(!container)return;container.innerHTML="";if(selectedQuranType==="audio"){container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">Juz not available</div><div class="quranNoResultSub">Audio Quran opens by Surah, Bookmark, Resume, or Go Page.</div></div>`;return;}let query=getQuranSearchQuery();for(let juzNumber=1;juzNumber<=30;juzNumber++){let searchText=("juz "+juzNumber+" جزء "+juzNumber).toLowerCase();if(query&&!searchText.includes(query)){continue;}let page=getJuzStartPageForSelectedQuran(juzNumber);let displayPage=page;if(selectedQuranType==="16line"){displayPage=page+1;}let card=document.createElement("button");card.className="quranListCard";card.onclick=function(){openSelectedQuranAtPage(page,null);};card.innerHTML=`<div class="quranListBadge">${juzNumber}</div><div class="quranListInfo"><div class="quranListTitle">Juz ${juzNumber}</div><div class="quranListSub">Page ${displayPage} • Open ${getSelectedQuranLabel()}</div></div><div class="quranListArabic">الجزء ${juzNumber}</div><div class="quranChevron">›</div>`;container.appendChild(card);}if(!container.innerHTML){container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No Juz found</div><div class="quranNoResultSub">Try a number like 1, 2, or 30.</div></div>`;}}
 function renderFavoriteList(){let container=document.getElementById("quranList");if(!container)return;let allBookmarks=getAllQuranBookmarks();let currentTypeBookmarks=allBookmarks.filter(function(item){return getBookmarkTypeForSelectedQuran()===item.type;});container.innerHTML="";if(!currentTypeBookmarks.length){container.innerHTML=`<div class="quranListCard" style="cursor:default;"><div class="quranListBadge">★</div><div class="quranListInfo"><div class="quranListTitle">No favorites yet</div><div class="quranListSub">For now, saved bookmarks will show here later.</div></div></div>`;return;}currentTypeBookmarks.forEach(function(bookmark){let card=document.createElement("button");card.className="quranListCard";card.onclick=function(){openSelectedQuranAtPage(Number(bookmark.page||1),null);};card.innerHTML=`<div class="quranListBadge">★</div><div class="quranListInfo"><div class="quranListTitle">${bookmark.name||"Favorite"}</div><div class="quranListSub">Page ${bookmark.page||1}</div></div><div class="quranChevron">›</div>`;container.appendChild(card);});}
 function getBookmarkTypeForSelectedQuran(){if(selectedQuranType==="15line")return"15line";if(selectedQuranType==="16line")return"16line";if(selectedQuranType==="9line")return"9line";if(selectedQuranType==="audio")return"arabic";return"15line";}
 function getAllQuranBookmarks(){try{return JSON.parse(localStorage.getItem("quranBookmarks")||"[]");}catch(error){return[];}}
