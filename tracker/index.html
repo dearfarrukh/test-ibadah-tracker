@@ -409,7 +409,57 @@ body{
   cursor:pointer;
 }
 
+/* =========================
+   TRACKER CLOUD MINI ROW
+   Used on: tracker/index.html
+   Buttons:
+   saveTrackerToCloud()
+   loadTrackerFromCloud()
+========================= */
+.trackerCloudMiniRow{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:2px 0 14px 0;
+  padding:0 1%;
+}
 
+.trackerCloudMiniTitle{
+  min-width:0;
+  flex:1;
+  font-size:16px;
+  font-weight:900;
+  color:#111;
+  letter-spacing:-0.2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.trackerCloudMiniActions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-shrink:0;
+}
+
+.trackerCloudMiniBtn{
+  border:none;
+  border-radius:999px;
+  padding:8px 12px;
+  background:white;
+  color:#111;
+  font-size:13px;
+  font-weight:900;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+  cursor:pointer;
+}
+
+.trackerCloudMiniBtn:active{
+  transform:scale(0.95);
+}
      
 /* =========================
    PROGRESS CARD
@@ -817,7 +867,6 @@ body{
 <div class="trackerHeader" id="trackerHeader">
   <img class="trackerLogo" src="../Images/Icons/QuranTracker.png" alt="">
   <h1 class="trackerTitle">Ibadah Tracker</h1>
-  <button class="trackerCloudHeaderBtn" onclick="openTrackerCloudPopup()" title="Tracker Cloud Sync">☁️</button>
 </div>
 
 <!-- =========================
@@ -877,21 +926,18 @@ body{
     </div>
   </div>
 
-  <!-- =========================
-       TRACKER CLOUD SYNC CARD
+    <!-- =========================
+       TRACKER CLOUD MINI ROW
        Buttons:
        saveTrackerToCloud()
        loadTrackerFromCloud()
   ========================= -->
-  <div class="trackerCloudCard">
-    <div class="trackerCloudTitle">☁️ Tracker Cloud Sync</div>
-    <div class="trackerCloudSub">
-      
-    </div>
+  <div class="trackerCloudMiniRow">
+    <div class="trackerCloudMiniTitle">☁️ Tracker Cloud Sync</div>
 
-    <div class="trackerCloudGrid">
-      <button class="trackerCloudBtn upload" onclick="saveTrackerToCloud()">Upload</button>
-      <button class="trackerCloudBtn download" onclick="loadTrackerFromCloud()">Download</button>
+    <div class="trackerCloudMiniActions">
+      <button class="trackerCloudMiniBtn" onclick="saveTrackerToCloud()">Upload</button>
+      <button class="trackerCloudMiniBtn" onclick="loadTrackerFromCloud()">Download</button>
     </div>
   </div>
 
