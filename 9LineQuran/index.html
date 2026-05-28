@@ -1236,12 +1236,13 @@ function openHomePage(){
 }
 
 /* =========================
-   GO BACK TO MAIN APP
+   GO BACK TO MAIN QURAN PAGE
+   Full function name: goBackToMainApp()
 ========================= */
 function goBackToMainApp(){
 
   localStorage.setItem("ibadahFolderReturnPage", "quran");
-  window.location.href = "../";
+  window.location.href = "../quran/";
 
 }
 
@@ -1742,6 +1743,7 @@ function openReadingPage(page, backPage){
 
 /* =========================
    CLOSE READING PAGE
+   Full function name: closeReadingPage()
 ========================= */
 function closeReadingPage(event){
 
@@ -1749,13 +1751,10 @@ function closeReadingPage(event){
     event.stopPropagation();
   }
 
-  let readingPage = document.getElementById("readingPage");
-  if(readingPage){
-    readingPage.style.display = "none";
-  }
-
   resetReaderTopBar();
-  openHomePage();
+
+  localStorage.setItem("ibadahFolderReturnPage", "quran");
+  window.location.href = "../quran/";
 
 }
 
