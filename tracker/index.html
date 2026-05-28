@@ -70,6 +70,111 @@ body{
   letter-spacing:-0.7px;
   white-space:nowrap;
 }
+     /* =========================
+   TRACKER HEADER CLOUD BUTTON
+   Used on: tracker/index.html
+========================= */
+.trackerCloudHeaderBtn{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#0a4b95;
+  font-size:22px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 7px 18px rgba(0,0,0,0.24);
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.trackerCloudHeaderBtn:active{
+  transform:scale(0.94);
+}
+
+/* =========================
+   TRACKER CLOUD POPUP
+   Used on: tracker/index.html
+========================= */
+#trackerCloudPopup{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:14000;
+  background:rgba(0,0,0,0.32);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.trackerCloudPopupBox{
+  width:100%;
+  max-width:340px;
+  background:white;
+  border-radius:30px;
+  padding:22px 5%;
+  box-shadow:0 22px 50px rgba(0,0,0,0.24);
+  text-align:center;
+}
+
+.trackerCloudPopupIcon{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#eef7ff;
+  color:#0a84ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  margin:0 auto 12px auto;
+}
+
+.trackerCloudPopupTitle{
+  font-size:23px;
+  font-weight:950;
+  color:#111;
+  letter-spacing:-0.4px;
+  margin-bottom:6px;
+}
+
+.trackerCloudPopupSub{
+  font-size:14px;
+  font-weight:650;
+  color:#666;
+  line-height:1.45;
+  margin-bottom:16px;
+}
+
+.trackerCloudPopupBtn{
+  width:100%;
+  border:none;
+  border-radius:20px;
+  padding:16px;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.trackerCloudPopupBtn.upload{
+  background:#0a84ff;
+  color:white;
+}
+
+.trackerCloudPopupBtn.download{
+  background:#e9e9ee;
+  color:#111;
+}
+
+.trackerCloudPopupBtn.cancel{
+  background:#f2f2f7;
+  color:#666;
+}
 
 /* =========================
    WHITE ROUNDED BODY PANEL
@@ -304,62 +409,7 @@ body{
   cursor:pointer;
 }
 
-/* =========================
-   TRACKER CLOUD SYNC CARD
-   Used on: tracker/index.html
-========================= */
-.trackerCloudCard{
-  width:100%;
-  background:white;
-  border-radius:26px;
-  padding:18px 5%;
-  margin-bottom:15px;
-  box-shadow:0 9px 24px rgba(0,0,0,0.08);
-  border:1px solid rgba(0,0,0,0.04);
-}
 
-.trackerCloudTitle{
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:8px;
-  letter-spacing:-0.2px;
-  color:#111;
-}
-
-.trackerCloudSub{
-  font-size:14px;
-  font-weight:650;
-  color:#666;
-  line-height:1.45;
-  margin-bottom:14px;
-}
-
-.trackerCloudGrid{
-  width:100%;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.trackerCloudBtn{
-  width:100%;
-  border:none;
-  border-radius:18px;
-  padding:15px 8px;
-  font-size:15px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.trackerCloudBtn.upload{
-  background:#0a84ff;
-  color:white;
-}
-
-.trackerCloudBtn.download{
-  background:#e9e9ee;
-  color:#111;
-}
      
 /* =========================
    PROGRESS CARD
@@ -767,6 +817,7 @@ body{
 <div class="trackerHeader" id="trackerHeader">
   <img class="trackerLogo" src="../Images/Icons/QuranTracker.png" alt="">
   <h1 class="trackerTitle">Ibadah Tracker</h1>
+  <button class="trackerCloudHeaderBtn" onclick="openTrackerCloudPopup()" title="Tracker Cloud Sync">☁️</button>
 </div>
 
 <!-- =========================
@@ -909,7 +960,31 @@ body{
     <button class="secondaryBtn" onclick="closeDeletePopup()">Cancel</button>
   </div>
 </div>
+<!-- =========================
+     TRACKER CLOUD POPUP
+     Buttons:
+     saveTrackerToCloud()
+     loadTrackerFromCloud()
+========================= -->
+<div id="trackerCloudPopup" onclick="closeTrackerCloudPopup()">
+  <div class="trackerCloudPopupBox" onclick="event.stopPropagation();">
 
+    <div class="trackerCloudPopupIcon">☁️</div>
+    <div class="trackerCloudPopupTitle">Tracker Cloud</div>
+    <div class="trackerCloudPopupSub">
+      Upload or download only your Tracker data.
+    </div>
+
+    <button class="trackerCloudPopupBtn upload" onclick="saveTrackerToCloudFromPopup()">Upload Tracker</button>
+    <div style="height:10px;"></div>
+
+    <button class="trackerCloudPopupBtn download" onclick="loadTrackerFromCloudFromPopup()">Download Tracker</button>
+    <div style="height:10px;"></div>
+
+    <button class="trackerCloudPopupBtn cancel" onclick="closeTrackerCloudPopup()">Cancel</button>
+
+  </div>
+</div>
 <!-- =========================
      TOAST
 ========================= -->
@@ -3454,7 +3529,55 @@ function goToMainPage(pageName){
   localStorage.setItem("ibadahFolderReturnPage", pageName || "tracker");
   window.location.href = "../";
 }
+/* =========================
+   OPEN TRACKER CLOUD POPUP
+   Full function name: openTrackerCloudPopup()
+========================= */
+function openTrackerCloudPopup(){
 
+  let popup = document.getElementById("trackerCloudPopup");
+
+  if(popup){
+    popup.style.display = "flex";
+  }
+
+}
+
+/* =========================
+   CLOSE TRACKER CLOUD POPUP
+   Full function name: closeTrackerCloudPopup()
+========================= */
+function closeTrackerCloudPopup(){
+
+  let popup = document.getElementById("trackerCloudPopup");
+
+  if(popup){
+    popup.style.display = "none";
+  }
+
+}
+
+/* =========================
+   SAVE TRACKER TO CLOUD FROM POPUP
+   Full function name: saveTrackerToCloudFromPopup()
+========================= */
+function saveTrackerToCloudFromPopup(){
+
+  closeTrackerCloudPopup();
+  saveTrackerToCloud();
+
+}
+
+/* =========================
+   LOAD TRACKER FROM CLOUD FROM POPUP
+   Full function name: loadTrackerFromCloudFromPopup()
+========================= */
+function loadTrackerFromCloudFromPopup(){
+
+  closeTrackerCloudPopup();
+  loadTrackerFromCloud();
+
+}
 /* =========================
    SHOW TOAST
 ========================= */
