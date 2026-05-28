@@ -320,7 +320,48 @@ function openSelectedQuranBookmarks(){let allBookmarks=getAllQuranBookmarks();le
 function resumeSelectedQuran(){let page=1;if(selectedQuranType==="15line"){page=parseInt(localStorage.getItem("lastMushafPage")||"1",10);}else if(selectedQuranType==="16line"){page=parseInt(localStorage.getItem("lastQuran16Page")||localStorage.getItem("quran16LastPage")||"1",10);}else if(selectedQuranType==="9line"){page=parseInt(localStorage.getItem("last9LineMushafPage")||localStorage.getItem("lastQuran9Page")||"1",10);}else if(selectedQuranType==="audio"){page=parseInt(localStorage.getItem("lastArabicQuranSurahNumber")||localStorage.getItem("lastArabicQuranSurah")||"1",10);}openSelectedQuranAtPage(page,null);}
 function goToSelectedQuranPage(){let maxPage=getSelectedQuranMaxPage();let pageText=prompt("Enter page number 1 to "+maxPage);if(pageText===null)return;let page=parseInt(pageText,10);if(!page||page<1||page>maxPage){showToast("Please enter page number 1 to "+maxPage);return;}openSelectedQuranAtPage(page,null);}
 function getSelectedQuranMaxPage(){if(selectedQuranType==="15line")return 847;if(selectedQuranType==="16line")return 549;if(selectedQuranType==="9line")return 1890;if(selectedQuranType==="audio")return 114;return 847;}
-function openSelectedQuranAtPage(page,surahNumber){localStorage.setItem("ibadahFolderReturnPage","quran");localStorage.setItem("ibadahQuranBackPage",getQuranReturnPage());if(selectedQuranType==="15line"){localStorage.setItem("openQuran15PageNumber",String(page||1));window.location.href="../QuranPages/?from=quran&page="+encodeURIComponent(page||1);return;}if(selectedQuranType==="16line"){localStorage.setItem("openQuran16PageNumber",String(page||1));window.location.href="../16linequranpages/?from=quran&page="+encodeURIComponent(page||1);return;}if(selectedQuranType==="9line"){localStorage.setItem("openQuran9PageNumber",String(page||1));window.location.href="../9LineQuran/?from=quran&page="+encodeURIComponent(page||1);return;}if(selectedQuranType==="audio"){localStorage.setItem("openArabicQuranSurahNumber",String(surahNumber||page||1));window.location.href="../arabic-quran/?from=quran&surah="+encodeURIComponent(surahNumber||page||1);return;}}
+
+/* =========================
+   OPEN SELECTED QURAN AT PAGE
+   Full function name: openSelectedQuranAtPage()
+   Purpose: Opens selected Quran type from quran/index.html
+========================= */
+function openSelectedQuranAtPage(page,surahNumber){
+
+  localStorage.setItem("ibadahFolderReturnPage","quran");
+  localStorage.setItem("ibadahQuranBackPage",getQuranReturnPage());
+
+  if(selectedQuranType==="15line"){
+    localStorage.setItem("openQuran15PageNumber",String(page||1));
+    window.location.href="../QuranPages/?from=quran&page="+encodeURIComponent(page||1);
+    return;
+  }
+
+  if(selectedQuranType==="16line"){
+    localStorage.setItem("openQuran16PageNumber",String(page||1));
+    window.location.href="../16linequranpages/?from=quran&page="+encodeURIComponent(page||1);
+    return;
+  }
+
+  if(selectedQuranType==="9line"){
+
+    localStorage.setItem("selectedQuranType","9line");
+    localStorage.setItem("openQuran9PageNumber",String(page||1));
+    localStorage.setItem("openQuran9DirectFromQuranIndex","yes");
+
+    window.location.href="../9LineQuran/?from=quran&page="+encodeURIComponent(page||1);
+    return;
+
+  }
+
+  if(selectedQuranType==="audio"){
+    localStorage.setItem("openArabicQuranSurahNumber",String(surahNumber||page||1));
+    window.location.href="../arabic-quran/?from=quran&surah="+encodeURIComponent(surahNumber||page||1);
+    return;
+  }
+
+}
+     
 function goBackFromQuranPage(){let returnPage=getQuranReturnPage();if(returnPage==="more"){window.location.href="../more/";return;}if(returnPage==="tracker"){window.location.href="../tracker/";return;}if(returnPage==="salah"){window.location.href="../salah/";return;}window.location.href="../home/";}
 function getQuranReturnPage(){let params=new URLSearchParams(window.location.search);return params.get("from")||localStorage.getItem("ibadahQuranBackPage")||"home";}
 function openArabicQuranPage(){selectedQuranType="audio";openSelectedQuranAtPage(1,1);}
