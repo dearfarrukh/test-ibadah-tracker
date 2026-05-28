@@ -305,6 +305,63 @@ body{
 }
 
 /* =========================
+   TRACKER CLOUD SYNC CARD
+   Used on: tracker/index.html
+========================= */
+.trackerCloudCard{
+  width:100%;
+  background:white;
+  border-radius:26px;
+  padding:18px 5%;
+  margin-bottom:15px;
+  box-shadow:0 9px 24px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.trackerCloudTitle{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:8px;
+  letter-spacing:-0.2px;
+  color:#111;
+}
+
+.trackerCloudSub{
+  font-size:14px;
+  font-weight:650;
+  color:#666;
+  line-height:1.45;
+  margin-bottom:14px;
+}
+
+.trackerCloudGrid{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.trackerCloudBtn{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:15px 8px;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.trackerCloudBtn.upload{
+  background:#0a84ff;
+  color:white;
+}
+
+.trackerCloudBtn.download{
+  background:#e9e9ee;
+  color:#111;
+}
+     
+/* =========================
    PROGRESS CARD
 ========================= */
 .summaryCard{
@@ -769,6 +826,25 @@ body{
     </div>
   </div>
 
+  <!-- =========================
+       TRACKER CLOUD SYNC CARD
+       Buttons:
+       saveTrackerToCloud()
+       loadTrackerFromCloud()
+  ========================= -->
+  <div class="trackerCloudCard">
+    <div class="trackerCloudTitle">☁️ Tracker Cloud Sync</div>
+    <div class="trackerCloudSub">
+      Upload or download only your Tracker data. If Google is not signed in, the app will ask you to sign in first.
+    </div>
+
+    <div class="trackerCloudGrid">
+      <button class="trackerCloudBtn upload" onclick="saveTrackerToCloud()">Upload</button>
+      <button class="trackerCloudBtn download" onclick="loadTrackerFromCloud()">Download</button>
+    </div>
+  </div>
+
+     
   <!-- =========================
        DAILY TASKS CARD
   ========================= -->
