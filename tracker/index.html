@@ -1070,7 +1070,7 @@ function getDefaultTrackerTasks(){
     {id:"default_surah_taghabun", name:"Surah Taghabun", start:0, end:null},
     {id:"default_surah_waqiya", name:"Surah Waqiya", start:0, end:null},
     {id:"default_surah_ikhlas", name:"Surah Ikhlas", start:0, end:null},
-    {id:"default_surah_ad_duha_to_surah_al_nas", name:"Surah Ad Duha to Surah Al Nas", start:0, end:null}
+
   ];
 
 }
@@ -1888,6 +1888,22 @@ let taskList = JSON.parse(localStorage.getItem(TRACKER_TASK_LIST_KEY) || "[]");
 
 taskList = taskList.filter(function(t){
   return t && !["Fajr","Dhuhur","Asr","Maghrib","Isha"].includes(t.name);
+});
+
+/* =========================
+   REMOVE OLD DEFAULT RANGE TASK
+   Full cleanup target:
+   default_surah_ad_duha_to_surah_al_nas
+========================= */
+taskList = taskList.filter(function(t){
+
+  if(t && String(t.id || "") === "default_surah_ad_duha_to_surah_al_nas"){
+    addDeletedTaskId("default_surah_ad_duha_to_surah_al_nas");
+    return false;
+  }
+
+  return true;
+
 });
 
 if(!Array.isArray(taskList) || taskList.length === 0){
