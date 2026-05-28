@@ -1744,6 +1744,7 @@ function openReadingPage(page, backPage){
 /* =========================
    CLOSE READING PAGE
    Full function name: closeReadingPage()
+   Purpose: Back button from 9 Line reader returns to main Quran index when opened from quran/index.html
 ========================= */
 function closeReadingPage(event){
 
@@ -1758,7 +1759,7 @@ function closeReadingPage(event){
 
   if(cameFromQuranIndex){
     localStorage.setItem("ibadahFolderReturnPage", "quran");
-    window.location.href = "../quran/";
+    window.location.href = "../quran/?from=quran";
     return;
   }
 
@@ -1924,6 +1925,67 @@ function toggleReaderTopBar(event){
   }
 
 }
+
+
+/* =========================
+   OPEN 9 LINE PAGE NUMBER FROM QURAN INDEX
+   Full function name: open9LinePageNumberFromQuranIndex()
+   Purpose: Opens 9 Line reader directly when quran/index.html sends ?page=number
+========================= */
+function open9LinePageNumberFromQuranIndex(page){
+
+  if(page < 1) page = 1;
+  if(page > totalPages) page = totalPages;
+
+  hideAllPages();
+  closeBottomSheet();
+
+  let homePage = document.getElementById("homePage");
+  let readingPage = document.getElementById("readingPage");
+
+  if(homePage){
+    homePage.classList.remove("active");
+    homePage.style.display = "none";
+  }
+
+  if(readingPage){
+    readingPage.style.display = "block";
+  }
+
+  resetReaderTopBar();
+
+  currentPage = page;
+  readingBackPage = "quran";
+
+  loadPage(page);
+
+  setTimeout(function(){
+    setupInteractiveQuranFlip({
+      stage: document.getElementById("quranFlipStage"),
+      sheet: document.getElementById("quranFlipSheet"),
+      underPage: document.getElementById("quranFlipUnderPage"),
+      frontImage: document.getElementById("pageImage"),
+      underImage: document.getElementById("quranUnderImage"),
+      shadow: document.querySelector("#quranFlipSheet .quranFlipShadow"),
+      onNext: function(){
+        previousPage();
+      },
+      onPrev: function(){
+        nextPage();
+      },
+      getNextImageSrc: function(){
+        return getPreviousImageSrc();
+      },
+      getPrevImageSrc: function(){
+        return getNextImageSrc();
+      }
+    });
+  }, 100);
+
+}
+
+
+     
 
 /* =========================
    RESET READER TOP BAR
@@ -2291,23 +2353,24 @@ function resetQuranFlipPosition(){
 /* =========================
    START APP
    Full event name: DOMContentLoaded
-   Opens 9 Line Quran Surah directly when page number comes from quran/index.html
+   Purpose: If quran/index.html sends ?from=quran&page=number, open 9 Line reader directly
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
 
   updateResumeText();
 
   let params = new URLSearchParams(window.location.search);
-  let pageFromQuranIndex = parseInt(params.get("page") || "0", 10);
   let cameFromQuranIndex = params.get("from") === "quran";
+  let pageFromQuranIndex = parseInt(params.get("page") || "0", 10);
 
   if(cameFromQuranIndex && pageFromQuranIndex && pageFromQuranIndex >= 1 && pageFromQuranIndex <= totalPages){
 
-    setTimeout(function(){
-      openReadingPage(pageFromQuranIndex, "quran");
-    }, 100);
+    open9LinePageNumberFromQuranIndex(pageFromQuranIndex);
+    return;
 
   }
+
+  openHomePage();
 
 });
 </script>
