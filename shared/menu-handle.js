@@ -245,35 +245,7 @@ function createUniversalMenuHandle(options){
         Sign in with Google
       </button>
 
-      <button onclick="universalMenuCloudSave()" style="
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:15px;
-      background:#16a34a;
-      color:white;
-      font-size:17px;
-      font-weight:900;
-      cursor:pointer;
-      margin-bottom:10px;
-      ">
-        Upload / Save to Cloud
-      </button>
-
-      <button onclick="universalMenuCloudLoad()" style="
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:15px;
-      background:#f97316;
-      color:white;
-      font-size:17px;
-      font-weight:900;
-      cursor:pointer;
-      margin-bottom:10px;
-      ">
-        Download / Load from Cloud
-      </button>
+     
 
       <button onclick="universalMenuCloudSignOut()" style="
       width:100%;
