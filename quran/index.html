@@ -354,10 +354,15 @@ function openSelectedQuranAtPage(page,surahNumber){
 
   }
 
-  if(selectedQuranType==="audio"){
+   if(selectedQuranType==="audio"){
+
+    localStorage.setItem("selectedQuranType","audio");
     localStorage.setItem("openArabicQuranSurahNumber",String(surahNumber||page||1));
+    localStorage.setItem("openArabicQuranDirectFromQuranIndex","yes");
+
     window.location.href="../arabic-quran/?from=quran&surah="+encodeURIComponent(surahNumber||page||1);
     return;
+
   }
 
 }
