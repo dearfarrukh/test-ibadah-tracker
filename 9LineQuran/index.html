@@ -1753,8 +1753,21 @@ function closeReadingPage(event){
 
   resetReaderTopBar();
 
-  localStorage.setItem("ibadahFolderReturnPage", "quran");
-  window.location.href = "../quran/";
+  let params = new URLSearchParams(window.location.search);
+  let cameFromQuranIndex = params.get("from") === "quran";
+
+  if(cameFromQuranIndex){
+    localStorage.setItem("ibadahFolderReturnPage", "quran");
+    window.location.href = "../quran/";
+    return;
+  }
+
+  let readingPage = document.getElementById("readingPage");
+  if(readingPage){
+    readingPage.style.display = "none";
+  }
+
+  openHomePage();
 
 }
 
@@ -2277,13 +2290,26 @@ function resetQuranFlipPosition(){
 
 /* =========================
    START APP
+   Full event name: DOMContentLoaded
+   Opens 9 Line Quran Surah directly when page number comes from quran/index.html
 ========================= */
 document.addEventListener("DOMContentLoaded", function(){
 
   updateResumeText();
 
-});
+  let params = new URLSearchParams(window.location.search);
+  let pageFromQuranIndex = parseInt(params.get("page") || "0", 10);
+  let cameFromQuranIndex = params.get("from") === "quran";
 
+  if(cameFromQuranIndex && pageFromQuranIndex && pageFromQuranIndex >= 1 && pageFromQuranIndex <= totalPages){
+
+    setTimeout(function(){
+      openReadingPage(pageFromQuranIndex, "quran");
+    }, 100);
+
+  }
+
+});
 </script>
 
 </body>
