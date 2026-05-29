@@ -76,45 +76,62 @@ body{position:fixed;inset:0;}
 
 
 /* =========================
-   SURAH FAVORITE + DOWNLOAD ICONS
-   Page: quran/index.html
+   QURAN SURAH ACTION ICONS
+   File: quran/index.html
+   Full function name: renderSurahList()
+   Purpose: clean middle/right heart + cloud icons for Surah cards
 ========================= */
 .quranSurahActions{
   display:flex;
   align-items:center;
-  gap:7px;
+  justify-content:center;
+  gap:18px;
   flex-shrink:0;
+  align-self:center;
+  min-width:92px;
+  height:100%;
 }
 
 .quranSurahIconBtn{
-  width:38px;
-  height:38px;
+  width:auto;
+  height:auto;
+  min-width:30px;
+  min-height:38px;
   border:none;
-  border-radius:15px;
-  background:#eef8ff;
-  color:#0a4b95;
-  font-size:20px;
+  border-radius:0;
+  background:transparent;
+  color:#111;
+  font-size:31px;
   font-weight:1000;
+  line-height:1;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  box-shadow:0 5px 13px rgba(39,135,205,.10);
+  box-shadow:none;
+  padding:0;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;
 }
 
 .quranSurahIconBtn:active{
-  transform:scale(.94);
+  transform:scale(.90);
 }
 
 .quranSurahIconBtn.heartActive{
-  background:#fff1f1;
-  color:#ff2d55;
+  background:transparent;
+  color:#ff1f2d;
+}
+
+.quranSurahIconBtn.cloudBtn{
+  font-size:30px;
+  color:#111;
+  font-weight:900;
 }
 
 .quranSurahIconBtn.downloaded{
-  background:#ffffff;
-  color:#177245;
-  border:1px solid rgba(23,114,69,.18);
+  background:transparent;
+  color:#ffffff;
+  text-shadow:0 0 0 #111, 0 1px 2px rgba(0,0,0,.10);
 }
 
 .quranSurahIconBtn.downloading{
@@ -134,15 +151,19 @@ body{position:fixed;inset:0;}
 }
 
 @media(max-width:390px){
-  .quranSurahIconBtn{
-    width:35px;
-    height:35px;
-    border-radius:14px;
-    font-size:18px;
+  .quranSurahActions{
+    min-width:78px;
+    gap:13px;
   }
 
-  .quranSurahActions{
-    gap:5px;
+  .quranSurahIconBtn{
+    min-width:26px;
+    min-height:34px;
+    font-size:27px;
+  }
+
+  .quranSurahIconBtn.cloudBtn{
+    font-size:26px;
   }
 
   .quranStickyTools{
@@ -745,7 +766,7 @@ function renderSurahList(){
 
       <div class="quranSurahActions">
         <button class="quranSurahIconBtn${heartClass}" type="button" aria-label="Favorite Surah" onclick="toggleQuranSurahFavorite(event,${surah.num})">${heartIcon}</button>
-        <button class="quranSurahIconBtn${cloudClass}" type="button" aria-label="Download Surah" onclick="downloadSelectedQuranSurah(event,${surah.num})">${cloudIcon}</button>
+        <button class="quranSurahIconBtn cloudBtn${cloudClass}" type="button" aria-label="Download Surah" onclick="downloadSelectedQuranSurah(event,${surah.num})">${cloudIcon}</button>
       </div>
     `;
 
