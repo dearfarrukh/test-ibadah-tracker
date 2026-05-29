@@ -33,7 +33,9 @@
 // buildUniversalShortcutPickerOverlay()
 // universalMenuOpenShortcutPicker()
 // universalMenuCloseShortcutPicker()
+// universalMenuToggleShortcut(shortcutId)
 // universalMenuAddShortcut(shortcutId)
+// universalMenuRemoveShortcut(shortcutId)
 // universalMenuGoShortcut(shortcutId)
 // =========================
 
@@ -183,24 +185,31 @@ function createUniversalMenuHandle(options){
 
     ${buildUniversalSavedShortcutCards()}
 
-    <button onclick="universalMenuOpenShortcutPicker()" style="
-    width:48px;
-    height:48px;
-    border:none;
-    border-radius:50%;
-    background:rgba(255,255,255,0.88);
-    color:#111;
-    font-size:30px;
-    font-weight:500;
-    line-height:1;
-    cursor:pointer;
+    <div style="
+    width:100%;
     display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:8px auto 0 auto;
-    box-shadow:0 8px 18px rgba(0,0,0,0.08);
-    border:1px solid rgba(255,255,255,0.60);
-    ">+</button>
+    justify-content:flex-end;
+    margin-top:6px;
+    ">
+      <button onclick="universalMenuOpenShortcutPicker()" style="
+      border:none;
+      border-radius:999px;
+      background:rgba(255,255,255,0.88);
+      color:#111;
+      font-size:15px;
+      font-weight:900;
+      line-height:1;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      padding:11px 14px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.08);
+      border:1px solid rgba(255,255,255,0.60);
+      font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Arial,sans-serif;
+      ">Add <span style="font-size:18px;line-height:1;">+</span></button>
+    </div>
   `;
 
   let cloudOverlay = document.createElement("div");
@@ -504,23 +513,49 @@ function buildUniversalShortcutPickerOverlay(){
   `;
 
   let choices = getUniversalShortcutChoices();
+  let savedShortcuts = getUniversalSavedShortcuts();
+
   let rows = choices.map(function(item){
+
+    let isAdded = savedShortcuts.includes(item.id);
+    let actionText = isAdded ? "Remove" : "Add";
+    let actionBg = isAdded ? "#fff1f1" : "#edf8ef";
+    let actionColor = isAdded ? "#d11a2a" : "#166534";
+
     return `
-      <button onclick="universalMenuAddShortcut('${item.id}')" style="
+      <button onclick="universalMenuToggleShortcut('${item.id}')" style="
       width:100%;
       border:none;
       background:#f7f7fa;
       color:#111;
-      padding:11px 14px;
+      padding:9px 10px;
       border-radius:14px;
-      font-size:16px;
+      font-size:15px;
       font-weight:850;
       text-align:left;
       cursor:pointer;
       margin-bottom:7px;
       font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Arial,sans-serif;
-      ">${item.title}</button>
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      ">
+        <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.title}</span>
+        <span style="
+        flex-shrink:0;
+        background:${actionBg};
+        color:${actionColor};
+        border-radius:999px;
+        padding:6px 9px;
+        font-size:12px;
+        font-weight:950;
+        ">
+          ${actionText}
+        </span>
+      </button>
     `;
+
   }).join("");
 
   overlay.innerHTML = `
@@ -590,6 +625,22 @@ function universalMenuCloseShortcutPicker(){
 }
 
 // =========================
+// TOGGLE UNIVERSAL MENU SHORTCUT
+// Full function name: universalMenuToggleShortcut(shortcutId)
+// =========================
+function universalMenuToggleShortcut(shortcutId){
+
+  let savedShortcuts = getUniversalSavedShortcuts();
+
+  if(savedShortcuts.includes(shortcutId)){
+    universalMenuRemoveShortcut(shortcutId);
+  }else{
+    universalMenuAddShortcut(shortcutId);
+  }
+
+}
+
+// =========================
 // ADD UNIVERSAL MENU SHORTCUT
 // Full function name: universalMenuAddShortcut(shortcutId)
 // =========================
@@ -608,6 +659,24 @@ function universalMenuAddShortcut(shortcutId){
     savedShortcuts.push(shortcutId);
     setUniversalSavedShortcuts(savedShortcuts);
   }
+
+  universalMenuCloseShortcutPicker();
+  createUniversalMenuHandle(universalMenuLastOptions);
+  openUniversalSideMenu();
+
+}
+
+// =========================
+// REMOVE UNIVERSAL MENU SHORTCUT
+// Full function name: universalMenuRemoveShortcut(shortcutId)
+// =========================
+function universalMenuRemoveShortcut(shortcutId){
+
+  let savedShortcuts = getUniversalSavedShortcuts().filter(function(item){
+    return item !== shortcutId;
+  });
+
+  setUniversalSavedShortcuts(savedShortcuts);
 
   universalMenuCloseShortcutPicker();
   createUniversalMenuHandle(universalMenuLastOptions);
