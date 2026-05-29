@@ -1273,8 +1273,7 @@ body{
 
     <div class="sheetBody">
 
-      <div class="monthChoiceGrid">
-        <button id="lastMonthBtn" class="monthChoiceBtn" onclick="chooseMonthlyOption('last')">Last Month</button>
+      <div class="monthChoiceGrid twoMonthChoiceGrid">
         <button id="currentMonthBtn" class="monthChoiceBtn active" onclick="chooseMonthlyOption('current')">Current Month</button>
         <button id="nextMonthBtn" class="monthChoiceBtn" onclick="chooseMonthlyOption('next')">Next Month</button>
       </div>
@@ -2240,7 +2239,11 @@ function setupMonthlyOptionButtons(){
 }
 
 function chooseMonthlyOption(option){
-  selectedMonthlyOption = option || "current";
+  if(option !== "next"){
+    option = "current";
+  }
+
+  selectedMonthlyOption = option;
   updateMonthlyOptionButtons();
 
   if(monthlyTableLoaded){
@@ -2250,34 +2253,46 @@ function chooseMonthlyOption(option){
   }
 }
 
-function updateMonthlyOptionButtons(){
-  let lastBtn = document.getElementById("lastMonthBtn");
-  let currentBtn = document.getElementById("currentMonthBtn");
-  let nextBtn = document.getElementById("nextMonthBtn");
-
-  if(lastBtn) lastBtn.classList.toggle("active", selectedMonthlyOption === "last");
-  if(currentBtn) currentBtn.classList.toggle("active", selectedMonthlyOption === "current");
-  if(nextBtn) nextBtn.classList.toggle("active", selectedMonthlyOption === "next");
-}
-
-function getSelectedMonthlyDate(){
+function getMonthlyOptionDate(option){
   let d = new Date();
+  d.setDate(1);
+  d.setHours(0,0,0,0);
 
-  if(selectedMonthlyOption === "last"){
-    d.setMonth(d.getMonth() - 1);
-  }
-
-  if(selectedMonthlyOption === "next"){
+  if(option === "next"){
     d.setMonth(d.getMonth() + 1);
   }
 
   return d;
 }
 
+function formatMonthlyButtonLabel(dateObj){
+  return dateObj.toLocaleDateString("en-US", {
+    month:"long",
+    year:"numeric"
+  });
+}
+
+function updateMonthlyOptionButtons(){
+  let currentBtn = document.getElementById("currentMonthBtn");
+  let nextBtn = document.getElementById("nextMonthBtn");
+
+  if(currentBtn){
+    currentBtn.innerText = formatMonthlyButtonLabel(getMonthlyOptionDate("current"));
+    currentBtn.classList.toggle("active", selectedMonthlyOption === "current");
+  }
+
+  if(nextBtn){
+    nextBtn.innerText = formatMonthlyButtonLabel(getMonthlyOptionDate("next"));
+    nextBtn.classList.toggle("active", selectedMonthlyOption === "next");
+  }
+}
+
+function getSelectedMonthlyDate(){
+  return getMonthlyOptionDate(selectedMonthlyOption);
+}
+
 function getMonthOptionLabel(){
-  if(selectedMonthlyOption === "last") return "Last Month";
-  if(selectedMonthlyOption === "next") return "Next Month";
-  return "Current Month";
+  return formatMonthlyButtonLabel(getSelectedMonthlyDate());
 }
 
 function openMonthlySheet(){
