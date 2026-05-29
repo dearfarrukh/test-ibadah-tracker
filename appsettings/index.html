@@ -304,6 +304,20 @@ body{
 </div>
 
 <!-- =========================
+     OFFLINE MANAGER
+========================= -->
+<div class="settingsCard">
+  <div class="settingsCardTitle">Offline Manager</div>
+  <div class="settingsCardText">
+    Save the app for offline use, manage app cache, download Quran files, or use protected factory reset.
+  </div>
+
+  <button class="cleanButton cleanButtonLight" onclick="openOfflineManager()">
+    Open Offline Manager
+  </button>
+</div>
+
+<!-- =========================
      QURAN DOWNLOADS
 ========================= -->
 <div class="settingsCard">
@@ -757,6 +771,23 @@ function handleImportBackupFile(event){
   };
 
   reader.readAsText(file);
+
+}
+
+/* =========================
+   OPEN OFFLINE MANAGER
+   Full function name: openOfflineManager()
+========================= */
+function openOfflineManager(){
+
+  clearOneTimeReturnKeys();
+
+  let from = getAppSettingsFromPage();
+
+  localStorage.setItem("offlineManagerReturnPage", "appsettings");
+  localStorage.setItem("appSettingsReturnPage", from);
+
+  window.location.href = "../offline-manager/?from=appsettings";
 
 }
 
