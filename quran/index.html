@@ -31,9 +31,10 @@ body{position:fixed;inset:0;}
 .quranHeroCard{position:relative;overflow:hidden;min-height:148px;border-radius:34px;padding:22px 5%;background:radial-gradient(circle at 82% 28%,rgba(96,207,255,.56),transparent 28%),linear-gradient(135deg,#062b80 0%,#075bd9 52%,#18b9ff 100%);color:white;box-shadow:0 18px 42px rgba(0,87,202,.26);border:1px solid rgba(255,255,255,.42);margin-bottom:12px;}
 .quranHeroCard:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0 1px,transparent 1px 100%);background-size:22px 22px;opacity:.18;}
 .quranHeroCard:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-56px;top:-70px;background:rgba(255,255,255,.14);box-shadow:-42px 82px 0 rgba(255,255,255,.08),-112px 118px 0 rgba(255,255,255,.06);}
-.quranHeroInside{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.quranKareemArabic{font-family:"Amiri","Noto Naskh Arabic",serif;direction:rtl;font-size:42px;font-weight:700;line-height:1;margin-bottom:8px;text-shadow:0 4px 18px rgba(0,0,0,.16);}
-.quranHeroEnglish{font-size:15px;font-weight:800;opacity:.92;line-height:1.4;max-width:230px;}
+.quranHeroInside{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;width:100%;min-height:104px;text-align:center;}
+.quranHeroCenter{width:100%;display:flex;align-items:center;justify-content:center;text-align:center;}
+.quranKareemArabic{font-family:"Amiri","Noto Naskh Arabic",serif;direction:rtl;font-size:46px;font-weight:700;line-height:1.2;margin:0;text-align:center;width:100%;text-shadow:0 4px 18px rgba(0,0,0,.16);}
+
 .quranBookArt{width:94px;height:94px;border-radius:30px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font-size:48px;flex-shrink:0;}
 .quranTypeWrap{margin-bottom:10px;}
 .quranTypeSelector{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:rgba(255,255,255,.64);border:1px solid rgba(20,122,210,.12);padding:6px;border-radius:22px;box-shadow:0 9px 24px rgba(27,129,205,.11);}
@@ -72,14 +73,35 @@ body{position:fixed;inset:0;}
 .quranNoResultCard{width:100%;background:rgba(255,255,255,.94);border-radius:26px;box-shadow:0 8px 22px rgba(39,135,205,.11);border:1px solid rgba(21,120,200,.10);padding:24px 5%;text-align:center;}
 .quranNoResultTitle{font-size:19px;font-weight:1000;color:#102b52;margin-bottom:6px;}
 .quranNoResultSub{font-size:14px;font-weight:800;color:#617d94;line-height:1.45;}
-.quranSavedCard{width:100%;min-height:88px;border:none;border-radius:26px;background:rgba(255,255,255,.94);box-shadow:0 8px 22px rgba(39,135,205,.11);border:1px solid rgba(21,120,200,.10);padding:13px 4%;display:flex;align-items:center;gap:12px;text-align:left;}
-.quranSavedMain{flex:1;min-width:0;cursor:pointer;display:flex;align-items:center;gap:12px;}
-.quranSavedActions{display:flex;align-items:center;gap:7px;flex-shrink:0;}
-.quranSmallOpenBtn,.quranSmallDeleteBtn{border:none;border-radius:15px;padding:10px 10px;font-size:12px;font-weight:950;cursor:pointer;white-space:nowrap;}
-.quranSmallOpenBtn{background:#e9f7ff;color:#0069bd;}
-.quranSmallDeleteBtn{background:#fff0f0;color:#d11a2a;}
-.quranSmallOpenBtn:active,.quranSmallDeleteBtn:active{transform:scale(.96);}
-@media(max-width:390px){.quranSavedCard{gap:8px;padding:12px 3%;}.quranSavedMain{gap:8px;}.quranSavedActions{gap:5px;}.quranSmallOpenBtn,.quranSmallDeleteBtn{font-size:11px;padding:9px 8px;}}
+
+/* =========================
+   SAVED QURAN LIST BUTTONS
+========================= */
+.quranSavedDeleteBtn{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:16px;
+  background:#fff1f1;
+  color:#d11a2a;
+  font-size:19px;
+  font-weight:950;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(209,26,42,.10);
+}
+.quranSavedDeleteBtn:active{
+  transform:scale(.94);
+}
+.quranSavedHint{
+  font-size:12px;
+  font-weight:850;
+  color:#1b8ed7;
+  margin-top:4px;
+}
 
 </style>
 </head>
@@ -94,11 +116,9 @@ body{position:fixed;inset:0;}
   <div class="quranContent">
     <div class="quranHeroCard">
       <div class="quranHeroInside">
-        <div>
+        <div class="quranHeroCenter">
           <div class="quranKareemArabic">القرآن الكريم</div>
-          <div class="quranHeroEnglish">One clean Quran page for 9 Line, 15 Line, 16 Line and Audio Quran.</div>
         </div>
-        <div class="quranBookArt">📖</div>
       </div>
     </div>
 
@@ -313,42 +333,8 @@ const juzPageCounts={1:27,2:28,3:28,4:28,5:28,6:28,7:28,8:28,9:28,10:28,11:28,12
 function getSelectedQuranLabel(){if(selectedQuranType==="9line")return"9 Line Quran";if(selectedQuranType==="15line")return"15 Line Quran";if(selectedQuranType==="16line")return"16 Line Quran";if(selectedQuranType==="audio")return"Audio Quran";return"15 Line Quran";}
 function selectQuranType(type){selectedQuranType=type;localStorage.setItem("selectedQuranType",selectedQuranType);if(selectedQuranType==="audio"&&selectedListMode==="juz"){selectedListMode="surah";localStorage.setItem("selectedQuranListMode",selectedListMode);}updateQuranTypeButtons();renderCurrentQuranList();}
 function updateQuranTypeButtons(){[{id:"quranType9",type:"9line"},{id:"quranType15",type:"15line"},{id:"quranType16",type:"16line"},{id:"quranTypeAudio",type:"audio"}].forEach(function(item){let btn=document.getElementById(item.id);if(btn){btn.classList.toggle("active",item.type===selectedQuranType);}});let text=document.getElementById("selectedQuranTypeText");if(text){text.innerText=getSelectedQuranLabel();}let topTitle=document.getElementById("quranTopTitleText");if(topTitle){topTitle.innerText=getSelectedQuranLabel();}let juzBtn=document.getElementById("toolJuzBtn");if(juzBtn){if(selectedQuranType==="audio"){juzBtn.classList.add("disabled");juzBtn.setAttribute("aria-disabled","true");}else{juzBtn.classList.remove("disabled");juzBtn.removeAttribute("aria-disabled");}}}
-/* =========================
-   SHOW QURAN LIST MODE
-   Full function name: showQuranListMode()
-========================= */
-function showQuranListMode(mode){
-
-  if(mode==="juz"&&selectedQuranType==="audio"){
-    showToast("Juz is not available for Audio Quran");
-    return;
-  }
-
-  selectedListMode=mode;
-  localStorage.setItem("selectedQuranListMode",selectedListMode);
-
-  let juzBtn=document.getElementById("toolJuzBtn");
-  let surahBtn=document.getElementById("toolSurahBtn");
-  let favoriteBtn=document.getElementById("toolFavoriteBtn");
-
-  if(juzBtn)juzBtn.classList.remove("active");
-  if(surahBtn)surahBtn.classList.remove("active");
-  if(favoriteBtn)favoriteBtn.classList.remove("active");
-
-  if(mode==="juz"&&juzBtn)juzBtn.classList.add("active");
-  if(mode==="surah"&&surahBtn)surahBtn.classList.add("active");
-  if(mode==="favorite"&&favoriteBtn)favoriteBtn.classList.add("active");
-
-  renderCurrentQuranList();
-
-}
-
-/* =========================
-   RENDER CURRENT QURAN LIST
-   Full function name: renderCurrentQuranList()
-========================= */
+function showQuranListMode(mode){if(mode==="juz"&&selectedQuranType==="audio"){showToast("Juz is not available for Audio Quran");return;}selectedListMode=mode;localStorage.setItem("selectedQuranListMode",selectedListMode);let juzBtn=document.getElementById("toolJuzBtn");let surahBtn=document.getElementById("toolSurahBtn");let favoriteBtn=document.getElementById("toolFavoriteBtn");if(juzBtn)juzBtn.classList.remove("active");if(surahBtn)surahBtn.classList.remove("active");if(favoriteBtn)favoriteBtn.classList.remove("active");if(mode==="juz"&&juzBtn)juzBtn.classList.add("active");if(mode==="surah"&&surahBtn)surahBtn.classList.add("active");if(mode==="favorite"&&favoriteBtn)favoriteBtn.classList.add("active");renderCurrentQuranList();}
 function renderCurrentQuranList(){
-
   updateQuranTypeButtons();
 
   if(selectedQuranType==="audio"&&selectedListMode==="juz"){
@@ -392,7 +378,6 @@ function renderCurrentQuranList(){
   if(surahBtn)surahBtn.classList.add("active");
   if(title)title.innerText="Surah List";
   renderSurahList();
-
 }
 /* =========================
    RENDER SURAH LIST
@@ -463,7 +448,7 @@ function renderSurahList(){
 /* =========================
    RENDER BOOKMARK LIST
    Full function name: renderBookmarkList()
-   Purpose: Shows only the selected Quran type bookmarks with open and delete buttons
+   Purpose: Shows only bookmarks for selected Quran type
 ========================= */
 function renderBookmarkList(){
 
@@ -471,54 +456,40 @@ function renderBookmarkList(){
   if(!container)return;
 
   let allBookmarks=getAllQuranBookmarks();
-  let currentTypeBookmarks=filterQuranSavedItemsForSelectedType(allBookmarks);
+  let savedItems=filterQuranSavedItemsForSelectedType(allBookmarks);
 
   container.innerHTML="";
 
-  if(!currentTypeBookmarks.length){
-    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No bookmarks yet</div><div class="quranNoResultSub">No ${getSelectedQuranLabel()} bookmarks saved yet.</div></div>`;
+  if(!savedItems.length){
+    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No bookmarks yet</div><div class="quranNoResultSub">Open a Quran reader and save a bookmark. Then it will show here for ${getSelectedQuranLabel()}.</div></div>`;
     return;
   }
 
-  currentTypeBookmarks.forEach(function(savedItem){
-    let bookmark=savedItem.item;
+  savedItems.forEach(function(saved){
+
+    let bookmark=saved.item;
+    let originalIndex=saved.index;
     let page=getSavedQuranItemPage(bookmark);
     let title=getSavedQuranItemTitle(bookmark,"Bookmark");
-    let subtitle=getSavedQuranItemSubtitle(bookmark,page);
+    let subText=getSavedQuranItemSubText(bookmark,page);
 
-    let card=document.createElement("div");
-    card.className="quranSavedCard";
+    let card=document.createElement("button");
+    card.className="quranListCard";
 
-    let main=document.createElement("div");
-    main.className="quranSavedMain";
-    main.onclick=function(){
-      openSavedQuranItem(bookmark);
-    };
-    main.innerHTML=`<div class="quranListBadge">🔖</div><div class="quranListInfo"><div class="quranListTitle">${escapeQuranText(title)}</div><div class="quranListSub">${escapeQuranText(subtitle)}</div></div>`;
-
-    let actions=document.createElement("div");
-    actions.className="quranSavedActions";
-
-    let openBtn=document.createElement("button");
-    openBtn.className="quranSmallOpenBtn";
-    openBtn.innerText="Open";
-    openBtn.onclick=function(event){
-      event.stopPropagation();
-      openSavedQuranItem(bookmark);
+    card.onclick=function(){
+      openSelectedQuranAtPage(page,null);
     };
 
-    let deleteBtn=document.createElement("button");
-    deleteBtn.className="quranSmallDeleteBtn";
-    deleteBtn.innerText="Delete";
-    deleteBtn.onclick=function(event){
-      event.stopPropagation();
-      deleteQuranBookmark(savedItem.index);
-    };
+    card.innerHTML=`<div class="quranListBadge">🔖</div><div class="quranListInfo"><div class="quranListTitle">${title}</div><div class="quranListSub">${subText}</div><div class="quranSavedHint">Tap card to open</div></div><button class="quranSavedDeleteBtn" type="button" aria-label="Delete bookmark">🗑️</button>`;
 
-    actions.appendChild(openBtn);
-    actions.appendChild(deleteBtn);
-    card.appendChild(main);
-    card.appendChild(actions);
+    let deleteBtn=card.querySelector(".quranSavedDeleteBtn");
+    if(deleteBtn){
+      deleteBtn.onclick=function(event){
+        event.stopPropagation();
+        deleteQuranBookmark(originalIndex);
+      };
+    }
+
     container.appendChild(card);
 
   });
@@ -528,7 +499,7 @@ function renderBookmarkList(){
 /* =========================
    RENDER FAVORITE LIST
    Full function name: renderFavoriteList()
-   Purpose: Shows only the selected Quran type favorites with open and delete buttons
+   Purpose: Shows only favorites for selected Quran type
 ========================= */
 function renderFavoriteList(){
 
@@ -536,96 +507,44 @@ function renderFavoriteList(){
   if(!container)return;
 
   let allFavorites=getAllQuranFavorites();
-  let currentTypeFavorites=filterQuranSavedItemsForSelectedType(allFavorites);
+  let savedItems=filterQuranSavedItemsForSelectedType(allFavorites);
 
   container.innerHTML="";
 
-  if(!currentTypeFavorites.length){
-    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No favorites yet</div><div class="quranNoResultSub">No ${getSelectedQuranLabel()} favorites saved yet.</div></div>`;
+  if(!savedItems.length){
+    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No favorites yet</div><div class="quranNoResultSub">Save a favorite from the Quran reader. Then it will show here for ${getSelectedQuranLabel()}.</div></div>`;
     return;
   }
 
-  currentTypeFavorites.forEach(function(savedItem){
-    let favorite=savedItem.item;
+  savedItems.forEach(function(saved){
+
+    let favorite=saved.item;
+    let originalIndex=saved.index;
     let page=getSavedQuranItemPage(favorite);
     let title=getSavedQuranItemTitle(favorite,"Favorite");
-    let subtitle=getSavedQuranItemSubtitle(favorite,page);
+    let subText=getSavedQuranItemSubText(favorite,page);
 
-    let card=document.createElement("div");
-    card.className="quranSavedCard";
+    let card=document.createElement("button");
+    card.className="quranListCard";
 
-    let main=document.createElement("div");
-    main.className="quranSavedMain";
-    main.onclick=function(){
-      openSavedQuranItem(favorite);
-    };
-    main.innerHTML=`<div class="quranListBadge">★</div><div class="quranListInfo"><div class="quranListTitle">${escapeQuranText(title)}</div><div class="quranListSub">${escapeQuranText(subtitle)}</div></div>`;
-
-    let actions=document.createElement("div");
-    actions.className="quranSavedActions";
-
-    let openBtn=document.createElement("button");
-    openBtn.className="quranSmallOpenBtn";
-    openBtn.innerText="Open";
-    openBtn.onclick=function(event){
-      event.stopPropagation();
-      openSavedQuranItem(favorite);
+    card.onclick=function(){
+      openSelectedQuranAtPage(page,null);
     };
 
-    let deleteBtn=document.createElement("button");
-    deleteBtn.className="quranSmallDeleteBtn";
-    deleteBtn.innerText="Delete";
-    deleteBtn.onclick=function(event){
-      event.stopPropagation();
-      deleteQuranFavorite(savedItem.index);
-    };
+    card.innerHTML=`<div class="quranListBadge">★</div><div class="quranListInfo"><div class="quranListTitle">${title}</div><div class="quranListSub">${subText}</div><div class="quranSavedHint">Tap card to open</div></div><button class="quranSavedDeleteBtn" type="button" aria-label="Delete favorite">🗑️</button>`;
 
-    actions.appendChild(openBtn);
-    actions.appendChild(deleteBtn);
-    card.appendChild(main);
-    card.appendChild(actions);
+    let deleteBtn=card.querySelector(".quranSavedDeleteBtn");
+    if(deleteBtn){
+      deleteBtn.onclick=function(event){
+        event.stopPropagation();
+        deleteQuranFavorite(originalIndex);
+      };
+    }
+
     container.appendChild(card);
 
   });
 
-}
-
-/* =========================
-   GET BOOKMARK TYPE FOR SELECTED QURAN
-   Full function name: getBookmarkTypeForSelectedQuran()
-========================= */
-function getBookmarkTypeForSelectedQuran(){
-  if(selectedQuranType==="15line")return"15line";
-  if(selectedQuranType==="16line")return"16line";
-  if(selectedQuranType==="9line")return"9line";
-  if(selectedQuranType==="audio")return"arabic";
-  return"15line";
-}
-
-/* =========================
-   GET ALL QURAN BOOKMARKS
-   Full function name: getAllQuranBookmarks()
-========================= */
-function getAllQuranBookmarks(){
-  try{
-    let bookmarks=JSON.parse(localStorage.getItem("quranBookmarks")||"[]");
-    return Array.isArray(bookmarks)?bookmarks:[];
-  }catch(error){
-    return[];
-  }
-}
-
-/* =========================
-   GET ALL QURAN FAVORITES
-   Full function name: getAllQuranFavorites()
-========================= */
-function getAllQuranFavorites(){
-  try{
-    let favorites=JSON.parse(localStorage.getItem("quranFavorites")||"[]");
-    return Array.isArray(favorites)?favorites:[];
-  }catch(error){
-    return[];
-  }
 }
 
 /* =========================
@@ -636,21 +555,29 @@ function filterQuranSavedItemsForSelectedType(items){
 
   let selectedType=getBookmarkTypeForSelectedQuran();
 
-  return items.map(function(item,index){
-    return{item:item,index:index};
-  }).filter(function(savedItem){
+  return items
+    .map(function(item,index){
+      return{
+        item:item,
+        index:index
+      };
+    })
+    .filter(function(saved){
+      return String(saved.item.type||"")===selectedType;
+    });
 
-    let item=savedItem.item||{};
-    let itemType=String(item.type||item.quranType||item.bookType||"").toLowerCase();
+}
 
-    if(selectedType==="arabic"){
-      return itemType==="arabic"||itemType==="audio"||itemType==="audioquran";
-    }
-
-    return itemType===selectedType;
-
-  });
-
+/* =========================
+   GET ALL QURAN FAVORITES
+   Full function name: getAllQuranFavorites()
+========================= */
+function getAllQuranFavorites(){
+  try{
+    return JSON.parse(localStorage.getItem("quranFavorites")||"[]");
+  }catch(error){
+    return[];
+  }
 }
 
 /* =========================
@@ -658,7 +585,15 @@ function filterQuranSavedItemsForSelectedType(items){
    Full function name: getSavedQuranItemPage()
 ========================= */
 function getSavedQuranItemPage(item){
-  return Number(item.page||item.pageNumber||item.surah||item.surahNumber||1)||1;
+
+  let page=Number(item.page||item.pageNumber||item.savedPage||item.surah||item.surahNumber||1);
+
+  if(!page||page<1){
+    page=1;
+  }
+
+  return page;
+
 }
 
 /* =========================
@@ -666,43 +601,22 @@ function getSavedQuranItemPage(item){
    Full function name: getSavedQuranItemTitle()
 ========================= */
 function getSavedQuranItemTitle(item,fallback){
+
   return item.name||item.title||item.label||fallback;
+
 }
 
 /* =========================
-   GET SAVED QURAN ITEM SUBTITLE
-   Full function name: getSavedQuranItemSubtitle()
+   GET SAVED QURAN ITEM SUB TEXT
+   Full function name: getSavedQuranItemSubText()
 ========================= */
-function getSavedQuranItemSubtitle(item,page){
+function getSavedQuranItemSubText(item,page){
 
   if(selectedQuranType==="audio"){
-    let surahNumber=Number(item.surah||item.surahNumber||page||1)||1;
-    let surah=surahData.find(function(oneSurah){return oneSurah.num===surahNumber;});
-    if(surah){
-      return "Surah "+surahNumber+" • "+surah.en;
-    }
-    return "Surah "+surahNumber+" • Audio Quran";
+    return "Surah "+page+" • "+getSelectedQuranLabel();
   }
 
   return "Page "+page+" • "+getSelectedQuranLabel();
-
-}
-
-/* =========================
-   OPEN SAVED QURAN ITEM
-   Full function name: openSavedQuranItem()
-========================= */
-function openSavedQuranItem(item){
-
-  let page=getSavedQuranItemPage(item);
-  let surahNumber=Number(item.surah||item.surahNumber||page||1)||1;
-
-  if(selectedQuranType==="audio"){
-    openSelectedQuranAtPage(surahNumber,surahNumber);
-    return;
-  }
-
-  openSelectedQuranAtPage(page,null);
 
 }
 
@@ -715,12 +629,14 @@ function deleteQuranBookmark(index){
   let confirmDelete=confirm("Delete this bookmark?");
   if(!confirmDelete)return;
 
-  let bookmarks=getAllQuranBookmarks();
-  bookmarks.splice(index,1);
-  localStorage.setItem("quranBookmarks",JSON.stringify(bookmarks));
+  let allBookmarks=getAllQuranBookmarks();
 
-  renderBookmarkList();
+  allBookmarks.splice(index,1);
+
+  localStorage.setItem("quranBookmarks",JSON.stringify(allBookmarks));
+
   showToast("Bookmark deleted");
+  renderBookmarkList();
 
 }
 
@@ -733,27 +649,18 @@ function deleteQuranFavorite(index){
   let confirmDelete=confirm("Delete this favorite?");
   if(!confirmDelete)return;
 
-  let favorites=getAllQuranFavorites();
-  favorites.splice(index,1);
-  localStorage.setItem("quranFavorites",JSON.stringify(favorites));
+  let allFavorites=getAllQuranFavorites();
 
-  renderFavoriteList();
+  allFavorites.splice(index,1);
+
+  localStorage.setItem("quranFavorites",JSON.stringify(allFavorites));
+
   showToast("Favorite deleted");
+  renderFavoriteList();
 
 }
-
-/* =========================
-   ESCAPE QURAN TEXT
-   Full function name: escapeQuranText()
-========================= */
-function escapeQuranText(value){
-  return String(value||"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
+function getBookmarkTypeForSelectedQuran(){if(selectedQuranType==="15line")return"15line";if(selectedQuranType==="16line")return"16line";if(selectedQuranType==="9line")return"9line";if(selectedQuranType==="audio")return"arabic";return"15line";}
+function getAllQuranBookmarks(){try{return JSON.parse(localStorage.getItem("quranBookmarks")||"[]");}catch(error){return[];}}
 function getSurahStartPageForSelectedQuran(surahNumber){if(selectedQuranType==="15line")return surahTo15LinePageMap[surahNumber]||1;if(selectedQuranType==="16line")return surahTo16LinePageMap[surahNumber]||1;if(selectedQuranType==="9line")return surahTo9LinePageMap[surahNumber]||1;if(selectedQuranType==="audio")return surahNumber;return surahTo15LinePageMap[surahNumber]||1;}
 function getJuzStartPageForSelectedQuran(juzNumber){if(selectedQuranType==="15line")return get15LineJuzStartPage(juzNumber);if(selectedQuranType==="16line")return juzTo16LinePageMap[juzNumber]||1;if(selectedQuranType==="9line")return juzTo9LinePageMap[juzNumber]||1;if(selectedQuranType==="audio")return 1;return get15LineJuzStartPage(juzNumber);}
 function get15LineJuzStartPage(juzNumber){let runningTotal=0;for(let i=1;i<juzNumber;i++){runningTotal+=juzPageCounts[i];}return runningTotal+1;}
@@ -761,29 +668,12 @@ function openSelectedQuranOption(option){if(option==="bookmark"){openSelectedQur
 /* =========================
    OPEN SELECTED QURAN BOOKMARKS
    Full function name: openSelectedQuranBookmarks()
-   Purpose: Shows the selected Quran type bookmark folder/list
+   Purpose: Shows bookmark folder list for selected Quran type
 ========================= */
 function openSelectedQuranBookmarks(){
-
   selectedListMode="bookmark";
   localStorage.setItem("selectedQuranListMode",selectedListMode);
-
-  let searchPanel=document.getElementById("quranSearchPanel");
-  let searchInput=document.getElementById("quranSearchInput");
-
-  if(searchPanel){
-    searchPanel.classList.remove("show");
-  }
-
-  if(searchInput){
-    searchInput.value="";
-  }
-
-  quranSearchOpen=false;
-
-  showQuranListMode("bookmark");
-  showToast("Showing "+getSelectedQuranLabel()+" bookmarks");
-
+  renderCurrentQuranList();
 }
 function resumeSelectedQuran(){let page=1;if(selectedQuranType==="15line"){page=parseInt(localStorage.getItem("lastMushafPage")||"1",10);}else if(selectedQuranType==="16line"){page=parseInt(localStorage.getItem("lastQuran16Page")||localStorage.getItem("quran16LastPage")||"1",10);}else if(selectedQuranType==="9line"){page=parseInt(localStorage.getItem("last9LineMushafPage")||localStorage.getItem("lastQuran9Page")||"1",10);}else if(selectedQuranType==="audio"){page=parseInt(localStorage.getItem("lastArabicQuranSurahNumber")||localStorage.getItem("lastArabicQuranSurah")||"1",10);}openSelectedQuranAtPage(page,null);}
 function goToSelectedQuranPage(){let maxPage=getSelectedQuranMaxPage();let pageText=prompt("Enter page number 1 to "+maxPage);if(pageText===null)return;let page=parseInt(pageText,10);if(!page||page<1||page>maxPage){showToast("Please enter page number 1 to "+maxPage);return;}openSelectedQuranAtPage(page,null);}
