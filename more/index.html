@@ -5,10 +5,11 @@
 <!-- =========================
      MORE FOLDER PAGE
      File: more/index.html
+     Blue iOS-style Tools page with shared menu handle
 ========================= -->
 
 <meta charset="UTF-8">
-<title>More - Ibadah Tracker</title>
+<title>Ibadah Tools - Ibadah Tracker</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#e9e9ee">
 <link rel="apple-touch-icon" href="../icon.png">
@@ -32,50 +33,65 @@ body{
 }
 
 body{
-  padding:18px 4% 112px 4%;
+  padding:0 0 112px 0;
   background:linear-gradient(180deg,#f8f8fb 0%,#e9e9ee 100%);
 }
 
 /* =========================
-   TOP BAR
+   MORE TOP BLUE THEME
+   Page: more/index.html
 ========================= */
-.moreTopBar{
+.moreBlueHeader{
   width:100%;
-  height:56px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
+  padding:12px 4% 22px 4%;
+  padding-top:calc(env(safe-area-inset-top, 16px) + 18px);
+  text-align:center;
+  background:linear-gradient(180deg, #0f1d35 0%, #1a2f4a 48%, #203f63 100%);
+  border-radius:0 0 34px 34px;
+  box-shadow:0 10px 22px rgba(15,29,53,0.18);
   margin-bottom:14px;
 }
 
-.roundBtn{
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:50%;
-  background:white;
-  color:#111;
-  font-size:23px;
-  font-weight:900;
+.moreBlueIcon{
+  width:58px;
+  height:58px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.15);
   display:flex;
   align-items:center;
   justify-content:center;
-  position:absolute;
-  top:6px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.10);
-  cursor:pointer;
+  margin:0 auto 10px auto;
+  box-shadow:0 8px 18px rgba(0,0,0,0.14);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
 }
 
-.backBtn{
-  left:0;
+.moreBlueIcon img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  display:block;
 }
 
-.moreTitle{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:-0.4px;
-  color:#111;
+.moreBlueTitle{
+  font-size:28px;
+  font-weight:950;
+  color:white;
+  letter-spacing:-0.45px;
+  line-height:1.1;
+}
+
+.moreBlueSub{
+  font-size:13px;
+  font-weight:750;
+  color:rgba(255,255,255,0.82);
+  margin-top:6px;
+  line-height:1.35;
+}
+
+.moreContent{
+  width:100%;
+  padding:0 4%;
 }
 
 /* =========================
@@ -305,13 +321,13 @@ body{
    SMALL PHONES
 ========================= */
 @media(max-width:390px){
-  body{
+  .moreContent{
     padding-left:3.5%;
     padding-right:3.5%;
   }
 
-  .heroTitle{
-    font-size:27px;
+  .moreBlueTitle{
+    font-size:26px;
   }
 
   .moreCard{
@@ -328,27 +344,17 @@ body{
 <body>
 
 <!-- =========================
-     TOP BAR
+     MORE BLUE HEADER
 ========================= -->
-<div class="moreTopBar">
-  <button class="roundBtn backBtn" onclick="goBackToMainApp()">←</button>
-  <div class="moreTitle">More</div>
+<div class="moreBlueHeader">
+  <div class="moreBlueIcon">
+    <img src="../Images/Icons/More.png" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='☰';">
+  </div>
+  <div class="moreBlueTitle">Ibadah Tools</div>
+  <div class="moreBlueSub">Quran • Dua • Dhikr • Qibla</div>
 </div>
 
-<!-- =========================
-     HERO CARD
-========================= -->
-<div class="heroCard">
-  <div class="heroIcon">
-    <img src="../Images/Icons/More.png" alt="" onerror="this.style.display='none';">
-  </div>
-
-  <div class="heroTitle">More</div>
-
-  <div class="heroSub">
-    Open your Ibadah tools, Quran page, books, settings, and app utilities.
-  </div>
-</div>
+<div class="moreContent">
 
 <!-- =========================
      IBADAH TOOLS
@@ -460,6 +466,8 @@ body{
 
     <div class="arrow">›</div>
   </div>
+
+</div>
 
 </div>
 
@@ -635,6 +643,12 @@ function showToast(message){
 </script>
 
 <!-- =========================
+     UNIVERSAL MENU HANDLE SCRIPT
+     File used: shared/menu-handle.js
+========================= -->
+<script src="../shared/menu-handle.js"></script>
+
+<!-- =========================
      UNIVERSAL BOTTOM NAV SCRIPT
      File used: shared/bottom-nav.js
 ========================= -->
@@ -646,7 +660,15 @@ function showToast(message){
    Full function name: createUniversalBottomNav("more")
 ========================= */
 document.addEventListener("DOMContentLoaded",function(){
-  createUniversalBottomNav("more");
+  if(typeof createUniversalMenuHandle === "function"){
+    createUniversalMenuHandle({
+      iconBasePath:"../Images/Icons/"
+    });
+  }
+
+  if(typeof createUniversalBottomNav === "function"){
+    createUniversalBottomNav("more");
+  }
 });
 </script>
 
