@@ -41,6 +41,9 @@ const IBADAH_APP_SHELL_FILES = [
   "./appsettings/",
   "./appsettings/index.html",
 
+  "./offline-manager/",
+  "./offline-manager/index.html",
+
   "./shared/bottom-nav.js",
   "./shared/menu-handle.js",
   "./shared/cloud-sync.js"
