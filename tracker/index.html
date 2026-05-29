@@ -36,25 +36,31 @@ body{
 
 body{
   padding:0 0 106px 0;
-  background:linear-gradient(170deg, #0d1b3e 0%, #1a3a6b 45%, #0d2744 100%);
+  background:#e9e9ee;
 }
 
 /* =========================
-   TRACKER TOP HEADER
+   TRACKER TOP BLUE THEME
+   Page: tracker/index.html
 ========================= */
 .trackerHeader{
   width:100%;
-  min-height:118px;
+  min-height:126px;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:12px;
-  padding:calc(env(safe-area-inset-top) + 18px) 4% 20px 4%;
+  gap:8px;
+  padding:calc(env(safe-area-inset-top, 16px) + 18px) 4% 22px 4%;
+  background:linear-gradient(180deg, #0f1d35 0%, #203f63 100%);
+  border-radius:0 0 34px 34px;
+  box-shadow:0 10px 22px rgba(15,29,53,0.18);
+  margin-bottom:12px;
 }
 
 .trackerLogo{
   width:13%;
-  max-width:58px;
+  max-width:54px;
   min-width:42px;
   aspect-ratio:1/1;
   object-fit:contain;
@@ -63,11 +69,12 @@ body{
 
 .trackerTitle{
   margin:0;
-  font-size:29px;
+  font-size:25px;
   font-weight:950;
   color:white;
-  text-shadow:0 3px 10px rgba(0,0,0,0.28);
-  letter-spacing:-0.7px;
+  line-height:1.1;
+  text-shadow:0 3px 10px rgba(0,0,0,0.24);
+  letter-spacing:-0.5px;
   white-space:nowrap;
 }
      /* =========================
@@ -181,11 +188,11 @@ body{
 ========================= */
 .trackerBody{
   width:100%;
-  min-height:calc(100vh - 118px);
+  min-height:calc(100vh - 138px);
   background:#e9e9ee;
-  border-radius:30px 30px 0 0;
-  padding:18px 4% 24px 4%;
-  box-shadow:0 -10px 30px rgba(0,0,0,0.16);
+  border-radius:0;
+  padding:4px 4% 24px 4%;
+  box-shadow:none;
 }
 
 /* =========================
@@ -831,7 +838,7 @@ body{
 ========================= */
 @media(max-width:390px){
   .trackerTitle{
-    font-size:26px;
+    font-size:23px;
   }
 
   .trackerBody{
