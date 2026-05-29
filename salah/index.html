@@ -3121,6 +3121,13 @@ function openSalahPrintReaderPage(){
   let bottomNav = document.getElementById("universalBottomNav");
   if(bottomNav) bottomNav.style.display = "none";
 
+  if(typeof setMainMenuHandleVisibility === "function"){
+    setMainMenuHandleVisibility(false);
+  }else{
+    let menuHandle = document.getElementById("menuHandle");
+    if(menuHandle) menuHandle.style.display = "none";
+  }
+
   window.scrollTo(0, 0);
 }
 
@@ -3135,6 +3142,7 @@ function closeSalahPrintReaderPage(){
   document.body.style.overflow = "";
 
   rebuildSalahBottomNavAfterPrintReader();
+  rebuildSalahMenuHandleAfterPrintReader();
 
   window.scrollTo(0, 0);
 }
@@ -3166,6 +3174,30 @@ function rebuildSalahBottomNavAfterPrintReader(){
       newBottomNav.style.width = "100%";
     }
   }, 30);
+}
+
+/* =========================
+   REBUILD SALAH MENU HANDLE AFTER PRINT READER
+   Full function name: rebuildSalahMenuHandleAfterPrintReader()
+   Purpose: shows the shared side menu handle again after closing timetable preview.
+========================= */
+function rebuildSalahMenuHandleAfterPrintReader(){
+  if(typeof createUniversalMenuHandle === "function"){
+    createUniversalMenuHandle({
+      iconBasePath:"../Images/Icons/"
+    });
+    return;
+  }
+
+  if(typeof setMainMenuHandleVisibility === "function"){
+    setMainMenuHandleVisibility(true);
+    return;
+  }
+
+  let menuHandle = document.getElementById("menuHandle");
+  if(menuHandle){
+    menuHandle.style.display = "flex";
+  }
 }
 
 function printSalahReaderPage(){
@@ -3480,11 +3512,18 @@ async function generateRamadanTimetable(){
 </script>
 
 <script src="../shared/bottom-nav.js"></script>
+<script src="../shared/menu-handle.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
   if(typeof createUniversalBottomNav === "function"){
     createUniversalBottomNav("salah");
+  }
+
+  if(typeof createUniversalMenuHandle === "function"){
+    createUniversalMenuHandle({
+      iconBasePath:"../Images/Icons/"
+    });
   }
 });
      
