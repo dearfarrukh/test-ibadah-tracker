@@ -74,6 +74,82 @@ body{position:fixed;inset:0;}
 .quranNoResultTitle{font-size:19px;font-weight:1000;color:#102b52;margin-bottom:6px;}
 .quranNoResultSub{font-size:14px;font-weight:800;color:#617d94;line-height:1.45;}
 
+
+/* =========================
+   SURAH FAVORITE + DOWNLOAD ICONS
+   Page: quran/index.html
+========================= */
+.quranSurahActions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-shrink:0;
+}
+
+.quranSurahIconBtn{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:15px;
+  background:#eef8ff;
+  color:#0a4b95;
+  font-size:20px;
+  font-weight:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 5px 13px rgba(39,135,205,.10);
+}
+
+.quranSurahIconBtn:active{
+  transform:scale(.94);
+}
+
+.quranSurahIconBtn.heartActive{
+  background:#fff1f1;
+  color:#ff2d55;
+}
+
+.quranSurahIconBtn.downloaded{
+  background:#ffffff;
+  color:#177245;
+  border:1px solid rgba(23,114,69,.18);
+}
+
+.quranSurahIconBtn.downloading{
+  opacity:.65;
+  pointer-events:none;
+}
+
+.quranTopToolCard{
+  position:sticky;
+  top:68px;
+  z-index:47;
+}
+
+.quranStickyTools{
+  top:132px;
+  z-index:46;
+}
+
+@media(max-width:390px){
+  .quranSurahIconBtn{
+    width:35px;
+    height:35px;
+    border-radius:14px;
+    font-size:18px;
+  }
+
+  .quranSurahActions{
+    gap:5px;
+  }
+
+  .quranStickyTools{
+    top:128px;
+  }
+}
+
 /* =========================
    SAVED QURAN LIST BUTTONS
 ========================= */
@@ -379,10 +455,224 @@ function renderCurrentQuranList(){
   if(title)title.innerText="Surah List";
   renderSurahList();
 }
+
+/* =========================
+   QURAN SURAH FAVORITES
+   Full function names:
+   getQuranSurahFavoriteKey()
+   getQuranSurahFavorites()
+   setQuranSurahFavorites()
+   isQuranSurahFavorite()
+   toggleQuranSurahFavorite()
+========================= */
+function getQuranSurahFavoriteKey(type,surahNumber){
+  return String(type||selectedQuranType)+"_"+String(surahNumber);
+}
+
+function getQuranSurahFavorites(){
+  try{
+    let saved=JSON.parse(localStorage.getItem("quranSurahFavorites")||"[]");
+    return Array.isArray(saved)?saved:[];
+  }catch(error){
+    return[];
+  }
+}
+
+function setQuranSurahFavorites(items){
+  localStorage.setItem("quranSurahFavorites",JSON.stringify(Array.isArray(items)?items:[]));
+}
+
+function isQuranSurahFavorite(surahNumber,type){
+  let key=getQuranSurahFavoriteKey(type||selectedQuranType,surahNumber);
+  return getQuranSurahFavorites().some(function(item){
+    return String(item.key)===key;
+  });
+}
+
+function toggleQuranSurahFavorite(event,surahNumber){
+  if(event)event.stopPropagation();
+
+  let surah=surahData.find(function(item){
+    return Number(item.num)===Number(surahNumber);
+  });
+
+  if(!surah)return;
+
+  let type=selectedQuranType;
+  let key=getQuranSurahFavoriteKey(type,surahNumber);
+  let list=getQuranSurahFavorites();
+  let exists=list.some(function(item){
+    return String(item.key)===key;
+  });
+
+  if(exists){
+    list=list.filter(function(item){
+      return String(item.key)!==key;
+    });
+    setQuranSurahFavorites(list);
+    showToast("Removed from favorites");
+  }else{
+    list.unshift({
+      key:key,
+      type:type,
+      surahNumber:Number(surahNumber),
+      name:surah.en,
+      arabic:surah.ar,
+      verses:surah.verses,
+      page:getSurahStartPageForSelectedQuran(surahNumber),
+      savedAt:Date.now()
+    });
+    setQuranSurahFavorites(list);
+    showToast("Added to favorites");
+  }
+
+  renderCurrentQuranList();
+}
+
+/* =========================
+   QURAN SURAH OFFLINE DOWNLOADS
+   Full function names:
+   getQuranSurahDownloadKey()
+   getQuranSurahDownloads()
+   setQuranSurahDownloads()
+   isQuranSurahDownloaded()
+   downloadSelectedQuranSurah()
+========================= */
+function getQuranSurahDownloadKey(type,surahNumber){
+  return String(type||selectedQuranType)+"_"+String(surahNumber);
+}
+
+function getQuranSurahDownloads(){
+  try{
+    let saved=JSON.parse(localStorage.getItem("quranSurahDownloads")||"{}");
+    return saved&&typeof saved==="object"?saved:{};
+  }catch(error){
+    return{};
+  }
+}
+
+function setQuranSurahDownloads(data){
+  localStorage.setItem("quranSurahDownloads",JSON.stringify(data&&typeof data==="object"?data:{}));
+}
+
+function isQuranSurahDownloaded(surahNumber,type){
+  let key=getQuranSurahDownloadKey(type||selectedQuranType,surahNumber);
+  let downloads=getQuranSurahDownloads();
+  return downloads[key]==="yes";
+}
+
+function getSelectedQuranTypeMaxPage(type){
+  if(type==="15line")return 847;
+  if(type==="16line")return 549;
+  if(type==="9line")return 1890;
+  return 114;
+}
+
+function getSurahStartPageForType(surahNumber,type){
+  if(type==="15line")return surahTo15LinePageMap[surahNumber]||1;
+  if(type==="16line")return surahTo16LinePageMap[surahNumber]||1;
+  if(type==="9line")return surahTo9LinePageMap[surahNumber]||1;
+  if(type==="audio")return surahNumber;
+  return surahTo15LinePageMap[surahNumber]||1;
+}
+
+function getSurahEndPageForSelectedQuran(surahNumber,type){
+  type=type||selectedQuranType;
+
+  if(type==="audio")return Number(surahNumber)||1;
+
+  let current=Number(getSurahStartPageForType(surahNumber,type)||1);
+  let next=Number(getSurahStartPageForType(Number(surahNumber)+1,type)||0);
+  let max=getSelectedQuranTypeMaxPage(type);
+
+  if(next&&next>current){
+    return next-1;
+  }
+
+  return max;
+}
+
+function getQuranPageImagePathForType(page,type){
+  if(type==="15line"){
+    return buildMushafImagePath(page);
+  }
+
+  if(type==="16line"){
+    return getQuran16ImagePath(page);
+  }
+
+  if(type==="9line"){
+    return "../9LineQuran/"+page+".jpg";
+  }
+
+  return "";
+}
+
+async function downloadSelectedQuranSurah(event,surahNumber){
+  if(event)event.stopPropagation();
+
+  let type=selectedQuranType;
+
+  if(type==="audio"){
+    showToast("Audio Surah offline download will be added later");
+    return;
+  }
+
+  let button=event&&event.currentTarget?event.currentTarget:null;
+  let key=getQuranSurahDownloadKey(type,surahNumber);
+
+  if(isQuranSurahDownloaded(surahNumber,type)){
+    showToast("Surah already downloaded");
+    return;
+  }
+
+  if(button){
+    button.classList.add("downloading");
+    button.innerText="…";
+  }
+
+  try{
+    let start=Number(getSurahStartPageForType(surahNumber,type)||1);
+    let end=Number(getSurahEndPageForSelectedQuran(surahNumber,type)||start);
+    let cache=await caches.open("ibadah-runtime-v1");
+    let savedCount=0;
+
+    for(let page=start;page<=end;page++){
+      let url=getQuranPageImagePathForType(page,type);
+      if(!url)continue;
+
+      try{
+        let response=await fetch(url,{cache:"no-store"});
+        if(response.ok){
+          await cache.put(url,response.clone());
+          savedCount++;
+        }
+      }catch(error){
+        console.log("Surah download skipped page:",page,error);
+      }
+    }
+
+    if(savedCount>0){
+      let downloads=getQuranSurahDownloads();
+      downloads[key]="yes";
+      setQuranSurahDownloads(downloads);
+      showToast("Surah downloaded for offline");
+    }else{
+      showToast("Could not download this Surah");
+    }
+
+  }catch(error){
+    console.log(error);
+    showToast("Download failed");
+  }
+
+  renderCurrentQuranList();
+}
+
 /* =========================
    RENDER SURAH LIST
    Full function name: renderSurahList()
-   Purpose: Opens Surah correctly for 15 Line, 16 Line, 9 Line, and Audio Quran
+   Purpose: Opens Surah correctly and shows heart/download icons
 ========================= */
 function renderSurahList(){
 
@@ -407,8 +697,13 @@ function renderSurahList(){
       displayPage=page+1;
     }
 
-    let card=document.createElement("button");
+    let isFav=isQuranSurahFavorite(surah.num,selectedQuranType);
+    let isDownloaded=isQuranSurahDownloaded(surah.num,selectedQuranType);
+
+    let card=document.createElement("div");
     card.className="quranListCard";
+    card.setAttribute("role","button");
+    card.setAttribute("tabindex","0");
 
     card.onclick=function(){
 
@@ -433,7 +728,26 @@ function renderSurahList(){
       subText=surah.verses+" verses • Audio Quran";
     }
 
-    card.innerHTML=`<div class="quranListBadge">${surah.num}</div><div class="quranListInfo"><div class="quranListTitle">${surah.en}</div><div class="quranListSub">${subText}</div></div><div class="quranListArabic">${surah.ar}</div><div class="quranChevron">›</div>`;
+    let heartIcon=isFav?"♥":"♡";
+    let cloudIcon=isDownloaded?"☁":"☁↓";
+    let heartClass=isFav?" heartActive":"";
+    let cloudClass=isDownloaded?" downloaded":"";
+
+    card.innerHTML=`
+      <div class="quranListBadge">${surah.num}</div>
+
+      <div class="quranListInfo">
+        <div class="quranListTitle">${surah.en}</div>
+        <div class="quranListSub">${subText}</div>
+      </div>
+
+      <div class="quranListArabic">${surah.ar}</div>
+
+      <div class="quranSurahActions">
+        <button class="quranSurahIconBtn${heartClass}" type="button" aria-label="Favorite Surah" onclick="toggleQuranSurahFavorite(event,${surah.num})">${heartIcon}</button>
+        <button class="quranSurahIconBtn${cloudClass}" type="button" aria-label="Download Surah" onclick="downloadSelectedQuranSurah(event,${surah.num})">${cloudIcon}</button>
+      </div>
+    `;
 
     container.appendChild(card);
 
@@ -499,7 +813,7 @@ function renderBookmarkList(){
 /* =========================
    RENDER FAVORITE LIST
    Full function name: renderFavoriteList()
-   Purpose: Shows only favorites for selected Quran type
+   Purpose: Shows Surah favorites and saved Quran favorites for selected type
 ========================= */
 function renderFavoriteList(){
 
@@ -508,13 +822,70 @@ function renderFavoriteList(){
 
   let allFavorites=getAllQuranFavorites();
   let savedItems=filterQuranSavedItemsForSelectedType(allFavorites);
+  let surahFavorites=getQuranSurahFavorites().filter(function(item){
+    return String(item.type||"")===String(selectedQuranType);
+  });
 
   container.innerHTML="";
 
-  if(!savedItems.length){
-    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No favorites yet</div><div class="quranNoResultSub">Save a favorite from the Quran reader. Then it will show here for ${getSelectedQuranLabel()}.</div></div>`;
+  if(!surahFavorites.length&&!savedItems.length){
+    container.innerHTML=`<div class="quranNoResultCard"><div class="quranNoResultTitle">No favorites yet</div><div class="quranNoResultSub">Tap the heart on a Surah to add it here for ${getSelectedQuranLabel()}.</div></div>`;
     return;
   }
+
+  surahFavorites.forEach(function(favorite){
+
+    let page=Number(favorite.page||getSurahStartPageForSelectedQuran(favorite.surahNumber)||1);
+    let displayPage=page;
+
+    if(selectedQuranType==="16line"){
+      displayPage=page+1;
+    }
+
+    let card=document.createElement("div");
+    card.className="quranListCard";
+    card.setAttribute("role","button");
+    card.setAttribute("tabindex","0");
+
+    card.onclick=function(){
+
+      if(selectedQuranType==="audio"){
+        localStorage.setItem("selectedQuranType","audio");
+        localStorage.setItem("openArabicQuranSurahNumber",String(favorite.surahNumber||1));
+        localStorage.setItem("openArabicQuranDirectFromQuranIndex","yes");
+        window.location.href="../arabic-quran/?from=quran&surah="+encodeURIComponent(favorite.surahNumber||1);
+        return;
+      }
+
+      openSelectedQuranAtPage(page,favorite.surahNumber||null);
+
+    };
+
+    let subText=selectedQuranType==="audio"
+      ? (favorite.verses||"")+" verses • Audio Quran"
+      : "Page "+displayPage+" • "+(favorite.verses||"")+" verses";
+
+    card.innerHTML=`
+      <div class="quranListBadge">♥</div>
+      <div class="quranListInfo">
+        <div class="quranListTitle">${favorite.name||"Favorite Surah"}</div>
+        <div class="quranListSub">${subText}</div>
+      </div>
+      <div class="quranListArabic">${favorite.arabic||""}</div>
+      <button class="quranSavedDeleteBtn" type="button" aria-label="Remove favorite">🗑️</button>
+    `;
+
+    let deleteBtn=card.querySelector(".quranSavedDeleteBtn");
+    if(deleteBtn){
+      deleteBtn.onclick=function(event){
+        event.stopPropagation();
+        toggleQuranSurahFavorite(event,favorite.surahNumber);
+      };
+    }
+
+    container.appendChild(card);
+
+  });
 
   savedItems.forEach(function(saved){
 
