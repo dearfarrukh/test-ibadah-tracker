@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- =========================
+     OFFLINE MANAGER FOLDER PAGE
+     File: offline-manager/index.html
+========================= -->
+
+<meta charset="UTF-8">
+<title>Offline Manager - Ibadah Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="apple-touch-icon" href="../icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#e9e9ee">
+<link rel="manifest" href="../manifest.webmanifest">
+
+<style>
+/* =========================
+   BASIC RESET
+========================= */
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  background:#e9e9ee;
+  color:#111;
+}
+
+body{
+  padding:0 0 34px 0;
+  background:#e9e9ee;
+}
+
+/* =========================
+   OFFLINE MANAGER TOP BLUE HEADER
+========================= */
+.offlineHeader{
+  width:100%;
+  min-height:150px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:calc(env(safe-area-inset-top, 16px) + 18px) 4% 24px 4%;
+  background:linear-gradient(180deg, #0f1d35 0%, #203f63 100%);
+  border-radius:0 0 34px 34px;
+  box-shadow:0 10px 22px rgba(15,29,53,0.18);
+  margin-bottom:14px;
+  position:relative;
+}
+
+.offlineBackBtn{
+  position:absolute;
+  left:4%;
+  top:calc(env(safe-area-inset-top, 16px) + 14px);
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#0f1d35;
+  font-size:24px;
+  font-weight:950;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 7px 18px rgba(0,0,0,0.24);
+  cursor:pointer;
+}
+
+.offlineHeaderIcon{
+  width:58px;
+  height:58px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.16);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18);
+}
+
+.offlineTitle{
+  margin:0;
+  font-size:27px;
+  font-weight:950;
+  color:white;
+  line-height:1.1;
+  text-shadow:0 3px 10px rgba(0,0,0,0.24);
+  letter-spacing:-0.5px;
+}
+
+.offlineSub{
+  max-width:320px;
+  margin:0;
+  font-size:14px;
+  font-weight:650;
+  color:rgba(255,255,255,0.82);
+  line-height:1.35;
+  text-align:center;
+}
+
+/* =========================
+   PAGE BODY
+========================= */
+.offlineBody{
+  width:100%;
+  padding:0 4% 30px 4%;
+}
+
+/* =========================
+   iOS CARDS
+========================= */
+.managerCard{
+  width:100%;
+  background:white;
+  border-radius:28px;
+  padding:20px 5%;
+  margin-bottom:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.04);
+}
+
+.managerCardTitle{
+  font-size:21px;
+  font-weight:950;
+  letter-spacing:-0.35px;
+  margin-bottom:7px;
+  color:#111;
+}
+
+.managerCardText{
+  font-size:14px;
+  font-weight:650;
+  color:#666;
+  line-height:1.48;
+  margin-bottom:14px;
+}
+
+.managerButton{
+  width:100%;
+  border:none;
+  border-radius:22px;
+  padding:16px 14px;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.managerButton:active{
+  transform:scale(0.98);
+}
+
+.managerButton.dark{
+  background:#111;
+  color:white;
+}
+
+.managerButton.light{
+  background:#f2f2f7;
+  color:#111;
+}
+
+.managerButton.blue{
+  background:#0a84ff;
+  color:white;
+}
+
+.managerButton.green{
+  background:#e8f8ee;
+  color:#137a36;
+}
+
+.managerButton.red{
+  background:#fff1f1;
+  color:#ff3b30;
+}
+
+.managerButton.danger{
+  background:#ff3b30;
+  color:white;
+}
+
+.managerButton:disabled{
+  opacity:0.62;
+  pointer-events:none;
+}
+
+/* =========================
+   PROGRESS BOX
+========================= */
+.progressBox{
+  display:none;
+  width:100%;
+  background:#f2f2f7;
+  border-radius:22px;
+  padding:14px;
+  margin-top:14px;
+}
+
+.progressBox.show{
+  display:block;
+}
+
+.progressText{
+  font-size:14px;
+  font-weight:850;
+  color:#333;
+  line-height:1.35;
+  margin-bottom:10px;
+}
+
+.progressBar{
+  width:100%;
+  height:10px;
+  border-radius:99px;
+  background:#d9d9df;
+  overflow:hidden;
+}
+
+.progressFill{
+  width:0%;
+  height:100%;
+  border-radius:99px;
+  background:#0a84ff;
+  transition:width 0.18s ease;
+}
+
+/* =========================
+   WARNING BOX
+========================= */
+.warningBox{
+  width:100%;
+  background:#fff8e8;
+  color:#7a4a00;
+  border-radius:22px;
+  padding:14px;
+  font-size:13px;
+  font-weight:750;
+  line-height:1.45;
+  margin-top:10px;
+}
+
+/* =========================
+   TOAST MESSAGE
+========================= */
+.toast{
+  display:none;
+  position:fixed;
+  left:50%;
+  bottom:28px;
+  transform:translateX(-50%);
+  background:rgba(17,17,17,0.94);
+  color:white;
+  padding:14px 18px;
+  border-radius:18px;
+  font-size:15px;
+  font-weight:800;
+  z-index:9999;
+  max-width:88%;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.22);
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+@media(max-width:390px){
+  .offlineTitle{
+    font-size:25px;
+  }
+
+  .offlineBody{
+    padding-left:3.5%;
+    padding-right:3.5%;
+  }
+
+  .managerCard{
+    padding:18px;
+  }
+
+  .managerCardTitle{
+    font-size:20px;
+  }
+
+  .managerButton{
+    font-size:16px;
+    padding:15px 12px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     OFFLINE MANAGER HEADER
+========================= -->
+<div class="offlineHeader">
+  <button class="offlineBackBtn" onclick="goBackFromOfflineManager()">‹</button>
+  <div class="offlineHeaderIcon">☁️</div>
+  <h1 class="offlineTitle">Offline Manager</h1>
+  <p class="offlineSub">Save app pages, manage cache, download Quran files, and reset safely.</p>
+</div>
+
+<!-- =========================
+     OFFLINE MANAGER BODY
+========================= -->
+<div class="offlineBody">
+
+  <!-- =========================
+       APP CACHE CARD
+  ========================= -->
+  <div class="managerCard">
+    <div class="managerCardTitle">App Cache</div>
+    <div class="managerCardText">
+      Save main app pages for offline use, or offload only the app cache after code changes. Quran downloads stay safe.
+    </div>
+
+    <button id="saveAppCacheBtn" class="managerButton blue" onclick="saveAppCacheForOffline()">
+      💾 Save App Cache
+    </button>
+
+    <button id="offloadAppCacheBtn" class="managerButton light" onclick="offloadAppCacheOnly()">
+      ♻️ Offload App Cache
+    </button>
+
+    <div id="appCacheProgress" class="progressBox">
+      <div id="appCacheProgressText" class="progressText">Ready</div>
+      <div class="progressBar">
+        <div id="appCacheProgressFill" class="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       QURAN DOWNLOAD CARD
+  ========================= -->
+  <div class="managerCard">
+    <div class="managerCardTitle">Quran Offline Downloads</div>
+    <div class="managerCardText">
+      Download full Quran image sets for offline reading. This may take time and use storage on your phone.
+    </div>
+
+    <button id="download15Btn" class="managerButton green" onclick="downloadQuran15FromOfflineManager()">
+      📖 Download 15 Line Quran
+    </button>
+
+    <button id="download16Btn" class="managerButton green" onclick="downloadQuran16FromOfflineManager()">
+      📖 Download 16 Line Quran
+    </button>
+
+    <button id="download9Btn" class="managerButton green" onclick="downloadQuran9FromOfflineManager()">
+      📖 Download 9 Line Quran
+    </button>
+
+    <button id="removeQuranBtn" class="managerButton red" onclick="removeOfflineQuranDownloadsFromManager()">
+      🗑️ Remove Offline Quran Downloads
+    </button>
+
+    <div class="warningBox">
+      Quran downloads are separate from app cache. Removing app cache will not remove Quran downloads.
+    </div>
+
+    <div id="quranDownloadProgress" class="progressBox">
+      <div id="quranDownloadProgressText" class="progressText">Ready</div>
+      <div class="progressBar">
+        <div id="quranDownloadProgressFill" class="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       FACTORY RESET CARD
+  ========================= -->
+  <div class="managerCard">
+    <div class="managerCardTitle">Danger Zone</div>
+    <div class="managerCardText">
+      Factory Reset Everything deletes all app data, all tasks, all history, all bookmarks, all caches, and all Quran downloads. This is protected by a password inside the code.
+    </div>
+
+    <button id="factoryResetBtn" class="managerButton danger" onclick="factoryResetEverythingWithPassword()">
+      ⚠️ Factory Reset Everything
+    </button>
+  </div>
+
+</div>
+
+<!-- =========================
+     TOAST MESSAGE
+========================= -->
+<div id="offlineToast" class="toast"></div>
+
+<script>
+/* =========================
+   OFFLINE MANAGER SETTINGS
+   File: offline-manager/index.html
+========================= */
+const OFFLINE_MANAGER_FACTORY_RESET_PASSWORD = "IBADAH-RESET-8394";
+const OFFLINE_MANAGER_APP_CACHE = "ibadah-test-smart-app-v1";
+const OFFLINE_MANAGER_QURAN_CACHE = "ibadah-runtime-v1";
+
+/* =========================
+   APP CACHE FILE LIST
+   Full constant name: OFFLINE_MANAGER_APP_FILES
+========================= */
+const OFFLINE_MANAGER_APP_FILES = [
+  "../",
+  "../index.html",
+  "../manifest.webmanifest",
+  "../icon.png",
+
+  "../home/",
+  "../home/index.html",
+
+  "../salah/",
+  "../salah/index.html",
+
+  "../tracker/",
+  "../tracker/index.html",
+
+  "../more/",
+  "../more/index.html",
+
+  "../quran/",
+  "../quran/index.html",
+
+  "../appsettings/",
+  "../appsettings/index.html",
+
+  "../offline-manager/",
+  "../offline-manager/index.html",
+
+  "../shared/bottom-nav.js",
+  "../shared/menu-handle.js",
+  "../shared/cloud-sync.js"
+];
+
+/* =========================
+   GET IBADAH BASE PATH
+   Full function name: getIbadahBasePath()
+========================= */
+function getIbadahBasePath(){
+
+  if(window.location.pathname.includes("/test-ibadah-tracker/")){
+    return "/test-ibadah-tracker/";
+  }
+
+  if(window.location.pathname.includes("/ibadah-tracker/")){
+    return "/ibadah-tracker/";
+  }
+
+  return "/";
+
+}
+
+/* =========================
+   SHOW OFFLINE TOAST
+   Full function name: showOfflineToast()
+========================= */
+function showOfflineToast(message){
+
+  let toast = document.getElementById("offlineToast");
+  if(!toast) return;
+
+  toast.innerText = message || "";
+  toast.style.display = "block";
+
+  clearTimeout(window.offlineToastTimer);
+
+  window.offlineToastTimer = setTimeout(function(){
+    toast.style.display = "none";
+  }, 2600);
+
+}
+
+/* =========================
+   GO BACK FROM OFFLINE MANAGER
+   Full function name: goBackFromOfflineManager()
+========================= */
+function goBackFromOfflineManager(){
+
+  let params = new URLSearchParams(window.location.search);
+  let from = params.get("from") || localStorage.getItem("offlineManagerReturnPage") || "appsettings";
+
+  if(from === "appsettings"){
+    window.location.href = "../appsettings/?from=" + encodeURIComponent(localStorage.getItem("appSettingsReturnPage") || "more");
+    return;
+  }
+
+  window.location.href = "../appsettings/";
+
+}
+
+/* =========================
+   UPDATE APP CACHE PROGRESS
+   Full function name: updateAppCacheProgress()
+========================= */
+function updateAppCacheProgress(message, current, total){
+
+  let box = document.getElementById("appCacheProgress");
+  let text = document.getElementById("appCacheProgressText");
+  let fill = document.getElementById("appCacheProgressFill");
+
+  if(box){
+    box.classList.add("show");
+  }
+
+  if(text){
+    text.innerText = message || "";
+  }
+
+  let percent = total ? Math.round((current / total) * 100) : 0;
+
+  if(fill){
+    fill.style.width = percent + "%";
+  }
+
+}
+
+/* =========================
+   UPDATE QURAN DOWNLOAD PROGRESS
+   Full function name: updateQuranDownloadProgress()
+========================= */
+function updateQuranDownloadProgress(message, current, total){
+
+  let box = document.getElementById("quranDownloadProgress");
+  let text = document.getElementById("quranDownloadProgressText");
+  let fill = document.getElementById("quranDownloadProgressFill");
+
+  if(box){
+    box.classList.add("show");
+  }
+
+  if(text){
+    text.innerText = message || "";
+  }
+
+  let percent = total ? Math.round((current / total) * 100) : 0;
+
+  if(fill){
+    fill.style.width = percent + "%";
+  }
+
+}
+
+/* =========================
+   SET BUTTON DISABLED
+   Full function name: setButtonDisabled()
+========================= */
+function setButtonDisabled(buttonId, disabled){
+
+  let button = document.getElementById(buttonId);
+
+  if(button){
+    button.disabled = disabled ? true : false;
+  }
+
+}
+
+/* =========================
+   SAVE URL INTO CACHE
+   Full function name: saveUrlIntoCache()
+========================= */
+async function saveUrlIntoCache(cache, url){
+
+  let response = await fetch(url, {
+    cache:"no-store"
+  });
+
+  if(response && response.ok){
+    await cache.put(url, response.clone());
+    return true;
+  }
+
+  return false;
+
+}
+
+/* =========================
+   SAVE APP CACHE FOR OFFLINE
+   Full function name: saveAppCacheForOffline()
+========================= */
+async function saveAppCacheForOffline(){
+
+  let ok = confirm("Save main app pages for offline use?");
+
+  if(!ok) return;
+
+  setButtonDisabled("saveAppCacheBtn", true);
+  updateAppCacheProgress("Saving app cache...", 0, OFFLINE_MANAGER_APP_FILES.length);
+
+  try{
+
+    let cache = await caches.open(OFFLINE_MANAGER_APP_CACHE);
+    let savedCount = 0;
+
+    for(let i = 0; i < OFFLINE_MANAGER_APP_FILES.length; i++){
+
+      let file = OFFLINE_MANAGER_APP_FILES[i];
+
+      updateAppCacheProgress("Saving " + (i + 1) + " / " + OFFLINE_MANAGER_APP_FILES.length, i, OFFLINE_MANAGER_APP_FILES.length);
+
+      try{
+        let saved = await saveUrlIntoCache(cache, file);
+
+        if(saved){
+          savedCount++;
+        }
+
+      }catch(error){
+        console.log("App cache skipped:", file, error);
+      }
+
+    }
+
+    updateAppCacheProgress("App cache saved: " + savedCount + " files", OFFLINE_MANAGER_APP_FILES.length, OFFLINE_MANAGER_APP_FILES.length);
+    showOfflineToast("App saved for offline use");
+
+  }catch(error){
+
+    console.log(error);
+    showOfflineToast("Could not save app cache");
+
+  }
+
+  setButtonDisabled("saveAppCacheBtn", false);
+
+}
+
+/* =========================
+   OFFLOAD APP CACHE ONLY
+   Full function name: offloadAppCacheOnly()
+========================= */
+async function offloadAppCacheOnly(){
+
+  let ok = confirm(
+    "Offload app cache only?\n\n" +
+    "This will not delete Quran downloads or saved app data."
+  );
+
+  if(!ok) return;
+
+  setButtonDisabled("offloadAppCacheBtn", true);
+
+  try{
+
+    if("caches" in window){
+
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+
+        let lower = String(cacheName).toLowerCase();
+
+        if(
+          lower.includes("runtime") ||
+          lower.includes("quran") ||
+          lower.includes("mushaf") ||
+          lower.includes("surah") ||
+          lower.includes("ayat") ||
+          lower.includes("offline") ||
+          lower.includes("download")
+        ){
+          continue;
+        }
+
+        if(cacheName.startsWith("ibadah-test") || cacheName === OFFLINE_MANAGER_APP_CACHE){
+          await caches.delete(cacheName);
+        }
+
+      }
+
+    }
+
+    updateAppCacheProgress("App cache offloaded. Quran downloads kept safe.", 1, 1);
+    showOfflineToast("App cache offloaded");
+
+  }catch(error){
+
+    console.log(error);
+    showOfflineToast("Could not offload app cache");
+
+  }
+
+  setButtonDisabled("offloadAppCacheBtn", false);
+
+}
+
+/* =========================
+   GET REAL JUZ INFO FROM 15 LINE PAGE
+   Full function name: getOfflineManager15LineJuzInfo()
+========================= */
+function getOfflineManager15LineJuzInfo(page){
+
+  const juzPageCounts = {
+    1:27,2:28,3:28,4:28,5:28,6:28,7:28,8:28,9:28,10:28,
+    11:28,12:28,13:28,14:28,15:28,16:28,17:28,18:28,19:28,
+    20:26,21:28,22:26,23:28,24:26,25:30,26:30,27:30,28:30,29:32,30:30
+  };
+
+  let runningTotal = 0;
+
+  for(let juzNumber = 1; juzNumber <= 30; juzNumber++){
+
+    let juzCount = juzPageCounts[juzNumber];
+    let juzStart = runningTotal + 1;
+    let juzEnd = runningTotal + juzCount;
+
+    if(page >= juzStart && page <= juzEnd){
+      return {
+        juzNumber:juzNumber,
+        pageInsideJuz:page - runningTotal
+      };
+    }
+
+    runningTotal += juzCount;
+
+  }
+
+  return {
+    juzNumber:1,
+    pageInsideJuz:1
+  };
+
+}
+
+/* =========================
+   BUILD 15 LINE IMAGE PATH
+   Full function name: buildOfflineManager15LinePath()
+========================= */
+function buildOfflineManager15LinePath(page){
+
+  let info = getOfflineManager15LineJuzInfo(page);
+  let paddedPage = String(info.pageInsideJuz).padStart(2, "0");
+
+  return "../QuranPages/juz" + info.juzNumber + "/" + info.juzNumber + "-" + paddedPage + ".png";
+
+}
+
+/* =========================
+   BUILD 16 LINE IMAGE PATH
+   Full function name: buildOfflineManager16LinePath()
+========================= */
+function buildOfflineManager16LinePath(page){
+
+  return "../16linequranpages/" + page + ".jpg";
+
+}
+
+/* =========================
+   BUILD 9 LINE IMAGE PATH
+   Full function name: buildOfflineManager9LinePath()
+========================= */
+function buildOfflineManager9LinePath(page){
+
+  let imagePage = Number(page) + 1;
+
+  if(imagePage <= 1000){
+    return "../9LineQuran/Images/page-" + String(imagePage).padStart(3, "0") + ".png";
+  }
+
+  return "../9LineQuran/Images2/page-" + imagePage + ".png";
+
+}
+
+/* =========================
+   DOWNLOAD QURAN RANGE
+   Full function name: downloadQuranRangeFromOfflineManager()
+========================= */
+async function downloadQuranRangeFromOfflineManager(options){
+
+  let title = options.title;
+  let totalPages = Number(options.totalPages || 0);
+  let buildPath = options.buildPath;
+  let storageKey = options.storageKey;
+  let buttonId = options.buttonId;
+
+  let ok = confirm(
+    "Download " + title + " for offline use?\n\n" +
+    "This may take several minutes and use storage on your phone."
+  );
+
+  if(!ok) return;
+
+  setButtonDisabled(buttonId, true);
+  updateQuranDownloadProgress("Starting " + title + "...", 0, totalPages);
+
+  try{
+
+    let cache = await caches.open(OFFLINE_MANAGER_QURAN_CACHE);
+    let savedCount = 0;
+
+    for(let page = 1; page <= totalPages; page++){
+
+      let url = buildPath(page);
+
+      try{
+
+        let saved = await saveUrlIntoCache(cache, url);
+
+        if(saved){
+          savedCount++;
+        }
+
+      }catch(error){
+        console.log(title + " skipped page:", page, error);
+      }
+
+      if(page === 1 || page % 10 === 0 || page === totalPages){
+        updateQuranDownloadProgress(title + ": " + page + " / " + totalPages, page, totalPages);
+      }
+
+    }
+
+    if(storageKey){
+      localStorage.setItem(storageKey, "yes");
+    }
+
+    updateQuranDownloadProgress(title + " downloaded: " + savedCount + " files", totalPages, totalPages);
+    showOfflineToast(title + " downloaded");
+
+  }catch(error){
+
+    console.log(error);
+    showOfflineToast(title + " download failed");
+
+  }
+
+  setButtonDisabled(buttonId, false);
+
+}
+
+/* =========================
+   DOWNLOAD 15 LINE QURAN FROM OFFLINE MANAGER
+   Full function name: downloadQuran15FromOfflineManager()
+========================= */
+function downloadQuran15FromOfflineManager(){
+
+  downloadQuranRangeFromOfflineManager({
+    title:"15 Line Quran",
+    totalPages:847,
+    buildPath:buildOfflineManager15LinePath,
+    storageKey:"quran15FullDownloaded",
+    buttonId:"download15Btn"
+  });
+
+}
+
+/* =========================
+   DOWNLOAD 16 LINE QURAN FROM OFFLINE MANAGER
+   Full function name: downloadQuran16FromOfflineManager()
+========================= */
+function downloadQuran16FromOfflineManager(){
+
+  downloadQuranRangeFromOfflineManager({
+    title:"16 Line Quran",
+    totalPages:549,
+    buildPath:buildOfflineManager16LinePath,
+    storageKey:"quran16FullDownloaded",
+    buttonId:"download16Btn"
+  });
+
+}
+
+/* =========================
+   DOWNLOAD 9 LINE QURAN FROM OFFLINE MANAGER
+   Full function name: downloadQuran9FromOfflineManager()
+========================= */
+function downloadQuran9FromOfflineManager(){
+
+  downloadQuranRangeFromOfflineManager({
+    title:"9 Line Quran",
+    totalPages:1890,
+    buildPath:buildOfflineManager9LinePath,
+    storageKey:"quran9FullDownloaded",
+    buttonId:"download9Btn"
+  });
+
+}
+
+/* =========================
+   REMOVE OFFLINE QURAN DOWNLOADS FROM MANAGER
+   Full function name: removeOfflineQuranDownloadsFromManager()
+========================= */
+async function removeOfflineQuranDownloadsFromManager(){
+
+  let ok = confirm("Remove all downloaded Quran files from this device cache?");
+
+  if(!ok) return;
+
+  setButtonDisabled("removeQuranBtn", true);
+
+  try{
+
+    if("caches" in window){
+
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+
+        if(cacheName === "ibadah-runtime-v1" || cacheName === "ibadah-test-runtime-v1"){
+          await caches.delete(cacheName);
+        }
+
+      }
+
+    }
+
+    localStorage.removeItem("juz30OfflineDownloaded");
+    localStorage.removeItem("quran16FullDownloaded");
+    localStorage.removeItem("quran15FullDownloaded");
+    localStorage.removeItem("quran9FullDownloaded");
+    localStorage.removeItem("quranSurahDownloads");
+
+    updateQuranDownloadProgress("Offline Quran downloads removed", 1, 1);
+    showOfflineToast("Offline Quran downloads removed");
+
+  }catch(error){
+
+    console.log(error);
+    showOfflineToast("Could not remove offline downloads");
+
+  }
+
+  setButtonDisabled("removeQuranBtn", false);
+
+}
+
+/* =========================
+   FACTORY RESET EVERYTHING WITH PASSWORD
+   Full function name: factoryResetEverythingWithPassword()
+========================= */
+async function factoryResetEverythingWithPassword(){
+
+  let firstConfirm = confirm(
+    "Factory Reset Everything will delete ALL app data and ALL offline downloads.\n\n" +
+    "This cannot be undone.\n\n" +
+    "Continue?"
+  );
+
+  if(!firstConfirm) return;
+
+  let password = prompt("Enter factory reset password:");
+
+  if(password === null){
+    return;
+  }
+
+  if(String(password).trim() !== OFFLINE_MANAGER_FACTORY_RESET_PASSWORD){
+    alert("Wrong password. Factory reset cancelled.");
+    return;
+  }
+
+  let finalConfirm = confirm(
+    "Password accepted.\n\n" +
+    "Last warning: delete EVERYTHING and return app to first-time use?"
+  );
+
+  if(!finalConfirm) return;
+
+  try{
+
+    localStorage.clear();
+
+    if("caches" in window){
+
+      let cacheNames = await caches.keys();
+
+      for(let cacheName of cacheNames){
+        await caches.delete(cacheName);
+      }
+
+    }
+
+    if("serviceWorker" in navigator){
+
+      let registrations = await navigator.serviceWorker.getRegistrations();
+
+      for(let registration of registrations){
+        await registration.unregister();
+      }
+
+    }
+
+    alert("Factory reset complete. App will reload like first-time use.");
+
+    window.location.href = getIbadahBasePath() + "?factoryReset=1&v=" + Date.now();
+
+  }catch(error){
+
+    console.log(error);
+    alert("Factory reset failed.");
+
+  }
+
+}
+
+/* =========================
+   START OFFLINE MANAGER
+   Full event name: DOMContentLoaded
+========================= */
+document.addEventListener("DOMContentLoaded", function(){
+
+  updateAppCacheProgress("Ready", 0, 1);
+  updateQuranDownloadProgress("Ready", 0, 1);
+
+});
+</script>
+
+</body>
+</html>
