@@ -383,63 +383,34 @@ function openSelectedQuranOption(option){if(option==="bookmark"){openSelectedQur
 /* =========================
    OPEN SELECTED QURAN BOOKMARKS
    Full function name: openSelectedQuranBookmarks()
-   Purpose: Opens bookmark safely for 15 Line, 16 Line, 9 Line, and Audio Quran
+   Purpose: Show bookmark list instead of opening the first saved bookmark directly
 ========================= */
 function openSelectedQuranBookmarks(){
 
-  let allBookmarks=getAllQuranBookmarks();
-  let bookmarkType=getBookmarkTypeForSelectedQuran();
+  selectedListMode="favorite";
+  localStorage.setItem("selectedQuranListMode",selectedListMode);
 
-  let matchingBookmarks=allBookmarks.filter(function(item){
-    return item&&item.type===bookmarkType&&item.page;
-  });
+  let searchPanel=document.getElementById("quranSearchPanel");
+  let searchInput=document.getElementById("quranSearchInput");
 
-  if(matchingBookmarks.length){
-
-    let found=matchingBookmarks[matchingBookmarks.length-1];
-    let savedPage=Number(found.page||1);
-
-    if(selectedQuranType==="audio"){
-      openSelectedQuranAtPage(savedPage,savedPage);
-      return;
-    }
-
-    openSelectedQuranAtPage(savedPage,null);
-    return;
-
+  if(searchPanel){
+    searchPanel.classList.remove("show");
   }
 
-  let fallbackPage=0;
-
-  if(selectedQuranType==="15line"){
-    fallbackPage=parseInt(localStorage.getItem("lastMushafPage")||localStorage.getItem("openQuran15PageNumber")||"0",10);
+  if(searchInput){
+    searchInput.value="";
   }
 
-  if(selectedQuranType==="16line"){
-    fallbackPage=parseInt(localStorage.getItem("lastQuran16Page")||localStorage.getItem("quran16LastPage")||localStorage.getItem("openQuran16PageNumber")||"0",10);
+  quranSearchOpen=false;
+
+  showQuranListMode("favorite");
+
+  let title=document.getElementById("quranListTitle");
+  if(title){
+    title.innerText="Bookmarks";
   }
 
-  if(selectedQuranType==="9line"){
-    fallbackPage=parseInt(localStorage.getItem("last9LineMushafPage")||localStorage.getItem("lastQuran9Page")||localStorage.getItem("openQuran9PageNumber")||"0",10);
-  }
-
-  if(selectedQuranType==="audio"){
-    fallbackPage=parseInt(localStorage.getItem("lastArabicQuranSurahNumber")||localStorage.getItem("lastArabicQuranSurah")||localStorage.getItem("openArabicQuranSurahNumber")||"0",10);
-  }
-
-  if(fallbackPage&&fallbackPage>0){
-
-    if(selectedQuranType==="audio"){
-      openSelectedQuranAtPage(fallbackPage,fallbackPage);
-      return;
-    }
-
-    openSelectedQuranAtPage(fallbackPage,null);
-    return;
-
-  }
-
-  showToast("No bookmark found for "+getSelectedQuranLabel());
+  showToast("Showing "+getSelectedQuranLabel()+" bookmarks");
 
 }
 function resumeSelectedQuran(){let page=1;if(selectedQuranType==="15line"){page=parseInt(localStorage.getItem("lastMushafPage")||"1",10);}else if(selectedQuranType==="16line"){page=parseInt(localStorage.getItem("lastQuran16Page")||localStorage.getItem("quran16LastPage")||"1",10);}else if(selectedQuranType==="9line"){page=parseInt(localStorage.getItem("last9LineMushafPage")||localStorage.getItem("lastQuran9Page")||"1",10);}else if(selectedQuranType==="audio"){page=parseInt(localStorage.getItem("lastArabicQuranSurahNumber")||localStorage.getItem("lastArabicQuranSurah")||"1",10);}openSelectedQuranAtPage(page,null);}
