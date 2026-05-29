@@ -723,89 +723,301 @@ body{
   .sun-time{font-size:23px;}
 }
 
+
+/* =========================
+   PRINT READER PAGE - A4 PORTRAIT
+   Page: salah/index.html
+========================= */
+.printReaderPage{
+  display:none;
+  width:100%;
+  min-height:100vh;
+  background:#e9e9ee;
+  padding:calc(env(safe-area-inset-top, 12px) + 10px) 3% calc(100px + env(safe-area-inset-bottom)) 3%;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.printReaderPage.show{
+  display:block;
+}
+
+.printReaderTop{
+  width:100%;
+  max-width:820px;
+  margin:0 auto 12px auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.printReaderBtn{
+  border:none;
+  border-radius:999px;
+  padding:12px 16px;
+  font-size:14px;
+  font-weight:900;
+  font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
+
+.printReaderBackBtn{
+  background:white;
+  color:#111;
+}
+
+.printReaderPrintBtn{
+  background:#111;
+  color:white;
+}
+
+.printReaderTitleBar{
+  flex:1;
+  text-align:center;
+  min-width:0;
+}
+
+.printReaderTitleText{
+  font-size:17px;
+  font-weight:900;
+  color:#111;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.printReaderSubText{
+  font-size:12px;
+  font-weight:700;
+  color:#666;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.printPaperWrap{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+
+.salahPrintPaper{
+  width:min(94vw, 210mm);
+  aspect-ratio:210 / 297;
+  background:white;
+  border-radius:12px;
+  box-shadow:0 14px 40px rgba(0,0,0,0.14);
+  padding:5mm;
+  color:#111;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.salahPrintHeader{
+  text-align:center;
+  border-bottom:1px solid #111;
+  padding-bottom:2.5mm;
+  margin-bottom:2.5mm;
+  flex-shrink:0;
+}
+
+.salahPrintMainTitle{
+  font-size:13pt;
+  font-weight:900;
+  line-height:1.1;
+  margin:0;
+}
+
+.salahPrintLocation{
+  font-size:8.8pt;
+  font-weight:800;
+  margin-top:1mm;
+  line-height:1.15;
+}
+
+.salahPrintSettings{
+  font-size:6.8pt;
+  font-weight:700;
+  color:#444;
+  margin-top:0.8mm;
+  line-height:1.1;
+}
+
+.salahPrintTable{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  flex:1;
+}
+
+.salahPrintTable th,
+.salahPrintTable td{
+  border:1px solid #222;
+  text-align:center;
+  vertical-align:middle;
+  padding:0.8mm 0.7mm;
+  line-height:1.02;
+  overflow:hidden;
+}
+
+.salahPrintTable th{
+  font-size:6.7pt;
+  font-weight:900;
+  background:#f1f1f1;
+  height:6.8mm;
+}
+
+.salahPrintTable th small{
+  display:block;
+  font-size:5.5pt;
+  font-weight:800;
+  margin-top:0.3mm;
+  letter-spacing:0;
+}
+
+.salahPrintTable td{
+  font-size:7.1pt;
+  font-weight:800;
+  height:6.05mm;
+}
+
+.salahPrintTable .col-day{width:10%;}
+.salahPrintTable .col-islamic{width:13%;}
+.salahPrintTable .col-date{width:8%;}
+.salahPrintTable .col-time{width:11.5%;}
+
+.salahPrintFooter{
+  flex-shrink:0;
+  text-align:center;
+  font-size:5.8pt;
+  font-weight:700;
+  color:#666;
+  margin-top:1.5mm;
+  line-height:1.1;
+}
+
+@media(max-width:520px){
+  .printReaderBtn{
+    padding:11px 13px;
+    font-size:13px;
+  }
+
+  .printReaderTitleText{
+    font-size:15px;
+  }
+
+  .salahPrintPaper{
+    width:94vw;
+    padding:3.5mm;
+  }
+}
+
 @media print{
   @page{
-    size:landscape;
-    margin:0.16in;
+    size:A4 portrait;
+    margin:5mm;
   }
 
   html,
   body{
-    position:static !important;
-    overflow:visible !important;
-    width:100% !important;
-    height:auto !important;
+    width:210mm !important;
+    height:297mm !important;
     min-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
     background:white !important;
+    overflow:hidden !important;
   }
 
   body *{
     visibility:hidden !important;
   }
 
-  #monthlyPrintArea,
-  #monthlyPrintArea *{
+  #salahPrintReaderPage,
+  #salahPrintReaderPage *{
     visibility:visible !important;
   }
 
-  #monthlyPrintArea{
-    position:absolute !important;
-    top:0 !important;
-    left:0 !important;
-    width:150% !important;
-    max-width:none !important;
-    background:white !important;
-    padding:0 !important;
-    margin:0 !important;
-    transform:scale(0.67);
-    transform-origin:top left;
-  }
-
-  .monthPrintHeader{
+  #salahPrintReaderPage{
     display:block !important;
-    margin:0 0 3px 0 !important;
+    position:absolute !important;
+    inset:0 !important;
+    width:200mm !important;
+    height:287mm !important;
+    min-height:0 !important;
     padding:0 !important;
-  }
-
-  .monthPrintTitle{
-    font-size:17px !important;
-    margin:0 0 2px 0 !important;
-    padding:0 !important;
-  }
-
-  .monthPrintSub{
-    font-size:9.5px !important;
-    margin:0 0 4px 0 !important;
-    padding:0 !important;
-    color:#111 !important;
-  }
-
-  .monthTable{
-    width:100% !important;
-    border-collapse:collapse !important;
-    border-spacing:0 !important;
     margin:0 !important;
-  }
-
-  .monthTable th,
-  .monthTable td{
-    border:1px solid #777 !important;
     background:white !important;
-    color:#111 !important;
-    padding:3px 5px !important;
-    font-size:9.3px !important;
-    line-height:1.04 !important;
-    font-weight:700 !important;
+    overflow:hidden !important;
   }
 
-  .monthTable th{
-    font-size:8.8px !important;
-    font-weight:900 !important;
+  .printReaderTop{
+    display:none !important;
   }
 
-  .monthTable td:first-child,
-  .monthTable td:last-child{
+  .printPaperWrap{
+    display:block !important;
+    width:200mm !important;
+    height:287mm !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  .salahPrintPaper{
+    width:200mm !important;
+    height:287mm !important;
+    max-width:none !important;
+    aspect-ratio:auto !important;
+    margin:0 !important;
+    padding:4.2mm !important;
     border-radius:0 !important;
+    box-shadow:none !important;
+    page-break-inside:avoid !important;
+    overflow:hidden !important;
+  }
+
+  .salahPrintHeader{
+    padding-bottom:2mm !important;
+    margin-bottom:2mm !important;
+  }
+
+  .salahPrintMainTitle{
+    font-size:12.2pt !important;
+  }
+
+  .salahPrintLocation{
+    font-size:8pt !important;
+    margin-top:0.7mm !important;
+  }
+
+  .salahPrintSettings{
+    font-size:6.2pt !important;
+    margin-top:0.5mm !important;
+  }
+
+  .salahPrintTable th{
+    font-size:6.1pt !important;
+    height:6.2mm !important;
+    padding:0.5mm !important;
+  }
+
+  .salahPrintTable th small{
+    font-size:5.1pt !important;
+  }
+
+  .salahPrintTable td{
+    font-size:6.55pt !important;
+    height:5.75mm !important;
+    padding:0.45mm !important;
+  }
+
+  .salahPrintFooter{
+    font-size:5.3pt !important;
+    margin-top:1mm !important;
   }
 }
 </style>
@@ -1064,7 +1276,7 @@ body{
       </div>
 
       <button class="primaryBtn" onclick="loadMonthlyTimetable()">Load Monthly Timetable</button>
-      <button class="secondaryBtn" onclick="printMonthlyTimetable()">🖨️ Print Timetable</button>
+      <button class="secondaryBtn" onclick="printMonthlyTimetable()">🖨️ Preview / Print Timetable</button>
 
       <div id="monthlyStatus" class="sheetSub" style="margin:10px 2px 12px 2px;">Choose last, current, or next month.</div>
 
@@ -1117,8 +1329,44 @@ body{
         Auto detects Ramadan from Hijri calendar
       </div>
 
-      <button class="primaryBtn" onclick="generateRamadanTimetable()">Generate PDF</button>
+      <button class="primaryBtn" onclick="generateRamadanTimetable()">Preview / Print Ramadan</button>
       <button class="secondaryBtn" onclick="closeRamadanSheet()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- =========================
+     PRINT READER PAGE
+     File: salah/index.html
+     Used by Monthly Timetable and Ramadan Timetable
+========================== -->
+<div id="salahPrintReaderPage" class="printReaderPage">
+  <div class="printReaderTop">
+    <button class="printReaderBtn printReaderBackBtn" onclick="closeSalahPrintReaderPage()">← Back</button>
+
+    <div class="printReaderTitleBar">
+      <div class="printReaderTitleText" id="salahPrintReaderTopTitle">Print Preview</div>
+      <div class="printReaderSubText">A4 portrait • one page</div>
+    </div>
+
+    <button class="printReaderBtn printReaderPrintBtn" onclick="printSalahReaderPage()">Print / Save PDF</button>
+  </div>
+
+  <div class="printPaperWrap">
+    <div class="salahPrintPaper" id="salahPrintPaper">
+      <div class="salahPrintHeader">
+        <div class="salahPrintMainTitle" id="salahPrintTitle">Salah Timetable</div>
+        <div class="salahPrintLocation" id="salahPrintLocation">Location</div>
+        <div class="salahPrintSettings" id="salahPrintSettings">Settings</div>
+      </div>
+
+      <table class="salahPrintTable" id="salahPrintTable">
+        <thead id="salahPrintTableHead"></thead>
+        <tbody id="salahPrintTableBody"></tbody>
+      </table>
+
+      <div class="salahPrintFooter" id="salahPrintFooter">Generated by IbadahHub</div>
     </div>
   </div>
 </div>
@@ -2821,6 +3069,367 @@ function printRamadanTimetable(data, loc, year){
   win.document.close();
 }
 
+
+
+/* =========================
+   SHARED A4 PRINT READER SYSTEM
+   File: salah/index.html
+   Full function names:
+   openSalahPrintReaderPage()
+   closeSalahPrintReaderPage()
+   printSalahReaderPage()
+   printMonthlyTimetable()
+   generateRamadanTimetable()
+   applySalahManualMinuteAdjustmentsToTimings(timings)
+========================= */
+
+function openSalahPrintReaderPage(){
+  let normalPage = document.getElementById("salahPage");
+  let settingsPage = document.getElementById("settingsSheet");
+  let locationSheet = document.getElementById("locationSheet");
+  let monthlySheet = document.getElementById("monthlySheet");
+  let ramadanSheet = document.getElementById("ramadanSheet");
+  let printPage = document.getElementById("salahPrintReaderPage");
+
+  if(normalPage) normalPage.style.display = "none";
+  if(settingsPage) settingsPage.classList.remove("show");
+  if(locationSheet) locationSheet.classList.remove("show");
+  if(monthlySheet) monthlySheet.classList.remove("show");
+  if(ramadanSheet) ramadanSheet.classList.remove("show");
+  if(printPage) printPage.classList.add("show");
+
+  document.body.style.paddingBottom = "0";
+
+  let bottomNav = document.getElementById("universalBottomNav");
+  if(bottomNav) bottomNav.style.display = "none";
+
+  window.scrollTo(0, 0);
+}
+
+function closeSalahPrintReaderPage(){
+  let normalPage = document.getElementById("salahPage");
+  let printPage = document.getElementById("salahPrintReaderPage");
+
+  if(printPage) printPage.classList.remove("show");
+  if(normalPage) normalPage.style.display = "block";
+
+  document.body.style.paddingBottom = "106px";
+
+  let bottomNav = document.getElementById("universalBottomNav");
+  if(bottomNav) bottomNav.style.display = "";
+
+  window.scrollTo(0, 0);
+}
+
+function printSalahReaderPage(){
+  window.print();
+}
+
+function setSalahPrintReaderContent(config){
+  let topTitle = document.getElementById("salahPrintReaderTopTitle");
+  let title = document.getElementById("salahPrintTitle");
+  let location = document.getElementById("salahPrintLocation");
+  let settings = document.getElementById("salahPrintSettings");
+  let head = document.getElementById("salahPrintTableHead");
+  let body = document.getElementById("salahPrintTableBody");
+  let footer = document.getElementById("salahPrintFooter");
+
+  if(topTitle) topTitle.innerText = config.topTitle || "Print Preview";
+  if(title) title.innerText = config.title || "Salah Timetable";
+  if(location) location.innerText = config.location || "";
+  if(settings) settings.innerText = config.settings || "";
+  if(footer) footer.innerText = config.footer || "Generated by IbadahHub";
+
+  if(head){
+    head.innerHTML = `
+      <tr>
+        <th class="col-day">DAY</th>
+        <th class="col-islamic">ISLAMIC<small>DATE</small></th>
+        <th class="col-date">DATE</th>
+        <th class="col-time">FAJR<small>DAWN</small></th>
+        <th class="col-time">TULU</th>
+        <th class="col-time">DHUHR<small>NOON</small></th>
+        <th class="col-time">ASAR<small>A’NOON</small></th>
+        <th class="col-time">MAGRIB<small>SUNSET</small></th>
+        <th class="col-time">ISHA<small>NIGHT</small></th>
+      </tr>
+    `;
+  }
+
+  if(body){
+    body.innerHTML = config.rowsHtml || "";
+  }
+
+  openSalahPrintReaderPage();
+}
+
+function getSalahManualMinuteAdjustments(){
+  return {
+    Fajr: Number(localStorage.getItem("salahAdjustFajr") || 0),
+    Sunrise: Number(localStorage.getItem("salahAdjustSunrise") || 0),
+    Dhuhr: Number(localStorage.getItem("salahAdjustDhuhr") || 0),
+    Asr: Number(localStorage.getItem("salahAdjustAsr") || 0),
+    Maghrib: Number(localStorage.getItem("salahAdjustMaghrib") || 0),
+    Isha: Number(localStorage.getItem("salahAdjustIsha") || 0)
+  };
+}
+
+/* =========================
+   APPLY MANUAL MINUTE ADJUSTMENTS
+   Full function name: applySalahManualMinuteAdjustmentsToTimings(timings)
+   Note: Right now all saved adjustments are 0.
+   Later, when you add + / - minute settings, the print reader will already use this helper.
+========================= */
+function applySalahManualMinuteAdjustmentsToTimings(timings){
+  let adj = getSalahManualMinuteAdjustments();
+  let copy = Object.assign({}, timings || {});
+
+  ["Fajr","Sunrise","Dhuhr","Asr","Maghrib","Isha"].forEach(function(key){
+    copy[key] = addMinutesToSalahApiTime(copy[key], adj[key] || 0);
+  });
+
+  return copy;
+}
+
+function addMinutesToSalahApiTime(timeText, minutesToAdd){
+  if(!timeText || !minutesToAdd) return timeText;
+
+  let clean = cleanSalahApiTime(timeText);
+  let parts = clean.split(":");
+  if(parts.length < 2) return timeText;
+
+  let hour = parseInt(parts[0], 10);
+  let minute = parseInt(parts[1], 10);
+
+  if(Number.isNaN(hour) || Number.isNaN(minute)) return timeText;
+
+  let total = (hour * 60) + minute + minutesToAdd;
+  total = ((total % 1440) + 1440) % 1440;
+
+  let newHour = Math.floor(total / 60);
+  let newMinute = total % 60;
+
+  return String(newHour).padStart(2, "0") + ":" + String(newMinute).padStart(2, "0");
+}
+
+function formatSalahPrintClock(timeText){
+  if(!timeText) return "-";
+
+  let clean = cleanSalahApiTime(timeText);
+  let parts = clean.split(":");
+  if(parts.length < 2) return clean;
+
+  let hour = parseInt(parts[0], 10);
+  let minute = parts[1];
+
+  if(Number.isNaN(hour)) return clean;
+
+  hour = hour % 12;
+  if(hour === 0) hour = 12;
+
+  return hour + ":" + minute;
+}
+
+function getShortHijriMonthName(monthName){
+  let name = String(monthName || "").toLowerCase();
+
+  if(name.includes("muḥarram") || name.includes("muharram")) return "Muh";
+  if(name.includes("ṣafar") || name.includes("safar")) return "Saf";
+  if(name.includes("rabī") || name.includes("rabi")) return name.includes("ii") || name.includes("al-thani") ? "Rab II" : "Rab I";
+  if(name.includes("jumād") || name.includes("jumad")) return name.includes("ii") || name.includes("al-thani") ? "Jum II" : "Jum I";
+  if(name.includes("rajab")) return "Raj";
+  if(name.includes("sha")) return "Sha";
+  if(name.includes("rama") || name.includes("ramadan")) return "Ram";
+  if(name.includes("shaw")) return "Shaw";
+  if(name.includes("dhū") || name.includes("dhu")) return name.includes("hij") ? "Dhu H" : "Dhu Q";
+
+  return String(monthName || "").slice(0, 6);
+}
+
+function getShortGregorianMonthName(dateObj){
+  return dateObj.toLocaleDateString("en-US", {month:"short"});
+}
+
+function getSalahPrintJsDateFromGregorian(gregorian){
+  if(!gregorian || !gregorian.date) return new Date();
+
+  let parts = String(gregorian.date).split("-");
+  if(parts.length < 3) return new Date();
+
+  return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+}
+
+function formatSalahPrintGregorianDate(day, index, previousMonth){
+  let jsDate = getSalahPrintJsDateFromGregorian(day.date && day.date.gregorian);
+  let month = jsDate.getMonth();
+  let dateNumber = jsDate.getDate();
+
+  if(index > 0 && previousMonth !== null && month !== previousMonth){
+    return getShortGregorianMonthName(jsDate) + " " + dateNumber;
+  }
+
+  return String(dateNumber);
+}
+
+function formatSalahPrintHijriDate(day, index, previousHijriMonth){
+  let hijri = day.date && day.date.hijri ? day.date.hijri : {};
+  let hijriDay = hijri.day || "";
+  let monthName = hijri.month && hijri.month.en ? hijri.month.en : "";
+  let monthNumber = hijri.month && hijri.month.number ? hijri.month.number : monthName;
+
+  if(index === 0 || String(monthNumber) !== String(previousHijriMonth)){
+    return String(hijriDay) + " " + getShortHijriMonthName(monthName);
+  }
+
+  return String(hijriDay);
+}
+
+function buildSalahPrintRowsFromCalendarData(calendarData){
+  let previousGregorianMonth = null;
+  let previousHijriMonth = null;
+
+  return (calendarData || []).map(function(day, index){
+    let gregorian = day.date && day.date.gregorian ? day.date.gregorian : {};
+    let hijri = day.date && day.date.hijri ? day.date.hijri : {};
+    let jsDate = getSalahPrintJsDateFromGregorian(gregorian);
+    let dayName = jsDate.toLocaleDateString("en-US", {weekday:"short"});
+    let dateText = formatSalahPrintGregorianDate(day, index, previousGregorianMonth);
+    let islamicText = formatSalahPrintHijriDate(day, index, previousHijriMonth);
+    let timings = applySalahManualMinuteAdjustmentsToTimings(day.timings || {});
+
+    previousGregorianMonth = jsDate.getMonth();
+    previousHijriMonth = hijri.month && hijri.month.number ? hijri.month.number : previousHijriMonth;
+
+    return `
+      <tr>
+        <td>${dayName}</td>
+        <td>${islamicText}</td>
+        <td>${dateText}</td>
+        <td>${formatSalahPrintClock(timings.Fajr)}</td>
+        <td>${formatSalahPrintClock(timings.Sunrise)}</td>
+        <td>${formatSalahPrintClock(timings.Dhuhr)}</td>
+        <td>${formatSalahPrintClock(timings.Asr)}</td>
+        <td>${formatSalahPrintClock(timings.Maghrib)}</td>
+        <td>${formatSalahPrintClock(timings.Isha)}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+async function printMonthlyTimetable(){
+  showToast("Preparing A4 preview...");
+
+  try{
+    let pickedDate = getSelectedMonthlyDate();
+    let month = pickedDate.getMonth() + 1;
+    let year = pickedDate.getFullYear();
+    let loc = await getActiveMonthlyLocation();
+    let monthlyData = await fetchMonthlyCalendarWithCurrentSettings(year, month, loc);
+
+    let monthName = pickedDate.toLocaleDateString("en-US", {
+      month:"long",
+      year:"numeric"
+    });
+
+    let locationName = loc.name || loc.city || "My Location";
+    let settingsLine = getFullSettingsLabel(loc.country || loc.name || "");
+    let rowsHtml = buildSalahPrintRowsFromCalendarData(monthlyData);
+
+    setSalahPrintReaderContent({
+      topTitle:"Monthly Timetable",
+      title:"Salah Timetable — " + monthName,
+      location:locationName,
+      settings:settingsLine,
+      rowsHtml:rowsHtml,
+      footer:"Generated by IbadahHub • A4 portrait • Current saved Salah settings"
+    });
+
+  }catch(error){
+    showToast("Could not prepare monthly preview");
+  }
+}
+
+async function generateRamadanTimetable(){
+  closeRamadanSheet();
+  showToast("Preparing A4 Ramadan preview...");
+
+  try{
+    let loc = await getActiveMonthlyLocation();
+
+    if(!loc || !loc.lat || !loc.lon){
+      showToast("Please set location first");
+      return;
+    }
+
+    let yearSelect = document.getElementById("ramadanYearSelect");
+    let year = yearSelect ? parseInt(yearSelect.value, 10) : new Date().getFullYear();
+    let method = getAladhanMethodNumber(loc.country || loc.name || "");
+    let school = getAsrMethod() === "hanafi" ? "1" : "0";
+    let customSwitch = document.getElementById("ramadanCustomSwitch");
+    let customOn = customSwitch && customSwitch.classList.contains("on");
+    let data = [];
+
+    if(customOn){
+      let startInput = document.getElementById("ramadanStartDate");
+      let endInput = document.getElementById("ramadanEndDate");
+      let startDate = startInput && startInput.value ? new Date(startInput.value) : null;
+      let endDate = endInput && endInput.value ? new Date(endInput.value) : null;
+
+      if(!startDate || !endDate || isNaN(startDate) || isNaN(endDate)){
+        showToast("Pick valid start and end dates");
+        return;
+      }
+
+      data = await fetchRamadanDateRange(startDate, endDate, method, school, loc);
+    }else{
+      data = await fetchAutoRamadanDays(year, method, school, loc);
+    }
+
+    if(!data || !data.length){
+      showToast("Could not find Ramadan days");
+      return;
+    }
+
+    if((localStorage.getItem("salahCalculationMethod") || "auto") === "isna" && getIsnaFajr18Enabled()){
+      let overrideData = [];
+
+      if(customOn){
+        let startDate = new Date(document.getElementById("ramadanStartDate").value);
+        let endDate = new Date(document.getElementById("ramadanEndDate").value);
+        overrideData = await fetchRamadanDateRange(startDate, endDate, 13, school, loc);
+      }else{
+        overrideData = await fetchAutoRamadanDays(year, 13, school, loc);
+      }
+
+      data.forEach(function(day, index){
+        if(overrideData[index] && overrideData[index].timings && overrideData[index].timings.Fajr){
+          day.timings.Fajr = overrideData[index].timings.Fajr;
+        }
+      });
+    }
+
+    let locationName = loc.name || loc.city || "My Location";
+    let firstG = data[0].date.gregorian.date.split("-");
+    let lastG = data[data.length - 1].date.gregorian.date.split("-");
+    let firstDate = new Date(firstG[2], firstG[1] - 1, firstG[0]);
+    let lastDate = new Date(lastG[2], lastG[1] - 1, lastG[0]);
+    let range = firstDate.toLocaleDateString("en-US", {month:"short", day:"numeric"}) + " — " + lastDate.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+    let settingsLine = range + " • " + getFullSettingsLabel(loc.country || loc.name || "");
+    let rowsHtml = buildSalahPrintRowsFromCalendarData(data);
+
+    setSalahPrintReaderContent({
+      topTitle:"Ramadan Timetable",
+      title:"Ramadan Timetable — " + year,
+      location:locationName,
+      settings:settingsLine,
+      rowsHtml:rowsHtml,
+      footer:"Generated by IbadahHub • A4 portrait • Current saved Salah settings"
+    });
+
+  }catch(error){
+    showToast("Could not prepare Ramadan preview");
+  }
+}
 </script>
 
 <script src="../shared/bottom-nav.js"></script>
