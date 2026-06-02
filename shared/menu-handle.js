@@ -131,20 +131,22 @@ function createUniversalMenuHandle(options){
     top:0;
     left:-280px;
     width:260px;
-    height:100%;
+    height:100dvh;
+    max-height:100dvh;
     background:rgba(233,233,238,0.96);
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
     box-shadow:10px 0 30px rgba(0,0,0,0.16);
     z-index:9998;
-    padding:108px 18px 20px 18px;
+    padding:96px 14px calc(env(safe-area-inset-bottom) + 14px) 14px;
     transition:left 0.28s ease;
     box-sizing:border-box;
     border-top-right-radius:28px;
     border-bottom-right-radius:28px;
     border-right:1px solid rgba(255,255,255,0.55);
-    overflow-y:auto;
-    overflow-x:hidden;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
   `;
 
   menu.innerHTML = `
@@ -152,63 +154,80 @@ function createUniversalMenuHandle(options){
     font-size:24px;
     font-weight:800;
     color:#111;
-    margin-bottom:22px;
+    margin-bottom:16px;
     letter-spacing:0.2px;
     text-align:center;
+    flex-shrink:0;
     ">
       Menu
     </div>
 
-    ${buildUniversalMenuCard({
-      title:"Main Page",
-      icon:iconBasePath + "home.png",
-      onclick:"universalMenuGoMainPage()"
-    })}
+    <div id="universalMenuScrollArea" style="
+    width:100%;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    padding:0 4px 12px 4px;
+    box-sizing:border-box;
+    ">
 
-    ${buildUniversalMenuCard({
-      title:"Refresh App",
-      icon:iconBasePath + "refresh.png",
-      onclick:"universalMenuRefreshApp()"
-    })}
+      ${buildUniversalMenuCard({
+        title:"Main Page",
+        icon:iconBasePath + "home.png",
+        onclick:"universalMenuGoMainPage()"
+      })}
 
-    ${buildUniversalMenuCard({
-      title:"App Settings",
-      icon:iconBasePath + "settings.png",
-      onclick:"universalMenuOpenAppSettings()"
-    })}
+      ${buildUniversalMenuCard({
+        title:"Refresh App",
+        icon:iconBasePath + "refresh.png",
+        onclick:"universalMenuRefreshApp()"
+      })}
 
-    ${buildUniversalMenuCard({
-      title:"Cloud Sync",
-      icon:iconBasePath + "settings.png",
-      onclick:"universalMenuOpenCloudMenu()"
-    })}
+      ${buildUniversalMenuCard({
+        title:"App Settings",
+        icon:iconBasePath + "settings.png",
+        onclick:"universalMenuOpenAppSettings()"
+      })}
 
-    ${buildUniversalSavedShortcutCards()}
+      ${buildUniversalMenuCard({
+        title:"Cloud Sync",
+        icon:iconBasePath + "settings.png",
+        onclick:"universalMenuOpenCloudMenu()"
+      })}
+
+      ${buildUniversalSavedShortcutCards()}
+
+    </div>
 
     <div style="
     width:100%;
-    display:flex;
-    justify-content:flex-end;
-    margin-top:6px;
+    flex-shrink:0;
+    padding:10px 4px 0 4px;
+    box-sizing:border-box;
+    background:linear-gradient(to top, rgba(233,233,238,0.98), rgba(233,233,238,0.75), rgba(233,233,238,0));
     ">
       <button onclick="universalMenuOpenShortcutPicker()" style="
+      width:100%;
       border:none;
-      border-radius:999px;
-      background:rgba(255,255,255,0.88);
-      color:#111;
-      font-size:15px;
-      font-weight:900;
+      border-radius:18px;
+      background:#111;
+      color:white;
+      font-size:16px;
+      font-weight:950;
       line-height:1;
       cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:5px;
-      padding:11px 14px;
-      box-shadow:0 8px 18px rgba(0,0,0,0.08);
-      border:1px solid rgba(255,255,255,0.60);
+      gap:7px;
+      padding:14px 14px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.14);
       font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Arial,sans-serif;
-      ">Add <span style="font-size:18px;line-height:1;">+</span></button>
+      ">
+        Add Shortcut <span style="font-size:20px;line-height:1;">+</span>
+      </button>
     </div>
   `;
 
@@ -291,8 +310,6 @@ function createUniversalMenuHandle(options){
         Sign in with Google
       </button>
 
-     
-
       <button onclick="universalMenuCloudSignOut()" style="
       width:100%;
       border:none;
@@ -356,12 +373,12 @@ function buildUniversalMenuCard(item){
   return `
     <div onclick="${item.onclick}" style="
     background:rgba(255,255,255,0.82);
-    padding:16px 18px;
+    padding:16px 16px;
     border-radius:20px;
     font-size:18px;
     font-weight:800;
     color:#111;
-    margin-bottom:14px;
+    margin-bottom:12px;
     box-shadow:0 8px 18px rgba(0,0,0,0.08);
     cursor:pointer;
     border:1px solid rgba(255,255,255,0.55);
@@ -386,7 +403,6 @@ function buildUniversalMenuCard(item){
     </div>
   `;
 }
-
 
 // =========================
 // GET UNIVERSAL SHORTCUT CHOICES
@@ -456,12 +472,12 @@ function buildUniversalSavedShortcutCards(){
     html += `
       <div onclick="universalMenuGoShortcut('${item.id}')" style="
       background:rgba(255,255,255,0.82);
-      padding:16px 18px;
+      padding:16px 16px;
       border-radius:20px;
       font-size:18px;
       font-weight:800;
       color:#111;
-      margin-bottom:14px;
+      margin-bottom:12px;
       box-shadow:0 8px 18px rgba(0,0,0,0.08);
       cursor:pointer;
       border:1px solid rgba(255,255,255,0.55);
