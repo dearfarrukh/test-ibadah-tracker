@@ -3,7 +3,7 @@
 <head>
 
 <!-- =========================
-     MAIN INDEX CLEAN STARTER
+     MAIN INDEX CLEAN NO START SCREEN
      File: test-ibadah-tracker/index.html
 ========================= -->
 
@@ -35,117 +35,11 @@ body{
   background:#e9e9ee;
   color:#111;
 }
-
-/* =========================
-   CLEAN APP LOADER PAGE
-========================= */
-.cleanAppShell{
-  width:100%;
-  min-height:100vh;
-  background:#e9e9ee;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:8%;
-}
-
-.cleanCard{
-  width:100%;
-  max-width:430px;
-  background:rgba(255,255,255,0.88);
-  border-radius:32px;
-  padding:28px 22px;
-  box-shadow:0 16px 38px rgba(0,0,0,0.10);
-  text-align:center;
-  border:1px solid rgba(255,255,255,0.75);
-}
-
-.cleanLogo{
-  width:24%;
-  max-width:86px;
-  min-width:62px;
-  aspect-ratio:1 / 1;
-  object-fit:contain;
-  margin-bottom:14px;
-}
-
-.cleanTitle{
-  font-size:26px;
-  font-weight:900;
-  letter-spacing:-0.4px;
-  margin-bottom:8px;
-}
-
-.cleanSub{
-  font-size:15px;
-  font-weight:650;
-  color:#666;
-  line-height:1.5;
-  margin-bottom:20px;
-}
-
-.cleanButton{
-  width:100%;
-  border:none;
-  border-radius:22px;
-  padding:16px 14px;
-  font-size:18px;
-  font-weight:850;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-.cleanButtonBlack{
-  background:#111;
-  color:white;
-}
-
-.cleanButtonLight{
-  background:#f2f2f7;
-  color:#111;
-}
-
-.cleanSmallText{
-  font-size:13px;
-  font-weight:650;
-  color:#777;
-  line-height:1.45;
-  margin-top:14px;
-}
 </style>
 
 </head>
 
 <body>
-
-<!-- =========================
-     CLEAN LOADING SCREEN
-========================= -->
-<div id="cleanLoadingPage" class="cleanAppShell">
-  <div class="cleanCard">
-
-    <img class="cleanLogo" src="Images/Icons/QuranTracker.png" onerror="this.style.display='none'">
-
-    <div class="cleanTitle">Ibadah Tracker</div>
-
-    <div id="cleanStatusText" class="cleanSub">
-      Opening your saved default page...
-    </div>
-
-    <button class="cleanButton cleanButtonBlack" onclick="openSelectedDefaultPage()">
-      Open App
-    </button>
-
-    <button class="cleanButton cleanButtonLight" onclick="openAppSettingsPage()">
-      App Settings
-    </button>
-
-    <div class="cleanSmallText">
-      Clean main index. Settings now open from separate appsettings folder.
-    </div>
-
-  </div>
-</div>
 
 <script>
 /* =========================
@@ -314,24 +208,12 @@ function openSavedDefaultPageOnly(){
 ========================= */
 function openSelectedDefaultPage(){
 
-  let status = document.getElementById("cleanStatusText");
-  if(status){
-    status.innerText = "Opening...";
-  }
-
-  /*
-    Powerful default page rule:
-    Normal app open or forceDefault=1 always opens saved default page.
-  */
   if(!shouldUseFolderReturnKeys()){
     clearOneTimeReturnKeys();
     openSavedDefaultPageOnly();
     return;
   }
 
-  /*
-    Folder return only works when user really came from a folder page.
-  */
   let folderReturnPage = localStorage.getItem("ibadahFolderReturnPage");
 
   if(folderReturnPage){
@@ -416,7 +298,7 @@ function openSelectedDefaultPage(){
 ========================= */
 function openHomePage(){
 
-  window.location.href = getIbadahBasePath() + "home/";
+  window.location.replace(getIbadahBasePath() + "home/");
 
 }
 
@@ -426,7 +308,7 @@ function openHomePage(){
 ========================= */
 function openTrackerPage(){
 
-  window.location.href = getIbadahBasePath() + "tracker/";
+  window.location.replace(getIbadahBasePath() + "tracker/");
 
 }
 
@@ -436,7 +318,7 @@ function openTrackerPage(){
 ========================= */
 function openSalahPage(){
 
-  window.location.href = getIbadahBasePath() + "salah/";
+  window.location.replace(getIbadahBasePath() + "salah/");
 
 }
 
@@ -446,7 +328,7 @@ function openSalahPage(){
 ========================= */
 function openMorePage(){
 
-  window.location.href = getIbadahBasePath() + "more/";
+  window.location.replace(getIbadahBasePath() + "more/");
 
 }
 
@@ -456,7 +338,7 @@ function openMorePage(){
 ========================= */
 function openQuranPage(){
 
-  window.location.href = getIbadahBasePath() + "quran/?from=main";
+  window.location.replace(getIbadahBasePath() + "quran/?from=main");
 
 }
 
@@ -466,7 +348,7 @@ function openQuranPage(){
 ========================= */
 function openTasbihPageFromHome(){
 
-  window.location.href = getIbadahBasePath() + "tasbih/?from=home";
+  window.location.replace(getIbadahBasePath() + "tasbih/?from=home");
 
 }
 
@@ -477,7 +359,7 @@ function openTasbihPageFromHome(){
 function openQazaTrackerFromHome(){
 
   localStorage.setItem("qazaReturnPage", "home");
-  window.location.href = getIbadahBasePath() + "qazatracker/";
+  window.location.replace(getIbadahBasePath() + "qazatracker/");
 
 }
 
@@ -487,7 +369,7 @@ function openQazaTrackerFromHome(){
 ========================= */
 function openDuaPageFromHome(){
 
-  window.location.href = getIbadahBasePath() + "duapage/?from=home&v=" + Date.now();
+  window.location.replace(getIbadahBasePath() + "duapage/?from=home&v=" + Date.now());
 
 }
 
@@ -497,7 +379,7 @@ function openDuaPageFromHome(){
 ========================= */
 function openDailyAzkarPageFromHome(){
 
-  window.location.href = getIbadahBasePath() + "dailyazkar/?from=home&v=" + Date.now();
+  window.location.replace(getIbadahBasePath() + "dailyazkar/?from=home&v=" + Date.now());
 
 }
 
@@ -507,7 +389,7 @@ function openDailyAzkarPageFromHome(){
 ========================= */
 function openQiblaPage(){
 
-  window.location.href = getIbadahBasePath() + "qibla/";
+  window.location.replace(getIbadahBasePath() + "qibla/");
 
 }
 
@@ -519,7 +401,7 @@ function openAppSettingsPage(){
 
   clearOneTimeReturnKeys();
 
-  window.location.href = getIbadahBasePath() + "appsettings/?from=main&v=" + Date.now();
+  window.location.replace(getIbadahBasePath() + "appsettings/?from=main&v=" + Date.now());
 
 }
 
@@ -547,7 +429,7 @@ async function refreshApp(){
     console.log("Refresh update failed:", error);
   }
 
-  window.location.href = getIbadahBasePath() + "?forceDefault=1&v=" + Date.now();
+  window.location.replace(getIbadahBasePath() + "?forceDefault=1&v=" + Date.now());
 
 }
 
@@ -557,16 +439,11 @@ async function refreshApp(){
 ========================= */
 function cleanStartup(){
 
-  /*
-    Old setting key support:
-    If any old page still sends ibadahOpenAppSettings=yes,
-    send user to the new separate appsettings folder.
-  */
   let shouldOpenSettings = localStorage.getItem("ibadahOpenAppSettings") === "yes";
 
   if(shouldOpenSettings){
     localStorage.removeItem("ibadahOpenAppSettings");
-    window.location.href = getIbadahBasePath() + "appsettings/?from=main&v=" + Date.now();
+    window.location.replace(getIbadahBasePath() + "appsettings/?from=main&v=" + Date.now());
     return;
   }
 
