@@ -144,9 +144,9 @@ function createUniversalMenuHandle(options){
     border-top-right-radius:28px;
     border-bottom-right-radius:28px;
     border-right:1px solid rgba(255,255,255,0.55);
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
+       overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
   `;
 
   menu.innerHTML = `
@@ -162,13 +162,8 @@ function createUniversalMenuHandle(options){
       Menu
     </div>
 
-    <div id="universalMenuScrollArea" style="
+      <div id="universalMenuScrollArea" style="
     width:100%;
-    flex:1;
-    min-height:0;
-    overflow-y:auto;
-    overflow-x:hidden;
-    -webkit-overflow-scrolling:touch;
     padding:0 4px 12px 4px;
     box-sizing:border-box;
     ">
@@ -199,16 +194,12 @@ function createUniversalMenuHandle(options){
 
       ${buildUniversalSavedShortcutCards()}
 
-    </div>
-
-    <div style="
-    width:100%;
-    flex-shrink:0;
-    padding:10px 4px 0 4px;
-    box-sizing:border-box;
-    background:linear-gradient(to top, rgba(233,233,238,0.98), rgba(233,233,238,0.75), rgba(233,233,238,0));
-    ">
-      <button onclick="universalMenuOpenShortcutPicker()" style="
+        <div style="
+      width:100%;
+      padding:10px 0 0 0;
+      box-sizing:border-box;
+      ">
+        <button onclick="universalMenuOpenShortcutPicker()" style="
       width:100%;
       border:none;
       border-radius:18px;
@@ -227,7 +218,9 @@ function createUniversalMenuHandle(options){
       font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Arial,sans-serif;
       ">
         Add Shortcut <span style="font-size:20px;line-height:1;">+</span>
-      </button>
+             </button>
+      </div>
+
     </div>
   `;
 
